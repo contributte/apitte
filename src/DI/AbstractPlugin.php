@@ -2,14 +2,13 @@
 
 namespace Apitte\Core\DI;
 
-use Nette\DI\CompilerExtension;
 use Nette\DI\ContainerBuilder;
 use Nette\PhpGenerator\ClassType;
 
 abstract class AbstractPlugin implements Plugin
 {
 
-	/** @var CompilerExtension */
+	/** @var ApiExtension */
 	protected $extension;
 
 	/** @var string */
@@ -19,9 +18,9 @@ abstract class AbstractPlugin implements Plugin
 	protected $config = [];
 
 	/**
-	 * @param CompilerExtension $extension
+	 * @param ApiExtension $extension
 	 */
-	public function __construct(CompilerExtension $extension)
+	public function __construct(ApiExtension $extension)
 	{
 		$this->extension = $extension;
 	}

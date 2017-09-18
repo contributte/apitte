@@ -78,6 +78,11 @@ class CorePlugin extends AbstractPlugin
 			->setClass(ApiSchema::class);
 	}
 
+	/**
+	 * Decorate services
+	 *
+	 * @return void
+	 */
 	public function beforePluginCompile()
 	{
 		// Receive container builder
@@ -149,6 +154,5 @@ class CorePlugin extends AbstractPlugin
 
 		$validator->validate($builder);
 	}
-
 
 }

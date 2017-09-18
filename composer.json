@@ -1,0 +1,44 @@
+{
+  "name": "apitte/core",
+  "description": "Apitte core library",
+  "keywords": ["api", "rest", "json", "core"],
+  "type": "library",
+  "license": "MIT",
+  "homepage": "https://github.com/apitte/core",
+  "authors": [
+    {
+      "name": "Milan Felix Šulc",
+      "homepage": "https://f3l1x.io"
+    }
+  ],
+  "require": {
+    "php": ">= 5.6",
+    "apitte/core": "@dev"
+  },
+  "require-dev": {
+    "ninjify/qa": "^0.4.0",
+    "ninjify/nunjuck": "^0.1.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Apitte\\Core\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Fixtures\\": "tests/fixtures"
+    }
+  },
+  "scripts": {
+    "qa": [
+      "linter src tests",
+      "codesniffer src tests"
+    ],
+    "tester": [
+      "tester -s -p php --colors 1 -c tests/php-unix.ini tests/cases"
+    ],
+    "tester-coverage": [
+      "tester -s -p php --colors 1 -c tests/php-unix.ini -d extension=xdebug.so --coverage ./coverage.xml --coverage-src ./src tests/cases"
+    ]
+  }
+}

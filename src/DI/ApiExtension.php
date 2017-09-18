@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\DI;
 
+use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Nette\DI\Helpers;
 use Nette\PhpGenerator\ClassType;
@@ -67,6 +68,14 @@ class ApiExtension extends CompilerExtension
 	{
 		// Decorate services from all plugins
 		$this->pm->afterCompiles($class);
+	}
+
+	/**
+	 * @return Compiler
+	 */
+	public function getCompiler()
+	{
+		return $this->compiler;
 	}
 
 	/**

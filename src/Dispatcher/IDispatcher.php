@@ -2,17 +2,17 @@
 
 namespace Apitte\Core\Dispatcher;
 
-use Apitte\Core\Http\ApiRequest;
-use Apitte\Core\Http\ApiResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 interface IDispatcher
 {
 
 	/**
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return ApiResponse
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function dispatch(ApiRequest $request, ApiResponse $response);
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response);
 
 }

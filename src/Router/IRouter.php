@@ -2,15 +2,15 @@
 
 namespace Apitte\Core\Router;
 
-use Apitte\Core\Http\ApiRequest;
+use Psr\Http\Message\ServerRequestInterface;
 
 interface IRouter
 {
 
 	/**
-	 * @param ApiRequest $request
-	 * @return ApiRequest|NULL
+	 * @param ServerRequestInterface $request
+	 * @return ServerRequestInterface|NULL
 	 */
-	public function match(ApiRequest $request);
+	public function match(ServerRequestInterface $request);
 
 }

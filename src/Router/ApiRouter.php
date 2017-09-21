@@ -2,10 +2,11 @@
 
 namespace Apitte\Core\Router;
 
-use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\ApiSchema;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Utils\Regex;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ApiRouter implements IRouter
 {
@@ -22,10 +23,10 @@ class ApiRouter implements IRouter
 	}
 
 	/**
-	 * @param ApiRequest $request
-	 * @return ApiRequest|NULL
+	 * @param ServerRequestInterface $request
+	 * @return ServerRequestInterface|NULL
 	 */
-	public function match(ApiRequest $request)
+	public function match(ServerRequestInterface $request)
 	{
 		$endpoints = $this->schema->getEndpoints();
 
@@ -39,7 +40,7 @@ class ApiRouter implements IRouter
 			// If matched is not NULL, returns given ApiRequest
 			// with all parsed arguments and data,
 			// also append given Endpoint
-			$matched = $matched->withEndpoint($endpoint);
+			$matched = $matched->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
 
 			return $matched;
 		}
@@ -49,10 +50,10 @@ class ApiRouter implements IRouter
 
 	/**
 	 * @param Endpoint $endpoint
-	 * @param ApiRequest $request
-	 * @return ApiRequest|NULL
+	 * @param ServerRequestInterface $request
+	 * @return ServerRequestInterface|NULL
 	 */
-	protected function matchEndpoint(Endpoint $endpoint, ApiRequest $request)
+	protected function matchEndpoint(Endpoint $endpoint, ServerRequestInterface $request)
 	{
 		// Skip unsupported HTTP method
 		if (!$endpoint->hasMethod($request->getMethod())) {
@@ -67,10 +68,10 @@ class ApiRouter implements IRouter
 
 	/**
 	 * @param Endpoint $endpoint
-	 * @param ApiRequest $request
-	 * @return ApiRequest|NULL
+	 * @param ServerRequestInterface $request
+	 * @return ServerRequestInterface|NULL
 	 */
-	protected function compareUrl(Endpoint $endpoint, ApiRequest $request)
+	protected function compareUrl(Endpoint $endpoint, ServerRequestInterface $request)
 	{
 		// Parse url from ApiRequest
 		$url = $request->getUri()->getPath();
@@ -85,13 +86,16 @@ class ApiRouter implements IRouter
 		// Skip if there's no match
 		if ($match === NULL) return NULL;
 
-		// Fill ApiRequest attributes with matched variables
-		$request = $request->withAttribute(ApiRequest::ATTR_ROUTER, $match);
-
-		// Fill ApiRequest parameters with matched variables
+		// Fill parameters with matched variables
+		$parameters = [];
 		foreach ($endpoint->getParameters() as $param) {
-			$request = $request->withParameter($param->getName(), $match[$param->getName()]);
+			$parameters[$param->getName()] = $match[$param->getName()];
 		}
+
+		// Set attributes to request
+		$request = $request
+			->withAttribute(RequestAttributes::ATTR_ROUTER, $match)
+			->withAttribute(RequestAttributes::ATTR_PARAMETERS, $parameters);
 
 		return $request;
 	}

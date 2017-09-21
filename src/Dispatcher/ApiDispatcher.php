@@ -3,10 +3,10 @@
 namespace Apitte\Core\Dispatcher;
 
 use Apitte\Core\Exception\Logical\Request\BadRequestException;
-use Apitte\Core\Http\ApiRequest;
-use Apitte\Core\Http\ApiResponse;
+use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Router\IRouter;
-use Apitte\Core\UI\IHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ApiDispatcher implements IDispatcher
 {
@@ -28,11 +28,11 @@ class ApiDispatcher implements IDispatcher
 	}
 
 	/**
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return ApiResponse
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function dispatch(ApiRequest $request, ApiResponse $response)
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		// Try match request to our routes
 		$matchedRequest = $this->match($request, $response);
@@ -47,31 +47,31 @@ class ApiDispatcher implements IDispatcher
 	}
 
 	/**
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return ApiRequest
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ServerRequestInterface
 	 */
-	protected function match(ApiRequest $request, ApiResponse $response)
+	protected function match(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		return $this->router->match($request);
 	}
 
 	/**
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return ApiResponse
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	protected function handle(ApiRequest $request, ApiResponse $response)
+	protected function handle(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		return $this->handler->handle($request, $response);
 	}
 
 	/**
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return ApiResponse
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	protected function fallback(ApiRequest $request, ApiResponse $response)
+	protected function fallback(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		throw new BadRequestException('No matched route by given URL', 404);
 

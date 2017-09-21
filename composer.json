@@ -13,11 +13,14 @@
   ],
   "require": {
     "php": ">= 5.6",
-    "contributte/psr7-http-message": "^0.2.0"
+    "contributte/psr7-http-message": "^0.2.0",
+    "contributte/phpdoc": "^0.1.0"
   },
   "require-dev": {
     "ninjify/qa": "^0.4.0",
-    "ninjify/nunjuck": "^0.1.4"
+    "ninjify/nunjuck": "^0.1.4",
+    "mockery/mockery": "^0.9.9",
+    "nette/di": "2.4.9"
   },
   "autoload": {
     "psr-4": {

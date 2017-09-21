@@ -12,14 +12,14 @@ final class Endpoint
 	const METHOD_POST = 'POST';
 	const METHOD_PUT = 'PUT';
 	const METHOD_DELETE = 'DELETE';
-	const METHOD_OPTION = 'OPTION';
+	const METHOD_OPTION = 'OPTIONS';
 
 	const METHODS = [
 		'GET',
 		'POST',
 		'PUT',
 		'DELETE',
-		'OPTION',
+		'OPTIONS',
 	];
 
 	/** @var string[] */

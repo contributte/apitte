@@ -11,7 +11,7 @@ final class SchemaController
 	/** @var string */
 	private $rootPath;
 
-	/** @var SchemaMethod[] */
+	/** @var SchemaControllerMethod[] */
 	private $methods = [];
 
 	/**
@@ -49,18 +49,18 @@ final class SchemaController
 
 	/**
 	 * @param string $name
-	 * @return SchemaMethod
+	 * @return SchemaControllerMethod
 	 */
 	public function addMethod($name)
 	{
-		$method = new SchemaMethod($name);
+		$method = new SchemaControllerMethod($name);
 		$this->methods[$name] = $method;
 
 		return $method;
 	}
 
 	/**
-	 * @return SchemaMethod[]
+	 * @return SchemaControllerMethod[]
 	 */
 	public function getMethods()
 	{

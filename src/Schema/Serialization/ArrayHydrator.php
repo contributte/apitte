@@ -25,7 +25,7 @@ final class ArrayHydrator implements IHydrator
 			$handler = new EndpointHandler();
 			$handler->setClass($route[SchemaMapping::HANDLER][SchemaMapping::HANDLER_CLASS]);
 			$handler->setMethod($route[SchemaMapping::HANDLER][SchemaMapping::HANDLER_METHOD]);
-			//$handler->setMethod($route[SchemaMapping::HANDLER][SchemaMapping::HANDLER_TYPE]);
+			$handler->setArguments($route[SchemaMapping::HANDLER][SchemaMapping::HANDLER_ARGUMENTS]);
 
 			$endpoint = new Endpoint();
 			$endpoint->setHandler($handler);

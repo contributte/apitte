@@ -10,6 +10,7 @@ use Apitte\Core\Schema\Builder\SchemaController;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Nette\Reflection\ClassType;
+use Nette\Utils\Reflection;
 
 final class DoctrineAnnotationLoader extends AnnotationLoader
 {
@@ -105,6 +106,12 @@ final class DoctrineAnnotationLoader extends AnnotationLoader
 					$schemaMethod->appendMethods($annotation->getMethods());
 					continue;
 				}
+			}
+
+			// Parse method parameters
+			foreach ($method->getParameters() as $parameter) {
+				$type = Reflection::getParameterType($parameter);
+				$schemaMethod->appendArgument($parameter->getName(), $type);
 			}
 		}
 	}

@@ -42,6 +42,7 @@ final class ArraySerializator implements ISerializator
 					SchemaMapping::HANDLER => [
 						SchemaMapping::HANDLER_CLASS => $controller->getClass(),
 						SchemaMapping::HANDLER_METHOD => $method->getName(),
+						SchemaMapping::HANDLER_ARGUMENTS => $method->getArguments(),
 					],
 					SchemaMapping::METHODS => $method->getMethods(),
 					SchemaMapping::ROOT_PATH => $controller->getRootPath(),

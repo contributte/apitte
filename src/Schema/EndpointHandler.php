@@ -11,8 +11,8 @@ final class EndpointHandler
 	/** @var string */
 	private $method;
 
-	/** @var string */
-	private $callback;
+	/** @var array */
+	private $arguments = [];
 
 	/**
 	 * @return string
@@ -49,20 +49,20 @@ final class EndpointHandler
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function getCallback()
+	public function getArguments()
 	{
-		return $this->callback;
+		return $this->arguments;
 	}
 
 	/**
-	 * @param string $callback
+	 * @param array $arguments
 	 * @return void
 	 */
-	public function setCallback($callback)
+	public function setArguments(array $arguments)
 	{
-		$this->callback = $callback;
+		$this->arguments = $arguments;
 	}
 
 }

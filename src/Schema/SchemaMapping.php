@@ -8,6 +8,7 @@ interface SchemaMapping
 	const HANDLER = 'handler';
 	const HANDLER_CLASS = 'class';
 	const HANDLER_METHOD = 'method';
+	const HANDLER_ARGUMENTS = 'arguments';
 	const METHODS = 'method';
 	const ROOT_PATH = 'rootPath';
 	const PATH = 'path';

@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema\Builder;
 
-final class SchemaMethod
+final class SchemaControllerMethod
 {
 
 	/** @var string */
@@ -13,6 +13,9 @@ final class SchemaMethod
 
 	/** @var string[] */
 	private $methods = [];
+
+	/** @var string[] */
+	private $arguments = [];
 
 	/**
 	 * @param string $name
@@ -82,6 +85,24 @@ final class SchemaMethod
 		foreach ($methods as $method) {
 			$this->addMethod($method);
 		}
+	}
+
+	/**
+	 * @param string $name
+	 * @param string $type
+	 * @return void
+	 */
+	public function appendArgument($name, $type)
+	{
+		$this->arguments[$name] = $type;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getArguments()
+	{
+		return $this->arguments;
 	}
 
 }

@@ -4,32 +4,24 @@ namespace Apitte\Core\Http;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Endpoint;
-use Contributte\Psr7\Psr7ServerRequest;
+use Contributte\Psr7\Extra\ExtraRequestTrait;
+use Contributte\Psr7\Psr7RequestWrapper;
 
-class ApiRequest extends Psr7ServerRequest
+class ApiRequest extends Psr7RequestWrapper
 {
 
-	// Attributes
-	const ATTR_ROUTER = 'C-Router';
-	const ATTR_PARAMETERS = 'C-Parameters';
-
-	/** @var Endpoint */
-	protected $endpoint;
+	use ExtraRequestTrait;
 
 	/**
-	 * ENDPOINT ****************************************************************
+	 * HELPERS *****************************************************************
 	 */
 
 	/**
-	 * @param Endpoint $endpoint
-	 * @return static
+	 * @return Endpoint
 	 */
-	public function withEndpoint(Endpoint $endpoint)
+	public function hasEndpoint()
 	{
-		$new = clone $this;
-		$new->endpoint = $endpoint;
-
-		return $new;
+		return $this->getAttribute(RequestAttributes::ATTR_ENDPOINT, NULL) !== NULL;
 	}
 
 	/**
@@ -37,33 +29,7 @@ class ApiRequest extends Psr7ServerRequest
 	 */
 	public function getEndpoint()
 	{
-		return $this->endpoint;
-	}
-
-	/**
-	 * PARAMETERS **************************************************************
-	 */
-
-	/**
-	 * @param array $parameters
-	 * @return static
-	 */
-	public function withParameters(array $parameters)
-	{
-		return $this->withAttribute(self::ATTR_PARAMETERS, $parameters);
-	}
-
-	/**
-	 * @param string $name
-	 * @param mixed $value
-	 * @return static
-	 */
-	public function withParameter($name, $value)
-	{
-		$parameters = $this->getAttribute(self::ATTR_PARAMETERS, []);
-		$parameters[$name] = $value;
-
-		return $this->withParameters($parameters);
+		return $this->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 	}
 
 	/**
@@ -72,7 +38,7 @@ class ApiRequest extends Psr7ServerRequest
 	 */
 	public function hasParameter($name)
 	{
-		return isset($this->getAttribute(self::ATTR_PARAMETERS, [])[$name]);
+		return isset($this->getAttribute(RequestAttributes::ATTR_PARAMETERS, [])[$name]);
 	}
 
 	/**
@@ -90,7 +56,7 @@ class ApiRequest extends Psr7ServerRequest
 			return $default;
 		}
 
-		return $this->getAttribute(self::ATTR_PARAMETERS)[$name];
+		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS)[$name];
 	}
 
 	/**
@@ -98,7 +64,7 @@ class ApiRequest extends Psr7ServerRequest
 	 */
 	public function getParameters()
 	{
-		return $this->getAttribute(self::ATTR_PARAMETERS);
+		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS);
 	}
 
 }

@@ -2,44 +2,29 @@
 
 namespace Apitte\Core\Http;
 
-use Contributte\Psr7\Psr7Response;
+use Apitte\Negotiation\Http\ArrayStream;
+use Contributte\Psr7\Psr7ResponseWrapper;
 
-class ApiResponse extends Psr7Response
+/**
+ * Tiny wrapper for PSR-7 ResponseInterface
+ */
+class ApiResponse extends Psr7ResponseWrapper
 {
 
-	/** @var mixed */
-	protected $data;
-
 	/**
-	 * DATA ********************************************************************
+	 * HELPERS *****************************************************************
 	 */
 
 	/**
-	 * @return bool
-	 */
-	public function hasData()
-	{
-		return $this->data !== NULL;
-	}
-
-	/**
-	 * @param mixed $data
+	 * @param array $data
 	 * @return static
 	 */
-	public function withData($data)
+	public function withData(array $data)
 	{
 		$new = clone $this;
-		$new->data = $data;
+		$new = $new->withBody(ArrayStream::from($this)->with($data));
 
 		return $new;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getData()
-	{
-		return $this->data;
 	}
 
 }

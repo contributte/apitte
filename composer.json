@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": ">= 5.6",
-    "contributte/psr7-http-message": "dev-master",
+    "contributte/psr7-http-message": "^0.3.0",
     "contributte/phpdoc": "^0.1.0"
   },
   "require-dev": {
@@ -32,6 +32,8 @@
       "Tests\\Fixtures\\": "tests/fixtures"
     }
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "scripts": {
     "qa": [
       "linter src tests",

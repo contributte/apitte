@@ -12,7 +12,7 @@ final class PluginManager
 	/** @var PluginCompiler */
 	private $compiler;
 
-	/** @var array */
+	/** @var AbstractPlugin[] */
 	private $plugins = [];
 
 	/**
@@ -20,7 +20,7 @@ final class PluginManager
 	 */
 	public function __construct(ApiExtension $extension)
 	{
-		$this->compiler = new PluginCompiler($extension);
+		$this->compiler = new PluginCompiler($this, $extension);
 	}
 
 	/**
@@ -35,7 +35,7 @@ final class PluginManager
 	public function registerPlugin(AbstractPlugin $plugin, array $config = [])
 	{
 		// Register plugin
-		$this->plugins[$plugin->getName()] = (object) [
+		$this->plugins[$plugin->getName()] = [
 			'inst' => $plugin,
 			'config' => $config,
 		];
@@ -77,6 +77,14 @@ final class PluginManager
 	}
 
 	/**
+	 * @return AbstractPlugin[]
+	 */
+	public function getPlugins()
+	{
+		return $this->plugins;
+	}
+
+	/**
 	 * EXTENSION ***************************************************************
 	 */
 
@@ -88,8 +96,8 @@ final class PluginManager
 	public function loadConfigurations()
 	{
 		foreach ($this->plugins as $plugin) {
-			$plugin->inst->setupPlugin($plugin->config);
-			$plugin->inst->loadPluginConfiguration();
+			$plugin['inst']->setupPlugin($plugin['config']);
+			$plugin['inst']->loadPluginConfiguration();
 		}
 	}
 
@@ -101,7 +109,7 @@ final class PluginManager
 	public function beforeCompiles()
 	{
 		foreach ($this->plugins as $plugin) {
-			$plugin->inst->beforePluginCompile();
+			$plugin['inst']->beforePluginCompile();
 		}
 	}
 
@@ -114,7 +122,7 @@ final class PluginManager
 	public function afterCompiles(ClassType $class)
 	{
 		foreach ($this->plugins as $plugin) {
-			$plugin->inst->afterPluginCompile($class);
+			$plugin['inst']->afterPluginCompile($class);
 		}
 	}
 

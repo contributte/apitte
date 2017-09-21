@@ -32,8 +32,6 @@
       "Tests\\Fixtures\\": "tests/fixtures"
     }
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "scripts": {
     "qa": [
       "linter src tests",
@@ -45,5 +43,12 @@
     "tester-coverage": [
       "tester -s -p php --colors 1 -c tests/php-unix.ini -d extension=xdebug.so --coverage ./coverage.xml --coverage-src ./src tests/cases"
     ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.x-dev"
+    }
   }
 }

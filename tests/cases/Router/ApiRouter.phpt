@@ -6,11 +6,12 @@
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Router\ApiRouter;
 use Apitte\Core\Schema\ApiSchema;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
+use Contributte\Psr7\Psr7ServerRequestFactory;
 use Tester\Assert;
 
 // Match parameter {id}
@@ -26,13 +27,13 @@ test(function () {
 	$schema = new ApiSchema();
 	$schema->addEndpoint($endpoint);
 
-	$request = ApiRequest::fromGlobals()->withNewUri('http://example.com/users/22/');
+	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/users/22/');
 	$router = new ApiRouter($schema);
 	$matched = $router->match($request);
 
-	Assert::type(ApiRequest::class, $matched);
-	Assert::true($matched->hasParameter('id'));
-	Assert::equal('22', $matched->getParameter('id'));
+	Assert::type($request, $matched);
+	Assert::true(isset($matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['id']));
+	Assert::equal('22', $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['id']);
 });
 
 // Match parameters {foo}/{bar}
@@ -52,13 +53,13 @@ test(function () {
 	$schema = new ApiSchema();
 	$schema->addEndpoint($endpoint);
 
-	$request = ApiRequest::fromGlobals()->withNewUri('http://example.com/users/1/baz');
+	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/users/1/baz');
 	$router = new ApiRouter($schema);
 	$matched = $router->match($request);
 
-	Assert::type(ApiRequest::class, $matched);
-	Assert::true($matched->hasParameter('foo'));
-	Assert::equal('1', $matched->getParameter('foo'));
-	Assert::true($matched->hasParameter('bar'));
-	Assert::equal('baz', $matched->getParameter('bar'));
+	Assert::type($request, $matched);
+	Assert::true(isset($matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['foo']));
+	Assert::equal('1', $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['foo']);
+	Assert::true(isset($matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['bar']));
+	Assert::equal('baz', $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['bar']);
 });

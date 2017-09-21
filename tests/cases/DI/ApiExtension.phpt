@@ -7,13 +7,13 @@
 use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\Dispatcher\IDispatcher;
 use Apitte\Core\Schema\ApiSchema;
-use Fixtures\Controllers\FoobarController;
 use Nette\DI\Compiler;
 use Nette\DI\Container;
 use Nette\DI\ContainerLoader;
 use Tester\Assert;
+use Tests\Fixtures\Controllers\FoobarController;
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 // Default
 test(function () {
@@ -30,8 +30,8 @@ test(function () {
 	/** @var Container $container */
 	$container = new $class();
 
-	Assert::type(IDispatcher::class, $container->getService('api.dispatcher'));
-	Assert::type(ApiSchema::class, $container->getService('api.schema'));
+	Assert::type(IDispatcher::class, $container->getService('api.core.dispatcher'));
+	Assert::type(ApiSchema::class, $container->getService('api.core.schema'));
 });
 
 // Annotations
@@ -53,12 +53,12 @@ test(function () {
 	$container = new $class();
 
 	/** @var ApiSchema $schema */
-	$schema = $container->getService('api.schema');
+	$schema = $container->getService('api.core.schema');
 	Assert::count(3, $schema->getEndpoints());
 	Assert::equal(['GET'], $schema->getEndpoints()[0]->getMethods());
 	Assert::equal('/foobar/baz1', $schema->getEndpoints()[0]->getMask());
 	Assert::equal('#/foobar/baz1$/?\z#A', $schema->getEndpoints()[0]->getPattern());
 	Assert::equal([], $schema->getEndpoints()[0]->getParameters());
-	Assert::equal('Fixtures\Controllers\FoobarController', $schema->getEndpoints()[0]->getHandler()->getClass());
+	Assert::equal(FoobarController::class, $schema->getEndpoints()[0]->getHandler()->getClass());
 	Assert::equal('baz1', $schema->getEndpoints()[0]->getHandler()->getMethod());
 });

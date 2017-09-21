@@ -4,15 +4,15 @@
  * Test: DI\Loader\DoctrineAnnotationLoader
  */
 
-require_once __DIR__ . '/../../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
+use Apitte\Core\Handler\Controller\IController;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
-use Apitte\Core\UI\Controller\IController;
-use Fixtures\Controllers\FoobarController;
 use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
 use Tester\Assert;
+use Tests\Fixtures\Controllers\FoobarController;
 
 // Check if controller is found and add as dependency to DIC
 test(function () {

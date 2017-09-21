@@ -2,6 +2,9 @@
 
 namespace Apitte\Core\DI;
 
+use Apitte\Core\DI\Plugin\CoreSchemaPlugin;
+use Apitte\Core\DI\Plugin\CoreServicesPlugin;
+use Apitte\Core\DI\Plugin\PluginManager;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Nette\DI\Helpers;
@@ -9,6 +12,10 @@ use Nette\PhpGenerator\ClassType;
 
 class ApiExtension extends CompilerExtension
 {
+
+	const CORE_DECORATOR_TAG = 'apitte.core.decorator';
+	const NEGOTIATION_TRANSFORMER_TAG = 'apitte.negotiator.transformer';
+	const NEGOTIATION_NEGOTIATOR_TAG = 'apitte.negotiation.negotiator';
 
 	/** @var array */
 	protected $defaults = [
@@ -37,11 +44,12 @@ class ApiExtension extends CompilerExtension
 		// Initialize whole config
 		$config = $this->processConfig();
 
-		// Register core plugin
-		$this->pm->registerPlugin(new CorePlugin($this));
+		// Register core plugin(s)
+		$this->pm->loadPlugin(CoreServicesPlugin::class);
+		$this->pm->loadPlugin(CoreSchemaPlugin::class);
 
 		// Register all definede plugins
-		$this->pm->registerPlugins($config['plugins']);
+		$this->pm->loadPlugins($config['plugins']);
 
 		// Load services from all plugins
 		$this->pm->loadConfigurations();

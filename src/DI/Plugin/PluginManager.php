@@ -1,15 +1,16 @@
 <?php
 
-namespace Apitte\Core\DI;
+namespace Apitte\Core\DI\Plugin;
 
+use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Nette\PhpGenerator\ClassType;
 
 final class PluginManager
 {
 
-	/** @var ApiExtension */
-	private $extension;
+	/** @var PluginCompiler */
+	private $compiler;
 
 	/** @var array */
 	private $plugins = [];
@@ -19,7 +20,7 @@ final class PluginManager
 	 */
 	public function __construct(ApiExtension $extension)
 	{
-		$this->extension = $extension;
+		$this->compiler = new PluginCompiler($extension);
 	}
 
 	/**
@@ -27,19 +28,12 @@ final class PluginManager
 	 */
 
 	/**
-	 * @param string $class
+	 * @param AbstractPlugin $plugin
 	 * @param array $config
 	 * @return AbstractPlugin
 	 */
-	public function registerPlugin($class, array $config = [])
+	public function registerPlugin(AbstractPlugin $plugin, array $config = [])
 	{
-		if (!is_subclass_of($class, AbstractPlugin::class)) {
-			throw new InvalidStateException(sprintf('Plugin class "%s" is not subclass of "%s"', $class, AbstractPlugin::class));
-		}
-
-		/** @var AbstractPlugin $plugin */
-		$plugin = new $class($this->extension);
-
 		// Register plugin
 		$this->plugins[$plugin->getName()] = (object) [
 			'inst' => $plugin,
@@ -51,16 +45,35 @@ final class PluginManager
 
 	/**
 	 * @param array $plugins
+	 * @return void
 	 */
-	public function registerPlugins(array $plugins)
+	public function loadPlugins(array $plugins)
 	{
 		foreach ($plugins as $class => $config) {
 			if (!class_exists($class)) {
 				throw new InvalidStateException(sprintf('Plugin class "%s" not found', $class));
 			}
 
-			$this->registerPlugin($class, (array) $config);
+			$this->loadPlugin($class, (array) $config);
 		}
+	}
+
+	/**
+	 * @param string $class
+	 * @param array $config
+	 * @return void
+	 */
+	public function loadPlugin($class, array $config = [])
+	{
+		if (!is_subclass_of($class, AbstractPlugin::class)) {
+			throw new InvalidStateException(sprintf('Plugin class "%s" is not subclass of "%s"', $class, AbstractPlugin::class));
+		}
+
+		/** @var AbstractPlugin $plugin */
+		$plugin = new $class($this->compiler);
+
+		// Register plugin
+		$this->registerPlugin($plugin, $config);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Apitte\Core\DI;
+namespace Apitte\Core\DI\Plugin;
 
 use Nette\DI\ContainerBuilder;
 use Nette\PhpGenerator\ClassType;
@@ -8,8 +8,8 @@ use Nette\PhpGenerator\ClassType;
 abstract class AbstractPlugin implements Plugin
 {
 
-	/** @var ApiExtension */
-	protected $extension;
+	/** @var PluginCompiler */
+	protected $compiler;
 
 	/** @var string */
 	protected $name;
@@ -18,11 +18,11 @@ abstract class AbstractPlugin implements Plugin
 	protected $config = [];
 
 	/**
-	 * @param ApiExtension $extension
+	 * @param PluginCompiler $compiler
 	 */
-	public function __construct(ApiExtension $extension)
+	public function __construct(PluginCompiler $compiler)
 	{
-		$this->extension = $extension;
+		$this->compiler = $compiler;
 	}
 
 	/**
@@ -35,6 +35,14 @@ abstract class AbstractPlugin implements Plugin
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getConfig()
+	{
+		return $this->config;
 	}
 
 	/**
@@ -81,7 +89,16 @@ abstract class AbstractPlugin implements Plugin
 	 */
 	protected function prefix($id)
 	{
-		return $this->extension->prefix($this->name . $id);
+		return $this->compiler->getExtension()->prefix($this->name . '.' . $id);
+	}
+
+	/**
+	 * @param string $id
+	 * @return string
+	 */
+	protected function extensionPrefix($id)
+	{
+		return $this->compiler->getExtension()->prefix($id);
 	}
 
 	/**
@@ -89,7 +106,7 @@ abstract class AbstractPlugin implements Plugin
 	 */
 	protected function getContainerBuilder()
 	{
-		return $this->extension->getContainerBuilder();
+		return $this->compiler->getExtension()->getContainerBuilder();
 	}
 
 	/**
@@ -97,17 +114,9 @@ abstract class AbstractPlugin implements Plugin
 	 * @param array $config
 	 * @return array
 	 */
-	protected function processConfig(array $expected, array $config)
+	protected function setupConfig(array $expected, array $config)
 	{
-		return $this->config = $this->extension->validateConfig($expected, $config);
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function getExtensionConfig()
-	{
-		return $this->extension->getConfig();
+		return $this->config = $this->compiler->getExtension()->validateConfig($expected, $config, $this->name);
 	}
 
 }

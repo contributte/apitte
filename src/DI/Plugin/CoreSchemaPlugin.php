@@ -1,28 +1,20 @@
 <?php
 
-namespace Apitte\Core\DI;
+namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
-use Apitte\Core\Dispatcher\ApiDispatcher;
-use Apitte\Core\Dispatcher\IDispatcher;
 use Apitte\Core\Exception\Logical\InvalidStateException;
-use Apitte\Core\Router\ApiRouter;
-use Apitte\Core\Router\IRouter;
-use Apitte\Core\Schema\ApiSchema;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
 use Apitte\Core\Schema\Validation\PathValidation;
 use Apitte\Core\Schema\Validation\RootPathValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
-use Apitte\Core\UI\IHandler;
-use Apitte\Core\UI\ServiceHandler;
-use Nette\DI\CompilerExtension;
 
-class CorePlugin extends AbstractPlugin
+class CoreSchemaPlugin extends AbstractPlugin
 {
 
-	const PLUGIN_NAME = 'core';
+	const PLUGIN_NAME = 'schema';
 
 	// Loader types
 	const LOADERS = ['annotations', 'neon', 'php'];
@@ -33,11 +25,11 @@ class CorePlugin extends AbstractPlugin
 	];
 
 	/**
-	 * @param CompilerExtension $extension
+	 * @param PluginCompiler $compiler
 	 */
-	public function __construct(CompilerExtension $extension)
+	public function __construct(PluginCompiler $compiler)
 	{
-		parent::__construct($extension);
+		parent::__construct($compiler);
 		$this->name = self::PLUGIN_NAME;
 	}
 
@@ -49,33 +41,7 @@ class CorePlugin extends AbstractPlugin
 	 */
 	public function setupPlugin(array $config = [])
 	{
-		$this->processConfig($this->defaults, $config);
-	}
-
-	/**
-	 * Register services
-	 *
-	 * @return void
-	 */
-	public function loadPluginConfiguration()
-	{
-		// Receive container builder
-		$builder = $this->getContainerBuilder();
-
-		$builder->addDefinition($this->prefix('dispatcher'))
-			->setClass(IDispatcher::class)
-			->setFactory(ApiDispatcher::class);
-
-		$builder->addDefinition($this->prefix('router'))
-			->setClass(IRouter::class)
-			->setFactory(ApiRouter::class);
-
-		$builder->addDefinition($this->prefix('handler'))
-			->setClass(IHandler::class)
-			->setFactory(ServiceHandler::class);
-
-		$builder->addDefinition($this->prefix('schema'))
-			->setClass(ApiSchema::class);
+		$this->setupConfig($this->defaults, $config);
 	}
 
 	/**
@@ -85,9 +51,6 @@ class CorePlugin extends AbstractPlugin
 	 */
 	public function beforePluginCompile()
 	{
-		// Receive container builder
-		$builder = $this->getContainerBuilder();
-
 		// Receive schema builder
 		$schemaBuilder = $this->getSchemaBuilder();
 
@@ -98,11 +61,16 @@ class CorePlugin extends AbstractPlugin
 		$generator = new ArraySerializator();
 		$schema = $generator->serialize($schemaBuilder);
 
+		// =======================================
+
+		// Receive container builder
+		$builder = $this->getContainerBuilder();
+
 		// Register services
 		$builder->addDefinition($this->prefix('hydrator'))
 			->setClass(ArrayHydrator::class);
 
-		$builder->getDefinition($this->prefix('schema'))
+		$builder->getDefinition($this->extensionPrefix('core.schema'))
 			->setFactory('@' . $this->prefix('hydrator') . '::hydrate', [$schema]);
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Apitte\Core\DI;
+namespace Apitte\Core\DI\Plugin;
 
 use Nette\PhpGenerator\ClassType;
 

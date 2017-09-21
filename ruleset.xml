@@ -6,8 +6,8 @@
     <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
         <properties>
             <property name="rootNamespaces" type="array" value="
-                src=>Contributte\Api,
-                tests/fixtures=>Fixtures
+                src=>Apitte\Core,
+                tests/fixtures=>Tests\Fixtures
             "/>
         </properties>
     </rule>

@@ -5,9 +5,9 @@ namespace Apitte\Core\Http;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Endpoint;
 use Contributte\Psr7\Extra\ExtraRequestTrait;
-use Contributte\Psr7\Psr7RequestWrapper;
+use Contributte\Psr7\RequestWrapper;
 
-class ApiRequest extends Psr7RequestWrapper
+class ApiRequest extends RequestWrapper
 {
 
 	use ExtraRequestTrait;

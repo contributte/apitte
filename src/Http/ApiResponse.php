@@ -3,12 +3,12 @@
 namespace Apitte\Core\Http;
 
 use Apitte\Negotiation\Http\ArrayStream;
-use Contributte\Psr7\Psr7ResponseWrapper;
+use Contributte\Psr7\ResponseWrapper;
 
 /**
  * Tiny wrapper for PSR-7 ResponseInterface
  */
-class ApiResponse extends Psr7ResponseWrapper
+class ApiResponse extends ResponseWrapper
 {
 
 	/**

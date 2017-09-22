@@ -2,22 +2,24 @@
 
 namespace Apitte\Core\Dispatcher;
 
-use Apitte\Core\Http\ApiRequest;
-use Apitte\Core\Http\ApiResponse;
+use Nette\Utils\Json;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ApiJsonDispatcher extends ApiDispatcher
 {
 
 	/**
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return ApiResponse
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	protected function fallback(ApiRequest $request, ApiResponse $response)
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		return $response
-			->withStatus(404)
-			->writeJsonBody(['error' => 'No matched route by given URL']);
+		$response = $response->withStatus(404);
+		$response->getBody()->write(Json::encode(['error' => 'No matched route by given URL']));
+
+		return $response;
 	}
 
 }

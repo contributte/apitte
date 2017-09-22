@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Dispatcher;
 
-use Apitte\Core\Exception\Logical\Request\BadRequestException;
+use Apitte\Core\Exception\Logical\BadRequestException;
 use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Router\IRouter;
 use Psr\Http\Message\ResponseInterface;
@@ -74,8 +74,6 @@ class ApiDispatcher implements IDispatcher
 	protected function fallback(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		throw new BadRequestException('No matched route by given URL', 404);
-
-		return $response;
 	}
 
 }

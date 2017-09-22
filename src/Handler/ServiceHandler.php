@@ -32,10 +32,13 @@ class ServiceHandler implements IHandler
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		// @todo RequestParamDecorator!
-
 		/** @var Endpoint $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
+
+		if (!$endpoint) {
+			throw new InvalidStateException('Endpoint attribute is required');
+		}
+
 		$handler = $endpoint->getHandler();
 
 		// Find handler in DI container by class

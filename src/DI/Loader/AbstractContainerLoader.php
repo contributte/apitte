@@ -6,7 +6,7 @@ use Apitte\Core\UI\Controller\IController;
 use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
 
-abstract class AnnotationLoader implements ILoader
+abstract class AbstractContainerLoader implements ILoader
 {
 
 	/** @var ContainerBuilder */

@@ -15,7 +15,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Nette\Reflection\ClassType;
 use Nette\Utils\Reflection;
 
-final class DoctrineAnnotationLoader extends AnnotationLoader
+final class DoctrineAnnotationLoader extends AbstractContainerLoader
 {
 
 	/** @var AnnotationReader */
@@ -27,12 +27,11 @@ final class DoctrineAnnotationLoader extends AnnotationLoader
 	];
 
 	/**
+	 * @param SchemaBuilder $builder
 	 * @return SchemaBuilder
 	 */
-	public function load()
+	public function load(SchemaBuilder $builder)
 	{
-		$schemeBuilder = new SchemaBuilder();
-
 		// Find all controllers by type (interface, annotation)
 		$controllers = $this->findControllers();
 
@@ -41,24 +40,15 @@ final class DoctrineAnnotationLoader extends AnnotationLoader
 
 		// Iterate over all controllers
 		foreach ($controllers as $def) {
-			// Create reflection
-			$class = ClassType::from($def->getClass());
-
-			// Index controller as service
-			$this->meta['services'][$def->getClass()] = [
-				'reflection' => $class,
-				'parents' => [],
-			];
-
 			// Analyse all parent classes
-			$this->analyseClassTree($class);
+			$class = $this->analyseClass($def->getClass());
 
 			// Check if a controller or his abstract has @Controller annotation,
 			// otherwise, skip this controller
 			if (!$this->acceptController($class)) continue;
 
 			// Create scheme endpoint
-			$schemeController = $schemeBuilder->addController($def->getClass());
+			$schemeController = $builder->addController($def->getClass());
 
 			// Parse @Controller, @RootPath
 			$this->parseControllerClassAnnotations($schemeController, $class);
@@ -67,17 +57,31 @@ final class DoctrineAnnotationLoader extends AnnotationLoader
 			$this->parseControllerMethodsAnnotations($schemeController, $class);
 		}
 
-		return $schemeBuilder;
+		return $builder;
 	}
 
 	/**
-	 * @param ClassType $class
-	 * @return void
+	 * @param string $class
+	 * @return ClassType
 	 */
-	protected function analyseClassTree(ClassType $class)
+	protected function analyseClass($class)
 	{
+		// Analyse only new-ones
+		if (isset($this->meta['services'][$class])) {
+			return $this->meta['services'][$class]['reflection'];
+		}
+
+		// Create reflection
+		$classRef = ClassType::from($class);
+
+		// Index controller as service
+		$this->meta['services'][$class] = [
+			'reflection' => $classRef,
+			'parents' => [],
+		];
+
 		// Geta all parents
-		$parents = class_parents($class->getName());
+		$parents = class_parents($class);
 		$reflections = [];
 
 		// Iterate over all parents and analyse thems
@@ -90,21 +94,23 @@ final class DoctrineAnnotationLoader extends AnnotationLoader
 			}
 
 			// Create reflection for parent class
-			$rf = ClassType::from($parentClass);
-			$reflections[$parentClass] = $rf;
+			$parentClassRf = ClassType::from($parentClass);
+			$reflections[$parentClass] = $parentClassRf;
 
 			// Index service
 			$this->meta['services'][$parentClass] = [
-				'reflection' => $rf,
+				'reflection' => $parentClassRf,
 				'parents' => [],
 			];
 
 			// Analyse parent (recursive)
-			$this->analyseClassTree($rf);
+			$this->analyseClass($parentClass);
 		}
 
 		// Append all parents to this service
-		$this->meta['services'][$class->getName()]['parents'] = $reflections;
+		$this->meta['services'][$class]['parents'] = $reflections;
+
+		return $classRef;
 	}
 
 	/**

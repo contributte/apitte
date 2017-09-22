@@ -36,7 +36,7 @@ test(function () {
 		->with(FoobarController::class);
 
 	$loader = new DoctrineAnnotationLoader($builder);
-	$schemaBuilder = $loader->load();
+	$schemaBuilder = $loader->load(new SchemaBuilder());
 
 	Assert::type(SchemaBuilder::class, $schemaBuilder);
 
@@ -50,7 +50,7 @@ test(function () {
 		->setClass(FoobarController::class);
 
 	$loader = new DoctrineAnnotationLoader($builder);
-	$schemaBuilder = $loader->load();
+	$schemaBuilder = $loader->load(new SchemaBuilder());
 
 	Assert::type(SchemaBuilder::class, $schemaBuilder);
 	Assert::count(1, $schemaBuilder->getControllers());
@@ -83,7 +83,7 @@ test(function () {
 			->setClass(InvalidGroupAnnotationController::class);
 
 		$loader = new DoctrineAnnotationLoader($builder);
-		$loader->load();
+		$loader->load(new SchemaBuilder());
 	}, InvalidStateException::class, sprintf('Annotation @Group cannot be on non-abstract "%s"', InvalidGroupAnnotationController::class));
 });
 
@@ -95,6 +95,6 @@ test(function () {
 			->setClass(InvalidGroupPathAnnotationController::class);
 
 		$loader = new DoctrineAnnotationLoader($builder);
-		$loader->load();
+		$loader->load(new SchemaBuilder());
 	}, InvalidStateException::class, sprintf('Annotation @GroupPath cannot be on non-abstract "%s"', InvalidGroupPathAnnotationController::class));
 });

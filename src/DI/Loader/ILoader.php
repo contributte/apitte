@@ -8,8 +8,9 @@ interface ILoader
 {
 
 	/**
+	 * @param SchemaBuilder $builder
 	 * @return SchemaBuilder
 	 */
-	public function load();
+	public function load(SchemaBuilder $builder);
 
 }

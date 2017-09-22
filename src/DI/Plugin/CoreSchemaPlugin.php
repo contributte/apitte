@@ -7,6 +7,7 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
+use Apitte\Core\Schema\Validation\GroupPathValidation;
 use Apitte\Core\Schema\Validation\PathValidation;
 use Apitte\Core\Schema\Validation\RootPathValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
@@ -51,18 +52,6 @@ class CoreSchemaPlugin extends AbstractPlugin
 	 */
 	public function beforePluginCompile()
 	{
-		// Receive schema builder
-		$schemaBuilder = $this->getSchemaBuilder();
-
-		// Validate schema
-		$this->validateSchema($schemaBuilder);
-
-		// Convert schema to array (for DI)
-		$generator = new ArraySerializator();
-		$schema = $generator->serialize($schemaBuilder);
-
-		// =======================================
-
 		// Receive container builder
 		$builder = $this->getContainerBuilder();
 
@@ -71,7 +60,7 @@ class CoreSchemaPlugin extends AbstractPlugin
 			->setClass(ArrayHydrator::class);
 
 		$builder->getDefinition($this->extensionPrefix('core.schema'))
-			->setFactory('@' . $this->prefix('hydrator') . '::hydrate', [$schema]);
+			->setFactory('@' . $this->prefix('hydrator') . '::hydrate', [$this->compileSchema()]);
 	}
 
 	/**
@@ -79,18 +68,40 @@ class CoreSchemaPlugin extends AbstractPlugin
 	 */
 
 	/**
+	 * @return array
+	 */
+	protected function compileSchema()
+	{
+		// Instance schema builder
+		$builder = new SchemaBuilder();
+
+		// Load schema
+		$builder = $this->loadSchema($builder);
+
+		// Validate schema
+		$builder = $this->validateSchema($builder);
+
+		// Convert schema to array (for DI)
+		$generator = new ArraySerializator();
+		$schema = $generator->serialize($builder);
+
+		return $schema;
+	}
+
+	/**
+	 * @param SchemaBuilder $builder
 	 * @return SchemaBuilder
 	 */
-	protected function getSchemaBuilder()
+	protected function loadSchema(SchemaBuilder $builder)
 	{
-		$config = $this->config;
+		// Load schema from...
+		if ($this->config['loader'] === 'annotations') {
+			$loader = new DoctrineAnnotationLoader($this->getContainerBuilder());
 
-		// Create loader and fill schema builder
-		if ($config['loader'] === 'annotations') {
-			return $this->loadAnnotations();
-		} else if ($config['loader'] === 'neon') {
+			return $loader->load($builder);
+		} else if ($this->config['loader'] === 'neon') {
 			throw new InvalidStateException('Not implemented');
-		} else if ($config['loader'] === 'php') {
+		} else if ($this->config['loader'] === 'php') {
 			throw new InvalidStateException('Not implemented');
 		} else {
 			throw new InvalidStateException('Unknown loader type');
@@ -98,29 +109,19 @@ class CoreSchemaPlugin extends AbstractPlugin
 	}
 
 	/**
-	 * Create annotation loaders and create SchemaBuilder
-	 *
+	 * @param SchemaBuilder $builder
 	 * @return SchemaBuilder
 	 */
-	protected function loadAnnotations()
-	{
-		$builder = $this->getContainerBuilder();
-		$loader = new DoctrineAnnotationLoader($builder);
-
-		return $loader->load();
-	}
-
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	protected function validateSchema($builder)
+	protected function validateSchema(SchemaBuilder $builder)
 	{
 		$validator = new SchemaBuilderValidator();
 		$validator->add(new RootPathValidation());
 		$validator->add(new PathValidation());
+		$validator->add(new GroupPathValidation());
 
 		$validator->validate($builder);
+
+		return $builder;
 	}
 
 }

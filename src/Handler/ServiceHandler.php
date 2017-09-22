@@ -15,7 +15,7 @@ class ServiceHandler implements IHandler
 {
 
 	/** @var Container */
-	private $container;
+	protected $container;
 
 	/**
 	 * @param Container $container
@@ -35,23 +35,19 @@ class ServiceHandler implements IHandler
 		/** @var Endpoint $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 
+		// Validate that we have an endpoint
 		if (!$endpoint) {
-			throw new InvalidStateException('Endpoint attribute is required');
+			throw new InvalidStateException(sprintf('Attribute "%s" is required', RequestAttributes::ATTR_ENDPOINT));
 		}
 
-		$handler = $endpoint->getHandler();
-
 		// Find handler in DI container by class
-		$service = $this->container->getByType($handler->getClass());
-		$method = $handler->getMethod();
-
-		$apiRequest = new ApiRequest($request);
-		$apiResponse = new ApiResponse($response);
+		$service = $this->container->getByType($endpoint->getHandler()->getClass());
+		$method = $endpoint->getHandler()->getMethod();
 
 		// Call service::method with ($request, $response) as arguments
 		$response = call_user_func_array(
 			[$service, $method],
-			[$apiRequest, $apiResponse]
+			[$this->createApiRequest($request), $this->createApiResponse($response)]
 		);
 
 		// Validate if response is returned
@@ -71,6 +67,28 @@ class ServiceHandler implements IHandler
 		}
 
 		return $response;
+	}
+
+	/**
+	 * HELPERS *****************************************************************
+	 */
+
+	/**
+	 * @param ServerRequestInterface $request
+	 * @return ApiRequest
+	 */
+	protected function createApiRequest(ServerRequestInterface $request)
+	{
+		return new ApiRequest($request);
+	}
+
+	/**
+	 * @param ResponseInterface $response
+	 * @return ApiResponse
+	 */
+	protected function createApiResponse(ResponseInterface $response)
+	{
+		return new ApiResponse($response);
 	}
 
 }

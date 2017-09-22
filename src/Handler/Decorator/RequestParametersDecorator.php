@@ -7,13 +7,17 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * @author Milan Felix Sulc <sulcmil@gmail.com>
  */
-interface IRequestDecorator extends IDecorator
+class RequestParameterDecorator implements IRequestDecorator
 {
 
 	/**
 	 * @param ServerRequestInterface $request
 	 * @return ServerRequestInterface
 	 */
-	public function decorateRequest(ServerRequestInterface $request);
+	public function decorateRequest(ServerRequestInterface $request)
+	{
+		$stop();
+		// TODO: Implement decorateRequest() method.
+	}
 
 }

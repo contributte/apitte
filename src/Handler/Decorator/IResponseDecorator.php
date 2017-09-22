@@ -14,6 +14,6 @@ interface IResponseDecorator extends IDecorator
 	 * @param ResponseInterface $response
 	 * @return ResponseInterface
 	 */
-	public function __invoke(ResponseInterface $response);
+	public function decorateResponse(ResponseInterface $response);
 
 }

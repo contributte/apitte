@@ -70,6 +70,7 @@ class DecoratedServiceHandler extends ServiceHandler
 		// Trigger request decorator
 		$request = $this->beforeHandle($request, $response);
 
+		// Handle request
 		$response = parent::handle($request, $response);
 
 		// Trigger response decorator
@@ -86,7 +87,7 @@ class DecoratedServiceHandler extends ServiceHandler
 	protected function beforeHandle(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		foreach ($this->requestDecorators as $decorator) {
-			$request = $decorator($request);
+			$request = $decorator->decorateRequest($request);
 
 			// Validate if response is returned
 			if (!$request) {
@@ -110,7 +111,7 @@ class DecoratedServiceHandler extends ServiceHandler
 	protected function afterHandle(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		foreach ($this->responseDecorators as $decorator) {
-			$response = $decorator($request, $response);
+			$response = $decorator->decorateResponse($response);
 
 			// Validate if response is returned
 			if (!$response) {

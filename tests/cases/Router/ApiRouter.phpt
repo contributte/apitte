@@ -28,9 +28,12 @@ test(function () {
 	$schema->addEndpoint($endpoint);
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/users/22/');
+	$request2 = $request->withNewUri('http://example.com/not-matched/');
 	$router = new ApiRouter($schema);
 	$matched = $router->match($request);
+	$notMatched = $router->match($request2);
 
+	Assert::null($notMatched);
 	Assert::type($request, $matched);
 	Assert::true(isset($matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['id']));
 	Assert::equal('22', $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['id']);

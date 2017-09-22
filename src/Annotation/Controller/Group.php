@@ -7,13 +7,13 @@ use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
- * @Target("METHOD")
+ * @Target("CLASS")
  */
-final class Path
+final class Group
 {
 
 	/** @var string */
-	private $path;
+	private $name;
 
 	/**
 	 * @param array $values
@@ -22,25 +22,25 @@ final class Path
 	{
 		if (isset($values['value'])) {
 			if (empty($values['value'])) {
-				throw new AnnotationException('Empty @Path given');
+				throw new AnnotationException('Empty @Group given');
 			}
-			$this->path = $values['value'];
-		} else if (isset($values['path'])) {
-			if (empty($values['path'])) {
-				throw new AnnotationException('Empty @Path given');
+			$this->name = $values['value'];
+		} else if (isset($values['name'])) {
+			if (empty($values['name'])) {
+				throw new AnnotationException('Empty @Group given');
 			}
-			$this->path = $values['path'];
+			$this->name = $values['name'];
 		} else {
-			throw new AnnotationException('No @Path given');
+			throw new AnnotationException('No @Group given');
 		}
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getPath()
+	public function getName()
 	{
-		return $this->path;
+		return $this->name;
 	}
 
 }

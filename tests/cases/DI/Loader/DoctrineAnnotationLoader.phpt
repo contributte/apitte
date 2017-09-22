@@ -7,12 +7,15 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
+use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\UI\Controller\IController;
 use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\FoobarController;
+use Tests\Fixtures\Controllers\InvalidGroupAnnotationController;
+use Tests\Fixtures\Controllers\InvalidGroupPathAnnotationController;
 
 // Check if controller is found and add as dependency to DIC
 test(function () {
@@ -68,5 +71,30 @@ test(function () {
 	Assert::equal('/baz2', $controller->getMethods()['baz2']->getPath());
 	Assert::equal(['GET', 'POST'], $controller->getMethods()['baz2']->getMethods());
 
-	Mockery::close();
+	Assert::equal('testapi', $controller->getGroup());
+	Assert::equal(['/api', '/v1'], $controller->getGroupPaths());
+});
+
+// Invalid annotation (@Controller + @Group)
+test(function () {
+	Assert::exception(function () {
+		$builder = new ContainerBuilder();
+		$builder->addDefinition('invalid')
+			->setClass(InvalidGroupAnnotationController::class);
+
+		$loader = new DoctrineAnnotationLoader($builder);
+		$loader->load();
+	}, InvalidStateException::class, sprintf('Annotation @Group cannot be on non-abstract "%s"', InvalidGroupAnnotationController::class));
+});
+
+// Invalid annotation (@Controller + @GroupPath)
+test(function () {
+	Assert::exception(function () {
+		$builder = new ContainerBuilder();
+		$builder->addDefinition('invalid')
+			->setClass(InvalidGroupPathAnnotationController::class);
+
+		$loader = new DoctrineAnnotationLoader($builder);
+		$loader->load();
+	}, InvalidStateException::class, sprintf('Annotation @GroupPath cannot be on non-abstract "%s"', InvalidGroupPathAnnotationController::class));
 });

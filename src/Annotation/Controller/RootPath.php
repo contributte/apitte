@@ -20,12 +20,18 @@ final class RootPath
 	 */
 	public function __construct(array $values)
 	{
-		if (isset($values['value']) && is_string($values['value'])) {
+		if (isset($values['value'])) {
+			if (empty($values['value'])) {
+				throw new AnnotationException('Empty @RootPath given');
+			}
 			$this->path = $values['value'];
 		} else if (isset($values['path'])) {
+			if (empty($values['path'])) {
+				throw new AnnotationException('Empty @RootPath given');
+			}
 			$this->path = $values['path'];
 		} else {
-			throw new AnnotationException('No path given');
+			throw new AnnotationException('No @RootPath given');
 		}
 	}
 

@@ -7,9 +7,9 @@ use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
- * @Target("METHOD")
+ * @Target("CLASS")
  */
-final class Path
+final class GroupPath
 {
 
 	/** @var string */
@@ -22,16 +22,16 @@ final class Path
 	{
 		if (isset($values['value'])) {
 			if (empty($values['value'])) {
-				throw new AnnotationException('Empty @Path given');
+				throw new AnnotationException('Empty @GroupPath given');
 			}
 			$this->path = $values['value'];
 		} else if (isset($values['path'])) {
 			if (empty($values['path'])) {
-				throw new AnnotationException('Empty @Path given');
+				throw new AnnotationException('Empty @GroupPath given');
 			}
 			$this->path = $values['path'];
 		} else {
-			throw new AnnotationException('No @Path given');
+			throw new AnnotationException('No @GroupPath given');
 		}
 	}
 

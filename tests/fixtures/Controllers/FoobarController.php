@@ -2,19 +2,16 @@
 
 namespace Tests\Fixtures\Controllers;
 
-use Apitte\Core\Annotation\Controller\Controller;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RootPath;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
-use Apitte\Core\UI\Controller\IController;
 
 /**
- * @Controller()
  * @RootPath("/foobar")
  */
-final class FoobarController implements IController
+final class FoobarController extends ApiV1Controller
 {
 
 	/**

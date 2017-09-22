@@ -17,7 +17,7 @@ class ApiRequest extends RequestWrapper
 	 */
 
 	/**
-	 * @return Endpoint
+	 * @return bool
 	 */
 	public function hasEndpoint()
 	{
@@ -25,7 +25,7 @@ class ApiRequest extends RequestWrapper
 	}
 
 	/**
-	 * @return Endpoint
+	 * @return Endpoint|NULL
 	 */
 	public function getEndpoint()
 	{
@@ -64,7 +64,7 @@ class ApiRequest extends RequestWrapper
 	 */
 	public function getParameters()
 	{
-		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS);
+		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []);
 	}
 
 }

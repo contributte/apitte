@@ -52,9 +52,6 @@ class PluginCompiler
 			if (get_class($plugin['inst']) === $class) return $plugin;
 		}
 
-		$stop();
-
-
 		return NULL;
 	}
 

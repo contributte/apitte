@@ -6,7 +6,7 @@ use Apitte\Core\Annotation\Controller\Controller;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RootPath;
-use Apitte\Core\Handler\Controller\IController;
+use Apitte\Core\UI\Controller\IController;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 

@@ -6,7 +6,7 @@
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-use Apitte\Core\Exception\Logical\ValidationException;
+use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Validation\PathValidation;
 use Tester\Assert;
@@ -22,7 +22,7 @@ test(function () {
 	Assert::exception(function () use ($builder) {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, ValidationException::class, '@Path "foobar" in "c1::foo()" must starts with "/" (slash).');
+	}, InvalidSchemaException::class, '@Path "foobar" in "c1::foo()" must starts with "/" (slash).');
 });
 
 // Validate: end slash
@@ -36,7 +36,7 @@ test(function () {
 	Assert::exception(function () use ($builder) {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, ValidationException::class, '@Path "/foobar/" in "c1::foo()" must not ends with "/" (slash).');
+	}, InvalidSchemaException::class, '@Path "/foobar/" in "c1::foo()" must not ends with "/" (slash).');
 });
 
 // Validate: duplicities
@@ -55,7 +55,7 @@ test(function () {
 	Assert::exception(function () use ($builder) {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, ValidationException::class, 'Duplicate @Path "/foobar" in c1 at methods "foo2()" and "foo1()"');
+	}, InvalidSchemaException::class, 'Duplicate @Path "/foobar" in c1 at methods "foo2()" and "foo1()"');
 });
 
 // Validate: duplicities
@@ -74,7 +74,7 @@ test(function () {
 	Assert::exception(function () use ($builder) {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, ValidationException::class, 'Duplicate @Path "/foobar" in c1 at methods "foo2()" and "foo1()"');
+	}, InvalidSchemaException::class, 'Duplicate @Path "/foobar" in c1 at methods "foo2()" and "foo1()"');
 });
 
 // Validate: [NOT] duplicities
@@ -110,7 +110,7 @@ test(function () {
 	Assert::exception(function () use ($builder) {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, ValidationException::class, '@Path "/{foo$}" in "c1::foo1()" contains illegal characters "$". Allowed characters are only [a-zA-Z0-9-_/{}].');
+	}, InvalidSchemaException::class, '@Path "/{foo$}" in "c1::foo1()" contains illegal characters "$". Allowed characters are only [a-zA-Z0-9-_/{}].');
 });
 
 // Validate: invalid parameter (starts)
@@ -125,7 +125,7 @@ test(function () {
 	Assert::exception(function () use ($builder) {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, ValidationException::class, '@Path "/{%foo}" in "c1::foo1()" contains illegal characters "%". Allowed characters are only [a-zA-Z0-9-_/{}].');
+	}, InvalidSchemaException::class, '@Path "/{%foo}" in "c1::foo1()" contains illegal characters "%". Allowed characters are only [a-zA-Z0-9-_/{}].');
 });
 
 // Validate: invalid parameter (contains)
@@ -140,7 +140,7 @@ test(function () {
 	Assert::exception(function () use ($builder) {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, ValidationException::class, '@Path "/{foo&&&bar}" in "c1::foo1()" contains illegal characters "&&&". Allowed characters are only [a-zA-Z0-9-_/{}].');
+	}, InvalidSchemaException::class, '@Path "/{foo&&&bar}" in "c1::foo1()" contains illegal characters "&&&". Allowed characters are only [a-zA-Z0-9-_/{}].');
 });
 
 // Validate: multiple parameters

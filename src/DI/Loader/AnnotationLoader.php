@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\DI\Loader;
 
-use Apitte\Core\Handler\Controller\IController;
+use Apitte\Core\UI\Controller\IController;
 use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
 

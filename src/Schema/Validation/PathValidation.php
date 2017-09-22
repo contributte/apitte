@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema\Validation;
 
-use Apitte\Core\Exception\Logical\Validation\InvalidSchemaException;
+use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Utils\Regex;

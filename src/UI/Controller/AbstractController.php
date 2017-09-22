@@ -1,6 +1,6 @@
 <?php
 
-namespace Apitte\Core\Handler\Controller;
+namespace Apitte\Core\UI\Controller;
 
 abstract class AbstractController implements IController
 {

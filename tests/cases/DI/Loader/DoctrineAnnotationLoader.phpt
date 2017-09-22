@@ -7,8 +7,8 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
-use Apitte\Core\UI\Controller\IController;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
+use Apitte\Core\UI\Controller\IController;
 use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
 use Tester\Assert;

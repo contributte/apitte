@@ -17,6 +17,9 @@ abstract class AbstractPlugin implements Plugin
 	/** @var array */
 	protected $config = [];
 
+	/** @var array */
+	protected $defaults = [];
+
 	/**
 	 * @param PluginCompiler $compiler
 	 */
@@ -50,11 +53,15 @@ abstract class AbstractPlugin implements Plugin
 	 */
 
 	/**
+	 * Process and validate config
+	 *
 	 * @param array $config
 	 * @return void
 	 */
 	public function setupPlugin(array $config = [])
 	{
+		if (!$this->defaults) return;
+		$this->setupConfig($this->defaults, $config);
 	}
 
 	/**

@@ -35,17 +35,6 @@ class CoreSchemaPlugin extends AbstractPlugin
 	}
 
 	/**
-	 * Process and validate config
-	 *
-	 * @param array $config
-	 * @return void
-	 */
-	public function setupPlugin(array $config = [])
-	{
-		$this->setupConfig($this->defaults, $config);
-	}
-
-	/**
 	 * Decorate services
 	 *
 	 * @return void

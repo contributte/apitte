@@ -37,10 +37,12 @@ class ApiRouter implements IRouter
 			// Skip if endpoint is not matched
 			if ($matched === NULL) continue;
 
-			// If matched is not NULL, returns given ApiRequest
+			// If matched is not NULL, returns given ServerRequestInterface
 			// with all parsed arguments and data,
 			// also append given Endpoint
-			$matched = $matched->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
+			$matched = $matched
+				->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint)
+				->withAttribute(RequestAttributes::ATTR_SCHEMA, $this->schema);
 
 			return $matched;
 		}

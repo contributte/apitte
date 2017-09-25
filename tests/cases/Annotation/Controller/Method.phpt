@@ -18,13 +18,9 @@ test(function () {
 	$method = new Method(['value' => ['GET', 'POST']]);
 	Assert::equal(['GET', 'POST'], $method->getMethods());
 
-	Assert::exception(
-		function () {
-			new Method(['value' => 0]);
-		},
-		AnnotationException::class,
-		'Invalid method given'
-	);
+	Assert::exception(function () {
+		new Method(['value' => 0]);
+	}, AnnotationException::class, 'Invalid @Method given');
 });
 
 // Methods
@@ -41,11 +37,7 @@ test(function () {
 
 // Fails
 test(function () {
-	Assert::exception(
-		function () {
-			new Method([]);
-		},
-		AnnotationException::class,
-		'No method given'
-	);
+	Assert::exception(function () {
+		new Method([]);
+	}, AnnotationException::class, 'No @Method given');
 });

@@ -10,15 +10,6 @@ use Apitte\Core\Annotation\Controller\RequestParameter;
 use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
-//if (!isset($values['name'])) {
-//	throw new AnnotationException('Name is required at @RequestParameter');
-//}
-//
-//if (!isset($values['type']) && !isset($values['description'])) {
-//	throw new AnnotationException('Type or description is required at @RequestParameter');
-//}
-//
-
 // Success
 test(function () {
 	$requestParameter = new RequestParameter(['name' => 'Parameter', 'description' => 'Desc']);
@@ -39,25 +30,13 @@ test(function () {
 
 // Fails
 test(function () {
-	Assert::exception(
-		function () {
-			new RequestParameter([]);
-		},
-		AnnotationException::class,
-		'Name is required at @RequestParameter'
-	);
-	Assert::exception(
-		function () {
-			new RequestParameter(['value' => '']);
-		},
-		AnnotationException::class,
-		'Name is required at @RequestParameter'
-	);
-	Assert::exception(
-		function () {
-			new RequestParameter(['name' => 'Param']);
-		},
-		AnnotationException::class,
-		'Type or description is required at @RequestParameter'
-	);
+	Assert::exception(function () {
+		new RequestParameter([]);
+	}, AnnotationException::class, 'Name is required at @RequestParameter');
+	Assert::exception(function () {
+		new RequestParameter(['value' => '']);
+	}, AnnotationException::class, 'Name is required at @RequestParameter');
+	Assert::exception(function () {
+		new RequestParameter(['name' => 'Param']);
+	}, AnnotationException::class, 'Type or description is required at @RequestParameter');
 });

@@ -23,17 +23,17 @@ final class Method
 		if (isset($values['value'])) {
 			if (is_array($values['value'])) {
 				$this->methods = $values['value'];
-			} else if (is_string($values['value'])) {
+			} else if (is_string($values['value']) && !empty($values['value'])) {
 				$this->methods = [$values['value']];
 			} else {
-				throw new AnnotationException('Invalid method given');
+				throw new AnnotationException('Invalid @Method given');
 			}
-		} else if (isset($values['methods'])) {
+		} else if (isset($values['methods']) && !empty($values['methods'])) {
 			$this->methods = $values['methods'];
 		} else if (isset($values['method'])) {
 			$this->methods = [$values['method']];
 		} else {
-			throw new AnnotationException('No method given');
+			throw new AnnotationException('No @Method given');
 		}
 	}
 

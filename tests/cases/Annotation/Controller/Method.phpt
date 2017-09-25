@@ -49,9 +49,3 @@ test(function () {
 		'No method given'
 	);
 });
-
-
-
-
-
-

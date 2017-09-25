@@ -69,7 +69,7 @@ class ApiDispatcher implements IDispatcher
 	/**
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
-	 * @return ResponseInterface
+	 * @return void
 	 */
 	protected function fallback(ServerRequestInterface $request, ResponseInterface $response)
 	{

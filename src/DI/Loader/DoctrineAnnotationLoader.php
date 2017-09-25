@@ -6,6 +6,7 @@ use Apitte\Core\Annotation\Controller\Group;
 use Apitte\Core\Annotation\Controller\GroupPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
+use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Annotation\Controller\RootPath;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
@@ -216,15 +217,23 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse @Method =======================
 				if (get_class($annotation) === Method::class) {
-					$schemaMethod->appendMethods($annotation->getMethods());
+					$schemaMethod->addMethods($annotation->getMethods());
+					continue;
+				}
+
+				// Parse @RequestParameter =======================
+				if (get_class($annotation) === RequestParameter::class) {
+					$parameter = $schemaMethod->addParameter($annotation->getName());
+					$parameter->setType($annotation->getType());
+					$parameter->setDescription($annotation->getDescription());
 					continue;
 				}
 			}
 
-			// Parse method parameters
+			// Parse method typed parameters
 			foreach ($method->getParameters() as $parameter) {
 				$type = Reflection::getParameterType($parameter);
-				$schemaMethod->appendArgument($parameter->getName(), $type);
+				$schemaMethod->addArgument($parameter->getName(), $type);
 			}
 		}
 	}

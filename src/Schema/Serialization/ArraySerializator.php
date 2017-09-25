@@ -52,20 +52,30 @@ final class ArraySerializator implements ISerializator
 					SchemaMapping::PATTERN => $mask,
 				];
 
-				// Collect variable parameters
-				$pattern = Regex::replaceCallback($mask, '#({([a-zA-Z0-9\-_]+)})#U', function ($matches) use (&$endpoint) {
+				// Collect variable parameters from URL
+				$pattern = Regex::replaceCallback($mask, '#({([a-zA-Z0-9\-_]+)})#U', function ($matches) use (&$endpoint, $method) {
 					list($whole, $variable, $variableName) = $matches;
 
 					// Build parameter pattern
 					$pattern = sprintf('(?P<%s>[^/]+)', $variableName);
 
-					// Append to params
-					$endpoint[SchemaMapping::PARAMETERS][$variableName] = [
+					// Build parameters
+					$parameters = [
 						SchemaMapping::PARAMETERS_NAME => $variableName,
-						// @todo type by annotation
-						SchemaMapping::PARAMETERS_TYPE => EndpointParameter::TYPE_SCALAR,
 						SchemaMapping::PARAMETERS_PATTERN => $pattern,
+						SchemaMapping::PARAMETERS_TYPE => EndpointParameter::TYPE_SCALAR,
+						SchemaMapping::PARAMETERS_DESCRIPTION => NULL,
 					];
+
+					// Update endpoint parameters by defined annotation
+					if ($method->hasParameter($variableName)) {
+						$parameter = $method->getParameters()[$variableName];
+						$parameters[SchemaMapping::PARAMETERS_TYPE] = $parameter->getType();
+						$parameters[SchemaMapping::PARAMETERS_DESCRIPTION] = $parameter->getDescription();
+					}
+
+					// Update endpoint
+					$endpoint[SchemaMapping::PARAMETERS][$variableName] = $parameters;
 
 					// Returned pattern replace {variable} in mask
 					return $pattern;

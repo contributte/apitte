@@ -17,6 +17,9 @@ final class SchemaControllerMethod
 	/** @var string[] */
 	private $arguments = [];
 
+	/** @var SchemaControllerMethodParameter[] */
+	private $parameters = [];
+
 	/**
 	 * @param string $name
 	 */
@@ -80,7 +83,7 @@ final class SchemaControllerMethod
 	 * @param string|string[] $methods
 	 * @return void
 	 */
-	public function appendMethods(array $methods)
+	public function addMethods(array $methods)
 	{
 		foreach ($methods as $method) {
 			$this->addMethod($method);
@@ -92,9 +95,20 @@ final class SchemaControllerMethod
 	 * @param string $type
 	 * @return void
 	 */
-	public function appendArgument($name, $type)
+	public function addArgument($name, $type)
 	{
 		$this->arguments[$name] = $type;
+	}
+
+	/**
+	 * @param mixed[] $arguments
+	 * @return void
+	 */
+	public function addArguments(array $arguments)
+	{
+		foreach ($arguments as $type => $name) {
+			$this->addArgument($type, $name);
+		}
 	}
 
 	/**
@@ -103,6 +117,35 @@ final class SchemaControllerMethod
 	public function getArguments()
 	{
 		return $this->arguments;
+	}
+
+	/**
+	 * @param string $name
+	 * @return SchemaControllerMethodParameter
+	 */
+	public function addParameter($name)
+	{
+		$parameter = new SchemaControllerMethodParameter($name);
+		$this->parameters[$name] = $parameter;
+
+		return $parameter;
+	}
+
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	public function hasParameter($name)
+	{
+		return isset($this->parameters[$name]);
+	}
+
+	/**
+	 * @return SchemaControllerMethodParameter[]
+	 */
+	public function getParameters()
+	{
+		return $this->parameters;
 	}
 
 }

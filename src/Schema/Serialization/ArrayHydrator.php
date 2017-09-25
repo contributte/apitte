@@ -36,7 +36,8 @@ final class ArrayHydrator implements IHydrator
 			foreach ($route[SchemaMapping::PARAMETERS] as $p) {
 				$param = new EndpointParameter();
 				$param->setName($p[SchemaMapping::PARAMETERS_NAME]);
-				$param->setType(EndpointParameter::TYPE_SCALAR);
+				$param->setType($p[SchemaMapping::PARAMETERS_TYPE]);
+				$param->setDescription($p[SchemaMapping::PARAMETERS_DESCRIPTION]);
 				$endpoint->addParameter($param);
 			}
 

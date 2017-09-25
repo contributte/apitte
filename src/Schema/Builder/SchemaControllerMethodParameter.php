@@ -1,26 +1,30 @@
 <?php
 
-namespace Apitte\Core\Schema;
+namespace Apitte\Core\Schema\Builder;
 
-final class EndpointParameter
+final class SchemaControllerMethodParameter
 {
-
-	const TYPE_SCALAR = 1;
-	const TYPE_STRING = 2;
-	const TYPE_INTEGER = 3;
-	const TYPE_FLOAT = 4;
-	const TYPE_BOOLEAN = 5;
-	const TYPE_DATETIME = 6;
-	const TYPE_OBJECT = 7;
 
 	/** @var string */
 	private $name;
 
-	/** @var int */
-	private $type = self::TYPE_SCALAR;
+	/** @var string */
+	private $type;
 
 	/** @var string */
 	private $description;
+
+	/**
+	 * @param string $name
+	 */
+	public function __construct($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * GETTERS/SETTERS *********************************************************
+	 */
 
 	/**
 	 * @return string
@@ -31,16 +35,7 @@ final class EndpointParameter
 	}
 
 	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
-
-	/**
-	 * @return int
+	 * @return string
 	 */
 	public function getType()
 	{
@@ -48,7 +43,7 @@ final class EndpointParameter
 	}
 
 	/**
-	 * @param int $type
+	 * @param string $type
 	 * @return void
 	 */
 	public function setType($type)

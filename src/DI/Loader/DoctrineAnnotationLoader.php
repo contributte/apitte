@@ -8,6 +8,7 @@ use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Annotation\Controller\RootPath;
+use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Builder\SchemaController;
@@ -161,6 +162,11 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			if (get_class($annotation) == GroupPath::class) {
 				throw new InvalidStateException(sprintf('Annotation @GroupPath cannot be on non-abstract "%s"', $class->getName()));
 			}
+
+			// Parse @Tag
+			if (get_class($annotation) == Tag::class) {
+				$controller->addTag($annotation->getName(), $annotation->getValue());
+			}
 		}
 
 		// Reverse order
@@ -181,6 +187,11 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				// Parse @GroupPath
 				if (get_class($annotation) == GroupPath::class) {
 					$controller->addGroupPath($annotation->getPath());
+				}
+
+				// Parse @Tag
+				if (get_class($annotation) == Tag::class) {
+					$controller->addTag($annotation->getName(), $annotation->getValue());
 				}
 			}
 		}

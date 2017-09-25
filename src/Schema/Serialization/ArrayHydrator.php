@@ -20,8 +20,6 @@ final class ArrayHydrator implements IHydrator
 		$schema = new ApiSchema();
 
 		foreach ($data as $route) {
-			// @todo replace to EndpointHandler::factory()
-			// move validation inside, make class immutable
 			$handler = new EndpointHandler();
 			$handler->setClass($route[SchemaMapping::HANDLER][SchemaMapping::HANDLER_CLASS]);
 			$handler->setMethod($route[SchemaMapping::HANDLER][SchemaMapping::HANDLER_METHOD]);
@@ -32,6 +30,16 @@ final class ArrayHydrator implements IHydrator
 			$endpoint->setMethods($route[SchemaMapping::METHODS]);
 			$endpoint->setMask($route[SchemaMapping::MASK]);
 			$endpoint->setPattern($route[SchemaMapping::PATTERN]);
+
+			if (isset($route['group'])) {
+				$endpoint->addTag(Endpoint::TAG_GROUP, $route['group']);
+			}
+
+			if (isset($route['tags'])) {
+				foreach ($route['tags'] as $name => $value) {
+					$endpoint->addTag($name, $value);
+				}
+			}
 
 			foreach ($route[SchemaMapping::PARAMETERS] as $p) {
 				$param = new EndpointParameter();

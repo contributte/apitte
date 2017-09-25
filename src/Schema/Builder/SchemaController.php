@@ -20,6 +20,9 @@ final class SchemaController
 	/** @var string[] */
 	private $groupPaths = [];
 
+	/** @var string[] */
+	private $tags = [];
+
 	/**
 	 * @param string $class
 	 */
@@ -105,6 +108,24 @@ final class SchemaController
 	public function addGroupPath($path)
 	{
 		$this->groupPaths[] = $path;
+	}
+
+	/**
+	 * @param string $name
+	 * @param string $value
+	 * @return void
+	 */
+	public function addTag($name, $value)
+	{
+		$this->tags[$name] = $value;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getTags()
+	{
+		return $this->tags;
 	}
 
 }

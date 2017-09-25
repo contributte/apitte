@@ -14,6 +14,9 @@ final class Endpoint
 	const METHOD_DELETE = 'DELETE';
 	const METHOD_OPTION = 'OPTIONS';
 
+	// Tags
+	const TAG_GROUP = 'group';
+
 	const METHODS = [
 		'GET',
 		'POST',
@@ -36,6 +39,9 @@ final class Endpoint
 
 	/** @var EndpointParameter[] */
 	private $parameters = [];
+
+	/** @var array */
+	private $tags = [];
 
 	/**
 	 * @return string[]
@@ -166,6 +172,42 @@ final class Endpoint
 		foreach ($parameters as $param) {
 			$this->addParameter($param);
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getTags()
+	{
+		return $this->tags;
+	}
+
+	/**
+	 * @param string $name
+	 * @return string
+	 */
+	public function getTag($name)
+	{
+		return $this->hasTag($name) ? $this->tags[$name] : NULL;
+	}
+
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	public function hasTag($name)
+	{
+		return array_key_exists($name, $this->tags);
+	}
+
+	/**
+	 * @param string $name
+	 * @param mixed $value
+	 * @return void
+	 */
+	public function addTag($name, $value)
+	{
+		$this->tags[$name] = $value;
 	}
 
 }

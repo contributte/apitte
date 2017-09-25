@@ -10,9 +10,9 @@ interface SchemaMapping
 	const HANDLER_METHOD = 'method';
 	const HANDLER_ARGUMENTS = 'arguments';
 
-	const ROOT_PATH = 'rootPath';
-	const PATH = 'path';
+	const GROUP = 'group';
 	const METHODS = 'method';
+	const TAGS = 'tags';
 	const MASK = 'mask';
 	const PATTERN = 'pattern';
 

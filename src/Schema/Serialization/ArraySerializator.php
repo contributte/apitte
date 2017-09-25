@@ -29,11 +29,16 @@ final class ArraySerializator implements ISerializator
 				// Skip invalid methods
 				if (empty($method->getPath())) continue;
 
-				// Build full mask (@RootPath + @Path)
+				// Build full mask (@GroupPath(s) + @RootPath + @Path)
 				// without duplicated slashes (//)
 				// and without trailing slash at the end
 				// but with slash at the beginning
-				$mask = '/' . $controller->getRootPath() . '/' . $method->getPath();
+				$maskp = array_merge(
+					$controller->getGroupPaths(),
+					[$controller->getRootPath()],
+					[$method->getPath()]
+				);
+				$mask = implode('/', $maskp);
 				$mask = Helpers::slashless($mask);
 				$mask = '/' . trim($mask, '/');
 
@@ -44,9 +49,9 @@ final class ArraySerializator implements ISerializator
 						SchemaMapping::HANDLER_METHOD => $method->getName(),
 						SchemaMapping::HANDLER_ARGUMENTS => $method->getArguments(),
 					],
+					SchemaMapping::GROUP => $controller->getGroup(),
+					SchemaMapping::TAGS => $controller->getTags(),
 					SchemaMapping::METHODS => $method->getMethods(),
-					SchemaMapping::ROOT_PATH => $controller->getRootPath(),
-					SchemaMapping::PATH => $method->getPath(),
 					SchemaMapping::MASK => $mask,
 					SchemaMapping::PARAMETERS => [],
 					SchemaMapping::PATTERN => $mask,

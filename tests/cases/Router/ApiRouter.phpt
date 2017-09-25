@@ -66,3 +66,19 @@ test(function () {
 	Assert::true(isset($matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['bar']));
 	Assert::equal('baz', $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['bar']);
 });
+
+// Not match
+test(function () {
+	$endpoint = new Endpoint();
+	$endpoint->addMethod('GET');
+
+	$schema = new ApiSchema();
+	$schema->addEndpoint($endpoint);
+
+	$request = Psr7ServerRequestFactory::fromSuperGlobal()
+		->withMethod('POST');
+	$router = new ApiRouter($schema);
+	$matched = $router->match($request);
+
+	Assert::null($matched);
+});

@@ -28,6 +28,56 @@ composer require apitte/core
 |-------------|--------------|----------|----------|
 | development | `dev-master` | `master` | `>= 5.6` |
 
+## Example 
+
+Just define some endpoints, I mean controllers. Place some annotations and thats all.
+
+```php
+namespace App\Controllers;
+
+use Apitte\Core\Annotation\Controller\Controller;
+use Apitte\Core\Annotation\Controller\Method;
+use Apitte\Core\Annotation\Controller\Path;
+use Apitte\Core\Annotation\Controller\RootPath;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
+use Apitte\Core\UI\Controller\IController;
+
+/**
+ * @Controller
+ * @RootPath("/hello")
+ */
+final class HelloController implements IController
+{
+
+    /**
+     * @Path("/world")
+     * @Method("GET")
+     */
+    public function index(ApiRequest $request, ApiResponse $response)
+    {
+        return $response->writeBody('Hello world!');
+    }
+}
+```
+
+And register your controller as service.
+
+```yaml
+services:
+    - App\Controllers\HelloController
+```
+
+As you can see, the architecture is ultra simple. `ApiRequest` & `ApiResponse` wrap PSR-7, so you can re-use these declared methods.
+
+## Overview
+
+- [Installation - how to register an extension](https://github.com/apitte/core/tree/master/.docs#installation)
+- [Usage - controller showtime](https://github.com/apitte/core/tree/master/.docs#usage)
+- [Plugins - apitte plugins](https://github.com/apitte/core/tree/master/.docs#plugins)
+- [Advanced - complex configuration](https://github.com/apitte/core/tree/master/.docs#advanced)
+- [Playground - real examples](https://github.com/apitte/core/tree/master/.docs#playground)
+
 ## Maintainers
 
 <table>

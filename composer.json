@@ -1,7 +1,7 @@
 {
   "name": "apitte/core",
-  "description": "Apitte core library",
-  "keywords": ["api", "rest", "json", "core"],
+  "description": "Apitte\\Core library for Nette Framework",
+  "keywords": ["api", "core", "http", "rest", "nette", "annotation"],
   "type": "library",
   "license": "MIT",
   "homepage": "https://github.com/apitte/core",

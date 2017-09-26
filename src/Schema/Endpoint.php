@@ -12,17 +12,19 @@ final class Endpoint
 	const METHOD_POST = 'POST';
 	const METHOD_PUT = 'PUT';
 	const METHOD_DELETE = 'DELETE';
-	const METHOD_OPTION = 'OPTIONS';
+	const METHOD_OPTIONS = 'OPTIONS';
+	const METHOD_PATCH = 'PATCH';
 
 	// Tags
 	const TAG_GROUP = 'group';
 
 	const METHODS = [
-		'GET',
-		'POST',
-		'PUT',
-		'DELETE',
-		'OPTIONS',
+		self::METHOD_GET,
+		self::METHOD_POST,
+		self::METHOD_PUT,
+		self::METHOD_DELETE,
+		self::METHOD_OPTIONS,
+		self::METHOD_PATCH,
 	];
 
 	/** @var string[] */

@@ -3,6 +3,7 @@
 ## Content
 
 - [Installation - how to register an extension](#installation)
+- [Configuration - all options](#configuration)
 - [Usage - controller showtime](#usage)
 - [Plugins - apitte plugins](#plugins)
 - [Advanced - complex configuration](#advanced)
@@ -20,6 +21,21 @@ composer require apitte/core
 extensions:
     api: Apitte\Core\DI\ApiExtension
 ```
+
+## Configuration
+
+```
+extensions:
+    api: Apitte\Core\DI\ApiExtension
+
+api:
+	debug: true/false
+	plugins: []
+```
+
+By default, debug mode is detected from `%debugMode%` variable from Nette. Also there are default plugins `Apitte\Core\DI\Plugin\CoreSchemaPlugin` and `Apitte\Core\DI\Plugin\CoreServicesPlugin` loaded.
+
+You can read more about plugins in the [next chapter](#plugins).
 
 ## Usage
 

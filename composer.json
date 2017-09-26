@@ -40,8 +40,16 @@
     "tester": [
       "tester -s -p php --colors 1 -c tests/php-unix.ini tests/cases"
     ],
-    "tester-coverage": [
+    "coverage": [
       "tester -s -p php --colors 1 -c tests/php-unix.ini -d extension=xdebug.so --coverage ./coverage.xml --coverage-src ./src tests/cases"
+    ],
+    "phpstan-install": [
+      "mkdir -p temp/phpstan",
+      "composer require -d temp/phpstan phpstan/phpstan:0.8.5",
+      "composer require -d temp/phpstan phpstan/phpstan-nette:0.8.3"
+    ],
+    "phpstan": [
+      "temp/phpstan/vendor/bin/phpstan analyse -l 1 -c phpstan.neon src"
     ]
   },
   "minimum-stability": "dev",

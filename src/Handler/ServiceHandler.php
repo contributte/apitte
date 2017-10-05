@@ -3,8 +3,6 @@
 namespace Apitte\Core\Handler;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
-use Apitte\Core\Http\ApiRequest;
-use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
 use Nette\DI\Container;
@@ -32,39 +30,12 @@ class ServiceHandler implements IHandler
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		/** @var Endpoint $endpoint */
-		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
+		// Create and trigger callback
+		$callback = $this->createCallback($request, $response);
+		$response = $callback($request, $response);
 
-		// Validate that we have an endpoint
-		if (!$endpoint) {
-			throw new InvalidStateException(sprintf('Attribute "%s" is required', RequestAttributes::ATTR_ENDPOINT));
-		}
-
-		// Find handler in DI container by class
-		$service = $this->container->getByType($endpoint->getHandler()->getClass());
-		$method = $endpoint->getHandler()->getMethod();
-
-		// Call service::method with ($request, $response) as arguments
-		$response = call_user_func_array(
-			[$service, $method],
-			[$this->createApiRequest($request), $this->createApiResponse($response)]
-		);
-
-		// Validate if response is returned
-		if (!$response) {
-			throw new InvalidStateException(sprintf('Handler "%s::%s()" must return response', get_class($service), $method));
-		}
-
-		// Convert ApiResponse to ResponseInterface
-		if ($response instanceof ApiResponse) {
-			// Get original response
-			$response = $response->getOriginalResponse();
-		}
-
-		// Validate if response is ResponseInterface
-		if (!($response instanceof ResponseInterface)) {
-			throw new InvalidStateException(sprintf('Handler returned response must be subtype of %s', ResponseInterface::class));
-		}
+		// Convert to PSR-7 & validate
+		$response = $this->finalize($response);
 
 		return $response;
 	}
@@ -75,20 +46,67 @@ class ServiceHandler implements IHandler
 
 	/**
 	 * @param ServerRequestInterface $request
-	 * @return ApiRequest
+	 * @param ResponseInterface $response
+	 * @return ServiceCallback
 	 */
-	protected function createApiRequest(ServerRequestInterface $request)
+	protected function createCallback(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		return new ApiRequest($request);
+		$endpoint = $this->getEndpoint($request);
+
+		// Find handler in DI container by class
+		$service = $this->getService($endpoint);
+		$method = $endpoint->getHandler()->getMethod();
+
+		// Create callback
+		$callback = new ServiceCallback($service, $method);
+		$callback->setArguments([$request, $response]);
+
+		return $callback;
 	}
 
 	/**
-	 * @param ResponseInterface $response
-	 * @return ApiResponse
+	 * @param ServerRequestInterface $request
+	 * @return Endpoint
 	 */
-	protected function createApiResponse(ResponseInterface $response)
+	protected function getEndpoint(ServerRequestInterface $request)
 	{
-		return new ApiResponse($response);
+		/** @var Endpoint $endpoint */
+		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
+
+		// Validate that we have an endpoint
+		if (!$endpoint) {
+			throw new InvalidStateException(sprintf('Attribute "%s" is required', RequestAttributes::ATTR_ENDPOINT));
+		}
+
+		return $endpoint;
+	}
+
+	/**
+	 * @param Endpoint $endpoint
+	 * @return object
+	 */
+	protected function getService(Endpoint $endpoint)
+	{
+		return $this->container->getByType($endpoint->getHandler()->getClass());
+	}
+
+	/**
+	 * @param mixed $response
+	 * @return ResponseInterface
+	 */
+	protected function finalize($response)
+	{
+		// Validate if response is returned
+		if ($response === NULL) {
+			throw new InvalidStateException('Handler returned response cannot be NULL');
+		}
+
+		// Validate if response is ResponseInterface
+		if (!($response instanceof ResponseInterface)) {
+			throw new InvalidStateException(sprintf('Handler returned response must be subtype of %s', ResponseInterface::class));
+		}
+
+		return $response;
 	}
 
 }

@@ -75,7 +75,7 @@ class ApiRouter implements IRouter
 	 */
 	protected function compareUrl(Endpoint $endpoint, ServerRequestInterface $request)
 	{
-		// Parse url from ApiRequest
+		// Parse url from request
 		$url = $request->getUri()->getPath();
 
 		// Url has always slash at the beginning

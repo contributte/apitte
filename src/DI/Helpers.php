@@ -9,6 +9,7 @@ class Helpers
 
 	/**
 	 * @param array $definitions
+	 * @param int $default
 	 * @return array
 	 */
 	public static function sort(array $definitions, $default = 10)

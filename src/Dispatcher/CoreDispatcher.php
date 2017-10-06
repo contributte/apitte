@@ -103,4 +103,5 @@ class CoreDispatcher implements IDispatcher
 
 		return new ApiResponse($response);
 	}
+
 }

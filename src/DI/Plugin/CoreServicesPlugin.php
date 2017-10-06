@@ -6,8 +6,8 @@ use Apitte\Core\Dispatcher\CoreDispatcher;
 use Apitte\Core\Dispatcher\IDispatcher;
 use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Handler\ServiceHandler;
-use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Router\IRouter;
+use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\ApiSchema;
 
 class CoreServicesPlugin extends AbstractPlugin

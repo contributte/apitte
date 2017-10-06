@@ -2,11 +2,11 @@
 
 namespace Apitte\Core\DI\Plugin;
 
-use Apitte\Core\Dispatcher\ApiDispatcher;
+use Apitte\Core\Dispatcher\CoreDispatcher;
 use Apitte\Core\Dispatcher\IDispatcher;
 use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Handler\ServiceHandler;
-use Apitte\Core\Router\ApiRouter;
+use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Schema\ApiSchema;
 
@@ -36,11 +36,11 @@ class CoreServicesPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('dispatcher'))
 			->setClass(IDispatcher::class)
-			->setFactory(ApiDispatcher::class);
+			->setFactory(CoreDispatcher::class);
 
 		$builder->addDefinition($this->prefix('router'))
 			->setClass(IRouter::class)
-			->setFactory(ApiRouter::class);
+			->setFactory(SimpleRouter::class);
 
 		$builder->addDefinition($this->prefix('handler'))
 			->setClass(IHandler::class)

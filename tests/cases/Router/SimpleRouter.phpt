@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Router\ApiRouter
+ * Test: Router\SimpleRouter
  */
 
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Http\RequestAttributes;
-use Apitte\Core\Router\ApiRouter;
+use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\ApiSchema;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
@@ -29,7 +29,7 @@ test(function () {
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/users/22/');
 	$request2 = $request->withNewUri('http://example.com/not-matched/');
-	$router = new ApiRouter($schema);
+	$router = new SimpleRouter($schema);
 	$matched = $router->match($request);
 	$notMatched = $router->match($request2);
 
@@ -57,7 +57,7 @@ test(function () {
 	$schema->addEndpoint($endpoint);
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/users/1/baz');
-	$router = new ApiRouter($schema);
+	$router = new SimpleRouter($schema);
 	$matched = $router->match($request);
 
 	Assert::type($request, $matched);
@@ -77,7 +77,7 @@ test(function () {
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()
 		->withMethod('POST');
-	$router = new ApiRouter($schema);
+	$router = new SimpleRouter($schema);
 	$matched = $router->match($request);
 
 	Assert::null($matched);

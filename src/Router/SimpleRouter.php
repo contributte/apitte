@@ -8,7 +8,7 @@ use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Utils\Regex;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ApiRouter implements IRouter
+class SimpleRouter implements IRouter
 {
 
 	/** @var ApiSchema */

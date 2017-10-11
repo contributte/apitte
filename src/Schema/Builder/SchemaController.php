@@ -14,8 +14,8 @@ final class SchemaController
 	/** @var SchemaControllerMethod[] */
 	private $methods = [];
 
-	/** @var string */
-	private $group;
+	/** @var array */
+	private $groups = [];
 
 	/** @var string[] */
 	private $groupPaths = [];
@@ -77,20 +77,29 @@ final class SchemaController
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function getGroup()
+	public function getGroups()
 	{
-		return $this->group;
+		return $this->groups;
+	}
+
+	/**
+	 * @param array $groups
+	 * @return void
+	 */
+	public function setGroups(array $groups)
+	{
+		$this->groups = $groups;
 	}
 
 	/**
 	 * @param string $group
 	 * @return void
 	 */
-	public function setGroup($group)
+	public function addGroup($group)
 	{
-		$this->group = $group;
+		$this->groups[] = $group;
 	}
 
 	/**

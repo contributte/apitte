@@ -49,7 +49,7 @@ final class ArraySerializator implements ISerializator
 						SchemaMapping::HANDLER_METHOD => $method->getName(),
 						SchemaMapping::HANDLER_ARGUMENTS => $method->getArguments(),
 					],
-					SchemaMapping::GROUP => $controller->getGroup(),
+					SchemaMapping::GROUPS => $controller->getGroups(),
 					SchemaMapping::TAGS => $controller->getTags(),
 					SchemaMapping::METHODS => $method->getMethods(),
 					SchemaMapping::MASK => $mask,

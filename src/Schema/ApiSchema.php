@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema;
 
-final class ApiSchema
+class ApiSchema
 {
 
 	/** @var Endpoint[] */
@@ -52,8 +52,22 @@ final class ApiSchema
 				// Skip if endpoint does not have a tag
 				if (!$endpoint->hasTag($name)) continue;
 
+				// Early skip (cause value is NULL => optional)
+				if ($value === NULL) {
+					$endpoints[] = $endpoint;
+					continue;
+				}
+
 				// Skip if value is provided and values are not matched
-				if ($value !== NULL && $endpoint->getTag($name) !== $value) continue;
+				$tagval = $endpoint->getTag($name);
+
+				// If tagval is string, try to compare strings
+				// If tagval is array, try to find it by value
+				if (is_string($tagval) && $tagval !== $value) {
+					continue;
+				} else if (is_array($tagval) && !in_array($value, $tagval)) {
+					continue;
+				}
 
 				$endpoints[] = $endpoint;
 			}

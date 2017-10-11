@@ -181,7 +181,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			foreach ($parentAnnotations as $annotation) {
 				// Parse @Group
 				if (get_class($annotation) == Group::class) {
-					$controller->setGroup($annotation->getName());
+					$controller->addGroup($annotation->getName());
 				}
 
 				// Parse @GroupPath

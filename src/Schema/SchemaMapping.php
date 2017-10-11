@@ -10,7 +10,7 @@ interface SchemaMapping
 	const HANDLER_METHOD = 'method';
 	const HANDLER_ARGUMENTS = 'arguments';
 
-	const GROUP = 'group';
+	const GROUPS = 'groups';
 	const METHODS = 'method';
 	const TAGS = 'tags';
 	const MASK = 'mask';

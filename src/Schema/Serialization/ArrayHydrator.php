@@ -31,12 +31,12 @@ final class ArrayHydrator implements IHydrator
 			$endpoint->setMask($route[SchemaMapping::MASK]);
 			$endpoint->setPattern($route[SchemaMapping::PATTERN]);
 
-			if (isset($route['group'])) {
-				$endpoint->addTag(Endpoint::TAG_GROUP, $route['group']);
+			if (isset($route[SchemaMapping::GROUPS])) {
+				$endpoint->addTag(Endpoint::TAG_GROUP, (array) $route[SchemaMapping::GROUPS]);
 			}
 
-			if (isset($route['tags'])) {
-				foreach ($route['tags'] as $name => $value) {
+			if (isset($route[SchemaMapping::TAGS])) {
+				foreach ($route[SchemaMapping::TAGS] as $name => $value) {
 					$endpoint->addTag($name, $value);
 				}
 			}

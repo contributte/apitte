@@ -45,11 +45,11 @@ class CoreSchemaPlugin extends AbstractPlugin
 		$builder = $this->getContainerBuilder();
 
 		// Register services
-		$builder->addDefinition($this->prefix('hydrator'))
+		$builder->addDefinition($this->extensionPrefix('core.schema.hydrator'))
 			->setClass(ArrayHydrator::class);
 
 		$builder->getDefinition($this->extensionPrefix('core.schema'))
-			->setFactory('@' . $this->prefix('hydrator') . '::hydrate', [$this->compileSchema()]);
+			->setFactory('@' . $this->extensionPrefix('core.schema.hydrator') . '::hydrate', [$this->compileSchema()]);
 	}
 
 	/**

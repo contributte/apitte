@@ -29,18 +29,26 @@ final class ArraySerializator implements ISerializator
 				// Skip invalid methods
 				if (empty($method->getPath())) continue;
 
-				// Build full mask (@GroupPath(s) + @RootPath + @Path)
+				// Build full mask (@GroupPath(s) + @ControllerPath + @Path)
 				// without duplicated slashes (//)
 				// and without trailing slash at the end
 				// but with slash at the beginning
 				$maskp = array_merge(
 					$controller->getGroupPaths(),
-					[$controller->getRootPath()],
+					[$controller->getPath()],
 					[$method->getPath()]
 				);
 				$mask = implode('/', $maskp);
 				$mask = Helpers::slashless($mask);
 				$mask = '/' . trim($mask, '/');
+
+				// Build full id
+				$idp = array_merge(
+					$controller->getGroupIds(),
+					[$controller->getId()],
+					[$method->getId()]
+				);
+				$id = implode('.', $idp);
 
 				// Create endpoint
 				$endpoint = [
@@ -49,7 +57,11 @@ final class ArraySerializator implements ISerializator
 						SchemaMapping::HANDLER_METHOD => $method->getName(),
 						SchemaMapping::HANDLER_ARGUMENTS => $method->getArguments(),
 					],
-					SchemaMapping::GROUPS => $controller->getGroups(),
+					SchemaMapping::GROUP => [
+						SchemaMapping::GROUP_IDS => $controller->getGroupIds(),
+						SchemaMapping::GROUP_PATHS => $controller->getGroupPaths(),
+					],
+					SchemaMapping::ID => $id,
 					SchemaMapping::TAGS => $controller->getTags(),
 					SchemaMapping::METHODS => $method->getMethods(),
 					SchemaMapping::MASK => $mask,

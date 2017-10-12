@@ -47,16 +47,16 @@ Your job is to create a couple of controllers representing your API. Let's take 
 namespace App\Controllers;
 
 use Apitte\Core\Annotation\Controller\Controller;
+use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
-use Apitte\Core\Annotation\Controller\RootPath;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\UI\Controller\IController;
 
 /**
  * @Controller
- * @RootPath("/hello")
+ * @ControllerPath("/hello")
  */
 final class HelloController implements IController
 {
@@ -75,7 +75,7 @@ final class HelloController implements IController
 This API by automatic look for all services which implements `Apitte\Core\UI\Controller\IController`. 
 Then they are analyzed by annotations loader and `Apitte\Core\Schema\ApiSchema` is build.
 
-You have to mark your controllers with `@Controller` annotation and also define `@RootPath`.
+You have to mark your controllers with `@Controller` annotation and also define `@ControllerPath`.
 
 Each public method with annotations `@Path` and `@Method` will be added to our API scheme and will be triggered in propel request.
 

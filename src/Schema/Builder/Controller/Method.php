@@ -1,8 +1,8 @@
 <?php
 
-namespace Apitte\Core\Schema\Builder;
+namespace Apitte\Core\Schema\Builder\Controller;
 
-final class SchemaControllerMethod
+final class Method
 {
 
 	/** @var string */
@@ -11,13 +11,16 @@ final class SchemaControllerMethod
 	/** @var string */
 	private $path;
 
+	/** @var string */
+	private $id;
+
 	/** @var string[] */
 	private $methods = [];
 
 	/** @var string[] */
 	private $arguments = [];
 
-	/** @var SchemaControllerMethodParameter[] */
+	/** @var MethodParameter[] */
 	private $parameters = [];
 
 	/**
@@ -51,6 +54,23 @@ final class SchemaControllerMethod
 	public function setPath($path)
 	{
 		$this->path = $path;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param string $id
+	 * @return void
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
 	}
 
 	/**
@@ -121,11 +141,11 @@ final class SchemaControllerMethod
 
 	/**
 	 * @param string $name
-	 * @return SchemaControllerMethodParameter
+	 * @return MethodParameter
 	 */
 	public function addParameter($name)
 	{
-		$parameter = new SchemaControllerMethodParameter($name);
+		$parameter = new MethodParameter($name);
 		$this->parameters[$name] = $parameter;
 
 		return $parameter;
@@ -141,7 +161,7 @@ final class SchemaControllerMethod
 	}
 
 	/**
-	 * @return SchemaControllerMethodParameter[]
+	 * @return MethodParameter[]
 	 */
 	public function getParameters()
 	{

@@ -15,9 +15,6 @@ final class Endpoint
 	const METHOD_OPTIONS = 'OPTIONS';
 	const METHOD_PATCH = 'PATCH';
 
-	// Tags
-	const TAG_GROUP = 'group';
-
 	const METHODS = [
 		self::METHOD_GET,
 		self::METHOD_POST,
@@ -26,6 +23,11 @@ final class Endpoint
 		self::METHOD_OPTIONS,
 		self::METHOD_PATCH,
 	];
+
+	// Tags
+	const TAG_ID = 'id';
+	const TAG_GROUP_IDS = 'group.ids';
+	const TAG_GROUP_PATHS = 'group.paths';
 
 	/** @var string[] */
 	private $methods = [];
@@ -42,7 +44,7 @@ final class Endpoint
 	/** @var EndpointParameter[] */
 	private $parameters = [];
 
-	/** @var array */
+	/** @var mixed[] */
 	private $tags = [];
 
 	/**

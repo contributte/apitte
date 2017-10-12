@@ -8,7 +8,7 @@ use Nette\Utils\Arrays;
 
 /**
  * @Annotation
- * @Target("METHOD")
+ * @Target("ANNOTATION")
  */
 final class RequestParameter
 {

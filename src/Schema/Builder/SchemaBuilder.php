@@ -2,26 +2,28 @@
 
 namespace Apitte\Core\Schema\Builder;
 
+use Apitte\Core\Schema\Builder\Controller\Controller;
+
 final class SchemaBuilder
 {
 
-	/** @var SchemaController[] */
+	/** @var Controller[] */
 	private $controllers = [];
 
 	/**
 	 * @param string $class
-	 * @return SchemaController
+	 * @return Controller
 	 */
 	public function addController($class)
 	{
-		$controller = new SchemaController($class);
+		$controller = new Controller($class);
 		$this->controllers[$class] = $controller;
 
 		return $controller;
 	}
 
 	/**
-	 * @return SchemaController[]
+	 * @return Controller[]
 	 */
 	public function getControllers()
 	{

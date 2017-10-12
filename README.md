@@ -36,16 +36,16 @@ Just define some endpoints, I mean controllers. Place some annotations and thats
 namespace App\Controllers;
 
 use Apitte\Core\Annotation\Controller\Controller;
+use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
-use Apitte\Core\Annotation\Controller\RootPath;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\UI\Controller\IController;
 
 /**
  * @Controller
- * @RootPath("/hello")
+ * @ControllerPath("/hello")
  */
 final class HelloController implements IController
 {

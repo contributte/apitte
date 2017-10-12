@@ -59,7 +59,7 @@ test(function () {
 	$controller = array_pop($controllers);
 
 	Assert::equal(FoobarController::class, $controller->getClass());
-	Assert::equal('/foobar', $controller->getRootPath());
+	Assert::equal('/foobar', $controller->getPath());
 
 	Assert::count(3, $controller->getMethods());
 
@@ -71,7 +71,7 @@ test(function () {
 	Assert::equal('/baz2', $controller->getMethods()['baz2']->getPath());
 	Assert::equal(['GET', 'POST'], $controller->getMethods()['baz2']->getMethods());
 
-	Assert::equal(['testapi'], $controller->getGroups());
+	Assert::equal(['testapi'], $controller->getGroupIds());
 	Assert::equal(['/api', '/v1'], $controller->getGroupPaths());
 });
 
@@ -84,7 +84,7 @@ test(function () {
 
 		$loader = new DoctrineAnnotationLoader($builder);
 		$loader->load(new SchemaBuilder());
-	}, InvalidStateException::class, sprintf('Annotation @Group cannot be on non-abstract "%s"', InvalidGroupAnnotationController::class));
+	}, InvalidStateException::class, sprintf('Annotation @GroupId cannot be on non-abstract "%s"', InvalidGroupAnnotationController::class));
 });
 
 // Invalid annotation (@Controller + @GroupPath)

@@ -10,8 +10,12 @@ interface SchemaMapping
 	const HANDLER_METHOD = 'method';
 	const HANDLER_ARGUMENTS = 'arguments';
 
-	const GROUPS = 'groups';
-	const METHODS = 'method';
+	const GROUP = 'group';
+	const GROUP_IDS = 'ids';
+	const GROUP_PATHS = 'paths';
+
+	const ID = 'id';
+	const METHODS = 'methods';
 	const TAGS = 'tags';
 	const MASK = 'mask';
 	const PATTERN = 'pattern';
@@ -20,6 +24,6 @@ interface SchemaMapping
 	const PARAMETERS_NAME = 'name';
 	const PARAMETERS_TYPE = 'type';
 	const PARAMETERS_PATTERN = 'pattern';
-	const PARAMETERS_DESCRIPTION = 'pattern';
+	const PARAMETERS_DESCRIPTION = 'description';
 
 }

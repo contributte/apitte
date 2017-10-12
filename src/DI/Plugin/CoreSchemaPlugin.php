@@ -7,9 +7,9 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
+use Apitte\Core\Schema\Validation\ControllerPathValidation;
 use Apitte\Core\Schema\Validation\GroupPathValidation;
 use Apitte\Core\Schema\Validation\PathValidation;
-use Apitte\Core\Schema\Validation\RootPathValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
 
 class CoreSchemaPlugin extends AbstractPlugin
@@ -104,7 +104,7 @@ class CoreSchemaPlugin extends AbstractPlugin
 	protected function validateSchema(SchemaBuilder $builder)
 	{
 		$validator = new SchemaBuilderValidator();
-		$validator->add(new RootPathValidation());
+		$validator->add(new ControllerPathValidation());
 		$validator->add(new PathValidation());
 		$validator->add(new GroupPathValidation());
 

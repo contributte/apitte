@@ -6,7 +6,7 @@ use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Utils\Regex;
 
-class RootPathValidation implements IValidation
+class ControllerPathValidation implements IValidation
 {
 
 	/**
@@ -26,18 +26,18 @@ class RootPathValidation implements IValidation
 	 */
 	protected function validateDuplicities(SchemaBuilder $builder)
 	{
-		$rootPaths = [];
+		$paths = [];
 		$controllers = $builder->getControllers();
 
 		foreach ($controllers as $controller) {
-			// If this RootPath exists, throw an exception
-			if (array_key_exists($controller->getRootPath(), $rootPaths)) {
+			// If this ControllerPath exists, throw an exception
+			if (array_key_exists($controller->getPath(), $paths)) {
 				throw new InvalidSchemaException(
-					sprintf('Duplicate @RootPath in %s and %s', $controller->getClass(), $rootPaths[$controller->getRootPath()])
+					sprintf('Duplicate @ControllerPath in %s and %s', $controller->getClass(), $paths[$controller->getPath()])
 				);
 			}
 
-			$rootPaths[$controller->getRootPath()] = $controller->getClass();
+			$paths[$controller->getPath()] = $controller->getClass();
 		}
 	}
 
@@ -50,28 +50,28 @@ class RootPathValidation implements IValidation
 		$controllers = $builder->getControllers();
 
 		foreach ($controllers as $controller) {
-			$rootPath = $controller->getRootPath();
+			$path = $controller->getPath();
 
-			if (strlen($rootPath) === 1) {
-				if ($rootPath === '/') continue;
+			if (strlen($path) === 1) {
+				if ($path === '/') continue;
 
 				// MUST: Be exactly /
 				throw new InvalidSchemaException(
-					sprintf('@RootPath "%s" in "%s" must be exactly "/" (slash).', $rootPath, $controller->getClass())
+					sprintf('@ControllerPath "%s" in "%s" must be exactly "/" (slash).', $path, $controller->getClass())
 				);
 			}
 
 			// MUST: Starts with slash (/)
-			if (substr($rootPath, 0, 1) !== '/') {
+			if (substr($path, 0, 1) !== '/') {
 				throw new InvalidSchemaException(
-					sprintf('@RootPath "%s" in "%s" must starts with "/" (slash).', $rootPath, $controller->getClass())
+					sprintf('@ControllerPath "%s" in "%s" must starts with "/" (slash).', $path, $controller->getClass())
 				);
 			}
 
 			// MUST NOT: Ends with slash (/)
-			if (substr($rootPath, -1, 1) === '/') {
+			if (substr($path, -1, 1) === '/') {
 				throw new InvalidSchemaException(
-					sprintf('@RootPath "%s" in "%s" must not ends with "/" (slash).', $rootPath, $controller->getClass())
+					sprintf('@ControllerPath "%s" in "%s" must not ends with "/" (slash).', $path, $controller->getClass())
 				);
 			}
 		}
@@ -86,20 +86,20 @@ class RootPathValidation implements IValidation
 		$controllers = $builder->getControllers();
 
 		foreach ($controllers as $controller) {
-			$rootPath = $controller->getRootPath();
+			$path = $controller->getPath();
 
 			// Allowed characters:
 			// -> a-z
 			// -> A-Z
 			// -> 0-9
 			// -> -_/
-			$match = Regex::match($rootPath, '#([^a-zA-Z0-9\-_/]+)#');
+			$match = Regex::match($path, '#([^a-zA-Z0-9\-_/]+)#');
 
 			if ($match !== NULL) {
 				throw new InvalidSchemaException(
 					sprintf(
-						'@RootPath "%s" in "%s" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9-_/].',
-						$rootPath,
+						'@ControllerPath "%s" in "%s" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9-_/].',
+						$path,
 						$controller->getClass(),
 						$match[1]
 					)

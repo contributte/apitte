@@ -44,7 +44,7 @@ class PathValidation implements IValidation
 					];
 				}
 
-				// If this RootPath exists, throw an exception
+				// If this ControllerPath exists, throw an exception
 				foreach ($method->getMethods() as $httpMethod) {
 					if (array_key_exists($method->getPath(), $paths[$controller->getClass()][$httpMethod])) {
 						throw new InvalidSchemaException(

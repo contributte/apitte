@@ -3,21 +3,21 @@
 namespace Apitte\Core\Router;
 
 use Apitte\Core\Http\RequestAttributes;
-use Apitte\Core\Schema\ApiSchema;
 use Apitte\Core\Schema\Endpoint;
+use Apitte\Core\Schema\Schema;
 use Apitte\Core\Utils\Regex;
 use Psr\Http\Message\ServerRequestInterface;
 
 class SimpleRouter implements IRouter
 {
 
-	/** @var ApiSchema */
+	/** @var Schema */
 	private $schema;
 
 	/**
-	 * @param ApiSchema $schema
+	 * @param Schema $schema
 	 */
-	public function __construct(ApiSchema $schema)
+	public function __construct(Schema $schema)
 	{
 		$this->schema = $schema;
 	}

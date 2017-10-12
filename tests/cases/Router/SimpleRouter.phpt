@@ -8,9 +8,9 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Router\SimpleRouter;
-use Apitte\Core\Schema\ApiSchema;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
+use Apitte\Core\Schema\Schema;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Tester\Assert;
 
@@ -24,7 +24,7 @@ test(function () {
 	$id->setName('id');
 	$endpoint->addParameter($id);
 
-	$schema = new ApiSchema();
+	$schema = new Schema();
 	$schema->addEndpoint($endpoint);
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/users/22/');
@@ -53,7 +53,7 @@ test(function () {
 	$bar->setName('bar');
 	$endpoint->addParameter($bar);
 
-	$schema = new ApiSchema();
+	$schema = new Schema();
 	$schema->addEndpoint($endpoint);
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/users/1/baz');
@@ -72,7 +72,7 @@ test(function () {
 	$endpoint = new Endpoint();
 	$endpoint->addMethod('GET');
 
-	$schema = new ApiSchema();
+	$schema = new Schema();
 	$schema->addEndpoint($endpoint);
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()

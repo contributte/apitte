@@ -2,16 +2,18 @@
 
 namespace Apitte\Core\DI\Loader;
 
-use Apitte\Core\Annotation\Controller\Group;
+use Apitte\Core\Annotation\Controller\ControllerId;
+use Apitte\Core\Annotation\Controller\ControllerPath;
+use Apitte\Core\Annotation\Controller\GroupId;
 use Apitte\Core\Annotation\Controller\GroupPath;
+use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
-use Apitte\Core\Annotation\Controller\RequestParameter;
-use Apitte\Core\Annotation\Controller\RootPath;
+use Apitte\Core\Annotation\Controller\RequestParameters;
 use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
-use Apitte\Core\Schema\Builder\SchemaController;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Nette\Reflection\ClassType;
@@ -52,7 +54,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Create scheme endpoint
 			$schemeController = $builder->addController($def->getClass());
 
-			// Parse @Controller, @RootPath
+			// Parse @Controller, @ControllerPath, @ControllerId
 			$this->parseControllerClassAnnotations($schemeController, $class);
 
 			// Parse @Method, @Path
@@ -136,36 +138,44 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	}
 
 	/**
-	 * @param SchemaController $controller
+	 * @param Controller $controller
 	 * @param ClassType $class
 	 * @return void
 	 */
-	protected function parseControllerClassAnnotations(SchemaController $controller, ClassType $class)
+	protected function parseControllerClassAnnotations(Controller $controller, ClassType $class)
 	{
 		// Read class annotations
 		$annotations = $this->createReader()->getClassAnnotations($class);
 
 		// Iterate over all class annotations in controller
 		foreach ($annotations as $annotation) {
-			// Parse @RootPath
-			if (get_class($annotation) == RootPath::class) {
-				$controller->setRootPath($annotation->getPath());
+			// Parse @ControllerPath =======================
+			if (get_class($annotation) == ControllerPath::class) {
+				/** @var ControllerPath $annotation */
+				$controller->setPath($annotation->getPath());
 				continue;
 			}
 
-			// Parse @Group
-			if (get_class($annotation) == Group::class) {
-				throw new InvalidStateException(sprintf('Annotation @Group cannot be on non-abstract "%s"', $class->getName()));
+			// Parse @ControllerId =========================
+			if (get_class($annotation) == ControllerId::class) {
+				/** @var ControllerId $annotation */
+				$controller->setId($annotation->getName());
 			}
 
-			// Parse @GroupPath
+			// Parse @Tag ==================================
+			if (get_class($annotation) == Tag::class) {
+				/** @var Tag $annotation */
+				$controller->addTag($annotation->getName(), $annotation->getValue());
+			}
+
+			// Parse @GroupId ==============================
+			if (get_class($annotation) == GroupId::class) {
+				throw new InvalidStateException(sprintf('Annotation @GroupId cannot be on non-abstract "%s"', $class->getName()));
+			}
+
+			// Parse @GroupPath ============================
 			if (get_class($annotation) == GroupPath::class) {
 				throw new InvalidStateException(sprintf('Annotation @GroupPath cannot be on non-abstract "%s"', $class->getName()));
-			}
-
-			// Parse @Tag
-			if (get_class($annotation) == Tag::class) {
-				$controller->addTag($annotation->getName(), $annotation->getValue());
 			}
 		}
 
@@ -179,18 +189,21 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 			// Iterate over all parent class annotations
 			foreach ($parentAnnotations as $annotation) {
-				// Parse @Group
-				if (get_class($annotation) == Group::class) {
-					$controller->addGroup($annotation->getName());
+				// Parse @GroupId ==========================
+				if (get_class($annotation) == GroupId::class) {
+					/** @var GroupId $annotation */
+					$controller->addGroupId($annotation->getName());
 				}
 
-				// Parse @GroupPath
+				// Parse @GroupPath ========================
 				if (get_class($annotation) == GroupPath::class) {
+					/** @var GroupPath $annotation */
 					$controller->addGroupPath($annotation->getPath());
 				}
 
-				// Parse @Tag
+				// Parse @Tag ==============================
 				if (get_class($annotation) == Tag::class) {
+					/** @var Tag $annotation */
 					$controller->addTag($annotation->getName(), $annotation->getValue());
 				}
 			}
@@ -198,11 +211,11 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	}
 
 	/**
-	 * @param SchemaController $controller
+	 * @param Controller $controller
 	 * @param ClassType $class
 	 * @return void
 	 */
-	protected function parseControllerMethodsAnnotations(SchemaController $controller, ClassType $class)
+	protected function parseControllerMethodsAnnotations(Controller $controller, ClassType $class)
 	{
 		// Iterate over all methods in class
 		foreach ($class->getMethods() as $method) {
@@ -220,23 +233,35 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 			// Iterate over all method annotations
 			foreach ($annotations as $annotation) {
-				// Parse @Path =========================
+				// Parse @Path =============================
 				if (get_class($annotation) === Path::class) {
+					/** @var Path $annotation */
 					$schemaMethod->setPath($annotation->getPath());
 					continue;
 				}
 
-				// Parse @Method =======================
+				// Parse @Method ===========================
 				if (get_class($annotation) === Method::class) {
+					/** @var Method $annotation */
 					$schemaMethod->addMethods($annotation->getMethods());
 					continue;
 				}
 
-				// Parse @RequestParameter =======================
-				if (get_class($annotation) === RequestParameter::class) {
-					$parameter = $schemaMethod->addParameter($annotation->getName());
-					$parameter->setType($annotation->getType());
-					$parameter->setDescription($annotation->getDescription());
+				// Parse @Id ===============================
+				if (get_class($annotation) === Id::class) {
+					/** @var Id $annotation */
+					$schemaMethod->setId($annotation->getName());
+					continue;
+				}
+
+				// Parse @RequestParameters ================
+				if (get_class($annotation) === RequestParameters::class) {
+					/** @var RequestParameters $annotation */
+					foreach ($annotation->getParameters() as $p) {
+						$parameter = $schemaMethod->addParameter($p->getName());
+						$parameter->setType($p->getType());
+						$parameter->setDescription($p->getDescription());
+					}
 					continue;
 				}
 			}

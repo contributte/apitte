@@ -1,21 +1,24 @@
 <?php
 
-namespace Apitte\Core\Schema\Builder;
+namespace Apitte\Core\Schema\Builder\Controller;
 
-final class SchemaController
+final class Controller
 {
 
 	/** @var string */
 	private $class;
 
-	/** @var string */
-	private $rootPath;
-
-	/** @var SchemaControllerMethod[] */
+	/** @var Method[] */
 	private $methods = [];
 
+	/** @var string */
+	private $id;
+
+	/** @var string */
+	private $path;
+
 	/** @var array */
-	private $groups = [];
+	private $groupIds = [];
 
 	/** @var string[] */
 	private $groupPaths = [];
@@ -42,22 +45,22 @@ final class SchemaController
 	/**
 	 * @return string
 	 */
-	public function getRootPath()
+	public function getPath()
 	{
-		return $this->rootPath;
+		return $this->path;
 	}
 
 	/**
-	 * @param string $rootPath
+	 * @param string $path
 	 * @return void
 	 */
-	public function setRootPath($rootPath)
+	public function setPath($path)
 	{
-		$this->rootPath = $rootPath;
+		$this->path = $path;
 	}
 
 	/**
-	 * @return SchemaControllerMethod[]
+	 * @return Method[]
 	 */
 	public function getMethods()
 	{
@@ -66,40 +69,57 @@ final class SchemaController
 
 	/**
 	 * @param string $name
-	 * @return SchemaControllerMethod
+	 * @return Method
 	 */
 	public function addMethod($name)
 	{
-		$method = new SchemaControllerMethod($name);
+		$method = new Method($name);
 		$this->methods[$name] = $method;
 
 		return $method;
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param string $id
+	 * @return void
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
+
+	/**
 	 * @return array
 	 */
-	public function getGroups()
+	public function getGroupIds()
 	{
-		return $this->groups;
+		return $this->groupIds;
 	}
 
 	/**
-	 * @param array $groups
+	 * @param array $ids
 	 * @return void
 	 */
-	public function setGroups(array $groups)
+	public function setGroupIds(array $ids)
 	{
-		$this->groups = $groups;
+		$this->groupIds = $ids;
 	}
 
 	/**
-	 * @param string $group
+	 * @param string $id
 	 * @return void
 	 */
-	public function addGroup($group)
+	public function addGroupId($id)
 	{
-		$this->groups[] = $group;
+		$this->groupIds[] = $id;
 	}
 
 	/**

@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Annotation
  * @Target("CLASS")
  */
-final class Group
+final class GroupId
 {
 
 	/** @var string */
@@ -22,16 +22,16 @@ final class Group
 	{
 		if (isset($values['value'])) {
 			if (empty($values['value'])) {
-				throw new AnnotationException('Empty @Group given');
+				throw new AnnotationException('Empty @GroupId given');
 			}
 			$this->name = $values['value'];
 		} else if (isset($values['name'])) {
 			if (empty($values['name'])) {
-				throw new AnnotationException('Empty @Group given');
+				throw new AnnotationException('Empty @GroupId given');
 			}
 			$this->name = $values['name'];
 		} else {
-			throw new AnnotationException('No @Group given');
+			throw new AnnotationException('No @GroupId given');
 		}
 	}
 

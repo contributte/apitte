@@ -8,7 +8,7 @@ use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Router\SimpleRouter;
-use Apitte\Core\Schema\ApiSchema;
+use Apitte\Core\Schema\Schema;
 
 class CoreServicesPlugin extends AbstractPlugin
 {
@@ -47,7 +47,7 @@ class CoreServicesPlugin extends AbstractPlugin
 			->setFactory(ServiceHandler::class);
 
 		$builder->addDefinition($this->prefix('schema'))
-			->setClass(ApiSchema::class);
+			->setClass(Schema::class);
 	}
 
 }

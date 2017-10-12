@@ -1,8 +1,8 @@
 <?php
 
-namespace Apitte\Core\Schema\Builder;
+namespace Apitte\Core\Schema\Builder\Controller;
 
-final class SchemaControllerMethodParameter
+final class MethodParameter
 {
 
 	/** @var string */

@@ -2,30 +2,21 @@
 
 namespace Apitte\Core\Schema;
 
-class ApiSchema
+class SchemaInspector
 {
 
-	/** @var Endpoint[] */
-	private $endpoints = [];
+	/** @var Schema */
+	private $schema;
 
 	/** @var array */
 	private $cache = [];
 
 	/**
-	 * @param Endpoint $endpoint
-	 * @return void
+	 * @param Schema $schema
 	 */
-	public function addEndpoint(Endpoint $endpoint)
+	public function __construct(Schema $schema)
 	{
-		$this->endpoints[] = $endpoint;
-	}
-
-	/**
-	 * @return Endpoint[]
-	 */
-	public function getEndpoints()
-	{
-		return $this->endpoints;
+		$this->schema = $schema;
 	}
 
 	/**
@@ -34,7 +25,7 @@ class ApiSchema
 	 */
 	public function getEndpointByGroup($group)
 	{
-		return $this->getEndpointsByTag(Endpoint::TAG_GROUP, $group);
+		return $this->getEndpointsByTag(Endpoint::TAG_GROUP_IDS, $group);
 	}
 
 	/**
@@ -45,16 +36,17 @@ class ApiSchema
 	public function getEndpointsByTag($name, $value = NULL)
 	{
 		$key = rtrim(sprintf('%s/%s', $name, $value), '/');
+		$endpoints = $this->schema->getEndpoints();
 
 		if (!isset($this->cache[$key])) {
-			$endpoints = [];
-			foreach ($this->endpoints as $endpoint) {
+			$items = [];
+			foreach ($endpoints as $endpoint) {
 				// Skip if endpoint does not have a tag
 				if (!$endpoint->hasTag($name)) continue;
 
 				// Early skip (cause value is NULL => optional)
 				if ($value === NULL) {
-					$endpoints[] = $endpoint;
+					$items[] = $endpoint;
 					continue;
 				}
 
@@ -69,10 +61,10 @@ class ApiSchema
 					continue;
 				}
 
-				$endpoints[] = $endpoint;
+				$items[] = $endpoint;
 			}
 
-			$this->cache[$key] = $endpoints;
+			$this->cache[$key] = $items;
 		}
 
 		return $this->cache[$key];

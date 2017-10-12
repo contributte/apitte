@@ -9,11 +9,11 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Annotation
  * @Target("CLASS")
  */
-final class RootPath
+final class ControllerId
 {
 
 	/** @var string */
-	private $path;
+	private $name;
 
 	/**
 	 * @param array $values
@@ -22,25 +22,25 @@ final class RootPath
 	{
 		if (isset($values['value'])) {
 			if (empty($values['value'])) {
-				throw new AnnotationException('Empty @RootPath given');
+				throw new AnnotationException('Empty @ControllerId given');
 			}
-			$this->path = $values['value'];
-		} else if (isset($values['path'])) {
-			if (empty($values['path'])) {
-				throw new AnnotationException('Empty @RootPath given');
+			$this->name = $values['value'];
+		} else if (isset($values['name'])) {
+			if (empty($values['name'])) {
+				throw new AnnotationException('Empty @ControllerId given');
 			}
-			$this->path = $values['path'];
+			$this->name = $values['name'];
 		} else {
-			throw new AnnotationException('No @RootPath given');
+			throw new AnnotationException('No @ControllerId given');
 		}
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getPath()
+	public function getName()
 	{
-		return $this->path;
+		return $this->name;
 	}
 
 }

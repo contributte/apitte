@@ -71,7 +71,7 @@ test(function () {
 	Assert::equal('/baz2', $controller->getMethods()['baz2']->getPath());
 	Assert::equal(['GET', 'POST'], $controller->getMethods()['baz2']->getMethods());
 
-	Assert::equal('testapi', $controller->getGroup());
+	Assert::equal(['testapi'], $controller->getGroups());
 	Assert::equal(['/api', '/v1'], $controller->getGroupPaths());
 });
 

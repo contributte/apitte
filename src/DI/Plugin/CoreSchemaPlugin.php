@@ -9,6 +9,8 @@ use Apitte\Core\Schema\Serialization\ArrayHydrator;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
 use Apitte\Core\Schema\Validation\ControllerPathValidation;
 use Apitte\Core\Schema\Validation\GroupPathValidation;
+use Apitte\Core\Schema\Validation\IdValidation;
+use Apitte\Core\Schema\Validation\IValidation;
 use Apitte\Core\Schema\Validation\PathValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
 
@@ -19,6 +21,14 @@ class CoreSchemaPlugin extends AbstractPlugin
 
 	// Loader types
 	const LOADERS = ['annotations', 'neon', 'php'];
+
+	/** @var IValidation[] */
+	public static $validations = [
+		'controllerPath' => ControllerPathValidation::class,
+		'groupPath' => GroupPathValidation::class,
+		'path' => PathValidation::class,
+		'id' => IdValidation::class,
+	];
 
 	/** @var array */
 	protected $defaults = [
@@ -104,10 +114,13 @@ class CoreSchemaPlugin extends AbstractPlugin
 	protected function validateSchema(SchemaBuilder $builder)
 	{
 		$validator = new SchemaBuilderValidator();
-		$validator->add(new ControllerPathValidation());
-		$validator->add(new PathValidation());
-		$validator->add(new GroupPathValidation());
 
+		// Add all validators at compile-time
+		foreach (self::$validations as $validation) {
+			$validator->add(new $validation);
+		}
+
+		// Validate schema
 		$validator->validate($builder);
 
 		return $builder;

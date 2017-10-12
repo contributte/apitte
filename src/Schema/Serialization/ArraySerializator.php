@@ -42,13 +42,18 @@ final class ArraySerializator implements ISerializator
 				$mask = Helpers::slashless($mask);
 				$mask = '/' . trim($mask, '/');
 
-				// Build full id
-				$idp = array_merge(
-					$controller->getGroupIds(),
-					[$controller->getId()],
-					[$method->getId()]
-				);
-				$id = implode('.', $idp);
+				// Build full id (@GroupId(s) + @ControllerId + @Id)
+				// If @Id is empty, then fullid is also empty
+				if (empty($method->getId())) {
+					$id = NULL;
+				} else {
+					$idp = array_merge(
+						$controller->getGroupIds(),
+						[$controller->getId()],
+						[$method->getId()]
+					);
+					$id = implode('.', $idp);
+				}
 
 				// Create endpoint
 				$endpoint = [

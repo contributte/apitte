@@ -74,13 +74,14 @@ class IdValidation implements IValidation
 				// Allowed characters:
 				// -> a-z
 				// -> A-Z
-				// -> .
-				$match = Regex::match($id, '#([^a-zA-Z0-9\.]+)#');
+				// -> 0-9
+				// -> _
+				$match = Regex::match($id, '#([^a-zA-Z0-9_]+)#');
 
 				if ($match !== NULL) {
 					throw new InvalidSchemaException(
 						sprintf(
-							'@Id "%s" in "%s::%s()" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9\.].',
+							'@Id "%s" in "%s::%s()" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9_].',
 							$id,
 							$controller->getClass(),
 							$method->getName(),

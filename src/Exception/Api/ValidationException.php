@@ -3,7 +3,7 @@
 namespace Apitte\Core\Exception\Api;
 
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
-use Throwable;
+use Exception;
 
 class ValidationException extends ClientErrorException
 {
@@ -11,10 +11,10 @@ class ValidationException extends ClientErrorException
 	/**
 	 * @param string $message
 	 * @param int $code
-	 * @param Throwable $previous
+	 * @param Exception $previous
 	 * @param array $fields
 	 */
-	public function __construct($message = '', $code = 422, Throwable $previous = NULL, array $fields = [])
+	public function __construct($message = '', $code = 422, Exception $previous = NULL, array $fields = [])
 	{
 		parent::__construct($message, $code, $previous, $fields);
 	}

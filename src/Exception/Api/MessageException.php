@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Exception\Api;
 
-use Throwable;
+use Exception;
 
 class MessageException extends ClientErrorException
 {
@@ -10,10 +10,10 @@ class MessageException extends ClientErrorException
 	/**
 	 * @param string $errmessage
 	 * @param int $code
-	 * @param Throwable $previous
+	 * @param Exception $previous
 	 * @param string $message
 	 */
-	public function __construct($errmessage = '', $code = 500, Throwable $previous = NULL, $message = NULL)
+	public function __construct($errmessage = '', $code = 500, Exception $previous = NULL, $message = NULL)
 	{
 		parent::__construct($errmessage, $code, $previous, $message);
 	}

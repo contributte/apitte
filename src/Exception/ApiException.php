@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Exception;
 
-use Throwable;
+use Exception;
 
 abstract class ApiException extends RuntimeException
 {
@@ -12,10 +12,10 @@ abstract class ApiException extends RuntimeException
 	/**
 	 * @param string $message
 	 * @param int $code
-	 * @param Throwable $previous
+	 * @param Exception $previous
 	 * @param mixed $context
 	 */
-	public function __construct($message = '', $code = 400, Throwable $previous = NULL, $context = NULL)
+	public function __construct($message = '', $code = 400, Exception $previous = NULL, $context = NULL)
 	{
 		parent::__construct($message, $code, $previous);
 		$this->context = $context;

@@ -286,7 +286,6 @@ final class Endpoint
 		$suffixes = [];
 		foreach ($this->getNegotiations() as $negotiation) {
 			if ($negotiation->getType() === EndpointNegotiation::TYPE_SUFFIX) {
-				bdump($negotiation);
 				$suffixes[] = $negotiation->getMetadata()['suffix'];
 			}
 		}

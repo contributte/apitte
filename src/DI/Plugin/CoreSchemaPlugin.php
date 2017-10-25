@@ -7,6 +7,7 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
+use Apitte\Core\Schema\Serialization\IDecorator;
 use Apitte\Core\Schema\Validation\ControllerPathValidation;
 use Apitte\Core\Schema\Validation\GroupPathValidation;
 use Apitte\Core\Schema\Validation\IdValidation;
@@ -29,6 +30,9 @@ class CoreSchemaPlugin extends AbstractPlugin
 		'path' => PathValidation::class,
 		'id' => IdValidation::class,
 	];
+
+	/** @var IDecorator[] */
+	public static $decorators = [];
 
 	/** @var array */
 	protected $defaults = [
@@ -79,6 +83,11 @@ class CoreSchemaPlugin extends AbstractPlugin
 
 		// Validate schema
 		$builder = $this->validateSchema($builder);
+
+		// Update schema at compile-time
+		foreach (self::$decorators as $decorator) {
+			$decorator->decorate($builder);
+		}
 
 		// Convert schema to array (for DI)
 		$generator = new ArraySerializator();

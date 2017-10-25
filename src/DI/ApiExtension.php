@@ -16,6 +16,7 @@ class ApiExtension extends CompilerExtension
 	const CORE_DECORATOR_TAG = 'apitte.core.decorator';
 	const NEGOTIATION_TRANSFORMER_TAG = 'apitte.negotiator.transformer';
 	const NEGOTIATION_NEGOTIATOR_TAG = 'apitte.negotiation.negotiator';
+	const NEGOTIATION_RESOLVER_TAG = 'apitte.negotiation.resolver';
 	const MAPPING_DECORATOR_TAG = 'apitte.mapping.decorator';
 	const MAPPING_HANDLER_DECORATOR_TAG = 'apitte.mapping.handler.decorator';
 

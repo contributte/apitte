@@ -5,6 +5,7 @@ namespace Apitte\Core\Schema\Serialization;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
+use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Schema;
 use Apitte\Core\Schema\SchemaMapping;
@@ -35,7 +36,7 @@ final class ArrayHydrator implements IHydrator
 			$endpoint->setHandler($handler);
 			$endpoint->setMethods($route[SchemaMapping::METHODS]);
 			$endpoint->setMask($route[SchemaMapping::MASK]);
-			$endpoint->setPattern($route[SchemaMapping::PATTERN]);
+			$endpoint->setAttribute(SchemaMapping::RAW_PATTERN, $route[SchemaMapping::RAW_PATTERN]);
 
 			if (isset($route[SchemaMapping::GROUP])) {
 				if (isset($route[SchemaMapping::GROUP][SchemaMapping::GROUP_IDS])) {
@@ -62,6 +63,13 @@ final class ArrayHydrator implements IHydrator
 				$parameter->setType($param[SchemaMapping::PARAMETERS_TYPE]);
 				$parameter->setDescription($param[SchemaMapping::PARAMETERS_DESCRIPTION]);
 				$endpoint->addParameter($parameter);
+			}
+
+			foreach ($route[SchemaMapping::NEGOTIATIONS] as $nego) {
+				$negotiation = new EndpointNegotiation();
+				$negotiation->setType($nego[SchemaMapping::NEGOTIATIONS_TYPE]);
+				$negotiation->setMetadata($nego[SchemaMapping::NEGOTIATIONS_METADATA]);
+				$endpoint->addNegotiation($negotiation);
 			}
 
 			$schema->addEndpoint($endpoint);

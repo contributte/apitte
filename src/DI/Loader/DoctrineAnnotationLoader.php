@@ -8,6 +8,7 @@ use Apitte\Core\Annotation\Controller\GroupId;
 use Apitte\Core\Annotation\Controller\GroupPath;
 use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
+use Apitte\Core\Annotation\Controller\Negotiations;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestParameters;
 use Apitte\Core\Annotation\Controller\Tag;
@@ -261,6 +262,22 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$parameter = $schemaMethod->addParameter($p->getName());
 						$parameter->setType($p->getType());
 						$parameter->setDescription($p->getDescription());
+					}
+					continue;
+				}
+
+				// Parse @Negotiations =====================
+				if (get_class($annotation) === Negotiations::class) {
+					/** @var Negotiations $annotation */
+					foreach ($annotation->getNegotations() as $n) {
+						$negotiation = $schemaMethod->addNegotiation();
+						$negotiation->setType($n->getType());
+
+						if ($n->getType() === 'suffix') {
+							$negotiation->addMetadata('suffix', $n->getSuffix());
+						} else {
+							throw new InvalidStateException(sprintf('Annotation @Negotiations has unsupproted type "%s"', $n->getType()));
+						}
 					}
 					continue;
 				}

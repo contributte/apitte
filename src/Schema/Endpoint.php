@@ -3,6 +3,8 @@
 namespace Apitte\Core\Schema;
 
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
+use Apitte\Core\Exception\Logical\InvalidStateException;
+use Nette\Utils\Arrays;
 
 final class Endpoint
 {
@@ -44,8 +46,14 @@ final class Endpoint
 	/** @var EndpointParameter[] */
 	private $parameters = [];
 
+	/** @var EndpointNegotiation[] */
+	private $negotiations = [];
+
 	/** @var mixed[] */
 	private $tags = [];
+
+	/** @var array */
+	private $metadata = [];
 
 	/**
 	 * @return string[]
@@ -112,6 +120,10 @@ final class Endpoint
 	 */
 	public function getPattern()
 	{
+		if (!$this->pattern) {
+			$this->pattern = $this->generatePattern();
+		}
+
 		return $this->pattern;
 	}
 
@@ -179,6 +191,32 @@ final class Endpoint
 	}
 
 	/**
+	 * @return EndpointNegotiation[]
+	 */
+	public function getNegotiations()
+	{
+		return $this->negotiations;
+	}
+
+	/**
+	 * @param EndpointNegotiation $negotiation
+	 * @return void
+	 */
+	public function addNegotiation(EndpointNegotiation $negotiation)
+	{
+		$this->negotiations[] = $negotiation;
+	}
+
+	/**
+	 * @param EndpointNegotiation[] $negotiations
+	 * @return void
+	 */
+	public function setNegotiations($negotiations)
+	{
+		$this->negotiations = $negotiations;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getTags()
@@ -212,6 +250,52 @@ final class Endpoint
 	public function addTag($name, $value)
 	{
 		$this->tags[$name] = $value;
+	}
+
+	/**
+	 * @param string $key
+	 * @param mixed $value
+	 * @return void
+	 */
+	public function setAttribute($key, $value)
+	{
+		$this->metadata[$key] = $value;
+	}
+
+	/**
+	 * @param string $key
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public function getAttribute($key, $default = NULL)
+	{
+		return Arrays::get($this->metadata, $key, $default);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function generatePattern()
+	{
+		$rawPattern = $this->getAttribute('raw_pattern', NULL);
+
+		if ($rawPattern === NULL) {
+			throw new InvalidStateException('Raw pattern must be set');
+		}
+
+		$suffixes = [];
+		foreach ($this->getNegotiations() as $negotiation) {
+			if ($negotiation->getType() === EndpointNegotiation::TYPE_SUFFIX) {
+				bdump($negotiation);
+				$suffixes[] = $negotiation->getMetadata()['suffix'];
+			}
+		}
+
+		if ($suffixes) {
+			return sprintf('#%s(?:%s)?$/?\z#A', $rawPattern, implode('|', $suffixes));
+		} else {
+			return sprintf('#%s$/?\z#A', $rawPattern);
+		}
 	}
 
 }

@@ -18,12 +18,16 @@ interface SchemaMapping
 	const METHODS = 'methods';
 	const TAGS = 'tags';
 	const MASK = 'mask';
-	const PATTERN = 'pattern';
+	const RAW_PATTERN = 'raw_pattern';
 
 	const PARAMETERS = 'parameters';
 	const PARAMETERS_NAME = 'name';
 	const PARAMETERS_TYPE = 'type';
 	const PARAMETERS_PATTERN = 'pattern';
 	const PARAMETERS_DESCRIPTION = 'description';
+
+	const NEGOTIATIONS = 'negotiations';
+	const NEGOTIATIONS_TYPE = 'type';
+	const NEGOTIATIONS_METADATA = 'metadata';
 
 }

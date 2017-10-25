@@ -23,6 +23,9 @@ final class Method
 	/** @var MethodParameter[] */
 	private $parameters = [];
 
+	/** @var MethodNegotiation[] */
+	private $negotiations = [];
+
 	/**
 	 * @param string $name
 	 */
@@ -166,6 +169,25 @@ final class Method
 	public function getParameters()
 	{
 		return $this->parameters;
+	}
+
+	/**
+	 * @return MethodNegotiation
+	 */
+	public function addNegotiation()
+	{
+		$negotiation = new MethodNegotiation();
+		$this->negotiations[] = $negotiation;
+
+		return $negotiation;
+	}
+
+	/**
+	 * @return MethodNegotiation[]
+	 */
+	public function getNegotiations()
+	{
+		return $this->negotiations;
 	}
 
 }

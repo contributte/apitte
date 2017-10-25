@@ -71,7 +71,7 @@ final class ArraySerializator implements ISerializator
 					SchemaMapping::METHODS => $method->getMethods(),
 					SchemaMapping::MASK => $mask,
 					SchemaMapping::PARAMETERS => [],
-					SchemaMapping::PATTERN => $mask,
+					SchemaMapping::RAW_PATTERN => $mask,
 				];
 
 				// Collect variable parameters from URL
@@ -103,8 +103,16 @@ final class ArraySerializator implements ISerializator
 					return $pattern;
 				});
 
+				$endpoint[SchemaMapping::NEGOTIATIONS] = [];
+				foreach ($method->getNegotiations() as $negotiation) {
+					$endpoint[SchemaMapping::NEGOTIATIONS][] = [
+						SchemaMapping::NEGOTIATIONS_TYPE => $negotiation->getType(),
+						SchemaMapping::NEGOTIATIONS_METADATA => $negotiation->getMetadata(),
+					];
+				}
+
 				// Build final regex pattern
-				$endpoint[SchemaMapping::PATTERN] = sprintf('#%s$/?\z#A', $pattern);
+				$endpoint[SchemaMapping::RAW_PATTERN] = $pattern;
 
 				// Append to schema
 				$schema[] = $endpoint;

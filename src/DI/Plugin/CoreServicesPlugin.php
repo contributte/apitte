@@ -4,11 +4,13 @@ namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\Dispatcher\CoreDispatcher;
 use Apitte\Core\Dispatcher\IDispatcher;
+use Apitte\Core\Dispatcher\WrappedDispatcher;
 use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Schema;
+use Nette\DI\Statement;
 
 class CoreServicesPlugin extends AbstractPlugin
 {
@@ -36,7 +38,8 @@ class CoreServicesPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('dispatcher'))
 			->setClass(IDispatcher::class)
-			->setFactory(CoreDispatcher::class);
+			->setFactory(WrappedDispatcher::class, [new Statement(CoreDispatcher::class)])
+			->setAutowired(FALSE);
 
 		$builder->addDefinition($this->prefix('router'))
 			->setClass(IRouter::class)

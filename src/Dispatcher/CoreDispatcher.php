@@ -4,8 +4,6 @@ namespace Apitte\Core\Dispatcher;
 
 use Apitte\Core\Exception\Logical\BadRequestException;
 use Apitte\Core\Handler\IHandler;
-use Apitte\Core\Http\ApiRequest;
-use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Router\IRouter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -36,10 +34,6 @@ class CoreDispatcher implements IDispatcher
 	 */
 	public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		// Create API/HTTP objects
-		$request = $this->createApiRequest($request);
-		$response = $this->createApiResponse($response);
-
 		// Try match request to our routes
 		$matchedRequest = $this->match($request, $response);
 
@@ -82,26 +76,5 @@ class CoreDispatcher implements IDispatcher
 		throw new BadRequestException('No matched route by given URL', 404);
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @return ApiRequest
-	 */
-	protected function createApiRequest(ServerRequestInterface $request)
-	{
-		if ($request instanceof ApiRequest) return $request;
-
-		return new ApiRequest($request);
-	}
-
-	/**
-	 * @param ResponseInterface $response
-	 * @return ApiResponse
-	 */
-	protected function createApiResponse(ResponseInterface $response)
-	{
-		if ($response instanceof ApiResponse) return $response;
-
-		return new ApiResponse($response);
-	}
 
 }

@@ -14,6 +14,9 @@ final class Method
 	/** @var string */
 	private $id;
 
+	/** @var string */
+	private $description;
+
 	/** @var string[] */
 	private $methods = [];
 
@@ -74,6 +77,23 @@ final class Method
 	public function setId($id)
 	{
 		$this->id = $id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
+
+	/**
+	 * @param string $description
+	 * @return void
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
 	}
 
 	/**

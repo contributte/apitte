@@ -231,6 +231,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 			// Append method to scheme
 			$schemaMethod = $controller->addMethod($method->getName());
+			$schemaMethod->setDescription($method->getDescription());
 
 			// Iterate over all method annotations
 			foreach ($annotations as $annotation) {
@@ -271,13 +272,9 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 					/** @var Negotiations $annotation */
 					foreach ($annotation->getNegotations() as $n) {
 						$negotiation = $schemaMethod->addNegotiation();
-						$negotiation->setType($n->getType());
-
-						if ($n->getType() === 'suffix') {
-							$negotiation->addMetadata('suffix', $n->getSuffix());
-						} else {
-							throw new InvalidStateException(sprintf('Annotation @Negotiations has unsupproted type "%s"', $n->getType()));
-						}
+						$negotiation->setSuffix($n->getSuffix());
+						$negotiation->setDefault($n->isDefault());
+						$negotiation->setCallback($n->getCallback());
 					}
 					continue;
 				}

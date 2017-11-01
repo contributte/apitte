@@ -43,6 +43,9 @@ final class Endpoint
 	/** @var EndpointHandler */
 	private $handler;
 
+	/** @var string */
+	private $description;
+
 	/** @var EndpointParameter[] */
 	private $parameters = [];
 
@@ -148,9 +151,26 @@ final class Endpoint
 	 * @param EndpointHandler $handler
 	 * @return void
 	 */
-	public function setHandler($handler)
+	public function setHandler(EndpointHandler $handler)
 	{
 		$this->handler = $handler;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
+
+	/**
+	 * @param string $description
+	 * @return void
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
 	}
 
 	/**
@@ -277,17 +297,20 @@ final class Endpoint
 	 */
 	protected function generatePattern()
 	{
-		$rawPattern = $this->getAttribute('raw_pattern', NULL);
+		$rawPattern = $this->getAttribute('pattern', NULL);
 
 		if ($rawPattern === NULL) {
-			throw new InvalidStateException('Raw pattern must be set');
+			throw new InvalidStateException('Pattern attribute is required');
 		}
 
 		$suffixes = [];
 		foreach ($this->getNegotiations() as $negotiation) {
-			if ($negotiation->getType() === EndpointNegotiation::TYPE_SUFFIX) {
-				$suffixes[] = $negotiation->getMetadata()['suffix'];
-			}
+			$suffix = $negotiation->getSuffix();
+
+			// Skip if suffix is not provided
+			if (!$suffix) continue;
+
+			$suffixes[] = $suffix;
 		}
 
 		if ($suffixes) {

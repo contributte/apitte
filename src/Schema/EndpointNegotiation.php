@@ -5,46 +5,64 @@ namespace Apitte\Core\Schema;
 final class EndpointNegotiation
 {
 
-	const TYPE_SUFFIX = 'suffix';
+	/** @var string */
+	private $suffix;
+
+	/** @var bool */
+	private $default = FALSE;
 
 	/** @var string */
-	private $type;
-
-	/** @var array */
-	private $metadata = [];
+	private $callback;
 
 	/**
-	 * @return int
+	 * @return string
 	 */
-	public function getType()
+	public function getSuffix()
 	{
-		return $this->type;
+		return $this->suffix;
 	}
 
 	/**
-	 * @param int $type
+	 * @param string $suffix
 	 * @return void
 	 */
-	public function setType($type)
+	public function setSuffix($suffix)
 	{
-		$this->type = $type;
+		$this->suffix = $suffix;
 	}
 
 	/**
-	 * @return array
+	 * @return bool
 	 */
-	public function getMetadata()
+	public function isDefault()
 	{
-		return $this->metadata;
+		return $this->default;
 	}
 
 	/**
-	 * @param array $metadata
+	 * @param bool $default
 	 * @return void
 	 */
-	public function setMetadata(array $metadata)
+	public function setDefault($default)
 	{
-		$this->metadata = $metadata;
+		$this->default = $default;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCallback()
+	{
+		return $this->callback;
+	}
+
+	/**
+	 * @param string $callback
+	 * @return void
+	 */
+	public function setCallback($callback)
+	{
+		$this->callback = $callback;
 	}
 
 }

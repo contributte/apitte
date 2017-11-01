@@ -6,64 +6,63 @@ final class MethodNegotiation
 {
 
 	/** @var string */
-	private $type;
+	private $suffix;
 
-	/** @var array */
-	private $metadata = [];
+	/** @var bool */
+	private $default = FALSE;
 
-	/**
-	 * Create negotiation
-	 */
-	public function __construct()
-	{
-	}
-
-	/**
-	 * GETTERS/SETTERS *********************************************************
-	 */
+	/** @var string */
+	private $callback;
 
 	/**
 	 * @return string
 	 */
-	public function getType()
+	public function getSuffix()
 	{
-		return $this->type;
+		return $this->suffix;
 	}
 
 	/**
-	 * @param string $type
+	 * @param string $suffix
 	 * @return void
 	 */
-	public function setType($type)
+	public function setSuffix($suffix)
 	{
-		$this->type = $type;
+		$this->suffix = $suffix;
 	}
 
 	/**
-	 * @return array
+	 * @return bool
 	 */
-	public function getMetadata()
+	public function isDefault()
 	{
-		return $this->metadata;
+		return $this->default;
 	}
 
 	/**
-	 * @param string $key
-	 * @param mixed $value
+	 * @param bool $default
 	 * @return void
 	 */
-	public function addMetadata($key, $value)
+	public function setDefault($default)
 	{
-		$this->metadata[$key] = $value;
+		$this->default = $default;
 	}
 
 	/**
-	 * @param array $metadata
+	 * @return string
+	 */
+	public function getCallback()
+	{
+		return $this->callback;
+	}
+
+	/**
+	 * @param string $callback
 	 * @return void
 	 */
-	public function setMetadata(array $metadata)
+	public function setCallback($callback)
 	{
-		$this->metadata = $metadata;
+		$this->callback = $callback;
 	}
 
 }

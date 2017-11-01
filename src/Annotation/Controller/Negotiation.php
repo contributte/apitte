@@ -9,30 +9,60 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Annotation
  * @Target("ANNOTATION")
  */
-abstract class Negotiation
+final class Negotiation
 {
 
 	/** @var string */
-	private $type;
+	private $suffix;
+
+	/** @var bool */
+	private $default = FALSE;
+
+	/** @var string */
+	private $callback;
 
 	/**
 	 * @param array $values
 	 */
 	public function __construct(array $values)
 	{
-		if (!isset($values['type']) && !isset($values['description'])) {
-			throw new AnnotationException('Type is required at @AbstractNegotiation');
+		if (!isset($values['suffix'])) {
+			throw new AnnotationException('Suffix is required at @Negotiation');
 		}
 
-		$this->type = $values['type'];
+		$this->suffix = $values['suffix'];
+
+		if (isset($values['default'])) {
+			$this->default = $values['default'];
+		}
+
+		if (isset($values['callback'])) {
+			$this->callback = $values['callback'];
+		}
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getType()
+	public function getSuffix()
 	{
-		return $this->type;
+		return $this->suffix;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isDefault()
+	{
+		return $this->default;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCallback()
+	{
+		return $this->callback;
 	}
 
 }

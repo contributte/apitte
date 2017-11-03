@@ -24,6 +24,8 @@ class JsonDispatcher extends CoreDispatcher
 			$response = $response->withStatus(200)
 				->withHeader('Content-Type', 'application/json');
 			$response->getBody()->write(json_encode($result));
+		} else {
+			$response = $result;
 		}
 
 		// Validate if response is ResponseInterface

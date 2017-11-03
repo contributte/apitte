@@ -12,7 +12,7 @@ final class EndpointNegotiation
 	private $default = FALSE;
 
 	/** @var string */
-	private $callback;
+	private $renderer;
 
 	/**
 	 * @return string
@@ -51,18 +51,18 @@ final class EndpointNegotiation
 	/**
 	 * @return string
 	 */
-	public function getCallback()
+	public function getRenderer()
 	{
-		return $this->callback;
+		return $this->renderer;
 	}
 
 	/**
-	 * @param string $callback
+	 * @param string $renderer
 	 * @return void
 	 */
-	public function setCallback($callback)
+	public function setRenderer($renderer)
 	{
-		$this->callback = $callback;
+		$this->renderer = $renderer;
 	}
 
 }

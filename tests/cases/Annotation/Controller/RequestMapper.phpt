@@ -21,8 +21,8 @@ test(function () {
 
 // Entity
 test(function () {
-	$RequestMapper = new RequestMapper(['entity' => 'Entity']);
-	Assert::equal('Entity', $RequestMapper->getEntity());
+	$requestMapper = new RequestMapper(['entity' => 'Entity']);
+	Assert::equal('Entity', $requestMapper->getEntity());
 
 	Assert::exception(function () {
 		new RequestMapper(['entity' => '']);

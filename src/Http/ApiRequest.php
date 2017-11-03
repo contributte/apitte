@@ -3,7 +3,6 @@
 namespace Apitte\Core\Http;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
-use Apitte\Core\Schema\Endpoint;
 use Contributte\Psr7\Extra\ExtraRequestTrait;
 use Contributte\Psr7\ProxyRequest;
 
@@ -15,22 +14,6 @@ class ApiRequest extends ProxyRequest
 	/**
 	 * HELPERS *****************************************************************
 	 */
-
-	/**
-	 * @return bool
-	 */
-	public function hasEndpoint()
-	{
-		return $this->getAttribute(RequestAttributes::ATTR_ENDPOINT, NULL) !== NULL;
-	}
-
-	/**
-	 * @return Endpoint|NULL
-	 */
-	public function getEndpoint()
-	{
-		return $this->getAttribute(RequestAttributes::ATTR_ENDPOINT);
-	}
 
 	/**
 	 * @param string $name

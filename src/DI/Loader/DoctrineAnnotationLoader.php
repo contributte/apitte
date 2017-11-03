@@ -274,7 +274,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$negotiation = $schemaMethod->addNegotiation();
 						$negotiation->setSuffix($n->getSuffix());
 						$negotiation->setDefault($n->isDefault());
-						$negotiation->setCallback($n->getCallback());
+						$negotiation->setRenderer($n->getRenderer());
 					}
 					continue;
 				}

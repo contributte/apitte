@@ -19,7 +19,7 @@ final class Negotiation
 	private $default = FALSE;
 
 	/** @var string */
-	private $callback;
+	private $renderer;
 
 	/**
 	 * @param array $values
@@ -36,8 +36,8 @@ final class Negotiation
 			$this->default = $values['default'];
 		}
 
-		if (isset($values['callback'])) {
-			$this->callback = $values['callback'];
+		if (isset($values['renderer'])) {
+			$this->renderer = $values['renderer'];
 		}
 	}
 
@@ -60,9 +60,9 @@ final class Negotiation
 	/**
 	 * @return string
 	 */
-	public function getCallback()
+	public function getRenderer()
 	{
-		return $this->callback;
+		return $this->renderer;
 	}
 
 }

@@ -32,7 +32,13 @@ class WrappedDispatcher implements IDispatcher
 		$request = $this->createApiRequest($request);
 		$response = $this->createApiResponse($response);
 
-		return $this->dispatch($request, $response);
+		// Dispatch our classes
+		$response = $this->inner->dispatch($request, $response);
+
+		// Unwrap response
+		$response = $this->unwrap($response);
+
+		return $response;
 	}
 
 	/**
@@ -51,6 +57,20 @@ class WrappedDispatcher implements IDispatcher
 	protected function createApiResponse(ResponseInterface $response)
 	{
 		return new ApiResponse($response);
+	}
+
+	/**
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
+	 */
+	protected function unwrap(ResponseInterface $response)
+	{
+		if ($response instanceof ApiResponse) {
+			// Get original response
+			return $response->getOriginalResponse();
+		}
+
+		return $response;
 	}
 
 }

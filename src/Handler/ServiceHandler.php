@@ -6,7 +6,6 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
 use Nette\DI\Container;
-use Nette\Utils\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -27,7 +26,7 @@ class ServiceHandler implements IHandler
 	/**
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
-	 * @return ResponseInterface
+	 * @return mixed
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response)
 	{
@@ -38,16 +37,6 @@ class ServiceHandler implements IHandler
 		// Validate if response is returned
 		if ($response === NULL) {
 			throw new InvalidStateException('Handler returned response cannot be NULL');
-		}
-
-		// Convert array to JSON
-		if (is_array($response)) {
-			$response->getBody()->write(Json::encode($response));
-		}
-
-		// Validate if response is ResponseInterface
-		if (!($response instanceof ResponseInterface)) {
-			throw new InvalidStateException(sprintf('Handler returned response must be subtype of %s', ResponseInterface::class));
 		}
 
 		return $response;

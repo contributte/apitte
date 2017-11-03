@@ -11,7 +11,7 @@ interface IHandler
 	/**
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
-	 * @return ResponseInterface
+	 * @return mixeds
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response);
 

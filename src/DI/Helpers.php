@@ -3,6 +3,7 @@
 namespace Apitte\Core\DI;
 
 use Nette\DI\ContainerBuilder;
+use Nette\DI\ServiceDefinition;
 
 class Helpers
 {
@@ -32,7 +33,7 @@ class Helpers
 	/**
 	 * @param array $definitions
 	 * @param ContainerBuilder $builder
-	 * @return array
+	 * @return ServiceDefinition[]
 	 */
 	public static function getDefinitions(array $definitions, ContainerBuilder $builder)
 	{

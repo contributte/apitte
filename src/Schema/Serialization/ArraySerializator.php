@@ -123,7 +123,7 @@ final class ArraySerializator implements ISerializator
 			$endpoint['negotiations'][] = [
 				'suffix' => $negotiation->getSuffix(),
 				'default' => $negotiation->isDefault(),
-				'callback' => $negotiation->getCallback(),
+				'renderer' => $negotiation->getRenderer(),
 			];
 		}
 

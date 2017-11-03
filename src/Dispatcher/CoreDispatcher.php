@@ -3,6 +3,7 @@
 namespace Apitte\Core\Dispatcher;
 
 use Apitte\Core\Exception\Logical\BadRequestException;
+use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Router\IRouter;
 use Psr\Http\Message\ResponseInterface;
@@ -12,10 +13,10 @@ class CoreDispatcher implements IDispatcher
 {
 
 	/** @var IRouter */
-	private $router;
+	protected $router;
 
 	/** @var IHandler */
-	private $handler;
+	protected $handler;
 
 	/**
 	 * @param IRouter $router
@@ -63,7 +64,14 @@ class CoreDispatcher implements IDispatcher
 	 */
 	protected function handle(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		return $this->handler->handle($request, $response);
+		$response = $this->handler->handle($request, $response);
+
+		// Validate if response is ResponseInterface
+		if (!($response instanceof ResponseInterface)) {
+			throw new InvalidStateException(sprintf('Handler returned response must implement "%s"', ResponseInterface::class));
+		}
+
+		return $response;
 	}
 
 	/**
@@ -75,6 +83,5 @@ class CoreDispatcher implements IDispatcher
 	{
 		throw new BadRequestException('No matched route by given URL', 404);
 	}
-
 
 }

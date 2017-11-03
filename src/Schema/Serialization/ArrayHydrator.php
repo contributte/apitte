@@ -83,7 +83,7 @@ final class ArrayHydrator implements IHydrator
 				$negotiation = new EndpointNegotiation();
 				$negotiation->setSuffix($nego['suffix']);
 				$negotiation->setDefault($nego['default']);
-				$negotiation->setCallback($nego['callback']);
+				$negotiation->setRenderer($nego['renderer']);
 				$endpoint->addNegotiation($negotiation);
 			}
 		}

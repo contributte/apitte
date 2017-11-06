@@ -32,14 +32,14 @@ class PluginCompiler
 	}
 
 	/**
-	 * @param string $class
+	 * @param string $name
 	 * @return AbstractPlugin|NULL
 	 */
-	public function getPlugin($class)
+	public function getPlugin($name)
 	{
 		$plugins = $this->manager->getPlugins();
 
-		return isset($plugins[$class]) ? $plugins[$class] : NULL;
+		return isset($plugins[$name]) ? $plugins[$name] : NULL;
 	}
 
 	/**

@@ -110,7 +110,7 @@ class DecoratedDispatcher extends CoreDispatcher
 		if (is_array($result)) {
 			$response = $response->withEntity(ArrayEntity::from($result));
 		} else if (is_scalar($result)) {
-			$response = $response->withEntity(ScalarEntity::from($result));;
+			$response = $response->withEntity(ScalarEntity::from($result));
 		} else {
 			$response = $result;
 		}

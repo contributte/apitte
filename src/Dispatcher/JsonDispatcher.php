@@ -19,8 +19,9 @@ class JsonDispatcher extends CoreDispatcher
 	{
 		$result = $this->handler->handle($request, $response);
 
-		// Convert given array into json and response
-		if (is_array($result)) {
+		// Convert array and scalar into JSON
+		// Or just pass response
+		if (is_array($result) || is_scalar($result)) {
 			$response = $response->withStatus(200)
 				->withHeader('Content-Type', 'application/json');
 			$response->getBody()->write(json_encode($result));

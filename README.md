@@ -24,9 +24,10 @@ composer require apitte/core
 
 ## Version
 
-| State       | Version      | Branch   | PHP      |
-|-------------|--------------|----------|----------|
-| development | `dev-master` | `master` | `>= 5.6` |
+| State       | Version      | Branch   | PHP      | Composer                                        |
+|-------------|--------------|----------|----------|-------------------------------------------------|
+| development | `~0.2.0`     | `master` | `>= 5.6` | `minimum-stability: dev`, `prefer-stable: true` |
+| stable      | `~0.1.0`     | `master` | `>= 5.6` |                                                 |
 
 ## Example 
 

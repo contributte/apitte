@@ -63,11 +63,13 @@ class DecoratedDispatcher extends CoreDispatcher
 
 			// Trigger exception decorator
 			$response = $this->decoratorManager->decorateResponse(IDecorator::DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
+
 			// If there's no decorator to handle this exception, throw again
 			if ($response === NULL) throw $e;
 		} catch (Exception $e) {
 			// Trigger exception decorator
 			$response = $this->decoratorManager->decorateResponse(IDecorator::DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
+
 			// If there's no decorator to handle this exception, throw again
 			if ($response === NULL) throw $e;
 		}
@@ -98,7 +100,7 @@ class DecoratedDispatcher extends CoreDispatcher
 			// If exception has been ocurred during handling,
 			// catch it and take a snapshot (SnapshotException)
 			// of current request / response.
-			// It's use for passing attributes to next layer (dispatch).
+			// It's used for passing attributes to next layer (dispatch).
 			$result = $this->handler->handle($request, $response);
 		} catch (Exception $e) {
 			throw new SnapshotException($e, $request, $response);

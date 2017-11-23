@@ -5,6 +5,7 @@
 - [Installation - how to register an extension](#installation)
 - [Configuration - all options](#configuration)
 - [Usage - controller showtime](#usage)
+- [Annotations - list of all annotations](#annotations)
 - [Plugins - apitte plugins](#plugins)
 - [Advanced - complex configuration](#advanced)
 - [Playground - real examples](#playground)
@@ -24,7 +25,7 @@ extensions:
 
 ## Configuration
 
-```
+```yaml
 extensions:
     api: Apitte\Core\DI\ApiExtension
 
@@ -92,6 +93,24 @@ At the end, open your browser and locate to `localhost/<api-project>/hello/world
 ### Request & Response
 
 `Apitte\Core\Http\ApiRequest` & `Apitte\Core\Http\ApiResponse` implement the PSR-7 interfaces.  
+
+## Annotations
+
+| Annotation           | Target | Attributes                                                              | Description                                                                       |
+|----------------------|--------|-------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| `@Controller`        | Class  | none                                                                    | Mark as as type `controller`.                                                     |
+| `@ControllerId`      | Class  | `id={a-zA-Z0-9}`                                                        | Prefix all children methods ids with `id`.                                        |
+| `@ControllerPath`    | Class  | `path={a-zA-Z0-9}`                                                      | Prefix all children methods paths with `path`.                                    |
+| `@GroupId`           | Class  | `id={a-zA-Z0-9}`                                                        | Prefix all children methods ids with `id`. Can be set only on abstract class.     |
+| `@GroupPath`         | Class  | `path={a-zA-Z0-9}`                                                      | Prefix all children methods paths with `path`. Can be set only on abstract class. |
+| `@Id`                | Method | `id={a-zA-Z0-9}`                                                        | Set `id` to target method.                                                        |
+| `@Method`            | Method | GET, POST, PUT, OPTION, DELETE, HEAD                                    | Set `method` to target method.                                                    |
+| `@Negotiations`      | Method | `@Negotiation`                                                          | Group annotation for `@Negotiation`.                                              |
+| `@Negotiation`       | Method | `suffix={string}`, `default={true/false}`, `renderer={string}`          | Define negotiation mode to target method.                                         |
+| `@Path`              | Method | `path={a-zA-Z0-9}`                                                      | Set `path` to target method. A.k.a. URL path.                                     |
+| `@RequestParameters` | Method | `@RequestParameter`                                                     | Group annotation for `@RequestParameter`.                                         |
+| `@RequestParameter`  | Method | `name={string}`, `type={int/string/float/bool}`, `description={string}` | Define dynamic typed parameter.                                                   |
+| `@Tag`               | Method | `name={string}`, `value={string}`                                       | Add `tag` to target method.                                                       |
 
 ## Plugins
 

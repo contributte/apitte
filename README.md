@@ -75,6 +75,7 @@ As you can see, the architecture is ultra simple. `ApiRequest` & `ApiResponse` w
 - [Installation - how to register an extension](https://github.com/apitte/core/tree/master/.docs#installation)
 - [Configuration - all options](https://github.com/apitte/core/tree/master/.docs#configuration)
 - [Usage - controller showtime](https://github.com/apitte/core/tree/master/.docs#usage)
+- [Annotations - list of all annotations](https://github.com/apitte/core/tree/master/.docs#annotations)
 - [Plugins - apitte plugins](https://github.com/apitte/core/tree/master/.docs#plugins)
 - [Advanced - complex configuration](https://github.com/apitte/core/tree/master/.docs#advanced)
 - [Playground - real examples](https://github.com/apitte/core/tree/master/.docs#playground)

@@ -121,7 +121,7 @@ Core plugins are:
 - `CoreServicesPlugin` (enabled by default)
 - `CoreSchemaPlugin`  (enabled by default)
 - `CoreDecoratorPlugin` (optional)
-- `CodeMappingPlugin` (optional)
+- `CoreMappingPlugin` (optional)
 
 Another available plugins are:
 
@@ -168,12 +168,12 @@ When the DIC is compiled, we have a 2 decorators, the first is `@decorator.reque
 50 and the second is `@decorator.request.xml`. Both of them are called before dispatching.
 
 
-### CodeMappingPlugin
+### CoreMappingPlugin
 
 ```yaml
 api:
     plugins:
-        Apitte\Core\DI\Plugin\CodeMappingPlugin:
+        Apitte\Core\DI\Plugin\CoreMappingPlugin:
 ```
 
 This plugin allows you to define new annotations.
@@ -199,7 +199,7 @@ register more types.
 ```
 api:
     plugins:
-        Apitte\Core\DI\Plugin\CodeMappingPlugin:
+        Apitte\Core\DI\Plugin\CoreMappingPlugin:
             types:
                 int: Apitte\Core\Mapping\Parameter\IntegerTypeMapper
                 float: Apitte\Core\Mapping\Parameter\FloatTypeMapper

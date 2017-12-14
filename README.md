@@ -99,6 +99,8 @@ As you can see, the architecture is ultra simple. `ApiRequest` & `ApiResponse` w
 
 -----
 
+<a href="https://github.com/tlapnet"><img  width="200" src="https://cdn.rawgit.com/f3l1x/xsource/2463efb7/assets/tlapdev.png"></a>
+
 The development is sponsored by [Tlapnet](http://www.tlapnet.cz) and a lot of coffeees. Thank you guys! :+1:
 
 -----

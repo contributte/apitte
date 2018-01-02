@@ -16,6 +16,7 @@ use Tester\Assert;
 use Tests\Fixtures\Controllers\FoobarController;
 use Tests\Fixtures\Controllers\InvalidGroupAnnotationController;
 use Tests\Fixtures\Controllers\InvalidGroupPathAnnotationController;
+use Tests\Fixtures\Controllers\PrefixedAnnotationController;
 
 // Check if controller is found and add as dependency to DIC
 test(function () {
@@ -97,4 +98,17 @@ test(function () {
 		$loader = new DoctrineAnnotationLoader($builder);
 		$loader->load(new SchemaBuilder());
 	}, InvalidStateException::class, sprintf('Annotation @GroupPath cannot be on non-abstract "%s"', InvalidGroupPathAnnotationController::class));
+});
+
+// Test prefixed annotation (@API\Controller)
+test(function() {
+	$builder = new ContainerBuilder();
+	$builder->addDefinition('prefixedAnnotation')
+		->setClass(PrefixedAnnotationController::class);
+
+	$loader = new DoctrineAnnotationLoader($builder);
+	$schemaBuilder = $loader->load(new SchemaBuilder());
+
+	Assert::type(SchemaBuilder::class, $schemaBuilder);
+	Assert::count(1, $schemaBuilder->getControllers());
 });

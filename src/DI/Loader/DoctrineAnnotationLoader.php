@@ -124,7 +124,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	 */
 	protected function acceptController(ClassType $class)
 	{
-		// Has class annotation @Controller?	// Has class annotation @Controller?
+		// Has class annotation @Controller?
 		if ($this->createReader()->getClassAnnotation($class, \Apitte\Core\Annotation\Controller\Controller::class)) return TRUE;
 
 		// Has any of parent classes annotation @Controller?

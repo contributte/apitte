@@ -124,15 +124,15 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	 */
 	protected function acceptController(ClassType $class)
 	{
-		// Has class annotation @Controller?
-		if ($class->hasAnnotation('Controller') || $class->hasAnnotation('API\Controller')) return TRUE;
+		// Has class annotation @Controller?	// Has class annotation @Controller?
+		if ($this->createReader()->getClassAnnotation($class, \Apitte\Core\Annotation\Controller\Controller::class)) return TRUE;
 
 		// Has any of parent classes annotation @Controller?
 		$parents = $this->meta['services'][$class->getName()]['parents'];
 
 		/** @var ClassType $parentClass */
 		foreach ($parents as $parentClass) {
-			if ($parentClass->hasAnnotation('Controller') || $parentClass->hasAnnotation('API\Controller')) return TRUE;
+			if ($this->createReader()->getClassAnnotation($parentClass, \Apitte\Core\Annotation\Controller\Controller::class)) return TRUE;
 		}
 
 		return FALSE;

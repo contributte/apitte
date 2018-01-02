@@ -126,14 +126,14 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	protected function acceptController(ClassType $class)
 	{
 		// Has class annotation @Controller?
-		if ($this->createReader()->getClassAnnotation($class, ControllerAnnotation::class)) return TRUE;
+		if ($this->getReader()->getClassAnnotation($class, ControllerAnnotation::class)) return TRUE;
 
 		// Has any of parent classes annotation @Controller?
 		$parents = $this->meta['services'][$class->getName()]['parents'];
 
 		/** @var ClassType $parentClass */
 		foreach ($parents as $parentClass) {
-			if ($this->createReader()->getClassAnnotation($parentClass, ControllerAnnotation::class)) return TRUE;
+			if ($this->getReader()->getClassAnnotation($parentClass, ControllerAnnotation::class)) return TRUE;
 		}
 
 		return FALSE;
@@ -147,7 +147,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	protected function parseControllerClassAnnotations(Controller $controller, ClassType $class)
 	{
 		// Read class annotations
-		$annotations = $this->createReader()->getClassAnnotations($class);
+		$annotations = $this->getReader()->getClassAnnotations($class);
 
 		// Iterate over all class annotations in controller
 		foreach ($annotations as $annotation) {
@@ -187,7 +187,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		// Iterate over all class annotations in controller's parents
 		foreach ($reversed as $parent) {
 			// Read parent class annotations
-			$parentAnnotations = $this->createReader()->getClassAnnotations($parent);
+			$parentAnnotations = $this->getReader()->getClassAnnotations($parent);
 
 			// Iterate over all parent class annotations
 			foreach ($parentAnnotations as $annotation) {
@@ -225,7 +225,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			if (!$method->isPublic()) continue;
 
 			// Read method annotations
-			$annotations = $this->createReader()->getMethodAnnotations($method);
+			$annotations = $this->getReader()->getMethodAnnotations($method);
 
 			// Skip if method has no @Path/@Method annotations
 			if (count($annotations) <= 0) continue;
@@ -296,7 +296,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	/**
 	 * @return AnnotationReader
 	 */
-	private function createReader()
+	private function getReader()
 	{
 		if (!$this->reader) {
 			AnnotationRegistry::registerLoader('class_exists');

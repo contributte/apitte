@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\DI\Loader;
 
+use Apitte\Core\Annotation\Controller\Controller as ControllerAnnotation;
 use Apitte\Core\Annotation\Controller\ControllerId;
 use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\GroupId;
@@ -89,7 +90,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		$parents = class_parents($class);
 		$reflections = [];
 
-		// Iterate over all parents and analyse thems
+		// Iterate over all parents and analyse them
 		foreach ((array) $parents as $parentClass) {
 			// Stop multiple analysing
 			if (isset($this->meta['services'][$parentClass])) {
@@ -125,14 +126,14 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	protected function acceptController(ClassType $class)
 	{
 		// Has class annotation @Controller?
-		if ($this->createReader()->getClassAnnotation($class, \Apitte\Core\Annotation\Controller\Controller::class)) return TRUE;
+		if ($this->createReader()->getClassAnnotation($class, ControllerAnnotation::class)) return TRUE;
 
 		// Has any of parent classes annotation @Controller?
 		$parents = $this->meta['services'][$class->getName()]['parents'];
 
 		/** @var ClassType $parentClass */
 		foreach ($parents as $parentClass) {
-			if ($this->createReader()->getClassAnnotation($parentClass, \Apitte\Core\Annotation\Controller\Controller::class)) return TRUE;
+			if ($this->createReader()->getClassAnnotation($parentClass, ControllerAnnotation::class)) return TRUE;
 		}
 
 		return FALSE;

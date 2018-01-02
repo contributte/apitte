@@ -101,7 +101,7 @@ test(function () {
 });
 
 // Test prefixed annotation (@API\Controller)
-test(function() {
+test(function () {
 	$builder = new ContainerBuilder();
 	$builder->addDefinition('prefixedAnnotation')
 		->setClass(PrefixedAnnotationController::class);

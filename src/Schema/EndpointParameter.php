@@ -2,6 +2,8 @@
 
 namespace Apitte\Core\Schema;
 
+use Apitte\Core\Annotation\Controller\RequestParameter;
+
 final class EndpointParameter
 {
 
@@ -21,6 +23,18 @@ final class EndpointParameter
 
 	/** @var string */
 	private $description;
+
+	/** @var string */
+	private $in = RequestParameter::IN_PATH;
+
+	/** @var bool */
+	private $required = TRUE;
+
+	/** @var bool */
+	private $deprecated = FALSE;
+
+	/** @var bool */
+	private $allowEmpty = FALSE;
 
 	/**
 	 * @return string
@@ -71,6 +85,74 @@ final class EndpointParameter
 	public function setDescription($description)
 	{
 		$this->description = $description;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getIn()
+	{
+		return $this->in;
+	}
+
+	/**
+	 * @param string $in
+	 * @return void
+	 */
+	public function setIn($in)
+	{
+		$this->in = $in;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isRequired()
+	{
+		return $this->required;
+	}
+
+	/**
+	 * @param bool $required
+	 * @return void
+	 */
+	public function setRequired($required)
+	{
+		$this->required = $required;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isDeprecated()
+	{
+		return $this->deprecated;
+	}
+
+	/**
+	 * @param bool $deprecated
+	 * @return void
+	 */
+	public function setDeprecated($deprecated)
+	{
+		$this->deprecated = $deprecated;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAllowEmpty()
+	{
+		return $this->allowEmpty;
+	}
+
+	/**
+	 * @param bool $allowEmpty
+	 * @return void
+	 */
+	public function setAllowEmpty($allowEmpty)
+	{
+		$this->allowEmpty = $allowEmpty;
 	}
 
 }

@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Schema\Serialization;
 
+use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\Controller\Method;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
@@ -99,6 +100,10 @@ final class ArraySerializator implements ISerializator
 				'name' => $variableName,
 				'type' => EndpointParameter::TYPE_SCALAR,
 				'description' => NULL,
+				'in' => RequestParameter::IN_PATH,
+				'required' => TRUE,
+				'allowEmpty' => FALSE,
+				'deprecated' => FALSE,
 			];
 
 			// Update endpoint parameters by defined annotation
@@ -106,6 +111,10 @@ final class ArraySerializator implements ISerializator
 				$param = $method->getParameters()[$variableName];
 				$parameter['type'] = $param->getType();
 				$parameter['description'] = $param->getDescription();
+				$parameter['in'] = $param->getIn();
+				$parameter['required'] = $param->isRequired();
+				$parameter['allowEmpty'] = $param->isAllowEmpty();
+				$parameter['deprecated'] = $param->isDeprecated();
 			}
 
 			// Build parameter pattern

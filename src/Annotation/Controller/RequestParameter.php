@@ -13,6 +13,11 @@ use Nette\Utils\Arrays;
 final class RequestParameter
 {
 
+	const IN_QUERY = 'query';
+	const IN_COOKIE = 'cookie';
+	const IN_HEADER = 'header';
+	const IN_PATH = 'path';
+
 	/** @var string */
 	private $name;
 
@@ -22,8 +27,20 @@ final class RequestParameter
 	/** @var string */
 	private $description;
 
+	/** @var string */
+	private $in = self::IN_PATH;
+
+	/** @var bool */
+	private $required = TRUE;
+
+	/** @var bool */
+	private $deprecated = FALSE;
+
+	/** @var bool */
+	private $allowEmpty = FALSE;
+
 	/**
-	 * @param array $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
@@ -38,6 +55,10 @@ final class RequestParameter
 		$this->name = $values['name'];
 		$this->type = Arrays::get($values, 'type', NULL);
 		$this->description = Arrays::get($values, 'description', NULL);
+		$this->in = Arrays::get($values, 'in', self::IN_PATH);
+		$this->required = Arrays::get($values, 'required', TRUE);
+		$this->deprecated = Arrays::get($values, 'deprecated', FALSE);
+		$this->allowEmpty = Arrays::get($values, 'allowEmpty', FALSE);
 	}
 
 	/**
@@ -62,6 +83,38 @@ final class RequestParameter
 	public function getDescription()
 	{
 		return $this->description;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getIn()
+	{
+		return $this->in;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isRequired()
+	{
+		return $this->required;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isDeprecated()
+	{
+		return $this->deprecated;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAllowEmpty()
+	{
+		return $this->allowEmpty;
 	}
 
 }

@@ -264,6 +264,10 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$parameter = $schemaMethod->addParameter($p->getName());
 						$parameter->setType($p->getType());
 						$parameter->setDescription($p->getDescription());
+						$parameter->setIn($p->getIn());
+						$parameter->setRequired($p->isRequired());
+						$parameter->setDeprecated($p->isDeprecated());
+						$parameter->setAllowEmpty($p->isAllowEmpty());
 					}
 					continue;
 				}

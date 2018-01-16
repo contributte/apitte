@@ -2,15 +2,30 @@
 
 namespace Apitte\Core\Mapping\Request;
 
-use Psr\Http\Message\ServerRequestInterface;
-
-abstract class AbstractEntity
+abstract class AbstractEntity implements IRequestEntity
 {
 
+	/** @var array */
+	protected $properties = [];
+
 	/**
-	 * @param ServerRequestInterface $request
+	 * @param array $data
 	 * @return static
 	 */
-	abstract public function fromRequest(ServerRequestInterface $request);
+	protected function createInstance(array $data)
+	{
+		$inst = new static();
+
+		// Fill properties with real data
+		$properties = $this->getProperties();
+		foreach ($properties as $property) {
+			if (!array_key_exists($property, $data)) continue;
+
+			// Fill single property
+			$inst->{$property} = $data[$property];
+		}
+
+		return $inst;
+	}
 
 }

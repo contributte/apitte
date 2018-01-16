@@ -4,6 +4,7 @@ namespace Apitte\Core\Router;
 
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
+use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Schema;
 use Apitte\Core\Utils\Regex;
 use Psr\Http\Message\ServerRequestInterface;
@@ -88,10 +89,17 @@ class SimpleRouter implements IRouter
 		// Skip if there's no match
 		if ($match === NULL) return NULL;
 
-		// Fill parameters with matched variables
 		$parameters = [];
-		foreach ($endpoint->getParameters() as $param) {
+
+		// Fill path parameters with matched variables
+		foreach ($endpoint->getParametersByIn(EndpointParameter::IN_PATH) as $param) {
 			$parameters[$param->getName()] = $match[$param->getName()];
+		}
+
+		// Fill query parameters with query params
+		$queryParams = $request->getQueryParams();
+		foreach ($endpoint->getParametersByIn(EndpointParameter::IN_QUERY) as $param) {
+			$parameters[$param->getName()] = isset($queryParams[$param->getName()]) ? $queryParams[$param->getName()] : NULL;
 		}
 
 		// Set attributes to request

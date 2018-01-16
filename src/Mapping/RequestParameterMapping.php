@@ -65,6 +65,11 @@ class RequestParameterMapping
 			// If it's unsupported type, skip it
 			if (!$mapper) continue;
 
+			// Logical check
+			if (!array_key_exists($parameter->getName(), $requestParameters)) {
+				throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
+			}
+
 			// Obtain request parameter values
 			$value = $requestParameters[$parameter->getName()];
 

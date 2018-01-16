@@ -2,7 +2,9 @@
 
 namespace Apitte\Core\Mapping\Request;
 
-abstract class AbstractEntity implements IRequestEntity
+use Apitte\Core\Mapping\Arrayable;
+
+abstract class AbstractEntity implements IRequestEntity, Arrayable
 {
 
 	/** @var array */
@@ -12,12 +14,12 @@ abstract class AbstractEntity implements IRequestEntity
 	 * @param array $data
 	 * @return static
 	 */
-	protected function createInstance(array $data)
+	public static function factory(array $data)
 	{
 		$inst = new static();
 
 		// Fill properties with real data
-		$properties = $this->getProperties();
+		$properties = $inst->getProperties();
 		foreach ($properties as $property) {
 			if (!array_key_exists($property, $data)) continue;
 
@@ -27,5 +29,14 @@ abstract class AbstractEntity implements IRequestEntity
 
 		return $inst;
 	}
+
+	/**
+	 * API *********************************************************************
+	 */
+
+	/**
+	 * @return array
+	 */
+	abstract public function getProperties();
 
 }

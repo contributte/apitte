@@ -6,6 +6,7 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Request\IRequestEntity;
+use Apitte\Core\Mapping\Validator\IEntityValidator;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointRequestMapper;
 use Psr\Http\Message\ResponseInterface;
@@ -13,6 +14,18 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class RequestEntityMapping
 {
+
+	/** @var IEntityValidator */
+	protected $validator;
+
+	/**
+	 * @param IEntityValidator $validator
+	 * @return void
+	 */
+	public function setValidator(IEntityValidator $validator)
+	{
+		$this->validator = $validator;
+	}
 
 	/**
 	 * MAPPING *****************************************************************
@@ -61,8 +74,14 @@ class RequestEntityMapping
 			throw new InvalidStateException(sprintf('Instantiated entity "%s" does not implement "%s"', get_class($entity), IRequestEntity::class));
 		}
 
-		// Allow modify entity in children
+		// Allow modify entity in extended class
 		$entity = $this->modify($entity, $request);
+		if (!$entity) return NULL;
+
+		// Try to validate entity only if its enabled
+		if ($mapper->isValidation() === TRUE) {
+			$this->validate($entity);
+		}
 
 		return $entity;
 	}
@@ -75,6 +94,16 @@ class RequestEntityMapping
 	protected function modify(IRequestEntity $entity, ServerRequestInterface $request)
 	{
 		return $entity->fromRequest($request);
+	}
+
+	/**
+	 * @param IRequestEntity $entity
+	 * @return void
+	 */
+	protected function validate(IRequestEntity $entity)
+	{
+		if (!$this->validator) return;
+		$this->validator->validate($entity);
 	}
 
 }

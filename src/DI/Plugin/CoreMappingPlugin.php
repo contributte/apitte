@@ -12,6 +12,8 @@ use Apitte\Core\Mapping\Parameter\IntegerTypeMapper;
 use Apitte\Core\Mapping\Parameter\StringTypeMapper;
 use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Mapping\RequestParameterMapping;
+use Apitte\Core\Mapping\Validator\BasicValidator;
+use Apitte\Core\Mapping\Validator\IEntityValidator;
 
 class CoreMappingPlugin extends AbstractPlugin
 {
@@ -56,15 +58,20 @@ class CoreMappingPlugin extends AbstractPlugin
 			->setFactory(RequestEntityDecorator::class)
 			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 101, 'type' => IDecorator::HANDLER_BEFORE]);
 
-		$rpm = $builder->addDefinition($this->prefix('request.parameters.mapping'))
+		$parametersMapping = $builder->addDefinition($this->prefix('request.parameters.mapping'))
 			->setFactory(RequestParameterMapping::class);
 
 		foreach ($config['types'] as $type => $mapper) {
-			$rpm->addSetup('addMapper', [$type, $mapper]);
+			$parametersMapping->addSetup('addMapper', [$type, $mapper]);
 		}
 
+		$builder->addDefinition($this->prefix('request.entity.mapping.validator'))
+			->setType(IEntityValidator::class)
+			->setFactory(BasicValidator::class);
+
 		$builder->addDefinition($this->prefix('request.entity.mapping'))
-			->setFactory(RequestEntityMapping::class);
+			->setFactory(RequestEntityMapping::class)
+			->addSetup('setValidator', ['@' . $this->prefix('request.entity.mapping.validator')]);
 	}
 
 }

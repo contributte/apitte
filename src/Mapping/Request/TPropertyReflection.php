@@ -4,7 +4,6 @@ namespace Apitte\Core\Mapping\Request;
 
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Schema\Endpoint;
-use Nette\Utils\Strings;
 use ReflectionObject;
 
 trait TPropertyReflection
@@ -22,15 +21,11 @@ trait TPropertyReflection
 			$class = get_class($this);
 
 			foreach ($rf->getProperties() as $property) {
-				// If property is not from the latest child,
-				// then skip it.
+				// If property is not from the latest child, then skip it.
 				if ($property->getDeclaringClass()->getName() !== $class) continue;
 
-				$doc = $property->getDocComment();
-
-				// If property does not have @mapping annotation,
-				// then skip it.
-				if (!Strings::contains($doc, '@mapping')) continue;
+				// If property is not public, then skip it.
+				if (!$property->isPublic()) continue;
 
 				$properties[$property->getName()] = $property->getName();
 			}
@@ -85,7 +80,7 @@ trait TPropertyReflection
 	 */
 	protected function fromBodyRequest(ApiRequest $request)
 	{
-		return $this->createInstance($request->getJsonBody(TRUE));
+		return $this->factory($request->getJsonBody(TRUE));
 	}
 
 	/**
@@ -94,7 +89,7 @@ trait TPropertyReflection
 	 */
 	protected function fromGetRequest(ApiRequest $request)
 	{
-		return $this->createInstance($request->getQueryParams());
+		return $this->factory($request->getQueryParams());
 	}
 
 }

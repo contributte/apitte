@@ -2,6 +2,8 @@
 
 namespace Apitte\Core\Schema;
 
+use Apitte\Core\Annotation\Controller\RequestMapper;
+use Apitte\Core\Annotation\Controller\ResponseMapper;
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Nette\Utils\Arrays;
@@ -51,6 +53,12 @@ final class Endpoint
 
 	/** @var EndpointNegotiation[] */
 	private $negotiations = [];
+
+	/** @var EndpointRequestMapper */
+	private $requestMapper;
+
+	/** @var EndpointResponseMapper */
+	private $responseMapper;
 
 	/** @var mixed[] */
 	private $tags = [];
@@ -318,6 +326,40 @@ final class Endpoint
 		} else {
 			return sprintf('#%s$/?\z#A', $rawPattern);
 		}
+	}
+
+	/**
+	 * @return RequestMapper
+	 */
+	public function getRequestMapper()
+	{
+		return $this->requestMapper;
+	}
+
+	/**
+	 * @param EndpointRequestMapper $requestMapper
+	 * @return void
+	 */
+	public function setRequestMapper(EndpointRequestMapper $requestMapper)
+	{
+		$this->requestMapper = $requestMapper;
+	}
+
+	/**
+	 * @return ResponseMapper
+	 */
+	public function getResponseMapper()
+	{
+		return $this->responseMapper;
+	}
+
+	/**
+	 * @param EndpointResponseMapper $responseMapper
+	 * @return void
+	 */
+	public function setResponseMapper(EndpointResponseMapper $responseMapper)
+	{
+		$this->responseMapper = $responseMapper;
 	}
 
 }

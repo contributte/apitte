@@ -7,6 +7,8 @@ use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
+use Apitte\Core\Schema\EndpointRequestMapper;
+use Apitte\Core\Schema\EndpointResponseMapper;
 use Apitte\Core\Schema\Schema;
 
 final class ArrayHydrator implements IHydrator
@@ -89,8 +91,22 @@ final class ArrayHydrator implements IHydrator
 				$negotiation->setSuffix($nego['suffix']);
 				$negotiation->setDefault($nego['default']);
 				$negotiation->setRenderer($nego['renderer']);
+
 				$endpoint->addNegotiation($negotiation);
 			}
+		}
+
+		if (isset($data['requestMapper'])) {
+			$requestMapper = new EndpointRequestMapper();
+			$requestMapper->setEntity($data['requestMapper']['entity']);
+			$requestMapper->setValidation($data['requestMapper']['validation']);
+			$endpoint->setRequestMapper($requestMapper);
+		}
+
+		if (isset($data['responseMapper'])) {
+			$responseMapper = new EndpointResponseMapper();
+			$responseMapper->setEntity($data['requestMapper']['entity']);
+			$endpoint->setResponseMapper($responseMapper);
 		}
 
 		return $endpoint;

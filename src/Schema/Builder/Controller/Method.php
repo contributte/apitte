@@ -29,6 +29,12 @@ final class Method
 	/** @var MethodNegotiation[] */
 	private $negotiations = [];
 
+	/** @var array */
+	private $requestMapper = [];
+
+	/** @var array */
+	private $responseMapper = [];
+
 	/**
 	 * @param string $name
 	 */
@@ -208,6 +214,40 @@ final class Method
 	public function getNegotiations()
 	{
 		return $this->negotiations;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getRequestMapper()
+	{
+		return $this->requestMapper;
+	}
+
+	/**
+	 * @param array $requestMapper
+	 * @return void
+	 */
+	public function setRequestMapper(array $requestMapper)
+	{
+		$this->requestMapper = $requestMapper;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getResponseMapper()
+	{
+		return $this->responseMapper;
+	}
+
+	/**
+	 * @param array $responseMapper
+	 * @return void
+	 */
+	public function setResponseMapper(array $responseMapper)
+	{
+		$this->responseMapper = $responseMapper;
 	}
 
 }

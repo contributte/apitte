@@ -36,7 +36,7 @@ class RequestParameterMapping
 	/**
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
-	 * @return ResponseInterface|ServerRequestInterface
+	 * @return ServerRequestInterface
 	 */
 	public function map(ServerRequestInterface $request, ResponseInterface $response)
 	{

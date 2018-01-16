@@ -97,10 +97,11 @@ class DecoratedDispatcher extends CoreDispatcher
 		}
 
 		try {
-			// If exception has been ocurred during handling,
+			// If exception has been occurred during handling,
 			// catch it and take a snapshot (SnapshotException)
 			// of current request / response.
-			// It's used for passing attributes to next layer (dispatch).
+			// It's used for passing attributes to next layer (dispatch)
+			// from decorators above (IDecorator::HANDLER_BEFORE).
 			$result = $this->handler->handle($request, $response);
 		} catch (Exception $e) {
 			throw new SnapshotException($e, $request, $response);

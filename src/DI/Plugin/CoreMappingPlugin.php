@@ -3,12 +3,14 @@
 namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\Decorator\IDecorator;
+use Apitte\Core\Decorator\RequestEntityDecorator;
 use Apitte\Core\Decorator\RequestParametersDecorator;
 use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Mapping\Parameter\FloatTypeMapper;
 use Apitte\Core\Mapping\Parameter\IntegerTypeMapper;
 use Apitte\Core\Mapping\Parameter\StringTypeMapper;
+use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Mapping\RequestParameterMapping;
 
 class CoreMappingPlugin extends AbstractPlugin
@@ -50,12 +52,19 @@ class CoreMappingPlugin extends AbstractPlugin
 			->setFactory(RequestParametersDecorator::class)
 			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 100, 'type' => IDecorator::HANDLER_BEFORE]);
 
+		$builder->addDefinition($this->prefix('request.entity.decorator'))
+			->setFactory(RequestEntityDecorator::class)
+			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 101, 'type' => IDecorator::HANDLER_BEFORE]);
+
 		$rpm = $builder->addDefinition($this->prefix('request.parameters.mapping'))
 			->setFactory(RequestParameterMapping::class);
 
 		foreach ($config['types'] as $type => $mapper) {
 			$rpm->addSetup('addMapper', [$type, $mapper]);
 		}
+
+		$builder->addDefinition($this->prefix('request.entity.mapping'))
+			->setFactory(RequestEntityMapping::class);
 	}
 
 }

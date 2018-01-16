@@ -12,8 +12,8 @@ use Apitte\Core\Mapping\Parameter\IntegerTypeMapper;
 use Apitte\Core\Mapping\Parameter\StringTypeMapper;
 use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Mapping\RequestParameterMapping;
-use Apitte\Core\Mapping\Validator\BasicValidator;
 use Apitte\Core\Mapping\Validator\IEntityValidator;
+use Apitte\Core\Mapping\Validator\NullValidator;
 
 class CoreMappingPlugin extends AbstractPlugin
 {
@@ -26,6 +26,9 @@ class CoreMappingPlugin extends AbstractPlugin
 			'int' => IntegerTypeMapper::class,
 			'float' => FloatTypeMapper::class,
 			'string' => StringTypeMapper::class,
+		],
+		'request' => [
+			'validator' => NullValidator::class,
 		],
 	];
 
@@ -67,7 +70,7 @@ class CoreMappingPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('request.entity.mapping.validator'))
 			->setType(IEntityValidator::class)
-			->setFactory(BasicValidator::class);
+			->setFactory($config['request']['validator']);
 
 		$builder->addDefinition($this->prefix('request.entity.mapping'))
 			->setFactory(RequestEntityMapping::class)

@@ -31,7 +31,7 @@ class IdValidation implements IValidation
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
 
-				// Skip if id is not set
+				// Skip if @Id is not set
 				if (empty($method->getId())) continue;
 
 				$fullid = implode('.', array_merge(
@@ -69,6 +69,9 @@ class IdValidation implements IValidation
 
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
+				// Skip if @Id is not set
+				if (empty($method->getId())) continue;
+
 				$id = $method->getId();
 
 				// Allowed characters:

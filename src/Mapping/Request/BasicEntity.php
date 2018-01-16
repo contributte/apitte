@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Mapping\Request;
 
-abstract class PropertyReflectionEntity extends AbstractEntity
+abstract class BasicEntity extends AbstractEntity
 {
 
 	use TPropertyReflection;

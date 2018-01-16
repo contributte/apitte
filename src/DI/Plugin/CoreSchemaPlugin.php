@@ -13,6 +13,7 @@ use Apitte\Core\Schema\Validation\GroupPathValidation;
 use Apitte\Core\Schema\Validation\IdValidation;
 use Apitte\Core\Schema\Validation\IValidation;
 use Apitte\Core\Schema\Validation\PathValidation;
+use Apitte\Core\Schema\Validation\RequestMapperValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
 
 class CoreSchemaPlugin extends AbstractPlugin
@@ -29,6 +30,7 @@ class CoreSchemaPlugin extends AbstractPlugin
 		'groupPath' => GroupPathValidation::class,
 		'path' => PathValidation::class,
 		'id' => IdValidation::class,
+		'requestMapper' => RequestMapperValidation::class,
 	];
 
 	/** @var IDecorator[] */

@@ -7,9 +7,6 @@ use Apitte\Core\Mapping\Arrayable;
 abstract class AbstractEntity implements IRequestEntity, Arrayable
 {
 
-	/** @var array */
-	protected $properties = [];
-
 	/**
 	 * @return array
 	 */

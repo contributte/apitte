@@ -2,8 +2,6 @@
 
 namespace Apitte\Core\Schema;
 
-use Apitte\Core\Annotation\Controller\RequestParameter;
-
 final class EndpointParameter
 {
 
@@ -15,6 +13,11 @@ final class EndpointParameter
 	const TYPE_DATETIME = 6;
 	const TYPE_OBJECT = 7;
 
+	const IN_QUERY = 'query';
+	const IN_COOKIE = 'cookie';
+	const IN_HEADER = 'header';
+	const IN_PATH = 'path';
+
 	/** @var string */
 	private $name;
 
@@ -25,7 +28,7 @@ final class EndpointParameter
 	private $description;
 
 	/** @var string */
-	private $in = RequestParameter::IN_PATH;
+	private $in = self::IN_PATH;
 
 	/** @var bool */
 	private $required = TRUE;
@@ -118,7 +121,7 @@ final class EndpointParameter
 	 */
 	public function setRequired($required)
 	{
-		$this->required = $required;
+		$this->required = boolval($required);
 	}
 
 	/**
@@ -135,7 +138,7 @@ final class EndpointParameter
 	 */
 	public function setDeprecated($deprecated)
 	{
-		$this->deprecated = $deprecated;
+		$this->deprecated = boolval($deprecated);
 	}
 
 	/**
@@ -152,7 +155,7 @@ final class EndpointParameter
 	 */
 	public function setAllowEmpty($allowEmpty)
 	{
-		$this->allowEmpty = $allowEmpty;
+		$this->allowEmpty = boolval($allowEmpty);
 	}
 
 }

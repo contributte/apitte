@@ -50,4 +50,23 @@ class ApiRequest extends ProxyRequest
 		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []);
 	}
 
+	/**
+	 * @param null $default
+	 * @return mixed
+	 */
+	public function getEntity($default = NULL)
+	{
+		$entity = $this->getAttribute(RequestAttributes::ATTR_REQUEST_ENTITY, NULL);
+
+		if (!$entity) {
+			if (func_num_args() < 1) {
+				throw new InvalidStateException('No request entity found');
+			}
+
+			return $default;
+		}
+
+		return $entity;
+	}
+
 }

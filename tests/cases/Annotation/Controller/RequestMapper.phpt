@@ -10,15 +10,6 @@ use Apitte\Core\Annotation\Controller\RequestMapper;
 use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
-// Value
-test(function () {
-	$requestMapper = new RequestMapper(['value' => 'RequestMapper']);
-	Assert::equal('RequestMapper', $requestMapper->getEntity());
-	Assert::exception(function () {
-		new RequestMapper(['value' => '']);
-	}, AnnotationException::class, 'Empty @RequestMapper given');
-});
-
 // Entity
 test(function () {
 	$requestMapper = new RequestMapper(['entity' => 'Entity']);
@@ -26,21 +17,18 @@ test(function () {
 
 	Assert::exception(function () {
 		new RequestMapper(['entity' => '']);
-	}, AnnotationException::class, 'Empty @RequestMapper given');
+	}, AnnotationException::class, 'Empty @RequestMapper entity given');
 });
 
 // Fails
 test(function () {
 	Assert::exception(function () {
 		new RequestMapper(['entity']);
-	}, AnnotationException::class, 'No @RequestMapper given');
-	Assert::exception(function () {
-		new RequestMapper(['value']);
-	}, AnnotationException::class, 'No @RequestMapper given');
+	}, AnnotationException::class, 'Empty @RequestMapper entity given');
 	Assert::exception(function () {
 		new RequestMapper(['a']);
-	}, AnnotationException::class, 'No @RequestMapper given');
+	}, AnnotationException::class, 'Empty @RequestMapper entity given');
 	Assert::exception(function () {
 		new RequestMapper([]);
-	}, AnnotationException::class, 'No @RequestMapper given');
+	}, AnnotationException::class, 'Empty @RequestMapper entity given');
 });

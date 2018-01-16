@@ -9,29 +9,22 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Annotation
  * @Target("METHOD")
  */
-final class RequestMapper
+final class ResponseMapper
 {
 
 	/** @var string */
 	private $entity;
-
-	/** @var bool */
-	private $validation = TRUE;
 
 	/**
 	 * @param array $values
 	 */
 	public function __construct(array $values)
 	{
-		if (!isset($values['entity']) || empty($values['entity'])) {
-			throw new AnnotationException('Empty @RequestMapper entity given');
+		if (!isset($values['entity'])) {
+			throw new AnnotationException('Empty @ResponseMapper entity given');
 		}
 
 		$this->entity = $values['entity'];
-
-		if (isset($values['validation'])) {
-			$this->validation = boolval($values['validation']);
-		}
 	}
 
 	/**
@@ -40,14 +33,6 @@ final class RequestMapper
 	public function getEntity()
 	{
 		return $this->entity;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isValidation()
-	{
-		return $this->validation;
 	}
 
 }

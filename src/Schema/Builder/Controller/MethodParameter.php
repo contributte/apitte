@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema\Builder\Controller;
 
-use Apitte\Core\Annotation\Controller\RequestParameter;
+use Apitte\Core\Schema\EndpointParameter;
 
 final class MethodParameter
 {
@@ -17,7 +17,7 @@ final class MethodParameter
 	private $description;
 
 	/** @var string */
-	private $in = RequestParameter::IN_PATH;
+	private $in = EndpointParameter::IN_PATH;
 
 	/** @var bool */
 	private $required = TRUE;
@@ -97,6 +97,7 @@ final class MethodParameter
 	 */
 	public function setIn($in)
 	{
+		// @todo validation
 		$this->in = $in;
 	}
 

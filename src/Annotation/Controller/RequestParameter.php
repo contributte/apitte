@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Apitte\Core\Schema\EndpointParameter;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 use Nette\Utils\Arrays;
@@ -13,11 +14,6 @@ use Nette\Utils\Arrays;
 final class RequestParameter
 {
 
-	const IN_QUERY = 'query';
-	const IN_COOKIE = 'cookie';
-	const IN_HEADER = 'header';
-	const IN_PATH = 'path';
-
 	/** @var string */
 	private $name;
 
@@ -28,7 +24,7 @@ final class RequestParameter
 	private $description;
 
 	/** @var string */
-	private $in = self::IN_PATH;
+	private $in = EndpointParameter::IN_PATH;
 
 	/** @var bool */
 	private $required = TRUE;
@@ -55,7 +51,9 @@ final class RequestParameter
 		$this->name = $values['name'];
 		$this->type = Arrays::get($values, 'type', NULL);
 		$this->description = Arrays::get($values, 'description', NULL);
-		$this->in = Arrays::get($values, 'in', self::IN_PATH);
+
+		// @todo validation allowed values
+		$this->in = Arrays::get($values, 'in', EndpointParameter::IN_PATH);
 		$this->required = Arrays::get($values, 'required', TRUE);
 		$this->deprecated = Arrays::get($values, 'deprecated', FALSE);
 		$this->allowEmpty = Arrays::get($values, 'allowEmpty', FALSE);

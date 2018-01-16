@@ -11,7 +11,9 @@ use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Negotiations;
 use Apitte\Core\Annotation\Controller\Path;
+use Apitte\Core\Annotation\Controller\RequestMapper;
 use Apitte\Core\Annotation\Controller\RequestParameters;
+use Apitte\Core\Annotation\Controller\ResponseMapper;
 use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
@@ -281,6 +283,25 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$negotiation->setDefault($n->isDefault());
 						$negotiation->setRenderer($n->getRenderer());
 					}
+					continue;
+				}
+
+				// Parse @RequestMapper ====================
+				if (get_class($annotation) === RequestMapper::class) {
+					/** @var RequestMapper $annotation */
+					$schemaMethod->setRequestMapper([
+						'entity' => $annotation->getEntity(),
+						'validation' => $annotation->isValidation(),
+					]);
+					continue;
+				}
+
+				// Parse @ResponseMapper ===================
+				if (get_class($annotation) === ResponseMapper::class) {
+					/** @var ResponseMapper $annotation */
+					$schemaMethod->setResponseMapper([
+						'entity' => $annotation->getEntity(),
+					]);
 					continue;
 				}
 			}

@@ -2,8 +2,6 @@
 
 namespace Apitte\Core\Schema;
 
-use Apitte\Core\Annotation\Controller\RequestMapper;
-use Apitte\Core\Annotation\Controller\ResponseMapper;
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Nette\Utils\Arrays;
@@ -329,7 +327,7 @@ final class Endpoint
 	}
 
 	/**
-	 * @return RequestMapper
+	 * @return EndpointRequestMapper
 	 */
 	public function getRequestMapper()
 	{
@@ -346,7 +344,7 @@ final class Endpoint
 	}
 
 	/**
-	 * @return ResponseMapper
+	 * @return EndpointResponseMapper
 	 */
 	public function getResponseMapper()
 	{

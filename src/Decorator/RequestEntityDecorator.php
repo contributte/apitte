@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Decorator;
 
+use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Mapping\RequestEntityMapping;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,10 +22,10 @@ class RequestEntityDecorator implements IDecorator
 	}
 
 	/**
-	 * @param ServerRequestInterface $request
+	 * @param ServerRequestInterface|ApiRequest $request
 	 * @param ResponseInterface $response
 	 * @param array $context
-	 * @return ResponseInterface|ServerRequestInterface
+	 * @return ServerRequestInterface
 	 */
 	public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = [])
 	{

@@ -3,6 +3,7 @@
 namespace Apitte\Core\Mapping;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Parameter\ITypeMapper;
 use Apitte\Core\Schema\Endpoint;
@@ -34,7 +35,7 @@ class RequestParameterMapping
 	 */
 
 	/**
-	 * @param ServerRequestInterface $request
+	 * @param ServerRequestInterface|ApiRequest $request
 	 * @param ResponseInterface $response
 	 * @return ServerRequestInterface
 	 */

@@ -188,6 +188,17 @@ final class Endpoint
 	}
 
 	/**
+	 * @param string $in
+	 * @return EndpointParameter[]
+	 */
+	public function getParametersByIn($in)
+	{
+		return array_filter($this->getParameters(), function (EndpointParameter $parameter) use ($in) {
+			return $parameter->getIn() === $in;
+		});
+	}
+
+	/**
 	 * @param string $name
 	 * @return bool
 	 */

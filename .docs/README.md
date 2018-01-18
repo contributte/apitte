@@ -127,10 +127,10 @@ Apitte is divided into many plugins which are connected to one single awesome un
 
 Core plugins are:
 
-- `CoreServicesPlugin` (enabled by default)
-- `CoreSchemaPlugin`  (enabled by default)
-- `CoreDecoratorPlugin` (optional)
-- `CoreMappingPlugin` (optional)
+- [`CoreServicesPlugin`](https://github.com/apitte/core/blob/master/src/DI/Plugin/CoreServicesPlugin.php) (enabled by default)
+- [`CoreSchemaPlugin`](https://github.com/apitte/core/blob/master/src/DI/Plugin/CoreSchemaPlugin.php)  (enabled by default)
+- [`CoreDecoratorPlugin`](https://github.com/apitte/core/blob/master/src/DI/Plugin/CoreDecoratorPlugin.php) (optional)
+- [`CoreMappingPlugin`](https://github.com/apitte/core/blob/master/src/DI/Plugin/CoreMappingPlugin.php) (optional)
 
 Another available plugins are:
 
@@ -183,7 +183,7 @@ These decorators are registered by default. Be careful about priorities.
 |-------------|------------------------------|-------------------|----------|-------------------------------|
 | core        | `RequestParametersDecorator` | `handler.before`  | 100      | Enable `@RequestParameter(s)` |
 | core        | `RequestEntityDecorator`     | `handler.before`  | 101      | Enable `@RequestMapper`       |
-| negotiation | `ResponseEntityDecorator`     | `handler.after ` | 500      | Converts response entity to different formats |
+| negotiation | `ResponseEntityDecorator`    | `handler.after `  | 500      | Converts response entity to different formats |
 
 ### CoreMappingPlugin
 
@@ -191,6 +191,9 @@ These decorators are registered by default. Be careful about priorities.
 api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
+          types: []
+          request:
+            validator:
 ```
 
 #### Types 
@@ -215,7 +218,7 @@ public function detail(ApiRequest $request)
 It converts request parameters to defined types. By default, you can use `int`, `float`, `string`. Or defined 
 more types in neon.
 
-```
+```yaml
 api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
@@ -230,8 +233,80 @@ Don't forget to register default one, because filling of `types` overrides defau
 
 #### Entity
 
-@todo
+Let's try to picture you have a datagrid with many filter options. You can describe all options manually or 
+use value object, entity, for it. And it leads us to `@RequestMapper`.
 
+We have some entity with described fields.
+
+```php
+namespace App\Controllers\Entity;
+
+use Apitte\Core\Mapping\Request\BasicEntity;
+
+final class UserFilter extends BasicEntity
+{
+
+	/**  @var int */
+	public $userId;
+
+	/**  @var string */
+	public $email;
+}
+```
+
+And some endoint with `@RequestMapper` annotation. There's a method `ApiRequest::getEntity()`, it gets 
+the entity from request attributes. So simple, right?
+
+```php
+/**
+ * @Path("/filter")
+ * @Method("GET")
+ * @RequestMapper(entity="App\Controllers\Entity\UserFilter")
+ */
+public function filter(ApiRequest $request)
+{
+    $entity = $request->getEntity();
+    // $entity === UserFilter
+}
+```
+
+There's a prepared validator for request entity, but it's disabled by default. You have to 
+pick the validator you want to.
+
+```yaml
+api:
+    plugins:
+        Apitte\Core\DI\Plugin\CoreMappingPlugin:
+          types: []
+          request:
+            # By default
+            validator: Apitte\Core\Mapping\Validator\NullValidator
+            
+            # Support: @required
+            validator: Apitte\Core\Mapping\Validator\BasicValidator
+            
+            # Symfony/Validator
+            validator: Apitte\Core\Mapping\Validator\SymfonyValidator
+```
+
+Your entity could looks like this.
+
+```php
+final class UserFilter extends BasicEntity
+{
+
+	/**
+	 * @var int
+	 * @Assert\NotNull()
+	 * @Assert\Type(
+	 *     type="integer",
+	 *     message="The value {{ value }} is not a valid {{ type }}."
+	 * )
+	 */
+	public $userId;
+	
+}
+```
 
 ## Bridges
 

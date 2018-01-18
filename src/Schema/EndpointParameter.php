@@ -121,7 +121,7 @@ final class EndpointParameter
 	 */
 	public function setRequired($required)
 	{
-		$this->required = boolval($required);
+		$this->required = $required;
 	}
 
 	/**
@@ -138,7 +138,7 @@ final class EndpointParameter
 	 */
 	public function setDeprecated($deprecated)
 	{
-		$this->deprecated = boolval($deprecated);
+		$this->deprecated = $deprecated;
 	}
 
 	/**

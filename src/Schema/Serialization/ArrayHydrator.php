@@ -77,9 +77,9 @@ final class ArrayHydrator implements IHydrator
 				$parameter->setType($param['type']);
 				$parameter->setDescription($param['description']);
 				$parameter->setIn($param['in']);
-				$parameter->setRequired($param['required']);
-				$parameter->setDeprecated($param['deprecated']);
-				$parameter->setAllowEmpty($param['allowEmpty']);
+				$parameter->setRequired((bool) $param['required']);
+				$parameter->setDeprecated((bool) $param['deprecated']);
+				$parameter->setAllowEmpty((bool) $param['allowEmpty']);
 
 				$endpoint->addParameter($parameter);
 			}

@@ -238,9 +238,9 @@ final class ArraySerializator implements ISerializator
 			$p['type'] = $param->getType();
 			$p['description'] = $param->getDescription();
 			$p['in'] = $param->getIn();
-			$p['required'] = $param->isRequired();
-			$p['allowEmpty'] = $param->isAllowEmpty();
-			$p['deprecated'] = $param->isDeprecated();
+			$p['required'] = (int) $param->isRequired();
+			$p['allowEmpty'] = (int) $param->isAllowEmpty();
+			$p['deprecated'] = (int) $param->isDeprecated();
 		}
 
 		// Update endpoint

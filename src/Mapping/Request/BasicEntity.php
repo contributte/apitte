@@ -49,7 +49,7 @@ abstract class BasicEntity extends AbstractEntity
 	 */
 	public function fromRequest(ApiRequest $request)
 	{
-		if (in_array($request->getMethod(), [Endpoint::METHOD_POST, Endpoint::METHOD_PUT])) {
+		if (in_array($request->getMethod(), [Endpoint::METHOD_POST, Endpoint::METHOD_PUT, Endpoint::METHOD_PATCH])) {
 			return $this->fromBodyRequest($request);
 		}
 

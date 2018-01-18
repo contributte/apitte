@@ -2,13 +2,22 @@
 
 ## Content
 
-- [Installation - how to register an extension](#installation)
-- [Configuration - all options](#configuration)
-- [Usage - controller showtime](#usage)
-- [Annotations - list of all annotations](#annotations)
-- [Plugins - apitte plugins](#plugins)
-- [Advanced - complex configuration](#advanced)
-- [Playground - real examples](#playground)
+* [Installation - how to register an extension](#installation)
+* [Configuration - all configurable options](#configuration)
+* [Usage](#usage)
+  + [Controllers](#controllers)
+  + [Request & Response](#request---response)
+* [Annotations - list of all annotations](#annotations)
+* [Plugins](#plugins)
+  + [CoreDecoratorPlugin](#coredecoratorplugin)
+    - [Default decorators](#default-decorators)
+  + [CoreMappingPlugin](#coremappingplugin)
+    - [Types](#types)
+    - [Entity](#entity)
+* [Bridges](#bridges)
+  + [Middlewares](#middlewares)
+  + [Resources](#resources)
+* [Playground](#playground)
 
 ## Installation
 
@@ -168,10 +177,13 @@ When the DIC is compiled, we have a 2 decorators, the first is `@decorator.reque
 
 #### Default decorators
 
-| Class                        | Type             | Priority | Description                   |
-|------------------------------|------------------|----------|-------------------------------|
-| `RequestParametersDecorator` | `handler.before` | 100      | Enable `@RequestParameter(s)` |
-| `RequestEntityDecorator`     | `handler.before` | 101      | Enable `@RequestMapper`       |
+These decorators are registered by default. Be careful about priorities.
+
+| Plugin      | Class                        | Type              | Priority | Description                   |
+|-------------|------------------------------|-------------------|----------|-------------------------------|
+| core        | `RequestParametersDecorator` | `handler.before`  | 100      | Enable `@RequestParameter(s)` |
+| core        | `RequestEntityDecorator`     | `handler.before`  | 101      | Enable `@RequestMapper`       |
+| negotiation | `ResponseEntityDecorator`     | `handler.after ` | 500      | Converts response entity to different formats |
 
 ### CoreMappingPlugin
 
@@ -221,9 +233,7 @@ Don't forget to register default one, because filling of `types` overrides defau
 @todo
 
 
-## Advanced
-
-There are planty of options that might be configured.
+## Bridges
 
 ### Middlewares
 

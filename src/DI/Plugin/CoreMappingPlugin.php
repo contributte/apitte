@@ -55,11 +55,11 @@ class CoreMappingPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('request.parameters.decorator'))
 			->setFactory(RequestParametersDecorator::class)
-			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 100, 'type' => IDecorator::HANDLER_BEFORE]);
+			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 100, 'type' => IDecorator::ON_HANDLER_AFTER]);
 
 		$builder->addDefinition($this->prefix('request.entity.decorator'))
 			->setFactory(RequestEntityDecorator::class)
-			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 101, 'type' => IDecorator::HANDLER_BEFORE]);
+			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 101, 'type' => IDecorator::ON_HANDLER_AFTER]);
 
 		$parametersMapping = $builder->addDefinition($this->prefix('request.parameters.mapping'))
 			->setFactory(RequestParameterMapping::class);

@@ -145,10 +145,9 @@ Each **decorator** should be registered with tag `apitte.core.decorator`.
 
 Each decorator should provide `type` attribute:
 
-- `dispatcher.before` - called before dispatching (before routing)
-- `handle.before` - called before controller is trigged (after routing)
-- `dispatcher.after` - called after dispatching (after handling)
-- `dispatcher.exception` - called if exception has been occured (special)
+- `handle.before` - called before controller method is trigged (after endpoint is matched in router)
+- `handle.after` - called after controller method is trigged (after logic in controller)
+- `dispatcher.exception` - called if exception has been occurred
 
 Also you should define a priority for better sorting. Default is 10.
 
@@ -156,17 +155,23 @@ Also you should define a priority for better sorting. Default is 10.
 services:
     decorator.request.json: 
         class: App\Model\JsonBodyDecorator
-        tags: [apitte.core.decorator: [priority: 50, type: dispatcher.before]]
+        tags: [apitte.core.decorator: [priority: 50, type: handler.before]]
 
 services:
     decorator.request.xml: 
         class: App\Model\XmlBodyDecorator
-        tags: [apitte.core.decorator: [priority: 60, type: dispatcher.before]]
+        tags: [apitte.core.decorator: [priority: 60, type: handler.before]]
 ```
 
 When the DIC is compiled, we have a 2 decorators, the first is `@decorator.request.json`, because it has priority
 50 and the second is `@decorator.request.xml`. Both of them are called before dispatching.
 
+#### Default decorators
+
+| Class                        | Type             | Priority | Description                   |
+|------------------------------|------------------|----------|-------------------------------|
+| `RequestParametersDecorator` | `handler.before` | 100      | Enable `@RequestParameter(s)` |
+| `RequestEntityDecorator`     | `handler.before` | 101      | Enable `@RequestMapper`       |
 
 ### CoreMappingPlugin
 
@@ -175,6 +180,8 @@ api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
 ```
+
+#### Types 
 
 This plugin allows you to define new annotations.
 
@@ -193,8 +200,8 @@ public function detail(ApiRequest $request)
 }
 ```
 
-It converts request parameters to defined type. By default, you can use `int`, `float`, `string`. Or 
-register more types.
+It converts request parameters to defined types. By default, you can use `int`, `float`, `string`. Or defined 
+more types in neon.
 
 ```
 api:
@@ -208,6 +215,11 @@ api:
 ```
 
 Don't forget to register default one, because filling of `types` overrides default types.
+
+#### Entity
+
+@todo
+
 
 ## Advanced
 

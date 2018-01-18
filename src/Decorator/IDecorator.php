@@ -10,12 +10,12 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface IDecorator
 {
+	// Dispatcher
+	const ON_DISPATCHER_EXCEPTION = 'dispatcher.exception';
 
-	const DISPATCHER_BEFORE = 'dispatcher.before';
-	const DISPATCHER_AFTER = 'dispatcher.after';
-	const DISPATCHER_EXCEPTION = 'dispatcher.exception';
-
-	const HANDLER_BEFORE = 'handler.before';
+	// Handler
+	const ON_HANDLER_BEFORE = 'handler.before';
+	const ON_HANDLER_AFTER = 'handler.after';
 
 	/**
 	 * @param ServerRequestInterface $request

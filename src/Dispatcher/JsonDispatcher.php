@@ -24,7 +24,7 @@ class JsonDispatcher extends CoreDispatcher
 		if (is_array($result) || is_scalar($result)) {
 			$response = $response->withStatus(200)
 				->withHeader('Content-Type', 'application/json');
-			$response->getBody()->write(json_encode($result));
+			$response->getBody()->write(Json::encode($result));
 		} else {
 			$response = $result;
 		}

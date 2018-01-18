@@ -73,13 +73,22 @@ As you can see, the architecture is ultra simple. `ApiRequest` & `ApiResponse` w
 
 ## Overview
 
-- [Installation - how to register an extension](https://github.com/apitte/core/tree/master/.docs#installation)
-- [Configuration - all options](https://github.com/apitte/core/tree/master/.docs#configuration)
-- [Usage - controller showtime](https://github.com/apitte/core/tree/master/.docs#usage)
-- [Annotations - list of all annotations](https://github.com/apitte/core/tree/master/.docs#annotations)
-- [Plugins - apitte plugins](https://github.com/apitte/core/tree/master/.docs#plugins)
-- [Advanced - complex configuration](https://github.com/apitte/core/tree/master/.docs#advanced)
-- [Playground - real examples](https://github.com/apitte/core/tree/master/.docs#playground)
+* [Installation - how to register an extension](https://github.com/apitte/core/tree/master/.docs#installation)
+* [Configuration - all configurable options](https://github.com/apitte/core/tree/master/.docs#configuration)
+* [Usage](https://github.com/apitte/core/tree/master/.docs#usage)
+  + [Controllers](https://github.com/apitte/core/tree/master/.docs#controllers)
+  + [Request & Response](https://github.com/apitte/core/tree/master/.docs#request---response)
+* [Annotations - list of all annotations](https://github.com/apitte/core/tree/master/.docs#annotations)
+* [Plugins](https://github.com/apitte/core/tree/master/.docs#plugins)
+  + [CoreDecoratorPlugin](https://github.com/apitte/core/tree/master/.docs#coredecoratorplugin)
+    - [Default decorators](https://github.com/apitte/core/tree/master/.docs#default-decorators)
+  + [CoreMappingPlugin](https://github.com/apitte/core/tree/master/.docs#coremappingplugin)
+    - [Types](https://github.com/apitte/core/tree/master/.docs#types)
+    - [Entity](https://github.com/apitte/core/tree/master/.docs#entity)
+* [Bridges](https://github.com/apitte/core/tree/master/.docs#bridges)
+  + [Middlewares](https://github.com/apitte/core/tree/master/.docs#middlewares)
+  + [Resources](https://github.com/apitte/core/tree/master/.docs#resources)
+* [Playground](https://github.com/apitte/core/tree/master/.docs#playground)
 
 ## Maintainers
 

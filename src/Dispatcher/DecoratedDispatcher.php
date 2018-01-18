@@ -43,32 +43,20 @@ class DecoratedDispatcher extends CoreDispatcher
 	public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		try {
-			// Trigger request decorator
-			$request = $this->decoratorManager->decorateRequest(IDecorator::DISPATCHER_BEFORE, $request, $response);
-		} catch (EarlyReturnResponseException $exception) {
-			return $exception->getResponse();
-		}
-
-		try {
 			// Route and call handler
 			$response = parent::dispatch($request, $response);
-
-			// Trigger response decorator
-			$response = $this->decoratorManager->decorateResponse(IDecorator::DISPATCHER_AFTER, $request, $response);
 		} catch (SnapshotException $e) {
 			// Mine data from snapshot
 			$request = $e->getRequest();
 			$response = $e->getResponse();
 			$e = $e->getPrevious();
-
-			// Trigger exception decorator
-			$response = $this->decoratorManager->decorateResponse(IDecorator::DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
-
-			// If there's no decorator to handle this exception, throw again
-			if ($response === NULL) throw $e;
 		} catch (Exception $e) {
+			// Process exception in the next lines
+		}
+
+		if (isset($e)) {
 			// Trigger exception decorator
-			$response = $this->decoratorManager->decorateResponse(IDecorator::DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
+			$response = $this->decoratorManager->decorateResponse(IDecorator::ON_DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
 
 			// If there's no decorator to handle this exception, throw again
 			if ($response === NULL) throw $e;
@@ -84,16 +72,16 @@ class DecoratedDispatcher extends CoreDispatcher
 	 */
 	protected function handle(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		try {
-			// Trigger request decorator
-			$request = $this->decoratorManager->decorateRequest(IDecorator::HANDLER_BEFORE, $request, $response);
-		} catch (EarlyReturnResponseException $exception) {
-			return $exception->getResponse();
-		}
-
-		// Pass endpoint
+		// Pass endpoint to response
 		if (($endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, NULL))) {
 			$response = $response->withEndpoint($endpoint);
+		}
+
+		try {
+			// Trigger ON_HANDLER_BEFORE (decorate request)
+			$request = $this->decoratorManager->decorateRequest(IDecorator::ON_HANDLER_BEFORE, $request, $response);
+		} catch (EarlyReturnResponseException $exception) {
+			return $exception->getResponse();
 		}
 
 		try {
@@ -121,6 +109,13 @@ class DecoratedDispatcher extends CoreDispatcher
 		// Validate if response is ResponseInterface
 		if (!($response instanceof ResponseInterface)) {
 			throw new InvalidStateException(sprintf('Handler returned response must implement "%s"', ResponseInterface::class));
+		}
+
+		try {
+			// Trigger ON_HANDLER_AFTER (decorate response)
+			$response = $this->decoratorManager->decorateResponse(IDecorator::ON_HANDLER_AFTER, $request, $response);
+		} catch (EarlyReturnResponseException $exception) {
+			return $exception->getResponse();
 		}
 
 		return $response;

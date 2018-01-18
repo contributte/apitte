@@ -8,6 +8,11 @@ interface IRequestEntity
 {
 
 	/**
+	 * @return array
+	 */
+	public function getRequestProperties();
+
+	/**
 	 * @param ApiRequest $request
 	 * @return static
 	 */

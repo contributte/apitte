@@ -1,12 +1,12 @@
 <?php
 
-namespace Apitte\Core\Mapping\Request;
+namespace Apitte\Core\Mapping\Response;
 
 use ArrayIterator;
 use IteratorAggregate;
 use Traversable;
 
-abstract class AbstractEntity implements IRequestEntity, IteratorAggregate
+abstract class AbstractEntity implements IResponseEntity, IteratorAggregate
 {
 
 	/**

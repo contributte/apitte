@@ -11,8 +11,10 @@ use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
+use Apitte\Core\Mapping\Response\IResponseEntity;
 use Apitte\Core\Router\IRouter;
 use Apitte\Negotiation\Http\ArrayEntity;
+use Apitte\Negotiation\Http\MappingEntity;
 use Apitte\Negotiation\Http\ScalarEntity;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -97,11 +99,14 @@ class DecoratedDispatcher extends CoreDispatcher
 
 		// If result is array convert it manually to ArrayEntity,
 		// if result is scalar convert it manually to ScalarEntity,
+		// if result is IResponseEntity convert it manually to MappingEntity,
 		// otherwise use result as response
 		if (is_array($result)) {
 			$response = $response->withEntity(ArrayEntity::from($result));
 		} else if (is_scalar($result)) {
 			$response = $response->withEntity(ScalarEntity::from($result));
+		} else if ($result instanceof IResponseEntity) {
+			$response = $response->withEntity(MappingEntity::from($result));
 		} else {
 			$response = $result;
 		}

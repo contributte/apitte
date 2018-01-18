@@ -3,44 +3,20 @@
 namespace Apitte\Core\Mapping\Request;
 
 use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Mapping\TReflectionProperties;
 use Apitte\Core\Schema\Endpoint;
-use ReflectionObject;
 
 abstract class BasicEntity extends AbstractEntity
 {
 
-	/** @var array */
-	protected $properties = [];
+	use TReflectionProperties;
 
 	/**
 	 * @return array
 	 */
-	public function getProperties()
+	public function getRequestProperties()
 	{
-		if (!$this->properties) {
-			$properties = [];
-			$rf = new ReflectionObject($this);
-			$class = get_class($this);
-
-			$defaultProperties = $rf->getDefaultProperties();
-			foreach ($rf->getProperties() as $property) {
-				// If property is not from the latest child, then skip it.
-				if ($property->getDeclaringClass()->getName() !== $class) continue;
-
-				// If property is not public, then skip it.
-				if (!$property->isPublic()) continue;
-
-				$properties[$property->getName()] = [
-					'name' => $property->getName(),
-					'type' => $property->getValue($this),
-					'defaultValue' => isset($defaultProperties[$property->getName()]) ? $defaultProperties[$property->getName()] : NULL,
-				];
-			}
-
-			$this->properties = $properties;
-		}
-
-		return $this->properties;
+		return $this->getProperties();
 	}
 
 	/**
@@ -69,7 +45,7 @@ abstract class BasicEntity extends AbstractEntity
 		$inst = new static();
 
 		// Fill properties with real data
-		$properties = $inst->getProperties();
+		$properties = $inst->getRequestProperties();
 		foreach ($properties as $property) {
 			if (!array_key_exists($property['name'], $data)) continue;
 
@@ -85,23 +61,6 @@ abstract class BasicEntity extends AbstractEntity
 		}
 
 		return $inst;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function toArray()
-	{
-		$data = [];
-		$properties = $this->getProperties();
-
-		foreach ($properties as $property) {
-			if (!isset($this->{$property['name']})) continue;
-
-			$data[$property['name']] = $this->{$property['name']};
-		}
-
-		return $data;
 	}
 
 	/**

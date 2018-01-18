@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface IDecorator
 {
+
 	// Dispatcher
 	const ON_DISPATCHER_EXCEPTION = 'dispatcher.exception';
 

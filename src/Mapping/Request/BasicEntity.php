@@ -108,7 +108,6 @@ abstract class BasicEntity extends AbstractEntity
 	 * HELPERS *****************************************************************
 	 */
 
-
 	/**
 	 * @param string $property
 	 * @param mixed $value
@@ -116,7 +115,7 @@ abstract class BasicEntity extends AbstractEntity
 	 */
 	protected function normalize($property, $value)
 	{
-		return $values;
+		return $value;
 	}
 
 	/**

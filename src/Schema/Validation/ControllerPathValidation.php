@@ -15,30 +15,8 @@ class ControllerPathValidation implements IValidation
 	 */
 	public function validate(SchemaBuilder $builder)
 	{
-		$this->validateDuplicities($builder);
 		$this->validateSlashes($builder);
 		$this->validateRegex($builder);
-	}
-
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	protected function validateDuplicities(SchemaBuilder $builder)
-	{
-		$paths = [];
-		$controllers = $builder->getControllers();
-
-		foreach ($controllers as $controller) {
-			// If this ControllerPath exists, throw an exception
-			if (array_key_exists($controller->getPath(), $paths)) {
-				throw new InvalidSchemaException(
-					sprintf('Duplicate @ControllerPath in %s and %s', $controller->getClass(), $paths[$controller->getPath()])
-				);
-			}
-
-			$paths[$controller->getPath()] = $controller->getClass();
-		}
 	}
 
 	/**

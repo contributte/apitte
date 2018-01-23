@@ -9,6 +9,7 @@ use Apitte\Core\Schema\Serialization\ArrayHydrator;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
 use Apitte\Core\Schema\Serialization\IDecorator;
 use Apitte\Core\Schema\Validation\ControllerPathValidation;
+use Apitte\Core\Schema\Validation\FullpathValidation;
 use Apitte\Core\Schema\Validation\GroupPathValidation;
 use Apitte\Core\Schema\Validation\IdValidation;
 use Apitte\Core\Schema\Validation\IValidation;
@@ -29,6 +30,7 @@ class CoreSchemaPlugin extends AbstractPlugin
 		'controllerPath' => ControllerPathValidation::class,
 		'groupPath' => GroupPathValidation::class,
 		'path' => PathValidation::class,
+		'fullPath' => FullpathValidation::class,
 		'id' => IdValidation::class,
 		'requestMapper' => RequestMapperValidation::class,
 	];

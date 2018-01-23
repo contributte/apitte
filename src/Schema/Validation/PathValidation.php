@@ -4,7 +4,6 @@ namespace Apitte\Core\Schema\Validation;
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
-use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Utils\Regex;
 
 class PathValidation implements IValidation
@@ -16,52 +15,8 @@ class PathValidation implements IValidation
 	 */
 	public function validate(SchemaBuilder $builder)
 	{
-		$this->validateDuplicities($builder);
 		$this->validateSlashes($builder);
 		$this->validateRegex($builder);
-	}
-
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	protected function validateDuplicities(SchemaBuilder $builder)
-	{
-		$controllers = $builder->getControllers();
-		$paths = [];
-
-		foreach ($controllers as $controller) {
-			foreach ($controller->getMethods() as $method) {
-				// Init controller paths
-				if (!isset($paths[$controller->getClass()])) {
-					$paths[$controller->getClass()] = [
-						Endpoint::METHOD_GET => [],
-						Endpoint::METHOD_POST => [],
-						Endpoint::METHOD_PUT => [],
-						Endpoint::METHOD_DELETE => [],
-						Endpoint::METHOD_OPTIONS => [],
-						Endpoint::METHOD_PATCH => [],
-					];
-				}
-
-				// If this ControllerPath exists, throw an exception
-				foreach ($method->getMethods() as $httpMethod) {
-					if (array_key_exists($method->getPath(), $paths[$controller->getClass()][$httpMethod])) {
-						throw new InvalidSchemaException(
-							sprintf(
-								'Duplicate @Path "%s" in %s at methods "%s()" and "%s()"',
-								$method->getPath(),
-								$controller->getClass(),
-								$method->getName(),
-								$paths[$controller->getClass()][$httpMethod][$method->getPath()]
-							)
-						);
-					}
-
-					$paths[$controller->getClass()][$httpMethod][$method->getPath()] = $method->getName();
-				}
-			}
-		}
 	}
 
 	/**

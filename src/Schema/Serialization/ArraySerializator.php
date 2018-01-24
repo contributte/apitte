@@ -49,7 +49,7 @@ final class ArraySerializator implements ISerializator
 	{
 		$endpoint = $this->serializeInit($controller, $method);
 		$this->serializeNegotiations($endpoint, $method);
-		$this->serializePattern($endpoint, $method);
+		$this->serializePattern($endpoint, $controller, $method);
 		$this->serializeMappers($endpoint, $method);
 
 		return $endpoint;
@@ -112,10 +112,11 @@ final class ArraySerializator implements ISerializator
 
 	/**
 	 * @param array $endpoint
+	 * @param Controller $controller
 	 * @param Method $method
 	 * @return void
 	 */
-	protected function serializePattern(array &$endpoint, Method $method)
+	protected function serializePattern(array &$endpoint, Controller $controller, Method $method)
 	{
 		$mask = $endpoint['mask'];
 		$maskParameters = [];
@@ -156,7 +157,9 @@ final class ArraySerializator implements ISerializator
 		// and number fo parameters in mask
 		if (count($pathParameters) > count($maskParameters)) {
 			throw new InvalidStateException(sprintf(
-				'Number of @RequestParameters (%d) is bigger then mask parameters (%d)',
+				'Controller "%s::%s()" has more @RequestParameters (%d / %d) then typed in his mask.',
+				$controller->getClass(),
+				$method->getName(),
 				count($pathParameters),
 				count($maskParameters)
 			));

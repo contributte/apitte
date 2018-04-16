@@ -35,9 +35,10 @@ class PathValidation implements IValidation
 							'"%s::%s()" has empty @Path.',
 							$controller->getClass(),
 							$method->getName()
-						)))
-						->withController($controller)
-						->withMethod($method);
+						)
+					))
+					 ->withController($controller)
+					 ->withMethod($method);
 				}
 			}
 		}
@@ -63,9 +64,10 @@ class PathValidation implements IValidation
 							$path,
 							$controller->getClass(),
 							$method->getName()
-						)))
-						->withController($controller)
-						->withMethod($method);
+						)
+					))
+					 ->withController($controller)
+					 ->withMethod($method);
 				}
 
 				// MUST NOT: Ends with slash (/), except single '/' path
@@ -76,9 +78,10 @@ class PathValidation implements IValidation
 							$path,
 							$controller->getClass(),
 							$method->getName()
-						)))
-						->withController($controller)
-						->withMethod($method);
+						)
+					))
+					 ->withController($controller)
+					 ->withMethod($method);
 				}
 			}
 		}
@@ -112,9 +115,10 @@ class PathValidation implements IValidation
 							$controller->getClass(),
 							$method->getName(),
 							$match[1]
-						)))
-						->withController($controller)
-						->withMethod($method);
+						)
+					))
+					 ->withController($controller)
+					 ->withMethod($method);
 				}
 
 				// Allowed parameter characters:
@@ -136,9 +140,10 @@ class PathValidation implements IValidation
 									$controller->getClass(),
 									$method->getName(),
 									$match[1]
-								)))
-								->withController($controller)
-								->withMethod($method);
+								)
+							))
+							 ->withController($controller)
+							 ->withMethod($method);
 						}
 					}
 				}

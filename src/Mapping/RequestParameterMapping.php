@@ -55,6 +55,8 @@ class RequestParameterMapping
 		// Skip, if there are no parameters
 		if (!$parameters) return $request;
 
+		$headerParameters = $request->getHeaders();
+		$cookieParams = $request->getCookieParams();
 		// Get request parameters from attribute
 		$requestParameters = $request->getAttribute(RequestAttributes::ATTR_PARAMETERS);
 
@@ -65,20 +67,76 @@ class RequestParameterMapping
 			// If it's unsupported type, skip it
 			if (!$mapper) continue;
 
-			// Logical check
-			if (!array_key_exists($parameter->getName(), $requestParameters)) {
-				throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
+			switch ($parameter->getIn()) {
+				case $parameter::IN_PATH:
+				case $parameter::IN_QUERY:
+					// Logical check
+					if (!array_key_exists($parameter->getName(), $requestParameters)) {
+						if (!$parameter->isRequired()) {
+							continue;
+						}
+
+						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
+					}
+
+					// Obtain request parameter values
+					$value = $requestParameters[$parameter->getName()];
+
+					// Normalize value
+					$normalizedValue = $mapper->normalize($value);
+
+					// Update requests
+					$requestParameters[$parameter->getName()] = $normalizedValue;
+					$request = $request->withAttribute(RequestAttributes::ATTR_PARAMETERS, $requestParameters);
+
+					break;
+				case $parameter::IN_COOKIE:
+					// Logical check
+					if (!array_key_exists($parameter->getName(), $cookieParams)) {
+						if (!$parameter->isRequired()) {
+							continue;
+						}
+
+						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request cookies', $parameter->getName()));
+					}
+
+					// Obtain request parameter values
+					$value = $cookieParams[$parameter->getName()];
+
+					// Normalize value
+					$normalizedValue = $mapper->normalize($value);
+
+					// Update requests
+					$cookieParams[$parameter->getName()] = $normalizedValue;
+					$request = $request->withCookieParams($cookieParams);
+
+					break;
+				case $parameter::IN_HEADER:
+					$headerParameterName = strtolower($parameter->getName());
+					// Logical check
+					if (!array_key_exists($headerParameterName, $headerParameters)) {
+						if (!$parameter->isRequired()) {
+							continue;
+						}
+
+						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request header', $parameter->getName()));
+					}
+
+					// Obtain request parameter values
+					$values = $headerParameters[$headerParameterName];
+					$normalizedValues = [];
+
+					// Normalize value
+					foreach ($values as $index => $value) {
+						$normalizedValues[$index] = $mapper->normalize($value);
+					}
+
+					// Update requests
+					$headerParameters[$headerParameterName] = $normalizedValues;
+					$request = $request->withHeader($headerParameterName, $normalizedValues);
+
+					break;
 			}
-
-			// Obtain request parameter values
-			$value = $requestParameters[$parameter->getName()];
-
-			// Normalize value
-			$normalizedValue = $mapper->normalize($value);
-
-			// Update requests
-			$requestParameters[$parameter->getName()] = $normalizedValue;
-			$request = $request->withAttribute(RequestAttributes::ATTR_PARAMETERS, $requestParameters);
 		}
 
 		return $request;

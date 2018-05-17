@@ -82,7 +82,7 @@ class RequestParameterMapping
 					// Obtain request parameter values
 					$value = $requestParameters[$parameter->getName()];
 
-					if ($value === null && $parameter->isRequired()) {
+					if ($value === NULL && $parameter->isRequired()) {
 						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
 					}
 					if ($value === '' && !$parameter->isAllowEmpty()) {
@@ -110,7 +110,7 @@ class RequestParameterMapping
 					// Obtain request parameter values
 					$value = $cookieParams[$parameter->getName()];
 
-					if ($value === null && $parameter->isRequired()) {
+					if ($value === NULL && $parameter->isRequired()) {
 						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
 					}
 					if ($value === '' && !$parameter->isAllowEmpty()) {

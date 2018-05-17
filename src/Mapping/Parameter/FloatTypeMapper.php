@@ -7,11 +7,11 @@ class FloatTypeMapper extends AbstractTypeMapper
 
 	/**
 	 * @param mixed $value
-	 * @return float|null
+	 * @return float|NULL
 	 */
 	public function normalize($value)
 	{
-		if ($value === null) {
+		if ($value === NULL) {
 			return $value;
 		}
 

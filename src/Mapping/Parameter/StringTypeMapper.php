@@ -7,11 +7,11 @@ class StringTypeMapper extends AbstractTypeMapper
 
 	/**
 	 * @param mixed $value
-	 * @return string|null
+	 * @return string|NULL
 	 */
 	public function normalize($value)
 	{
-		if ($value === null) {
+		if ($value === NULL) {
 			return $value;
 		}
 

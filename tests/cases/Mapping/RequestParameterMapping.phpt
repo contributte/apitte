@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../../bootstrap.php';
 
+use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
@@ -91,7 +92,7 @@ final class TestRequestParameterMapping extends TestCase
             function () use ($request) {
                 $this->requestParameterMapping->map($request, $this->response);
             },
-            \Apitte\Core\Exception\Logical\InvalidStateException::class,
+            InvalidStateException::class,
             'Parameter "id" should be provided in request attributes'
 		);
 
@@ -122,7 +123,7 @@ final class TestRequestParameterMapping extends TestCase
             function () use ($requestWithEmptyId) {
                 $this->requestParameterMapping->map($requestWithEmptyId, $this->response);
             },
-            \Apitte\Core\Exception\Logical\InvalidStateException::class,
+            InvalidStateException::class,
             'Parameter "id" should not be empty'
 		);
 	}
@@ -175,7 +176,7 @@ final class TestRequestParameterMapping extends TestCase
             function () use ($request) {
                 $this->requestParameterMapping->map($request, $this->response);
             },
-            \Apitte\Core\Exception\Logical\InvalidStateException::class,
+            InvalidStateException::class,
             'Parameter "score" should be provided in request attributes'
 		);
 	}
@@ -215,7 +216,7 @@ final class TestRequestParameterMapping extends TestCase
             function () use ($requestWithEmptyCookie) {
                 $this->requestParameterMapping->map($requestWithEmptyCookie, $this->response);
             },
-            \Apitte\Core\Exception\Logical\InvalidStateException::class,
+            InvalidStateException::class,
             'Parameter "session" should not be empty'
 		);
 
@@ -262,7 +263,7 @@ final class TestRequestParameterMapping extends TestCase
             function () use ($requestWithEmptyHeader) {
                 $this->requestParameterMapping->map($requestWithEmptyHeader, $this->response);
             },
-            \Apitte\Core\Exception\Logical\InvalidStateException::class,
+            InvalidStateException::class,
             'Parameter "auth" should not be empty'
 		);
 

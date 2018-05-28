@@ -8,7 +8,7 @@ use Nette\Utils\Arrays;
 
 /**
  * @Annotation
- * @Target("CLASS")
+ * @Target({"CLASS", "METHOD"})
  */
 final class Tag
 {
@@ -24,8 +24,9 @@ final class Tag
 	 */
 	public function __construct(array $values)
 	{
-		if (!isset($values['name'])) {
-			throw new AnnotationException('Name is required at @Tag');
+		if (isset($values['value']) && !isset($values['name'])) {
+			$values['name'] = $values['value'];
+			unset($values['value']);
 		}
 
 		$this->name = $values['name'];

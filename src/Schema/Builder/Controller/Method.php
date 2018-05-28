@@ -21,6 +21,9 @@ final class Method
 	private $methods = [];
 
 	/** @var string[] */
+	private $tags = [];
+
+	/** @var string[] */
 	private $arguments = [];
 
 	/** @var MethodParameter[] */
@@ -129,13 +132,41 @@ final class Method
 	}
 
 	/**
-	 * @param string|string[] $methods
+	 * @param string[] $methods
 	 * @return void
 	 */
 	public function addMethods(array $methods)
 	{
 		foreach ($methods as $method) {
 			$this->addMethod($method);
+		}
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getTags()
+	{
+		return $this->tags;
+	}
+
+	/**
+	 * @param string $tag
+	 * @return void
+	 */
+	public function addTag($tag)
+	{
+		$this->tags[] = $tag;
+	}
+
+	/**
+	 * @param string[] $tags
+	 * @return void
+	 */
+	public function addTags(array $tags)
+	{
+		foreach ($tags as $tag) {
+			$this->addTag($tag);
 		}
 	}
 

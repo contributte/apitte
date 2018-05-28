@@ -252,6 +252,13 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 					continue;
 				}
 
+				// Parse @Tag ==============================
+				if (get_class($annotation) == Tag::class) {
+					/** @var Tag $annotation */
+					$schemaMethod->addTag($annotation->getName());
+					continue;
+				}
+
 				// Parse @Id ===============================
 				if (get_class($annotation) === Id::class) {
 					/** @var Id $annotation */

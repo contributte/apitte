@@ -7,10 +7,14 @@ class IntegerTypeMapper extends AbstractTypeMapper
 
 	/**
 	 * @param mixed $value
-	 * @return int
+	 * @return int|NULL
 	 */
 	public function normalize($value)
 	{
+		if ($value === NULL) {
+			return $value;
+		}
+
 		return intval($value);
 	}
 

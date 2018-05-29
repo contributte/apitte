@@ -82,6 +82,13 @@ class RequestParameterMapping
 					// Obtain request parameter values
 					$value = $requestParameters[$parameter->getName()];
 
+					if ($value === NULL && $parameter->isRequired()) {
+						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
+					}
+					if ($value === '' && !$parameter->isAllowEmpty()) {
+						throw new InvalidStateException(sprintf('Parameter "%s" should not be empty', $parameter->getName()));
+					}
+
 					// Normalize value
 					$normalizedValue = $mapper->normalize($value);
 
@@ -102,6 +109,13 @@ class RequestParameterMapping
 
 					// Obtain request parameter values
 					$value = $cookieParams[$parameter->getName()];
+
+					if ($value === NULL && $parameter->isRequired()) {
+						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
+					}
+					if ($value === '' && !$parameter->isAllowEmpty()) {
+						throw new InvalidStateException(sprintf('Parameter "%s" should not be empty', $parameter->getName()));
+					}
 
 					// Normalize value
 					$normalizedValue = $mapper->normalize($value);
@@ -128,6 +142,10 @@ class RequestParameterMapping
 
 					// Normalize value
 					foreach ($values as $index => $value) {
+						if ($value === '' && !$parameter->isAllowEmpty()) {
+							throw new InvalidStateException(sprintf('Parameter "%s" should not be empty', $parameter->getName()));
+						}
+
 						$normalizedValues[$index] = $mapper->normalize($value);
 					}
 

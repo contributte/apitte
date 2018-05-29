@@ -5,13 +5,13 @@ namespace Apitte\Core\Schema;
 final class EndpointParameter
 {
 
-	const TYPE_SCALAR = 1;
-	const TYPE_STRING = 2;
-	const TYPE_INTEGER = 3;
-	const TYPE_FLOAT = 4;
-	const TYPE_BOOLEAN = 5;
-	const TYPE_DATETIME = 6;
-	const TYPE_OBJECT = 7;
+	const TYPE_SCALAR = 'scalar';
+	const TYPE_STRING = 'string';
+	const TYPE_INTEGER = 'int';
+	const TYPE_FLOAT = 'float';
+	const TYPE_BOOLEAN = 'bool';
+	const TYPE_DATETIME = 'datetime';
+	const TYPE_OBJECT = 'object';
 
 	const IN_QUERY = 'query';
 	const IN_COOKIE = 'cookie';

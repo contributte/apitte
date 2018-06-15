@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
@@ -16,7 +16,7 @@ final class GroupPath
 	private $path;
 
 	/**
-	 * @param array $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
@@ -25,7 +25,7 @@ final class GroupPath
 				throw new AnnotationException('Empty @GroupPath given');
 			}
 			$this->path = $values['value'];
-		} else if (isset($values['path'])) {
+		} elseif (isset($values['path'])) {
 			if (empty($values['path'])) {
 				throw new AnnotationException('Empty @GroupPath given');
 			}
@@ -35,10 +35,7 @@ final class GroupPath
 		}
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getPath()
+	public function getPath(): string
 	{
 		return $this->path;
 	}

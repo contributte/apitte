@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Dispatcher;
 
@@ -13,20 +13,12 @@ class WrappedDispatcher implements IDispatcher
 	/** @var IDispatcher */
 	protected $inner;
 
-	/**
-	 * @param IDispatcher $inner
-	 */
 	public function __construct(IDispatcher $inner)
 	{
 		$this->inner = $inner;
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		// Create API/HTTP objects
 		$request = $this->createApiRequest($request);
@@ -41,29 +33,17 @@ class WrappedDispatcher implements IDispatcher
 		return $response;
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @return ApiRequest
-	 */
-	protected function createApiRequest(ServerRequestInterface $request)
+	protected function createApiRequest(ServerRequestInterface $request): ApiRequest
 	{
 		return new ApiRequest($request);
 	}
 
-	/**
-	 * @param ResponseInterface $response
-	 * @return ApiResponse
-	 */
-	protected function createApiResponse(ResponseInterface $response)
+	protected function createApiResponse(ResponseInterface $response): ApiResponse
 	{
 		return new ApiResponse($response);
 	}
 
-	/**
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	protected function unwrap(ResponseInterface $response)
+	protected function unwrap(ResponseInterface $response): ResponseInterface
 	{
 		if ($response instanceof ApiResponse) {
 			// Get original response

@@ -1,21 +1,20 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Parameter;
 
-class StringTypeMapper extends AbstractTypeMapper
+class StringTypeMapper implements ITypeMapper
 {
 
 	/**
 	 * @param mixed $value
-	 * @return string|NULL
 	 */
-	public function normalize($value)
+	public function normalize($value): ?string
 	{
-		if ($value === NULL) {
+		if ($value === null) {
 			return $value;
 		}
 
-		return strval($value);
+		return (string) $value;
 	}
 
 }

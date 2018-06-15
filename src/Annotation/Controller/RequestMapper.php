@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
@@ -16,10 +16,10 @@ final class RequestMapper
 	private $entity;
 
 	/** @var bool */
-	private $validation = TRUE;
+	private $validation = true;
 
 	/**
-	 * @param array $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
@@ -30,22 +30,16 @@ final class RequestMapper
 		$this->entity = $values['entity'];
 
 		if (isset($values['validation'])) {
-			$this->validation = boolval($values['validation']);
+			$this->validation = (bool) $values['validation'];
 		}
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getEntity()
+	public function getEntity(): string
 	{
 		return $this->entity;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isValidation()
+	public function isValidation(): bool
 	{
 		return $this->validation;
 	}

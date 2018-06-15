@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
 use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\Common\Annotations\AnnotationException;
 use Nette\Utils\Arrays;
 
 /**
@@ -16,11 +15,11 @@ final class Tag
 	/** @var string */
 	private $name;
 
-	/** @var string */
+	/** @var string|null */
 	private $value;
 
 	/**
-	 * @param array $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
@@ -30,21 +29,15 @@ final class Tag
 		}
 
 		$this->name = $values['name'];
-		$this->value = Arrays::get($values, 'value', NULL);
+		$this->value = Arrays::get($values, 'value', null);
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getValue()
+	public function getValue(): ?string
 	{
 		return $this->value;
 	}

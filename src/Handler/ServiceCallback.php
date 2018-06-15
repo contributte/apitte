@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Handler;
 
@@ -14,15 +14,15 @@ class ServiceCallback
 	/** @var string */
 	private $method;
 
-	/** @var array */
-	private $arguments = [];
+	/** @var mixed[] */
+	private $arguments;
 
 	/**
 	 * @param object $service
-	 * @param string $method
-	 * @param array $args
+	 * @param mixed[] $args
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function __construct($service, $method, array $args = [])
+	public function __construct($service, string $method, array $args = [])
 	{
 		$this->service = $service;
 		$this->method = $method;
@@ -31,43 +31,35 @@ class ServiceCallback
 
 	/**
 	 * @return object
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
 	 */
 	public function getService()
 	{
 		return $this->service;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMethod()
+	public function getMethod(): string
 	{
 		return $this->method;
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getArguments()
+	public function getArguments(): array
 	{
 		return $this->arguments;
 	}
 
 	/**
-	 * @param array $args
-	 * @return void
+	 * @param mixed[] $args
 	 */
-	public function setArguments(array $args)
+	public function setArguments(array $args): void
 	{
 		$this->arguments = $args;
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+	public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		return call_user_func_array([$this->service, $this->method], $this->arguments);
 	}

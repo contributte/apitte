@@ -1,26 +1,23 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Exception\Api;
 
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
-use Exception;
+use Throwable;
 
 class ValidationException extends ClientErrorException
 {
 
 	/**
-	 * @param string $message
-	 * @param int $code
-	 * @param Exception $previous
-	 * @param array $fields
+	 * @param mixed[] $fields
 	 */
-	public function __construct($message = '', $code = 422, Exception $previous = NULL, array $fields = [])
+	public function __construct(string $message = '', int $code = 422, ?Throwable $previous = null, array $fields = [])
 	{
 		parent::__construct($message, $code, $previous, $fields);
 	}
 
 	/**
-	 * @param array $fields
+	 * @param mixed[] $fields
 	 * @return static
 	 */
 	public function withFields(array $fields)
@@ -29,7 +26,7 @@ class ValidationException extends ClientErrorException
 	}
 
 	/**
-	 * @param array $fields
+	 * @param mixed[] $fields
 	 * @return static
 	 */
 	public function withFormFields(array $fields)

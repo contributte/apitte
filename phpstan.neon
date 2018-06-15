@@ -1,5 +1,11 @@
 includes:
+	- temp/phpstan/vendor/phpstan/phpstan-strict-rules/rules.neon
 	- temp/phpstan/vendor/phpstan/phpstan-nette/extension.neon
 	- temp/phpstan/vendor/phpstan/phpstan-nette/rules.neon
 
 parameters:
+	ignoreErrors:
+		- '#^Only booleans are allowed in#'
+		- '#string|null given.$#'
+		- '#on possibly null value of type#'
+		- '#^Access to private property \$previous of parent class Exception.$#'

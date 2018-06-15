@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Http;
 
@@ -13,24 +13,19 @@ use Contributte\Psr7\ProxyResponse;
 class ApiResponse extends ProxyResponse
 {
 
-	/** @var array */
+	/** @var mixed[] */
 	protected $attributes = [];
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasAttribute($name)
+	public function hasAttribute(string $name): bool
 	{
 		return array_key_exists($name, $this->attributes);
 	}
 
 	/**
-	 * @param string $name
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function getAttribute($name, $default = NULL)
+	public function getAttribute(string $name, $default = null)
 	{
 		if (!$this->hasAttribute($name)) {
 			if (func_num_args() < 2) {
@@ -44,19 +39,17 @@ class ApiResponse extends ProxyResponse
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getAttributes()
+	public function getAttributes(): array
 	{
 		return $this->attributes;
 	}
 
 	/**
-	 * @param string $name
 	 * @param mixed $value
-	 * @return static
 	 */
-	public function withAttribute($name, $value)
+	public function withAttribute(string $name, $value): self
 	{
 		$new = clone $this;
 		$new->attributes[$name] = $value;
@@ -64,37 +57,22 @@ class ApiResponse extends ProxyResponse
 		return $new;
 	}
 
-
-	/**
-	 * @return AbstractEntity
-	 */
-	public function getEntity()
+	public function getEntity(): ?AbstractEntity
 	{
-		return $this->getAttribute(ResponseAttributes::ATTR_ENTITY, NULL);
+		return $this->getAttribute(ResponseAttributes::ATTR_ENTITY, null);
 	}
 
-	/**
-	 * @param AbstractEntity $entity
-	 * @return static
-	 */
-	public function withEntity(AbstractEntity $entity)
+	public function withEntity(AbstractEntity $entity): self
 	{
 		return $this->withAttribute(ResponseAttributes::ATTR_ENTITY, $entity);
 	}
 
-	/**
-	 * @return Endpoint
-	 */
-	public function getEndpoint()
+	public function getEndpoint(): Endpoint
 	{
-		return $this->getAttribute(ResponseAttributes::ATTR_ENDPOINT, NULL);
+		return $this->getAttribute(ResponseAttributes::ATTR_ENDPOINT, null);
 	}
 
-	/**
-	 * @param Endpoint $endpoint
-	 * @return static
-	 */
-	public function withEndpoint(Endpoint $endpoint)
+	public function withEndpoint(Endpoint $endpoint): self
 	{
 		return $this->withAttribute(ResponseAttributes::ATTR_ENDPOINT, $endpoint);
 	}

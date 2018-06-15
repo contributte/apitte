@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Exception\Runtime;
 
@@ -11,19 +11,13 @@ class EarlyReturnResponseException extends RuntimeException
 	/** @var ResponseInterface */
 	protected $response;
 
-	/**
-	 * @param ResponseInterface $response
-	 */
 	public function __construct(ResponseInterface $response)
 	{
 		parent::__construct();
 		$this->response = $response;
 	}
 
-	/**
-	 * @return ResponseInterface
-	 */
-	public function getResponse()
+	public function getResponse(): ResponseInterface
 	{
 		return $this->response;
 	}

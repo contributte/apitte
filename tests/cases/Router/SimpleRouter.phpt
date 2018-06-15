@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: Router\SimpleRouter
@@ -15,7 +15,7 @@ use Contributte\Psr7\Psr7ServerRequestFactory;
 use Tester\Assert;
 
 // Match parameter {id}
-test(function () {
+test(function (): void {
 	$endpoint = new Endpoint();
 	$endpoint->addMethod('GET');
 	$endpoint->setPattern('#^/users/(?P<id>[^/]+)#');
@@ -40,7 +40,7 @@ test(function () {
 });
 
 // Match parameters {foo}/{bar}
-test(function () {
+test(function (): void {
 	$endpoint = new Endpoint();
 	$endpoint->addMethod('GET');
 	$endpoint->setPattern('#^/users/(?P<foo>[^/]+)/(?P<bar>[^/]+)#');
@@ -68,7 +68,7 @@ test(function () {
 });
 
 // Not match
-test(function () {
+test(function (): void {
 	$endpoint = new Endpoint();
 	$endpoint->addMethod('GET');
 

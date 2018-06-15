@@ -1,66 +1,51 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema;
 
 final class EndpointHandler
 {
 
-	/** @var string */
+	/** @var string|null */
 	private $class;
 
-	/** @var string */
+	/** @var string|null */
 	private $method;
 
-	/** @var array */
+	/** @var mixed[] */
 	private $arguments = [];
 
-	/**
-	 * @return string
-	 */
-	public function getClass()
+	public function getClass(): ?string
 	{
 		return $this->class;
 	}
 
-	/**
-	 * @param string $class
-	 * @return void
-	 */
-	public function setClass($class)
+	public function setClass(?string $class): void
 	{
 		$this->class = $class;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMethod()
+	public function getMethod(): ?string
 	{
 		return $this->method;
 	}
 
-	/**
-	 * @param string $method
-	 * @return void
-	 */
-	public function setMethod($method)
+	public function setMethod(?string $method): void
 	{
 		$this->method = $method;
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getArguments()
+	public function getArguments(): array
 	{
 		return $this->arguments;
 	}
 
 	/**
-	 * @param array $arguments
-	 * @return void
+	 * @param mixed[] $arguments
 	 */
-	public function setArguments(array $arguments)
+	public function setArguments(array $arguments): void
 	{
 		$this->arguments = $arguments;
 	}

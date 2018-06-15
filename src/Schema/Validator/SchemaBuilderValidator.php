@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Validator;
 
@@ -11,20 +11,12 @@ class SchemaBuilderValidator
 	/** @var IValidation[] */
 	private $validators = [];
 
-	/**
-	 * @param IValidation $validator
-	 * @return void
-	 */
-	public function add(IValidation $validator)
+	public function add(IValidation $validator): void
 	{
 		$this->validators[] = $validator;
 	}
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	public function validate(SchemaBuilder $builder)
+	public function validate(SchemaBuilder $builder): void
 	{
 		foreach ($this->validators as $validator) {
 			$validator->validate($builder);

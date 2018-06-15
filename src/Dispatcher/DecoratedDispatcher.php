@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Dispatcher;
 
@@ -16,9 +16,9 @@ use Apitte\Core\Router\IRouter;
 use Apitte\Negotiation\Http\ArrayEntity;
 use Apitte\Negotiation\Http\MappingEntity;
 use Apitte\Negotiation\Http\ScalarEntity;
-use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class DecoratedDispatcher extends CoreDispatcher
 {
@@ -26,11 +26,6 @@ class DecoratedDispatcher extends CoreDispatcher
 	/** @var DecoratorManager */
 	protected $decoratorManager;
 
-	/**
-	 * @param IRouter $router
-	 * @param IHandler $handler
-	 * @param DecoratorManager $decoratorManager
-	 */
 	public function __construct(IRouter $router, IHandler $handler, DecoratorManager $decoratorManager)
 	{
 		parent::__construct($router, $handler);
@@ -40,9 +35,8 @@ class DecoratedDispatcher extends CoreDispatcher
 	/**
 	 * @param ApiRequest|ServerRequestInterface $request
 	 * @param ApiResponse|ResponseInterface $response
-	 * @return ResponseInterface
 	 */
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		try {
 			// Route and call handler
@@ -52,30 +46,31 @@ class DecoratedDispatcher extends CoreDispatcher
 			$request = $e->getRequest();
 			$response = $e->getResponse();
 			$e = $e->getPrevious();
-		} catch (Exception $e) {
+		} catch (Throwable $e) {
 			// Process exception in the next lines
 		}
 
 		if (isset($e)) {
-			// Trigger exception decorator
-			$response = $this->decoratorManager->decorateResponse(IDecorator::ON_DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
-
-			// If there's no decorator to handle this exception, throw again
-			if ($response === NULL) throw $e;
+			if ($this->decoratorManager->hasDecorators(IDecorator::ON_DISPATCHER_EXCEPTION)) {
+				// Trigger exception decorator
+				$response = $this->decoratorManager->decorateResponse(IDecorator::ON_DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
+			} else {
+				// If there's no decorator to handle this exception, throw again
+				throw $e;
+			}
 		}
 
 		return $response;
 	}
 
 	/**
-	 * @param ApiRequest|ServerRequestInterface $request
-	 * @param ApiResponse|ResponseInterface $response
-	 * @return ResponseInterface
+	 * @param ApiRequest $request
+	 * @param ApiResponse $response
 	 */
-	protected function handle(ServerRequestInterface $request, ResponseInterface $response)
+	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		// Pass endpoint to response
-		if (($endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, NULL))) {
+		if (($endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, null))) {
 			$response = $response->withEndpoint($endpoint);
 		}
 
@@ -93,7 +88,7 @@ class DecoratedDispatcher extends CoreDispatcher
 			// It's used for passing attributes to next layer (dispatch)
 			// from decorators above (IDecorator::HANDLER_BEFORE).
 			$result = $this->handler->handle($request, $response);
-		} catch (Exception $e) {
+		} catch (Throwable $e) {
 			throw new SnapshotException($e, $request, $response);
 		}
 
@@ -103,9 +98,9 @@ class DecoratedDispatcher extends CoreDispatcher
 		// otherwise use result as response
 		if (is_array($result)) {
 			$response = $response->withEntity(ArrayEntity::from($result));
-		} else if (is_scalar($result)) {
+		} elseif (is_scalar($result)) {
 			$response = $response->withEntity(ScalarEntity::from($result));
-		} else if ($result instanceof IResponseEntity) {
+		} elseif ($result instanceof IResponseEntity) {
 			$response = $response->withEntity(MappingEntity::from($result));
 		} else {
 			$response = $result;

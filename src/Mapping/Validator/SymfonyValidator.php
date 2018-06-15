@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Validator;
 
@@ -16,9 +16,9 @@ class SymfonyValidator implements IEntityValidator
 	/**
 	 * @param object $entity
 	 * @throws ValidationException
-	 * @return void
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function validate($entity)
+	public function validate($entity): void
 	{
 		AnnotationRegistry::registerLoader('class_exists');
 		AnnotationReader::addGlobalIgnoredName('mapping');

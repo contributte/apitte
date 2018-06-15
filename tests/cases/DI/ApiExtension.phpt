@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: DI\ApiExtension
@@ -16,13 +16,13 @@ use Tests\Fixtures\Controllers\FoobarController;
 require_once __DIR__ . '/../../bootstrap.php';
 
 // Default
-test(function () {
-	$loader = new ContainerLoader(TEMP_DIR, TRUE);
-	$class = $loader->load(function (Compiler $compiler) {
+test(function (): void {
+	$loader = new ContainerLoader(TEMP_DIR, true);
+	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
 		$compiler->addConfig([
 			'parameters' => [
-				'debugMode' => TRUE,
+				'debugMode' => true,
 			],
 		]);
 	}, 1);
@@ -35,13 +35,13 @@ test(function () {
 });
 
 // Annotations
-test(function () {
-	$loader = new ContainerLoader(TEMP_DIR, TRUE);
-	$class = $loader->load(function (Compiler $compiler) {
+test(function (): void {
+	$loader = new ContainerLoader(TEMP_DIR, true);
+	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
 		$compiler->addConfig([
 			'parameters' => [
-				'debugMode' => TRUE,
+				'debugMode' => true,
 			],
 			'services' => [
 				FoobarController::class,

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: Annotation\Controller\Method
@@ -11,33 +11,33 @@ use Tester\Assert;
 require_once __DIR__ . '/../../../bootstrap.php';
 
 // Value
-test(function () {
+test(function (): void {
 	$method = new Method(['value' => 'GET']);
 	Assert::equal(['GET'], $method->getMethods());
 
 	$method = new Method(['value' => ['GET', 'POST']]);
 	Assert::equal(['GET', 'POST'], $method->getMethods());
 
-	Assert::exception(function () {
+	Assert::exception(function (): void {
 		new Method(['value' => 0]);
 	}, AnnotationException::class, 'Invalid @Method given');
 });
 
 // Methods
-test(function () {
+test(function (): void {
 	$method = new Method(['methods' => ['GET', 'POST']]);
 	Assert::equal(['GET', 'POST'], $method->getMethods());
 });
 
 // Method
-test(function () {
+test(function (): void {
 	$method = new Method(['method' => 'GET']);
 	Assert::equal(['GET'], $method->getMethods());
 });
 
 // Fails
-test(function () {
-	Assert::exception(function () {
+test(function (): void {
+	Assert::exception(function (): void {
 		new Method([]);
 	}, AnnotationException::class, 'No @Method given');
 });

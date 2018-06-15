@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Validation;
 
@@ -9,21 +9,13 @@ use Apitte\Core\Utils\Regex;
 class GroupPathValidation implements IValidation
 {
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	public function validate(SchemaBuilder $builder)
+	public function validate(SchemaBuilder $builder): void
 	{
 		$this->validateSlashes($builder);
 		$this->validateRegex($builder);
 	}
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	protected function validateSlashes(SchemaBuilder $builder)
+	protected function validateSlashes(SchemaBuilder $builder): void
 	{
 		$controllers = $builder->getControllers();
 
@@ -53,11 +45,7 @@ class GroupPathValidation implements IValidation
 		}
 	}
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	protected function validateRegex(SchemaBuilder $builder)
+	protected function validateRegex(SchemaBuilder $builder): void
 	{
 		$controllers = $builder->getControllers();
 
@@ -72,7 +60,7 @@ class GroupPathValidation implements IValidation
 				// -> -_/
 				$match = Regex::match($path, '#([^a-zA-Z0-9\-_/]+)#');
 
-				if ($match !== NULL) {
+				if ($match !== null) {
 					throw new InvalidSchemaException(
 						sprintf(
 							'@GroupPath "%s" in "%s" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9-_/].',

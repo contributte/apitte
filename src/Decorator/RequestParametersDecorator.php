@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Decorator;
 
@@ -13,9 +13,6 @@ class RequestParametersDecorator implements IDecorator
 	/** @var RequestParameterMapping */
 	protected $mapping;
 
-	/**
-	 * @param RequestParameterMapping $mapping
-	 */
 	public function __construct(RequestParameterMapping $mapping)
 	{
 		$this->mapping = $mapping;
@@ -23,11 +20,9 @@ class RequestParametersDecorator implements IDecorator
 
 	/**
 	 * @param ServerRequestInterface|ApiRequest $request
-	 * @param ResponseInterface $response
-	 * @param array $context
-	 * @return ServerRequestInterface
+	 * @param mixed[] $context
 	 */
-	public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = [])
+	public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
 	{
 		return $this->mapping->map($request, $response);
 	}

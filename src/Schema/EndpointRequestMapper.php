@@ -1,48 +1,34 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema;
 
 final class EndpointRequestMapper
 {
 
-	/** @var string */
+	/** @var string|null */
 	private $entity;
 
-	/** @var boolean */
-	private $validation = TRUE;
+	/** @var bool */
+	private $validation = true;
 
-	/**
-	 * @return string
-	 */
-	public function getEntity()
+	public function getEntity(): ?string
 	{
 		return $this->entity;
 	}
 
-	/**
-	 * @param string $entity
-	 * @return void
-	 */
-	public function setEntity($entity)
+	public function setEntity(?string $entity): void
 	{
 		$this->entity = $entity;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isValidation()
+	public function isValidation(): bool
 	{
 		return $this->validation;
 	}
 
-	/**
-	 * @param bool $validation
-	 * @return void
-	 */
-	public function setValidation($validation)
+	public function setValidation(bool $validation): void
 	{
-		$this->validation = boolval($validation);
+		$this->validation = $validation;
 	}
 
 }

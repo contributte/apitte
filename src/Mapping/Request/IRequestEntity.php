@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Request;
 
@@ -8,14 +8,10 @@ interface IRequestEntity
 {
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getRequestProperties();
+	public function getRequestProperties(): array;
 
-	/**
-	 * @param ApiRequest $request
-	 * @return static
-	 */
-	public function fromRequest(ApiRequest $request);
+	public function fromRequest(ApiRequest $request): ?self;
 
 }

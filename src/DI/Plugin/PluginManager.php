@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Plugin;
 
@@ -15,24 +15,15 @@ final class PluginManager
 	/** @var AbstractPlugin[] */
 	private $plugins = [];
 
-	/**
-	 * @param ApiExtension $extension
-	 */
 	public function __construct(ApiExtension $extension)
 	{
 		$this->compiler = new PluginCompiler($this, $extension);
 	}
 
 	/**
-	 * PLUGINS *****************************************************************
+	 * @param mixed[] $config
 	 */
-
-	/**
-	 * @param AbstractPlugin $plugin
-	 * @param array $config
-	 * @return AbstractPlugin
-	 */
-	public function registerPlugin(AbstractPlugin $plugin, array $config = [])
+	public function registerPlugin(AbstractPlugin $plugin, array $config = []): AbstractPlugin
 	{
 		// Register plugin
 		$this->plugins[$plugin->getName()] = [
@@ -44,26 +35,19 @@ final class PluginManager
 	}
 
 	/**
-	 * @param array $plugins
-	 * @return void
+	 * @param mixed[] $plugins
 	 */
-	public function loadPlugins(array $plugins)
+	public function loadPlugins(array $plugins): void
 	{
 		foreach ($plugins as $class => $config) {
-			if (!class_exists($class)) {
-				throw new InvalidStateException(sprintf('Plugin class "%s" not found', $class));
-			}
-
 			$this->loadPlugin($class, (array) $config);
 		}
 	}
 
 	/**
-	 * @param string $class
-	 * @param array $config
-	 * @return void
+	 * @param mixed[] $config
 	 */
-	public function loadPlugin($class, array $config = [])
+	public function loadPlugin(string $class, array $config = []): void
 	{
 		if (!is_subclass_of($class, AbstractPlugin::class)) {
 			throw new InvalidStateException(sprintf('Plugin class "%s" is not subclass of "%s"', $class, AbstractPlugin::class));
@@ -79,21 +63,15 @@ final class PluginManager
 	/**
 	 * @return AbstractPlugin[]
 	 */
-	public function getPlugins()
+	public function getPlugins(): array
 	{
 		return $this->plugins;
 	}
 
 	/**
-	 * EXTENSION ***************************************************************
-	 */
-
-	/**
 	 * Register services from all plugins
-	 *
-	 * @return void
 	 */
-	public function loadConfigurations()
+	public function loadConfigurations(): void
 	{
 		foreach ($this->plugins as $plugin) {
 			$plugin['inst']->setupPlugin($plugin['config']);
@@ -103,10 +81,8 @@ final class PluginManager
 
 	/**
 	 * Register services from all plugins
-	 *
-	 * @return void
 	 */
-	public function beforeCompiles()
+	public function beforeCompiles(): void
 	{
 		foreach ($this->plugins as $plugin) {
 			$plugin['inst']->beforePluginCompile();
@@ -115,11 +91,8 @@ final class PluginManager
 
 	/**
 	 * Decorate PHP code
-	 *
-	 * @param ClassType $class
-	 * @return void
 	 */
-	public function afterCompiles(ClassType $class)
+	public function afterCompiles(ClassType $class): void
 	{
 		foreach ($this->plugins as $plugin) {
 			$plugin['inst']->afterPluginCompile($class);

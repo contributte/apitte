@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Validator;
 
 use Apitte\Core\Exception\Api\ValidationException;
-use Apitte\Core\Mapping\Request\AbstractEntity;
+use Apitte\Core\Mapping\Request\BasicEntity;
 use Nette\Utils\Strings;
 use ReflectionObject;
 
@@ -13,13 +13,13 @@ class BasicValidator implements IEntityValidator
 	/**
 	 * @param object $entity
 	 * @throws ValidationException
-	 * @return void
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function validate($entity)
+	public function validate($entity): void
 	{
-		// Only AbstractEntity implements required method for
+		// Only BasicEntity implements required method for
 		// handling properties, etc...
-		if (!($entity instanceof AbstractEntity)) return;
+		if (!($entity instanceof BasicEntity)) return;
 
 		$violations = $this->validateProperties($entity);
 
@@ -35,10 +35,9 @@ class BasicValidator implements IEntityValidator
 	}
 
 	/**
-	 * @param AbstractEntity $entity
-	 * @return array
+	 * @return string[][]
 	 */
-	protected function validateProperties(AbstractEntity $entity)
+	protected function validateProperties(BasicEntity $entity): array
 	{
 		$violations = [];
 		$properties = $entity->getProperties();
@@ -48,10 +47,8 @@ class BasicValidator implements IEntityValidator
 			$propertyRf = $rf->getProperty($propertyName);
 			$doc = $propertyRf->getDocComment();
 
-			if (Strings::contains($doc, '@required')) {
-				if ($entity->{$propertyName} === NULL) {
-					$violations[$propertyName][] = 'This value should not be null.';
-				}
+			if (Strings::contains($doc, '@required') && $entity->{$propertyName} === null) {
+				$violations[$propertyName][] = 'This value should not be null.';
 			}
 		}
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Serialization;
 
@@ -8,7 +8,6 @@ interface ISerializator
 {
 
 	/**
-	 * @param SchemaBuilder $builder
 	 * @return mixed
 	 */
 	public function serialize(SchemaBuilder $builder);

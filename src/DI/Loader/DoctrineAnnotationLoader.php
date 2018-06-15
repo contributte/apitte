@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Loader;
 
@@ -29,16 +29,12 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	/** @var AnnotationReader */
 	private $reader;
 
-	/** @var array */
+	/** @var mixed[] */
 	private $meta = [
 		'services' => [],
 	];
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return SchemaBuilder
-	 */
-	public function load(SchemaBuilder $builder)
+	public function load(SchemaBuilder $builder): SchemaBuilder
 	{
 		// Find all controllers by type (interface, annotation)
 		$controllers = $this->findControllers();
@@ -68,11 +64,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		return $builder;
 	}
 
-	/**
-	 * @param string $class
-	 * @return ClassType
-	 */
-	protected function analyseClass($class)
+	protected function analyseClass(string $class): ClassType
 	{
 		// Analyse only new-ones
 		if (isset($this->meta['services'][$class])) {
@@ -93,7 +85,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		$reflections = [];
 
 		// Iterate over all parents and analyse them
-		foreach ((array) $parents as $parentClass) {
+		foreach ($parents as $parentClass) {
 			// Stop multiple analysing
 			if (isset($this->meta['services'][$parentClass])) {
 				// Just reference it in reflections
@@ -121,32 +113,23 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		return $classRef;
 	}
 
-	/**
-	 * @param ClassType $class
-	 * @return bool
-	 */
-	protected function acceptController(ClassType $class)
+	protected function acceptController(ClassType $class): bool
 	{
 		// Has class annotation @Controller?
-		if ($this->getReader()->getClassAnnotation($class, ControllerAnnotation::class)) return TRUE;
+		if ($this->getReader()->getClassAnnotation($class, ControllerAnnotation::class)) return true;
 
 		// Has any of parent classes annotation @Controller?
 		$parents = $this->meta['services'][$class->getName()]['parents'];
 
 		/** @var ClassType $parentClass */
 		foreach ($parents as $parentClass) {
-			if ($this->getReader()->getClassAnnotation($parentClass, ControllerAnnotation::class)) return TRUE;
+			if ($this->getReader()->getClassAnnotation($parentClass, ControllerAnnotation::class)) return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
-	/**
-	 * @param Controller $controller
-	 * @param ClassType $class
-	 * @return void
-	 */
-	protected function parseControllerClassAnnotations(Controller $controller, ClassType $class)
+	protected function parseControllerClassAnnotations(Controller $controller, ClassType $class): void
 	{
 		// Read class annotations
 		$annotations = $this->getReader()->getClassAnnotations($class);
@@ -154,31 +137,31 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		// Iterate over all class annotations in controller
 		foreach ($annotations as $annotation) {
 			// Parse @ControllerPath =======================
-			if (get_class($annotation) == ControllerPath::class) {
+			if (get_class($annotation) === ControllerPath::class) {
 				/** @var ControllerPath $annotation */
 				$controller->setPath($annotation->getPath());
 				continue;
 			}
 
 			// Parse @ControllerId =========================
-			if (get_class($annotation) == ControllerId::class) {
+			if (get_class($annotation) === ControllerId::class) {
 				/** @var ControllerId $annotation */
 				$controller->setId($annotation->getName());
 			}
 
 			// Parse @Tag ==================================
-			if (get_class($annotation) == Tag::class) {
+			if (get_class($annotation) === Tag::class) {
 				/** @var Tag $annotation */
 				$controller->addTag($annotation->getName(), $annotation->getValue());
 			}
 
 			// Parse @GroupId ==============================
-			if (get_class($annotation) == GroupId::class) {
+			if (get_class($annotation) === GroupId::class) {
 				throw new InvalidStateException(sprintf('Annotation @GroupId cannot be on non-abstract "%s"', $class->getName()));
 			}
 
 			// Parse @GroupPath ============================
-			if (get_class($annotation) == GroupPath::class) {
+			if (get_class($annotation) === GroupPath::class) {
 				throw new InvalidStateException(sprintf('Annotation @GroupPath cannot be on non-abstract "%s"', $class->getName()));
 			}
 		}
@@ -194,19 +177,19 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Iterate over all parent class annotations
 			foreach ($parentAnnotations as $annotation) {
 				// Parse @GroupId ==========================
-				if (get_class($annotation) == GroupId::class) {
+				if (get_class($annotation) === GroupId::class) {
 					/** @var GroupId $annotation */
 					$controller->addGroupId($annotation->getName());
 				}
 
 				// Parse @GroupPath ========================
-				if (get_class($annotation) == GroupPath::class) {
+				if (get_class($annotation) === GroupPath::class) {
 					/** @var GroupPath $annotation */
 					$controller->addGroupPath($annotation->getPath());
 				}
 
 				// Parse @Tag ==============================
-				if (get_class($annotation) == Tag::class) {
+				if (get_class($annotation) === Tag::class) {
 					/** @var Tag $annotation */
 					$controller->addTag($annotation->getName(), $annotation->getValue());
 				}
@@ -214,12 +197,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		}
 	}
 
-	/**
-	 * @param Controller $controller
-	 * @param ClassType $class
-	 * @return void
-	 */
-	protected function parseControllerMethodsAnnotations(Controller $controller, ClassType $class)
+	protected function parseControllerMethodsAnnotations(Controller $controller, ClassType $class): void
 	{
 		// Iterate over all methods in class
 		foreach ($class->getMethods() as $method) {
@@ -253,7 +231,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				}
 
 				// Parse @Tag ==============================
-				if (get_class($annotation) == Tag::class) {
+				if (get_class($annotation) === Tag::class) {
 					/** @var Tag $annotation */
 					$schemaMethod->addTag($annotation->getName());
 					continue;
@@ -321,14 +299,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		}
 	}
 
-	/*
-	 * HELPERS *****************************************************************
-	 */
-
-	/**
-	 * @return AnnotationReader
-	 */
-	private function getReader()
+	private function getReader(): AnnotationReader
 	{
 		if (!$this->reader) {
 			AnnotationRegistry::registerLoader('class_exists');

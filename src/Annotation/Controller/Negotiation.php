@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
@@ -16,13 +16,13 @@ final class Negotiation
 	private $suffix;
 
 	/** @var bool */
-	private $default = FALSE;
+	private $default = false;
 
-	/** @var string */
+	/** @var string|null */
 	private $renderer;
 
 	/**
-	 * @param array $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
@@ -41,26 +41,17 @@ final class Negotiation
 		}
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getSuffix()
+	public function getSuffix(): string
 	{
 		return $this->suffix;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isDefault()
+	public function isDefault(): bool
 	{
 		return $this->default;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getRenderer()
+	public function getRenderer(): ?string
 	{
 		return $this->renderer;
 	}

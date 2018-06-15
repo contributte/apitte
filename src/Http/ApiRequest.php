@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Http;
 
@@ -12,25 +12,16 @@ class ApiRequest extends ProxyRequest
 
 	use ExtraRequestTrait;
 
-	/**
-	 * HELPERS *****************************************************************
-	 */
-
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasParameter($name)
+	public function hasParameter(string $name): bool
 	{
 		return isset($this->getAttribute(RequestAttributes::ATTR_PARAMETERS, [])[$name]);
 	}
 
 	/**
-	 * @param string $name
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function getParameter($name, $default = NULL)
+	public function getParameter(string $name, $default = null)
 	{
 		if (!$this->hasParameter($name)) {
 			if (func_num_args() < 2) {
@@ -44,7 +35,7 @@ class ApiRequest extends ProxyRequest
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return mixed
 	 */
 	public function getParameters()
 	{
@@ -55,9 +46,9 @@ class ApiRequest extends ProxyRequest
 	 * @param mixed $default
 	 * @return IRequestEntity|mixed
 	 */
-	public function getEntity($default = NULL)
+	public function getEntity($default = null)
 	{
-		$entity = $this->getAttribute(RequestAttributes::ATTR_REQUEST_ENTITY, NULL);
+		$entity = $this->getAttribute(RequestAttributes::ATTR_REQUEST_ENTITY, null);
 
 		if (!$entity) {
 			if (func_num_args() < 1) {

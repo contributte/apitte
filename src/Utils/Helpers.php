@@ -1,15 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Utils;
 
 final class Helpers
 {
 
-	/**
-	 * @param string $str
-	 * @return string
-	 */
-	public static function slashless($str)
+	public static function slashless(string $str): string
 	{
 		return Regex::replace($str, '#/{2,}#', '/');
 	}

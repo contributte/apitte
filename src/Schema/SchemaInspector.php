@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema;
 
@@ -8,34 +8,28 @@ class SchemaInspector
 	/** @var Schema */
 	private $schema;
 
-	/** @var array */
+	/** @var Endpoint[][] */
 	private $cache = [];
 
-	/**
-	 * @param Schema $schema
-	 */
 	public function __construct(Schema $schema)
 	{
 		$this->schema = $schema;
 	}
 
 	/**
-	 * @param string $group
 	 * @return Endpoint[]
 	 */
-	public function getEndpointByGroup($group)
+	public function getEndpointByGroup(string $group): array
 	{
 		return $this->getEndpointsByTag(Endpoint::TAG_GROUP_IDS, $group);
 	}
 
 	/**
-	 * @param string $name
-	 * @param string $value
 	 * @return Endpoint[]
 	 */
-	public function getEndpointsByTag($name, $value = NULL)
+	public function getEndpointsByTag(string $name, ?string $value = null): array
 	{
-		$key = rtrim(sprintf('%s/%s', $name, $value), '/');
+		$key = rtrim(sprintf('%s/%s', $name, (string) $value), '/');
 		$endpoints = $this->schema->getEndpoints();
 
 		if (!isset($this->cache[$key])) {
@@ -44,8 +38,8 @@ class SchemaInspector
 				// Skip if endpoint does not have a tag
 				if (!$endpoint->hasTag($name)) continue;
 
-				// Early skip (cause value is NULL => optional)
-				if ($value === NULL) {
+				// Early skip (cause value is null => optional)
+				if ($value === null) {
 					$items[] = $endpoint;
 					continue;
 				}
@@ -54,10 +48,12 @@ class SchemaInspector
 				$tagval = $endpoint->getTag($name);
 
 				// If tagval is string, try to compare strings
-				// If tagval is array, try to find it by value
 				if (is_string($tagval) && $tagval !== $value) {
 					continue;
-				} else if (is_array($tagval) && !in_array($value, $tagval)) {
+				}
+
+				// If tagval is array, try to find it by value
+				if (is_array($tagval) && !in_array($value, $tagval, true)) {
 					continue;
 				}
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Serialization;
 
@@ -15,10 +15,10 @@ final class ArrayHydrator implements IHydrator
 {
 
 	/**
-	 * @param array $data
-	 * @return Schema
+	 * @param mixed[] $data
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function hydrate($data)
+	public function hydrate($data): Schema
 	{
 		$schema = new Schema();
 
@@ -31,10 +31,9 @@ final class ArrayHydrator implements IHydrator
 	}
 
 	/**
-	 * @param array $data
-	 * @return Endpoint
+	 * @param mixed[] $data
 	 */
-	protected function hydrateEndpoint(array $data)
+	protected function hydrateEndpoint(array $data): Endpoint
 	{
 		if (!isset($data['handler'])) {
 			throw new InvalidStateException("Schema route 'handler' is required");
@@ -64,10 +63,8 @@ final class ArrayHydrator implements IHydrator
 			}
 		}
 
-		if (isset($data['attributes'])) {
-			if (isset($data['attributes']['pattern'])) {
-				$endpoint->setAttribute('pattern', $data['attributes']['pattern']);
-			}
+		if (isset($data['attributes']['pattern'])) {
+			$endpoint->setAttribute('pattern', $data['attributes']['pattern']);
 		}
 
 		if (isset($data['parameters'])) {

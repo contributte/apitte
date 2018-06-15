@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Dispatcher;
 
-use Contributte\Middlewares\Exception\InvalidStateException;
+use Apitte\Core\Exception\Logical\InvalidStateException;
 use Nette\Utils\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -10,12 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class JsonDispatcher extends CoreDispatcher
 {
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	protected function handle(ServerRequestInterface $request, ResponseInterface $response)
+	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		$result = $this->handler->handle($request, $response);
 
@@ -37,12 +32,7 @@ class JsonDispatcher extends CoreDispatcher
 		return $response;
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function fallback(ServerRequestInterface $request, ResponseInterface $response)
+	public function fallback(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		$response = $response->withStatus(404)
 			->withHeader('Content-Type', 'application/json');

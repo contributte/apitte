@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Decorator;
 
@@ -13,21 +13,16 @@ class RequestEntityDecorator implements IDecorator
 	/** @var RequestEntityMapping */
 	protected $mapping;
 
-	/**
-	 * @param RequestEntityMapping $mapping
-	 */
 	public function __construct(RequestEntityMapping $mapping)
 	{
 		$this->mapping = $mapping;
 	}
 
 	/**
-	 * @param ServerRequestInterface|ApiRequest $request
-	 * @param ResponseInterface $response
-	 * @param array $context
-	 * @return ServerRequestInterface
+	 * @param ApiRequest $request
+	 * @param mixed[] $context
 	 */
-	public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = [])
+	public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
 	{
 		return $this->mapping->map($request, $response);
 	}

@@ -1,26 +1,19 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema;
 
 final class EndpointResponseMapper
 {
 
-	/** @var string */
+	/** @var string|null */
 	private $entity;
 
-	/**
-	 * @return string
-	 */
-	public function getEntity()
+	public function getEntity(): ?string
 	{
 		return $this->entity;
 	}
 
-	/**
-	 * @param string $entity
-	 * @return void
-	 */
-	public function setEntity($entity)
+	public function setEntity(?string $entity): void
 	{
 		$this->entity = $entity;
 	}

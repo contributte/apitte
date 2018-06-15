@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Builder\Controller;
 
@@ -8,13 +8,13 @@ final class Method
 	/** @var string */
 	private $name;
 
-	/** @var string */
+	/** @var string|null */
 	private $path;
 
-	/** @var string */
+	/** @var string|null */
 	private $id;
 
-	/** @var string */
+	/** @var string|null */
 	private $description;
 
 	/** @var string[] */
@@ -32,75 +32,48 @@ final class Method
 	/** @var MethodNegotiation[] */
 	private $negotiations = [];
 
-	/** @var array */
+	/** @var mixed[] */
 	private $requestMapper = [];
 
-	/** @var array */
+	/** @var mixed[] */
 	private $responseMapper = [];
 
-	/**
-	 * @param string $name
-	 */
-	public function __construct($name)
+	public function __construct(string $name)
 	{
 		$this->name = $name;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getPath()
+	public function getPath(): ?string
 	{
 		return $this->path;
 	}
 
-	/**
-	 * @param string $path
-	 * @return void
-	 */
-	public function setPath($path)
+	public function setPath(?string $path): void
 	{
 		$this->path = $path;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getId()
+	public function getId(): ?string
 	{
 		return $this->id;
 	}
 
-	/**
-	 * @param string $id
-	 * @return void
-	 */
-	public function setId($id)
+	public function setId(?string $id): void
 	{
 		$this->id = $id;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getDescription()
+	public function getDescription(): ?string
 	{
 		return $this->description;
 	}
 
-	/**
-	 * @param string $description
-	 * @return void
-	 */
-	public function setDescription($description)
+	public function setDescription(?string $description): void
 	{
 		$this->description = $description;
 	}
@@ -108,34 +81,28 @@ final class Method
 	/**
 	 * @return string[]
 	 */
-	public function getMethods()
+	public function getMethods(): array
 	{
 		return $this->methods;
 	}
 
 	/**
 	 * @param string[] $methods
-	 * @return void
 	 */
-	public function setMethods(array $methods)
+	public function setMethods(array $methods): void
 	{
 		$this->methods = $methods;
 	}
 
-	/**
-	 * @param string $method
-	 * @return void
-	 */
-	public function addMethod($method)
+	public function addMethod(string $method): void
 	{
 		$this->methods[] = strtoupper($method);
 	}
 
 	/**
 	 * @param string[] $methods
-	 * @return void
 	 */
-	public function addMethods(array $methods)
+	public function addMethods(array $methods): void
 	{
 		foreach ($methods as $method) {
 			$this->addMethod($method);
@@ -145,46 +112,35 @@ final class Method
 	/**
 	 * @return string[]
 	 */
-	public function getTags()
+	public function getTags(): array
 	{
 		return $this->tags;
 	}
 
-	/**
-	 * @param string $tag
-	 * @return void
-	 */
-	public function addTag($tag)
+	public function addTag(string $tag): void
 	{
 		$this->tags[] = $tag;
 	}
 
 	/**
 	 * @param string[] $tags
-	 * @return void
 	 */
-	public function addTags(array $tags)
+	public function addTags(array $tags): void
 	{
 		foreach ($tags as $tag) {
 			$this->addTag($tag);
 		}
 	}
 
-	/**
-	 * @param string $name
-	 * @param string $type
-	 * @return void
-	 */
-	public function addArgument($name, $type)
+	public function addArgument(string $name, string $type): void
 	{
 		$this->arguments[$name] = $type;
 	}
 
 	/**
 	 * @param mixed[] $arguments
-	 * @return void
 	 */
-	public function addArguments(array $arguments)
+	public function addArguments(array $arguments): void
 	{
 		foreach ($arguments as $type => $name) {
 			$this->addArgument($type, $name);
@@ -194,16 +150,12 @@ final class Method
 	/**
 	 * @return string[]
 	 */
-	public function getArguments()
+	public function getArguments(): array
 	{
 		return $this->arguments;
 	}
 
-	/**
-	 * @param string $name
-	 * @return MethodParameter
-	 */
-	public function addParameter($name)
+	public function addParameter(string $name): MethodParameter
 	{
 		$parameter = new MethodParameter($name);
 		$this->parameters[$name] = $parameter;
@@ -211,11 +163,7 @@ final class Method
 		return $parameter;
 	}
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasParameter($name)
+	public function hasParameter(string $name): bool
 	{
 		return isset($this->parameters[$name]);
 	}
@@ -223,15 +171,12 @@ final class Method
 	/**
 	 * @return MethodParameter[]
 	 */
-	public function getParameters()
+	public function getParameters(): array
 	{
 		return $this->parameters;
 	}
 
-	/**
-	 * @return MethodNegotiation
-	 */
-	public function addNegotiation()
+	public function addNegotiation(): MethodNegotiation
 	{
 		$negotiation = new MethodNegotiation();
 		$this->negotiations[] = $negotiation;
@@ -242,41 +187,39 @@ final class Method
 	/**
 	 * @return MethodNegotiation[]
 	 */
-	public function getNegotiations()
+	public function getNegotiations(): array
 	{
 		return $this->negotiations;
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getRequestMapper()
+	public function getRequestMapper(): array
 	{
 		return $this->requestMapper;
 	}
 
 	/**
-	 * @param array $requestMapper
-	 * @return void
+	 * @param mixed[] $requestMapper
 	 */
-	public function setRequestMapper(array $requestMapper)
+	public function setRequestMapper(array $requestMapper): void
 	{
 		$this->requestMapper = $requestMapper;
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getResponseMapper()
+	public function getResponseMapper(): array
 	{
 		return $this->responseMapper;
 	}
 
 	/**
-	 * @param array $responseMapper
-	 * @return void
+	 * @param mixed[] $responseMapper
 	 */
-	public function setResponseMapper(array $responseMapper)
+	public function setResponseMapper(array $responseMapper): void
 	{
 		$this->responseMapper = $responseMapper;
 	}

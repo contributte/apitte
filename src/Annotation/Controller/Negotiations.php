@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
@@ -16,7 +16,7 @@ final class Negotiations
 	private $negotations = [];
 
 	/**
-	 * @param Negotiation[] $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
@@ -25,7 +25,7 @@ final class Negotiations
 				throw new AnnotationException('Empty @Negotiations given');
 			}
 			$this->negotations = $values['value'];
-		} else if (isset($values['negotations'])) {
+		} elseif (isset($values['negotations'])) {
 			if (empty($values['negotations'])) {
 				throw new AnnotationException('Empty @Negotiations given');
 			}
@@ -38,7 +38,7 @@ final class Negotiations
 	/**
 	 * @return Negotiation[]
 	 */
-	public function getNegotations()
+	public function getNegotations(): array
 	{
 		return $this->negotations;
 	}

@@ -1,66 +1,45 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Builder\Controller;
 
 final class MethodNegotiation
 {
 
-	/** @var string */
+	/** @var string|null */
 	private $suffix;
 
 	/** @var bool */
-	private $default = FALSE;
+	private $default = false;
 
-	/** @var string */
+	/** @var string|null */
 	private $renderer;
 
-	/**
-	 * @return string
-	 */
-	public function getSuffix()
+	public function getSuffix(): ?string
 	{
 		return $this->suffix;
 	}
 
-	/**
-	 * @param string $suffix
-	 * @return void
-	 */
-	public function setSuffix($suffix)
+	public function setSuffix(?string $suffix): void
 	{
 		$this->suffix = $suffix;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isDefault()
+	public function isDefault(): bool
 	{
 		return $this->default;
 	}
 
-	/**
-	 * @param bool $default
-	 * @return void
-	 */
-	public function setDefault($default)
+	public function setDefault(bool $default): void
 	{
 		$this->default = $default;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getRenderer()
+	public function getRenderer(): ?string
 	{
 		return $this->renderer;
 	}
 
-	/**
-	 * @param string $renderer
-	 * @return void
-	 */
-	public function setRenderer($renderer)
+	public function setRenderer(?string $renderer): void
 	{
 		$this->renderer = $renderer;
 	}

@@ -74,21 +74,21 @@ final class HelloController implements IController
      * @Path("/world")
      * @Method("GET")
      */
-    public function index(ApiRequest $request, ApiResponse $response)
+    public function index(ApiRequest $request, ApiResponse $response): ApiResponse
     {
         return $response->writeBody('Hello world!');
     }
 }
 ```
 
-This API by automatic look for all services which implements `Apitte\Core\UI\Controller\IController`. 
+This API by automatic look for all services which implements `Apitte\Core\UI\Controller\IController`.
 Then they are analyzed by annotations loader and `Apitte\Core\Schema\ApiSchema` is build.
 
 You have to mark your controllers with `@Controller` annotation and also define `@ControllerPath`.
 
 Each public method with annotations `@Path` and `@Method` will be added to our API scheme and will be triggered in propel request.
 
-One more thing left, you have to define your controllers as services, to let `Apitte\Core\Handler\ServiceHandler` obtain propel handler. 
+One more thing left, you have to define your controllers as services, to let `Apitte\Core\Handler\ServiceHandler` obtain propel handler.
 
 ```yaml
 services:
@@ -101,7 +101,7 @@ At the end, open your browser and locate to `localhost/<api-project>/hello/world
 
 ### Request & Response
 
-`Apitte\Core\Http\ApiRequest` & `Apitte\Core\Http\ApiResponse` implement the PSR-7 interfaces.  
+`Apitte\Core\Http\ApiRequest` & `Apitte\Core\Http\ApiResponse` implement the PSR-7 interfaces.
 
 ## Annotations
 
@@ -135,10 +135,10 @@ Core plugins are:
 Another available plugins are:
 
 - [`apitte\debug`](https://github.com/apitte/debug) - adds debugging tools for developing
-- [`apitte\middlewares`](https://github.com/apitte/middlewares) - adds support for middlewares, depends on `contributte\middlewares`
+- [`apitte\middlewares`](https://github.com/apitte/middlewares) - adds support for middlewares, depends on [`contributte\middlewares`](https://github.com/contributte/middlewares)
 - [`apitte\negotiation`](https://github.com/apitte/negotiation) - adds support for varient content negotiations (.json, .debug, .csv, etc.)
 - [`apitte\openapi`](https://github.com/apitte/openapi) - adds support for openapi and swagger
-- [`apitte\events`](https://github.com/apitte/events) - [WIP] - adds support for symfony/event-dispatcher
+- [`apitte\events`](https://github.com/apitte/events) - [WIP] - adds support for symfony/event-dispatcher (which is ported into nette via [`contributte\event-dispatcher`](https://github.com/contributte/event-dispatcher))
 
 ### CoreDecoratorPlugin
 
@@ -150,7 +150,7 @@ api:
 
 This plugin overrides default implementation of `IDispatcher` and allows to add request & response decorators. You can manage/update incoming request data or unify JSON response data via registered decorators.
 
-Each **decorator** should be registered with tag `apitte.core.decorator`. 
+Each **decorator** should be registered with tag `apitte.core.decorator`.
 
 Each decorator should provide `type` attribute:
 
@@ -162,12 +162,12 @@ Also you should define a priority for better sorting. Default is 10.
 
 ```yaml
 services:
-    decorator.request.json: 
+    decorator.request.json:
         class: App\Model\JsonBodyDecorator
         tags: [apitte.core.decorator: [priority: 50, type: handler.before]]
 
 services:
-    decorator.request.xml: 
+    decorator.request.xml:
         class: App\Model\XmlBodyDecorator
         tags: [apitte.core.decorator: [priority: 60, type: handler.before]]
 ```
@@ -196,7 +196,7 @@ api:
             validator:
 ```
 
-#### Types 
+#### Types
 
 This plugin allows you to define new annotations.
 
@@ -215,7 +215,7 @@ public function detail(ApiRequest $request)
 }
 ```
 
-It converts request parameters to defined types. By default, you can use `int`, `float`, `string`. Or defined 
+It converts request parameters to defined types. By default, you can use `int`, `float`, `string`. Or defined
 more types in neon.
 
 ```yaml
@@ -233,7 +233,7 @@ Don't forget to register default one, because filling of `types` overrides defau
 
 #### Entity
 
-Let's try to picture you have a datagrid with many filter options. You can describe all options manually or 
+Let's try to picture you have a datagrid with many filter options. You can describe all options manually or
 use value object, entity, for it. And it leads us to `@RequestMapper`.
 
 We have some entity with described fields.
@@ -254,7 +254,7 @@ final class UserFilter extends BasicEntity
 }
 ```
 
-And some endoint with `@RequestMapper` annotation. There's a method `ApiRequest::getEntity()`, it gets 
+And some endoint with `@RequestMapper` annotation. There's a method `ApiRequest::getEntity()`, it gets
 the entity from request attributes. So simple, right?
 
 ```php
@@ -270,7 +270,7 @@ public function filter(ApiRequest $request)
 }
 ```
 
-There's a prepared validator for request entity, but it's disabled by default. You have to 
+There's a prepared validator for request entity, but it's disabled by default. You have to
 pick the validator you want to.
 
 ```yaml
@@ -281,10 +281,10 @@ api:
           request:
             # By default
             validator: Apitte\Core\Mapping\Validator\NullValidator
-            
+
             # Support: @required
             validator: Apitte\Core\Mapping\Validator\BasicValidator
-            
+
             # Symfony/Validator
             validator: Apitte\Core\Mapping\Validator\SymfonyValidator
 ```
@@ -304,7 +304,7 @@ final class UserFilter extends BasicEntity
 	 * )
 	 */
 	public $userId;
-	
+
 }
 ```
 

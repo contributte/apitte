@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Validator;
 
@@ -10,8 +10,8 @@ interface IEntityValidator
 	/**
 	 * @param object $entity
 	 * @throws ValidationException
-	 * @return void
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function validate($entity);
+	public function validate($entity): void;
 
 }

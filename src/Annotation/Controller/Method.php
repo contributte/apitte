@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
@@ -12,25 +12,25 @@ use Doctrine\Common\Annotations\AnnotationException;
 final class Method
 {
 
-	/** @var array */
+	/** @var string[] */
 	private $methods = [];
 
 	/**
-	 * @param array $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
 		if (isset($values['value'])) {
 			if (is_array($values['value'])) {
 				$this->methods = $values['value'];
-			} else if (is_string($values['value']) && !empty($values['value'])) {
+			} elseif (is_string($values['value']) && !empty($values['value'])) {
 				$this->methods = [$values['value']];
 			} else {
 				throw new AnnotationException('Invalid @Method given');
 			}
-		} else if (isset($values['methods']) && !empty($values['methods'])) {
+		} elseif (isset($values['methods']) && !empty($values['methods'])) {
 			$this->methods = $values['methods'];
-		} else if (isset($values['method'])) {
+		} elseif (isset($values['method'])) {
 			$this->methods = [$values['method']];
 		} else {
 			throw new AnnotationException('No @Method given');
@@ -38,9 +38,9 @@ final class Method
 	}
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
-	public function getMethods()
+	public function getMethods(): array
 	{
 		return $this->methods;
 	}

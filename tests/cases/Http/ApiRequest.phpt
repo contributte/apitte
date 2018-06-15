@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: Http\ApiRequest
@@ -13,14 +13,14 @@ use Contributte\Psr7\Psr7ServerRequestFactory;
 use Tester\Assert;
 
 // Parameters
-test(function () {
+test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$apiRequest = new ApiRequest($request);
 
 	Assert::false($apiRequest->hasParameter('name'));
 	Assert::equal('default', $apiRequest->getParameter('name', 'default'));
 	Assert::exception(
-		function () use ($apiRequest) {
+		function () use ($apiRequest): void {
 			$apiRequest->getParameter('name');
 		},
 		InvalidStateException::class,
@@ -37,7 +37,7 @@ test(function () {
 	Assert::false($apiRequest->hasParameter('company'));
 	Assert::equal('default', $apiRequest->getParameter('company', 'default'));
 	Assert::exception(
-		function () use ($apiRequest) {
+		function () use ($apiRequest): void {
 			$apiRequest->getParameter('company');
 		},
 		InvalidStateException::class,

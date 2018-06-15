@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Serialization;
 
@@ -15,10 +15,9 @@ final class ArraySerializator implements ISerializator
 {
 
 	/**
-	 * @param SchemaBuilder $builder
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function serialize(SchemaBuilder $builder)
+	public function serialize(SchemaBuilder $builder): array
 	{
 		$controllers = $builder->getControllers();
 		$schema = [];
@@ -41,11 +40,9 @@ final class ArraySerializator implements ISerializator
 	}
 
 	/**
-	 * @param Controller $controller
-	 * @param Method $method
-	 * @return array
+	 * @return mixed[]
 	 */
-	protected function serializeEndpoint(Controller $controller, Method $method)
+	protected function serializeEndpoint(Controller $controller, Method $method): array
 	{
 		$endpoint = $this->serializeInit($controller, $method);
 		$this->serializeNegotiations($endpoint, $method);
@@ -56,11 +53,9 @@ final class ArraySerializator implements ISerializator
 	}
 
 	/**
-	 * @param Controller $controller
-	 * @param Method $method
-	 * @return array
+	 * @return mixed[]
 	 */
-	protected function serializeInit(Controller $controller, Method $method)
+	protected function serializeInit(Controller $controller, Method $method): array
 	{
 		// Build full mask (@GroupPath(s) + @ControllerPath + @Path)
 		// without duplicated slashes (//)
@@ -78,7 +73,7 @@ final class ArraySerializator implements ISerializator
 		// Build full id (@GroupId(s) + @ControllerId + @Id)
 		// If @Id is empty, then fullid is also empty
 		if (empty($method->getId())) {
-			$id = NULL;
+			$id = null;
 		} else {
 			$idp = array_merge(
 				$controller->getGroupIds(),
@@ -103,7 +98,7 @@ final class ArraySerializator implements ISerializator
 			'parameters' => [],
 			'negotiations' => [],
 			'attributes' => [
-				'pattern' => NULL,
+				'pattern' => null,
 			],
 		];
 
@@ -111,12 +106,9 @@ final class ArraySerializator implements ISerializator
 	}
 
 	/**
-	 * @param array $endpoint
-	 * @param Controller $controller
-	 * @param Method $method
-	 * @return void
+	 * @param mixed[] $endpoint
 	 */
-	protected function serializePattern(array &$endpoint, Controller $controller, Method $method)
+	protected function serializePattern(array &$endpoint, Controller $controller, Method $method): void
 	{
 		$mask = $endpoint['mask'];
 		$maskParameters = [];
@@ -132,8 +124,8 @@ final class ArraySerializator implements ISerializator
 		});
 
 		// Collect variable parameters from URL
-		$pattern = Regex::replaceCallback($mask, '#({([a-zA-Z0-9\-_]+)})#U', function ($matches) use (&$endpoint, &$maskParameters, $method) {
-			list($whole, $variable, $variableName) = $matches;
+		$pattern = Regex::replaceCallback($mask, '#({([a-zA-Z0-9\-_]+)})#U', function ($matches) use (&$endpoint, &$maskParameters) {
+			[$whole, $variable, $variableName] = $matches;
 
 			// Duplication check
 			if (isset($maskParameters[$variableName])) {
@@ -184,11 +176,9 @@ final class ArraySerializator implements ISerializator
 	}
 
 	/**
-	 * @param array $endpoint
-	 * @param Method $method
-	 * @return void
+	 * @param mixed[] $endpoint
 	 */
-	protected function serializeNegotiations(array &$endpoint, Method $method)
+	protected function serializeNegotiations(array &$endpoint, Method $method): void
 	{
 		// Add negotiations
 		foreach ($method->getNegotiations() as $negotiation) {
@@ -201,11 +191,9 @@ final class ArraySerializator implements ISerializator
 	}
 
 	/**
-	 * @param array $endpoint
-	 * @param Method $method
-	 * @return void
+	 * @param mixed[] $endpoint
 	 */
-	protected function serializeMappers(array &$endpoint, Method $method)
+	protected function serializeMappers(array &$endpoint, Method $method): void
 	{
 		// Add request & response mappers
 		if ($method->getRequestMapper()) {
@@ -217,22 +205,20 @@ final class ArraySerializator implements ISerializator
 	}
 
 	/**
-	 * @param array $endpoint
-	 * @param array $parameter
-	 * @param Method $method
-	 * @return void
+	 * @param mixed[] $endpoint
+	 * @param mixed[] $parameter
 	 */
-	protected function serializeEndpointParameter(&$endpoint, array $parameter, Method $method)
+	protected function serializeEndpointParameter(array &$endpoint, array $parameter, Method $method): void
 	{
 		// Build parameters
 		$p = [
 			'name' => $parameter['name'],
 			'type' => EndpointParameter::TYPE_SCALAR,
-			'description' => NULL,
+			'description' => null,
 			'in' => $parameter['in'],
-			'required' => TRUE,
-			'allowEmpty' => FALSE,
-			'deprecated' => FALSE,
+			'required' => true,
+			'allowEmpty' => false,
+			'deprecated' => false,
 		];
 
 		// Update endpoint parameter by defined annotation

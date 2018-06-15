@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
@@ -16,7 +16,7 @@ final class GroupId
 	private $name;
 
 	/**
-	 * @param array $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
@@ -25,7 +25,7 @@ final class GroupId
 				throw new AnnotationException('Empty @GroupId given');
 			}
 			$this->name = $values['value'];
-		} else if (isset($values['name'])) {
+		} elseif (isset($values['name'])) {
 			if (empty($values['name'])) {
 				throw new AnnotationException('Empty @GroupId given');
 			}
@@ -35,10 +35,7 @@ final class GroupId
 		}
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}

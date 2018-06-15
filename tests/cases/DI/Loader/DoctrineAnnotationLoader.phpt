@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: DI\Loader\DoctrineAnnotationLoader
@@ -19,12 +19,12 @@ use Tests\Fixtures\Controllers\InvalidGroupPathAnnotationController;
 use Tests\Fixtures\Controllers\PrefixedAnnotationController;
 
 // Check if controller is found and add as dependency to DIC
-test(function () {
+test(function (): void {
 	$builder = Mockery::mock(ContainerBuilder::class);
 	$builder->shouldReceive('findByType')
 		->once()
 		->with(IController::class)
-		->andReturnUsing(function () {
+		->andReturnUsing(function (): array {
 			$controllers = [];
 			$controllers[] = $c1 = new ServiceDefinition();
 			$c1->setClass(FoobarController::class);
@@ -45,7 +45,7 @@ test(function () {
 });
 
 // Parse annotations
-test(function () {
+test(function (): void {
 	$builder = new ContainerBuilder();
 	$builder->addDefinition('foobar')
 		->setClass(FoobarController::class);
@@ -77,8 +77,8 @@ test(function () {
 });
 
 // Invalid annotation (@Controller + @Group)
-test(function () {
-	Assert::exception(function () {
+test(function (): void {
+	Assert::exception(function (): void {
 		$builder = new ContainerBuilder();
 		$builder->addDefinition('invalid')
 			->setClass(InvalidGroupAnnotationController::class);
@@ -89,8 +89,8 @@ test(function () {
 });
 
 // Invalid annotation (@Controller + @GroupPath)
-test(function () {
-	Assert::exception(function () {
+test(function (): void {
+	Assert::exception(function (): void {
 		$builder = new ContainerBuilder();
 		$builder->addDefinition('invalid')
 			->setClass(InvalidGroupPathAnnotationController::class);
@@ -101,7 +101,7 @@ test(function () {
 });
 
 // Test prefixed annotation (@API\Controller)
-test(function () {
+test(function (): void {
 	$builder = new ContainerBuilder();
 	$builder->addDefinition('prefixedAnnotation')
 		->setClass(PrefixedAnnotationController::class);

@@ -1,161 +1,114 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema;
 
 final class EndpointParameter
 {
 
-	const TYPE_SCALAR = 'scalar';
-	const TYPE_STRING = 'string';
-	const TYPE_INTEGER = 'int';
-	const TYPE_FLOAT = 'float';
-	const TYPE_BOOLEAN = 'bool';
-	const TYPE_DATETIME = 'datetime';
-	const TYPE_OBJECT = 'object';
+	public const
+		TYPE_SCALAR = 'scalar',
+		TYPE_STRING = 'string',
+		TYPE_INTEGER = 'int',
+		TYPE_FLOAT = 'float',
+		TYPE_BOOLEAN = 'bool',
+		TYPE_DATETIME = 'datetime',
+		TYPE_OBJECT = 'object';
 
-	const IN_QUERY = 'query';
-	const IN_COOKIE = 'cookie';
-	const IN_HEADER = 'header';
-	const IN_PATH = 'path';
+	public const
+		IN_QUERY = 'query',
+		IN_COOKIE = 'cookie',
+		IN_HEADER = 'header',
+		IN_PATH = 'path';
 
-	/** @var string */
+	/** @var string|null */
 	private $name;
 
-	/** @var int */
+	/** @var string */
 	private $type = self::TYPE_SCALAR;
 
-	/** @var string */
+	/** @var string|null */
 	private $description;
 
 	/** @var string */
 	private $in = self::IN_PATH;
 
 	/** @var bool */
-	private $required = TRUE;
+	private $required = true;
 
 	/** @var bool */
-	private $deprecated = FALSE;
+	private $deprecated = false;
 
 	/** @var bool */
-	private $allowEmpty = FALSE;
+	private $allowEmpty = false;
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): ?string
 	{
 		return $this->name;
 	}
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name)
+	public function setName(?string $name): void
 	{
 		$this->name = $name;
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getType()
+	public function getType(): string
 	{
 		return $this->type;
 	}
 
-	/**
-	 * @param int $type
-	 * @return void
-	 */
-	public function setType($type)
+	public function setType(string $type): void
 	{
 		$this->type = $type;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getDescription()
+	public function getDescription(): ?string
 	{
 		return $this->description;
 	}
 
-	/**
-	 * @param string $description
-	 * @return void
-	 */
-	public function setDescription($description)
+	public function setDescription(?string $description): void
 	{
 		$this->description = $description;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getIn()
+	public function getIn(): string
 	{
 		return $this->in;
 	}
 
-	/**
-	 * @param string $in
-	 * @return void
-	 */
-	public function setIn($in)
+	public function setIn(string $in): void
 	{
 		$this->in = $in;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isRequired()
+	public function isRequired(): bool
 	{
 		return $this->required;
 	}
 
-	/**
-	 * @param bool $required
-	 * @return void
-	 */
-	public function setRequired($required)
+	public function setRequired(bool $required): void
 	{
-		$this->required = boolval($required);
+		$this->required = $required;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isDeprecated()
+	public function isDeprecated(): bool
 	{
 		return $this->deprecated;
 	}
 
-	/**
-	 * @param bool $deprecated
-	 * @return void
-	 */
-	public function setDeprecated($deprecated)
+	public function setDeprecated(bool $deprecated): void
 	{
-		$this->deprecated = boolval($deprecated);
+		$this->deprecated = $deprecated;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isAllowEmpty()
+	public function isAllowEmpty(): bool
 	{
 		return $this->allowEmpty;
 	}
 
-	/**
-	 * @param bool $allowEmpty
-	 * @return void
-	 */
-	public function setAllowEmpty($allowEmpty)
+	public function setAllowEmpty(bool $allowEmpty): void
 	{
-		$this->allowEmpty = boolval($allowEmpty);
+		$this->allowEmpty = $allowEmpty;
 	}
 
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI;
 
@@ -13,12 +13,13 @@ use Nette\PhpGenerator\ClassType;
 class ApiExtension extends CompilerExtension
 {
 
-	const CORE_DECORATOR_TAG = 'apitte.core.decorator';
-	const NEGOTIATION_TRANSFORMER_TAG = 'apitte.negotiator.transformer';
-	const NEGOTIATION_NEGOTIATOR_TAG = 'apitte.negotiation.negotiator';
-	const NEGOTIATION_RESOLVER_TAG = 'apitte.negotiation.resolver';
+	public const
+		CORE_DECORATOR_TAG = 'apitte.core.decorator',
+		NEGOTIATION_TRANSFORMER_TAG = 'apitte.negotiator.transformer',
+		NEGOTIATION_NEGOTIATOR_TAG = 'apitte.negotiation.negotiator',
+		NEGOTIATION_RESOLVER_TAG = 'apitte.negotiation.resolver';
 
-	/** @var array */
+	/** @var mixed[] */
 	protected $defaults = [
 		'debug' => '%debugMode%',
 		'plugins' => [],
@@ -27,20 +28,12 @@ class ApiExtension extends CompilerExtension
 	/** @var PluginManager */
 	private $pm;
 
-	/**
-	 * Create extension
-	 */
 	public function __construct()
 	{
 		$this->pm = new PluginManager($this);
 	}
 
-	/**
-	 * Register services
-	 *
-	 * @return void
-	 */
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		// Initialize whole config
 		$config = $this->processConfig();
@@ -56,45 +49,27 @@ class ApiExtension extends CompilerExtension
 		$this->pm->loadConfigurations();
 	}
 
-	/**
-	 * Decorate services
-	 *
-	 * @return void
-	 */
-	public function beforeCompile()
+	public function beforeCompile(): void
 	{
 		// Decorate services from all plugins
 		$this->pm->beforeCompiles();
 	}
 
-	/**
-	 * Decorate PHP code
-	 *
-	 * @param ClassType $class
-	 * @return void
-	 */
-	public function afterCompile(ClassType $class)
+	public function afterCompile(ClassType $class): void
 	{
 		// Decorate services from all plugins
 		$this->pm->afterCompiles($class);
 	}
 
-	/**
-	 * @return Compiler
-	 */
-	public function getCompiler()
+	public function getCompiler(): Compiler
 	{
 		return $this->compiler;
 	}
 
 	/**
-	 * HELPERS *****************************************************************
+	 * @return mixed[]
 	 */
-
-	/**
-	 * @return array
-	 */
-	protected function processConfig()
+	protected function processConfig(): array
 	{
 		$config = $this->validateConfig($this->defaults);
 		$this->config = Helpers::expand($config, $this->getContainerBuilder()->parameters);

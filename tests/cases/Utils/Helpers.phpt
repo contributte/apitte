@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: Utils\Helpers
@@ -10,7 +10,7 @@ use Apitte\Core\Utils\Helpers;
 use Tester\Assert;
 
 // Helpers::slashless
-test(function () {
+test(function (): void {
 	Assert::equal('/', Helpers::slashless('/'));
 	Assert::equal('/', Helpers::slashless('//'));
 	Assert::equal('/', Helpers::slashless('/////'));

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Builder;
 
@@ -10,11 +10,7 @@ final class SchemaBuilder
 	/** @var Controller[] */
 	private $controllers = [];
 
-	/**
-	 * @param string $class
-	 * @return Controller
-	 */
-	public function addController($class)
+	public function addController(string $class): Controller
 	{
 		$controller = new Controller($class);
 		$this->controllers[$class] = $controller;
@@ -25,7 +21,7 @@ final class SchemaBuilder
 	/**
 	 * @return Controller[]
 	 */
-	public function getControllers()
+	public function getControllers(): array
 	{
 		return $this->controllers;
 	}

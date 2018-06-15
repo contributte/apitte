@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping;
 
+use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\RequestAttributes;
@@ -13,33 +14,25 @@ use Psr\Http\Message\ServerRequestInterface;
 class RequestParameterMapping
 {
 
-	/** @var ITypeMapper[] */
+	/** @var string[]|ITypeMapper[] */
 	protected $types = [];
 
 	/**
-	 * GETTERS/SETTERS *********************************************************
-	 */
-
-	/**
-	 * @param string $type
 	 * @param string|ITypeMapper $mapper
-	 * @return void
 	 */
-	public function addMapper($type, $mapper)
+	public function addMapper(string $type, $mapper): void
 	{
+		if (!is_subclass_of($mapper, ITypeMapper::class)) {
+			throw new InvalidArgumentException(sprintf('Mapper must be string representation or instance of %s.', ITypeMapper::class));
+		}
+
 		$this->types[$type] = $mapper;
 	}
 
 	/**
-	 * MAPPING *****************************************************************
-	 */
-
-	/**
 	 * @param ServerRequestInterface|ApiRequest $request
-	 * @param ResponseInterface $response
-	 * @return ServerRequestInterface
 	 */
-	public function map(ServerRequestInterface $request, ResponseInterface $response)
+	public function map(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
 	{
 		/** @var Endpoint $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
@@ -73,7 +66,7 @@ class RequestParameterMapping
 					// Logical check
 					if (!array_key_exists($parameter->getName(), $requestParameters)) {
 						if (!$parameter->isRequired()) {
-							continue;
+							break;
 						}
 
 						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
@@ -82,7 +75,7 @@ class RequestParameterMapping
 					// Obtain request parameter values
 					$value = $requestParameters[$parameter->getName()];
 
-					if ($value === NULL && $parameter->isRequired()) {
+					if ($value === null && $parameter->isRequired()) {
 						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
 					}
 					if ($value === '' && !$parameter->isAllowEmpty()) {
@@ -101,7 +94,7 @@ class RequestParameterMapping
 					// Logical check
 					if (!array_key_exists($parameter->getName(), $cookieParams)) {
 						if (!$parameter->isRequired()) {
-							continue;
+							break;
 						}
 
 						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request cookies', $parameter->getName()));
@@ -110,7 +103,7 @@ class RequestParameterMapping
 					// Obtain request parameter values
 					$value = $cookieParams[$parameter->getName()];
 
-					if ($value === NULL && $parameter->isRequired()) {
+					if ($value === null && $parameter->isRequired()) {
 						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
 					}
 					if ($value === '' && !$parameter->isAllowEmpty()) {
@@ -130,7 +123,7 @@ class RequestParameterMapping
 					// Logical check
 					if (!array_key_exists($headerParameterName, $headerParameters)) {
 						if (!$parameter->isRequired()) {
-							continue;
+							break;
 						}
 
 						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request header', $parameter->getName()));
@@ -160,21 +153,13 @@ class RequestParameterMapping
 		return $request;
 	}
 
-	/**
-	 * HELPERS *****************************************************************
-	 */
-
-	/**
-	 * @param string $type
-	 * @return ITypeMapper
-	 */
-	protected function getMapper($type)
+	protected function getMapper(string $type): ?ITypeMapper
 	{
-		if (!isset($this->types[$type])) return NULL;
+		if (!isset($this->types[$type])) return null;
 
 		// Initialize mapper
 		if (!is_object($this->types[$type])) {
-			$this->types[$type] = new $this->types[$type];
+			$this->types[$type] = new $this->types[$type]();
 		}
 
 		return $this->types[$type];

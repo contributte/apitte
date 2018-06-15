@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Request;
 
@@ -12,20 +12,19 @@ abstract class BasicEntity extends AbstractEntity
 	use TReflectionProperties;
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getRequestProperties()
+	public function getRequestProperties(): array
 	{
 		return $this->getProperties();
 	}
 
 	/**
-	 * @param ApiRequest $request
-	 * @return static
+	 * @return BasicEntity|null
 	 */
-	public function fromRequest(ApiRequest $request)
+	public function fromRequest(ApiRequest $request): ?IRequestEntity
 	{
-		if (in_array($request->getMethod(), [Endpoint::METHOD_POST, Endpoint::METHOD_PUT, Endpoint::METHOD_PATCH])) {
+		if (in_array($request->getMethod(), [Endpoint::METHOD_POST, Endpoint::METHOD_PUT, Endpoint::METHOD_PATCH], true)) {
 			return $this->fromBodyRequest($request);
 		}
 
@@ -33,14 +32,13 @@ abstract class BasicEntity extends AbstractEntity
 			return $this->fromGetRequest($request);
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
-	 * @param array $data
-	 * @return static
+	 * @param mixed[] $data
 	 */
-	public function factory(array $data)
+	public function factory(array $data): self
 	{
 		$inst = new static();
 
@@ -52,7 +50,7 @@ abstract class BasicEntity extends AbstractEntity
 			$value = $data[$property['name']];
 
 			// Normalize & convert value (only not null values)
-			if ($value !== NULL) {
+			if ($value !== null) {
 				$value = $this->normalize($property['name'], $value);
 			}
 
@@ -64,33 +62,20 @@ abstract class BasicEntity extends AbstractEntity
 	}
 
 	/**
-	 * HELPERS *****************************************************************
-	 */
-
-	/**
-	 * @param string $property
 	 * @param mixed $value
 	 * @return mixed
 	 */
-	protected function normalize($property, $value)
+	protected function normalize(string $property, $value)
 	{
 		return $value;
 	}
 
-	/**
-	 * @param ApiRequest $request
-	 * @return static
-	 */
-	protected function fromBodyRequest(ApiRequest $request)
+	protected function fromBodyRequest(ApiRequest $request): self
 	{
-		return $this->factory($request->getJsonBody(TRUE));
+		return $this->factory($request->getJsonBody(true));
 	}
 
-	/**
-	 * @param ApiRequest $request
-	 * @return static
-	 */
-	protected function fromGetRequest(ApiRequest $request)
+	protected function fromGetRequest(ApiRequest $request): self
 	{
 		return $this->factory($request->getQueryParams());
 	}

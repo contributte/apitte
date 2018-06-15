@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema;
 
@@ -8,11 +8,7 @@ class Schema
 	/** @var Endpoint[] */
 	private $endpoints = [];
 
-	/**
-	 * @param Endpoint $endpoint
-	 * @return void
-	 */
-	public function addEndpoint(Endpoint $endpoint)
+	public function addEndpoint(Endpoint $endpoint): void
 	{
 		$this->endpoints[] = $endpoint;
 	}
@@ -20,7 +16,7 @@ class Schema
 	/**
 	 * @return Endpoint[]
 	 */
-	public function getEndpoints()
+	public function getEndpoints(): array
 	{
 		return $this->endpoints;
 	}

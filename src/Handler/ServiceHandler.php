@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Handler;
 
@@ -15,17 +15,12 @@ class ServiceHandler implements IHandler
 	/** @var Container */
 	protected $container;
 
-	/**
-	 * @param Container $container
-	 */
 	public function __construct(Container $container)
 	{
 		$this->container = $container;
 	}
 
 	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
 	 * @return mixed
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response)
@@ -35,23 +30,14 @@ class ServiceHandler implements IHandler
 		$response = $callback($request, $response);
 
 		// Validate if response is returned
-		if ($response === NULL) {
-			throw new InvalidStateException('Handler returned response cannot be NULL');
+		if ($response === null) {
+			throw new InvalidStateException('Handler returned response cannot be null');
 		}
 
 		return $response;
 	}
 
-	/**
-	 * HELPERS *****************************************************************
-	 */
-
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ServiceCallback
-	 */
-	protected function createCallback(ServerRequestInterface $request, ResponseInterface $response)
+	protected function createCallback(ServerRequestInterface $request, ResponseInterface $response): ServiceCallback
 	{
 		$endpoint = $this->getEndpoint($request);
 
@@ -66,11 +52,7 @@ class ServiceHandler implements IHandler
 		return $callback;
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @return Endpoint
-	 */
-	protected function getEndpoint(ServerRequestInterface $request)
+	protected function getEndpoint(ServerRequestInterface $request): Endpoint
 	{
 		/** @var Endpoint $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
@@ -84,8 +66,8 @@ class ServiceHandler implements IHandler
 	}
 
 	/**
-	 * @param Endpoint $endpoint
 	 * @return object
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
 	 */
 	protected function getService(Endpoint $endpoint)
 	{

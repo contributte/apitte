@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Exception\Logical;
 
@@ -16,7 +16,6 @@ final class InvalidSchemaException extends LogicalException
 	public $method;
 
 	/**
-	 * @param Controller $controller
 	 * @return static
 	 */
 	public function withController(Controller $controller)
@@ -27,7 +26,6 @@ final class InvalidSchemaException extends LogicalException
 	}
 
 	/**
-	 * @param Method $method
 	 * @return static
 	 */
 	public function withMethod(Method $method)

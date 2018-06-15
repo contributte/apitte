@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
@@ -16,7 +16,7 @@ final class ResponseMapper
 	private $entity;
 
 	/**
-	 * @param array $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
@@ -27,10 +27,7 @@ final class ResponseMapper
 		$this->entity = $values['entity'];
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getEntity()
+	public function getEntity(): string
 	{
 		return $this->entity;
 	}

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Builder\Controller;
 
@@ -11,13 +11,13 @@ final class Controller
 	/** @var Method[] */
 	private $methods = [];
 
-	/** @var string */
+	/** @var string|null */
 	private $id;
 
-	/** @var string */
+	/** @var string|null */
 	private $path;
 
-	/** @var array */
+	/** @var string[] */
 	private $groupIds = [];
 
 	/** @var string[] */
@@ -26,35 +26,22 @@ final class Controller
 	/** @var string[] */
 	private $tags = [];
 
-	/**
-	 * @param string $class
-	 */
-	public function __construct($class)
+	public function __construct(string $class)
 	{
 		$this->class = $class;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getClass()
+	public function getClass(): string
 	{
 		return $this->class;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getPath()
+	public function getPath(): ?string
 	{
 		return $this->path;
 	}
 
-	/**
-	 * @param string $path
-	 * @return void
-	 */
-	public function setPath($path)
+	public function setPath(?string $path): void
 	{
 		$this->path = $path;
 	}
@@ -62,16 +49,12 @@ final class Controller
 	/**
 	 * @return Method[]
 	 */
-	public function getMethods()
+	public function getMethods(): array
 	{
 		return $this->methods;
 	}
 
-	/**
-	 * @param string $name
-	 * @return Method
-	 */
-	public function addMethod($name)
+	public function addMethod(string $name): Method
 	{
 		$method = new Method($name);
 		$this->methods[$name] = $method;
@@ -79,45 +62,33 @@ final class Controller
 		return $method;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getId()
+	public function getId(): ?string
 	{
 		return $this->id;
 	}
 
-	/**
-	 * @param string $id
-	 * @return void
-	 */
-	public function setId($id)
+	public function setId(?string $id): void
 	{
 		$this->id = $id;
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getGroupIds()
+	public function getGroupIds(): array
 	{
 		return $this->groupIds;
 	}
 
 	/**
-	 * @param array $ids
-	 * @return void
+	 * @param string[] $ids
 	 */
-	public function setGroupIds(array $ids)
+	public function setGroupIds(array $ids): void
 	{
 		$this->groupIds = $ids;
 	}
 
-	/**
-	 * @param string $id
-	 * @return void
-	 */
-	public function addGroupId($id)
+	public function addGroupId(string $id): void
 	{
 		$this->groupIds[] = $id;
 	}
@@ -125,26 +96,17 @@ final class Controller
 	/**
 	 * @return string[]
 	 */
-	public function getGroupPaths()
+	public function getGroupPaths(): array
 	{
 		return $this->groupPaths;
 	}
 
-	/**
-	 * @param string $path
-	 * @return void
-	 */
-	public function addGroupPath($path)
+	public function addGroupPath(string $path): void
 	{
 		$this->groupPaths[] = $path;
 	}
 
-	/**
-	 * @param string $name
-	 * @param string $value
-	 * @return void
-	 */
-	public function addTag($name, $value)
+	public function addTag(string $name, string $value): void
 	{
 		$this->tags[$name] = $value;
 	}
@@ -152,7 +114,7 @@ final class Controller
 	/**
 	 * @return string[]
 	 */
-	public function getTags()
+	public function getTags(): array
 	{
 		return $this->tags;
 	}

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Serialization;
 
@@ -7,10 +7,6 @@ use Apitte\Core\Schema\Builder\SchemaBuilder;
 interface IDecorator
 {
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return SchemaBuilder
-	 */
-	public function decorate(SchemaBuilder $builder);
+	public function decorate(SchemaBuilder $builder): SchemaBuilder;
 
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: Utils\Regex
@@ -10,19 +10,19 @@ use Apitte\Core\Utils\Regex;
 use Tester\Assert;
 
 // Regex::match
-test(function () {
-	Assert::equal(NULL, Regex::match('foo', '#\d+#'));
+test(function (): void {
+	Assert::equal(null, Regex::match('foo', '#\d+#'));
 	Assert::equal(['foo'], Regex::match('foo', '#\w+#'));
 	Assert::equal(['foo', 'foo'], Regex::match('foo', '#(\w+)#'));
 });
 
 // Regex::replace
-test(function () {
-	Assert::equal('foo', Regex::replace('foobar', '#bar#', NULL));
+test(function (): void {
+	Assert::equal('foo', Regex::replace('foobar', '#bar#', null));
 });
 
 // Regex::replaceCallback
-test(function () {
+test(function (): void {
 	Assert::equal('barfoo', Regex::replaceCallback('foo', '#(foo)#', function ($matches) {
 		return 'bar' . $matches[1];
 	}));

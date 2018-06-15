@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: Mapping\Parameter\FloatTypeMapper
@@ -13,11 +13,11 @@ use Tester\TestCase;
 final class TestFloatTypeMapper extends TestCase
 {
 
-	public function testNormalize()
+	public function testNormalize(): void
 	{
-		$floatTypeMapper = new FloatTypeMapper;
+		$floatTypeMapper = new FloatTypeMapper();
 
-		Assert::same(NULL, $floatTypeMapper->normalize(NULL));
+		Assert::same(null, $floatTypeMapper->normalize(null));
 		Assert::same(0.0, $floatTypeMapper->normalize(0));
 		Assert::same(0.33, $floatTypeMapper->normalize('0.33'));
 		Assert::same(1.99, $floatTypeMapper->normalize('1.99'));
@@ -26,4 +26,4 @@ final class TestFloatTypeMapper extends TestCase
 
 }
 
-(new TestFloatTypeMapper)->run();
+(new TestFloatTypeMapper())->run();

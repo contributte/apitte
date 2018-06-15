@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Response;
 
@@ -10,14 +10,14 @@ abstract class AbstractEntity implements IResponseEntity, IteratorAggregate
 {
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	abstract public function toArray();
+	abstract public function toArray(): array;
 
 	/**
-	 * @return ArrayIterator|Traversable
+	 * @return ArrayIterator|Traversable|mixed[]
 	 */
-	public function getIterator()
+	public function getIterator(): iterable
 	{
 		return new ArrayIterator($this->toArray());
 	}

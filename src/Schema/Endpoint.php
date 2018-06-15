@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema;
 
@@ -10,14 +10,15 @@ final class Endpoint
 {
 
 	// Methods
-	const METHOD_GET = 'GET';
-	const METHOD_POST = 'POST';
-	const METHOD_PUT = 'PUT';
-	const METHOD_DELETE = 'DELETE';
-	const METHOD_OPTIONS = 'OPTIONS';
-	const METHOD_PATCH = 'PATCH';
+	public const
+		METHOD_GET = 'GET',
+		METHOD_POST = 'POST',
+		METHOD_PUT = 'PUT',
+		METHOD_DELETE = 'DELETE',
+		METHOD_OPTIONS = 'OPTIONS',
+		METHOD_PATCH = 'PATCH';
 
-	const METHODS = [
+	public const METHODS = [
 		self::METHOD_GET,
 		self::METHOD_POST,
 		self::METHOD_PUT,
@@ -27,23 +28,24 @@ final class Endpoint
 	];
 
 	// Tags
-	const TAG_ID = 'id';
-	const TAG_GROUP_IDS = 'group.ids';
-	const TAG_GROUP_PATHS = 'group.paths';
+	public const
+		TAG_ID = 'id',
+		TAG_GROUP_IDS = 'group.ids',
+		TAG_GROUP_PATHS = 'group.paths';
 
 	/** @var string[] */
 	private $methods = [];
 
-	/** @var string */
+	/** @var string|null */
 	private $mask;
 
-	/** @var string */
+	/** @var string|null */
 	private $pattern;
 
-	/** @var EndpointHandler */
+	/** @var EndpointHandler|null */
 	private $handler;
 
-	/** @var string */
+	/** @var string|null */
 	private $description;
 
 	/** @var EndpointParameter[] */
@@ -52,82 +54,63 @@ final class Endpoint
 	/** @var EndpointNegotiation[] */
 	private $negotiations = [];
 
-	/** @var EndpointRequestMapper */
+	/** @var EndpointRequestMapper|null */
 	private $requestMapper;
 
-	/** @var EndpointResponseMapper */
+	/** @var EndpointResponseMapper|null */
 	private $responseMapper;
 
 	/** @var mixed[] */
 	private $tags = [];
 
-	/** @var array */
+	/** @var mixed[] */
 	private $metadata = [];
 
 	/**
 	 * @return string[]
 	 */
-	public function getMethods()
+	public function getMethods(): array
 	{
 		return $this->methods;
 	}
 
 	/**
 	 * @param string[] $methods
-	 * @return void
 	 */
-	public function setMethods(array $methods)
+	public function setMethods(array $methods): void
 	{
 		foreach ($methods as $method) {
 			$this->addMethod($method);
 		}
 	}
 
-	/**
-	 * @param string $method
-	 * @return void
-	 */
-	public function addMethod($method)
+	public function addMethod(string $method): void
 	{
 		$method = strtoupper($method);
 
-		if (!in_array($method, self::METHODS)) {
+		if (!in_array($method, self::METHODS, true)) {
 			throw new InvalidArgumentException(sprintf('Method %s is not allowed', $method));
 		}
 
 		$this->methods[] = $method;
 	}
 
-	/**
-	 * @param string $method
-	 * @return bool
-	 */
-	public function hasMethod($method)
+	public function hasMethod(string $method): bool
 	{
-		return in_array(strtoupper($method), $this->methods);
+		return in_array(strtoupper($method), $this->methods, true);
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMask()
+	public function getMask(): ?string
 	{
 		return $this->mask;
 	}
 
-	/**
-	 * @param string $mask
-	 * @return void
-	 */
-	public function setMask($mask)
+	public function setMask(?string $mask): void
 	{
 		$this->mask = $mask;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getPattern()
+	public function getPattern(): string
 	{
 		if (!$this->pattern) {
 			$this->pattern = $this->generatePattern();
@@ -136,45 +119,27 @@ final class Endpoint
 		return $this->pattern;
 	}
 
-	/**
-	 * @param string $pattern
-	 * @return void
-	 */
-	public function setPattern($pattern)
+	public function setPattern(?string $pattern): void
 	{
 		$this->pattern = $pattern;
 	}
 
-	/**
-	 * @return EndpointHandler
-	 */
-	public function getHandler()
+	public function getHandler(): ?EndpointHandler
 	{
 		return $this->handler;
 	}
 
-	/**
-	 * @param EndpointHandler $handler
-	 * @return void
-	 */
-	public function setHandler(EndpointHandler $handler)
+	public function setHandler(?EndpointHandler $handler): void
 	{
 		$this->handler = $handler;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getDescription()
+	public function getDescription(): ?string
 	{
 		return $this->description;
 	}
 
-	/**
-	 * @param string $description
-	 * @return void
-	 */
-	public function setDescription($description)
+	public function setDescription(?string $description): void
 	{
 		$this->description = $description;
 	}
@@ -182,45 +147,35 @@ final class Endpoint
 	/**
 	 * @return EndpointParameter[]
 	 */
-	public function getParameters()
+	public function getParameters(): array
 	{
 		return $this->parameters;
 	}
 
 	/**
-	 * @param string $in
 	 * @return EndpointParameter[]
 	 */
-	public function getParametersByIn($in)
+	public function getParametersByIn(string $in): array
 	{
 		return array_filter($this->getParameters(), function (EndpointParameter $parameter) use ($in) {
 			return $parameter->getIn() === $in;
 		});
 	}
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasParameter($name)
+	public function hasParameter(string $name): bool
 	{
 		return isset($this->parameters[$name]);
 	}
 
-	/**
-	 * @param EndpointParameter $param
-	 * @return void
-	 */
-	public function addParameter(EndpointParameter $param)
+	public function addParameter(EndpointParameter $param): void
 	{
 		$this->parameters[$param->getName()] = $param;
 	}
 
 	/**
 	 * @param EndpointParameter[] $parameters
-	 * @return void
 	 */
-	public function setParameters(array $parameters)
+	public function setParameters(array $parameters): void
 	{
 		foreach ($parameters as $param) {
 			$this->addParameter($param);
@@ -230,93 +185,75 @@ final class Endpoint
 	/**
 	 * @return EndpointNegotiation[]
 	 */
-	public function getNegotiations()
+	public function getNegotiations(): array
 	{
 		return $this->negotiations;
 	}
 
-	/**
-	 * @param EndpointNegotiation $negotiation
-	 * @return void
-	 */
-	public function addNegotiation(EndpointNegotiation $negotiation)
+	public function addNegotiation(EndpointNegotiation $negotiation): void
 	{
 		$this->negotiations[] = $negotiation;
 	}
 
 	/**
 	 * @param EndpointNegotiation[] $negotiations
-	 * @return void
 	 */
-	public function setNegotiations($negotiations)
+	public function setNegotiations(array $negotiations): void
 	{
 		$this->negotiations = $negotiations;
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getTags()
+	public function getTags(): array
 	{
 		return $this->tags;
 	}
 
 	/**
-	 * @param string $name
-	 * @return string
+	 * @return mixed
 	 */
-	public function getTag($name)
+	public function getTag(string $name)
 	{
-		return $this->hasTag($name) ? $this->tags[$name] : NULL;
+		return $this->hasTag($name) ? $this->tags[$name] : null;
 	}
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasTag($name)
+	public function hasTag(string $name): bool
 	{
 		return array_key_exists($name, $this->tags);
 	}
 
 	/**
-	 * @param string $name
 	 * @param mixed $value
-	 * @return void
 	 */
-	public function addTag($name, $value)
+	public function addTag(string $name, $value): void
 	{
 		$this->tags[$name] = $value;
 	}
 
 	/**
-	 * @param string $key
 	 * @param mixed $value
-	 * @return void
 	 */
-	public function setAttribute($key, $value)
+	public function setAttribute(string $key, $value): void
 	{
 		$this->metadata[$key] = $value;
 	}
 
 	/**
-	 * @param string $key
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function getAttribute($key, $default = NULL)
+	public function getAttribute(string $key, $default = null)
 	{
 		return Arrays::get($this->metadata, $key, $default);
 	}
 
-	/**
-	 * @return string
-	 */
-	protected function generatePattern()
+	protected function generatePattern(): string
 	{
-		$rawPattern = $this->getAttribute('pattern', NULL);
+		$rawPattern = $this->getAttribute('pattern', null);
 
-		if ($rawPattern === NULL) {
+		if ($rawPattern === null) {
 			throw new InvalidStateException('Pattern attribute is required');
 		}
 
@@ -337,36 +274,22 @@ final class Endpoint
 		}
 	}
 
-	/**
-	 * @return EndpointRequestMapper
-	 */
-	public function getRequestMapper()
+	public function getRequestMapper(): ?EndpointRequestMapper
 	{
 		return $this->requestMapper;
 	}
 
-	/**
-	 * @param EndpointRequestMapper $requestMapper
-	 * @return void
-	 */
-	public function setRequestMapper(EndpointRequestMapper $requestMapper)
+	public function setRequestMapper(?EndpointRequestMapper $requestMapper): void
 	{
 		$this->requestMapper = $requestMapper;
 	}
 
-	/**
-	 * @return EndpointResponseMapper
-	 */
-	public function getResponseMapper()
+	public function getResponseMapper(): ?EndpointResponseMapper
 	{
 		return $this->responseMapper;
 	}
 
-	/**
-	 * @param EndpointResponseMapper $responseMapper
-	 * @return void
-	 */
-	public function setResponseMapper(EndpointResponseMapper $responseMapper)
+	public function setResponseMapper(?EndpointResponseMapper $responseMapper): void
 	{
 		$this->responseMapper = $responseMapper;
 	}

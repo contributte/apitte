@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Serialization;
 
@@ -9,8 +9,7 @@ interface IHydrator
 
 	/**
 	 * @param mixed $data
-	 * @return Schema
 	 */
-	public function hydrate($data);
+	public function hydrate($data): Schema;
 
 }

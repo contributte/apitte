@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Plugin;
 
@@ -13,11 +13,8 @@ use Apitte\Core\Schema\Schema;
 class CoreServicesPlugin extends AbstractPlugin
 {
 
-	const PLUGIN_NAME = 'core';
+	public const PLUGIN_NAME = 'core';
 
-	/**
-	 * @param PluginCompiler $compiler
-	 */
 	public function __construct(PluginCompiler $compiler)
 	{
 		parent::__construct($compiler);
@@ -26,17 +23,15 @@ class CoreServicesPlugin extends AbstractPlugin
 
 	/**
 	 * Register services
-	 *
-	 * @return void
 	 */
-	public function loadPluginConfiguration()
+	public function loadPluginConfiguration(): void
 	{
 		// Receive container builder
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('dispatcher'))
 			->setFactory(JsonDispatcher::class)
-			->setAutowired(FALSE);
+			->setAutowired(false);
 
 		$builder->addDefinition($this->prefix('dispatcher.wrapper'))
 			->setFactory(WrappedDispatcher::class, ['@' . $this->prefix('dispatcher')]);

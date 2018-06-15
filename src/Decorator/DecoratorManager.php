@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Decorator;
 
@@ -8,19 +8,10 @@ use Psr\Http\Message\ServerRequestInterface;
 class DecoratorManager
 {
 
-	/** @var [IDecorator[]] */
+	/** @var IDecorator[][] */
 	protected $decorators = [];
 
-	/**
-	 * GETTERS/SETTERS *********************************************************
-	 */
-
-	/**
-	 * @param string $type
-	 * @param IDecorator $decorator
-	 * @return void
-	 */
-	public function addDecorator($type, IDecorator $decorator)
+	public function addDecorator(string $type, IDecorator $decorator): void
 	{
 		if (!isset($this->decorators[$type])) {
 			$this->decorators[$type] = [];
@@ -30,22 +21,15 @@ class DecoratorManager
 	}
 
 	/**
-	 * EMITTING ****************************************************************
+	 * @param mixed[] $context
 	 */
-
-	/**
-	 * @param string $type
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @param array $context
-	 * @return ServerRequestInterface
-	 */
-	public function decorateRequest($type, ServerRequestInterface $request, ResponseInterface $response, array $context = [])
+	public function decorateRequest(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
 	{
-		$decorators = isset($this->decorators[$type]) ? $this->decorators[$type] : [];
+		$decorators = $this->decorators[$type] ?? [];
 
 		/** @var IDecorator $decorator */
 		foreach ($decorators as $decorator) {
+			/** @var ServerRequestInterface $request */
 			$request = $decorator->decorate($request, $response, $context);
 		}
 
@@ -53,22 +37,24 @@ class DecoratorManager
 	}
 
 	/**
-	 * @param string $type
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @param array $context
-	 * @return ResponseInterface
+	 * @param mixed[] $context
 	 */
-	public function decorateResponse($type, ServerRequestInterface $request, ResponseInterface $response, array $context = [])
+	public function decorateResponse(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ResponseInterface
 	{
-		$decorators = isset($this->decorators[$type]) ? $this->decorators[$type] : [];
+		$decorators = $this->decorators[$type] ?? [];
 
 		/** @var IDecorator $decorator */
 		foreach ($decorators as $decorator) {
+			/** @var ResponseInterface $response */
 			$response = $decorator->decorate($request, $response, $context);
 		}
 
 		return $response;
+	}
+
+	public function hasDecorators(string $type): bool
+	{
+		return isset($this->decorators[$type]);
 	}
 
 }

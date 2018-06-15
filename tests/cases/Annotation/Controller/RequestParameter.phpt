@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: Annotation\Controller\RequestParameter
@@ -11,7 +11,7 @@ use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
 // Success
-test(function () {
+test(function (): void {
 	$requestParameter = new RequestParameter(['name' => 'Parameter', 'description' => 'Desc']);
 	Assert::equal('Parameter', $requestParameter->getName());
 	Assert::equal('Desc', $requestParameter->getDescription());
@@ -29,14 +29,14 @@ test(function () {
 });
 
 // Fails
-test(function () {
-	Assert::exception(function () {
+test(function (): void {
+	Assert::exception(function (): void {
 		new RequestParameter([]);
 	}, AnnotationException::class, 'Name is required at @RequestParameter');
-	Assert::exception(function () {
+	Assert::exception(function (): void {
 		new RequestParameter(['value' => '']);
 	}, AnnotationException::class, 'Name is required at @RequestParameter');
-	Assert::exception(function () {
+	Assert::exception(function (): void {
 		new RequestParameter(['name' => 'Param']);
 	}, AnnotationException::class, 'Type or description is required at @RequestParameter');
 });

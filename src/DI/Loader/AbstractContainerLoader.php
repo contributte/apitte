@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Loader;
 
@@ -12,9 +12,6 @@ abstract class AbstractContainerLoader implements ILoader
 	/** @var ContainerBuilder */
 	private $builder;
 
-	/**
-	 * @param ContainerBuilder $builder
-	 */
 	public function __construct(ContainerBuilder $builder)
 	{
 		$this->builder = $builder;
@@ -25,16 +22,15 @@ abstract class AbstractContainerLoader implements ILoader
 	 *
 	 * @return ServiceDefinition[]
 	 */
-	protected function findControllers()
+	protected function findControllers(): array
 	{
 		return $this->builder->findByType(IController::class);
 	}
 
 	/**
 	 * @param ServiceDefinition[] $definitions
-	 * @return void
 	 */
-	protected function addDependencies(array $definitions)
+	protected function addDependencies(array $definitions): void
 	{
 		foreach ($definitions as $def) {
 			$this->builder->addDependency($def->getClass());

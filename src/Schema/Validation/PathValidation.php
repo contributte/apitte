@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Validation;
 
@@ -9,22 +9,14 @@ use Apitte\Core\Utils\Regex;
 class PathValidation implements IValidation
 {
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	public function validate(SchemaBuilder $builder)
+	public function validate(SchemaBuilder $builder): void
 	{
 		$this->validateRequirements($builder);
 		$this->validateSlashes($builder);
 		$this->validateRegex($builder);
 	}
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	protected function validateRequirements(SchemaBuilder $builder)
+	protected function validateRequirements(SchemaBuilder $builder): void
 	{
 		$controllers = $builder->getControllers();
 		foreach ($controllers as $controller) {
@@ -44,11 +36,7 @@ class PathValidation implements IValidation
 		}
 	}
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	protected function validateSlashes(SchemaBuilder $builder)
+	protected function validateSlashes(SchemaBuilder $builder): void
 	{
 		$controllers = $builder->getControllers();
 
@@ -87,11 +75,7 @@ class PathValidation implements IValidation
 		}
 	}
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	protected function validateRegex(SchemaBuilder $builder)
+	protected function validateRegex(SchemaBuilder $builder): void
 	{
 		$controllers = $builder->getControllers();
 
@@ -107,7 +91,7 @@ class PathValidation implements IValidation
 				// @regex https://regex101.com/r/d7f5YI/1
 				$match = Regex::match($path, '#([^a-zA-Z0-9\-_\/{}]+)#');
 
-				if ($match !== NULL) {
+				if ($match !== null) {
 					throw (new InvalidSchemaException(
 						sprintf(
 							'@Path "%s" in "%s::%s()" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9-_/{}].',
@@ -132,7 +116,7 @@ class PathValidation implements IValidation
 					foreach ($matches as $item) {
 						$match = Regex::match($item[1], '#.*([^a-zA-Z0-9\-_]+).*#');
 
-						if ($match !== NULL) {
+						if ($match !== null) {
 							throw (new InvalidSchemaException(
 								sprintf(
 									'@Path "%s" in "%s::%s()" contains illegal characters "%s" in parameter. Allowed characters in parameter are only {[a-z-A-Z0-9-_]+}',

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Plugin;
 
@@ -11,11 +11,8 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 class CoreDecoratorPlugin extends AbstractPlugin
 {
 
-	const PLUGIN_NAME = 'decorator';
+	public const PLUGIN_NAME = 'decorator';
 
-	/**
-	 * @param PluginCompiler $compiler
-	 */
 	public function __construct(PluginCompiler $compiler)
 	{
 		parent::__construct($compiler);
@@ -24,10 +21,8 @@ class CoreDecoratorPlugin extends AbstractPlugin
 
 	/**
 	 * Register services
-	 *
-	 * @return void
 	 */
-	public function loadPluginConfiguration()
+	public function loadPluginConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
 
@@ -41,18 +36,13 @@ class CoreDecoratorPlugin extends AbstractPlugin
 
 	/**
 	 * Decorate services
-	 *
-	 * @return void
 	 */
-	public function beforePluginCompile()
+	public function beforePluginCompile(): void
 	{
 		$this->compileTaggedDecorators();
 	}
 
-	/**
-	 * @return void
-	 */
-	protected function compileTaggedDecorators()
+	protected function compileTaggedDecorators(): void
 	{
 		$builder = $this->getContainerBuilder();
 

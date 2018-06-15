@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * Test: Mapping\RequestParameterMapping
@@ -24,28 +24,22 @@ use Tester\TestCase;
 final class TestRequestParameterMapping extends TestCase
 {
 
-	/**
-	 * @var RequestParameterMapping
-	 */
+	/** @var RequestParameterMapping */
 	private $requestParameterMapping;
 
-	/**
-	 * @var ApiRequest
-	 */
+	/** @var ApiRequest */
 	private $request;
 
-	/**
-	 * @var ApiResponse
-	 */
+	/** @var ApiResponse */
 	private $response;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
-		$this->requestParameterMapping = new RequestParameterMapping;
+		$this->requestParameterMapping = new RequestParameterMapping();
 
-		$this->requestParameterMapping->addMapper('string', new StringTypeMapper);
-		$this->requestParameterMapping->addMapper('int', new IntegerTypeMapper);
-		$this->requestParameterMapping->addMapper('float', new FloatTypeMapper);
+		$this->requestParameterMapping->addMapper('string', new StringTypeMapper());
+		$this->requestParameterMapping->addMapper('int', new IntegerTypeMapper());
+		$this->requestParameterMapping->addMapper('float', new FloatTypeMapper());
 
 		$this->request = new ApiRequest(
 			new ServerRequest(
@@ -53,47 +47,47 @@ final class TestRequestParameterMapping extends TestCase
 				'/'
 			)
 		);
-		$this->response = new ApiResponse(new Response);
+		$this->response = new ApiResponse(new Response());
 	}
 
-	public function testIntInPath()
+	public function testIntInPath(): void
 	{
-		$endpoint = new Endpoint;
+		$endpoint = new Endpoint();
 
-		$idEndpointParameter = new EndpointParameter;
+		$idEndpointParameter = new EndpointParameter();
 		$idEndpointParameter->setName('id');
 		$idEndpointParameter->setType('int');
 		$idEndpointParameter->setIn($idEndpointParameter::IN_PATH);
-		$idEndpointParameter->setRequired(FALSE);
-		$idEndpointParameter->setAllowEmpty(TRUE);
+		$idEndpointParameter->setRequired(false);
+		$idEndpointParameter->setAllowEmpty(true);
 
 		$endpoint->addParameter($idEndpointParameter);
 
 		$request = $this->request
 			->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint)
 			->withAttribute(RequestAttributes::ATTR_PARAMETERS, [
-				'id' => NULL,
+				'id' => null,
 			]);
 
 		// ---- test optional parameter
 
 		$notRequiredIdResponse = $this->requestParameterMapping->map(
 			$request,
-            $this->response
+			$this->response
 		);
 
 		Assert::null($notRequiredIdResponse->getAttribute(RequestAttributes::ATTR_PARAMETERS)['id']);
 
 		// ---- test throw missing parameter
 
-		$idEndpointParameter->setRequired(TRUE);
+		$idEndpointParameter->setRequired(true);
 
 		Assert::throws(
-            function () use ($request) {
-                $this->requestParameterMapping->map($request, $this->response);
-            },
-            InvalidStateException::class,
-            'Parameter "id" should be provided in request attributes'
+			function () use ($request): void {
+				$this->requestParameterMapping->map($request, $this->response);
+			},
+			InvalidStateException::class,
+			'Parameter "id" should be provided in request attributes'
 		);
 
 		// ---- test correct map int parameter
@@ -117,39 +111,39 @@ final class TestRequestParameterMapping extends TestCase
 		$requestWithEmptyId = $request->withAttribute(RequestAttributes::ATTR_PARAMETERS, [
 			'id' => '',
 		]);
-		$idEndpointParameter->setAllowEmpty(FALSE);
+		$idEndpointParameter->setAllowEmpty(false);
 
 		Assert::throws(
-            function () use ($requestWithEmptyId) {
-                $this->requestParameterMapping->map($requestWithEmptyId, $this->response);
-            },
-            InvalidStateException::class,
-            'Parameter "id" should not be empty'
+			function () use ($requestWithEmptyId): void {
+				$this->requestParameterMapping->map($requestWithEmptyId, $this->response);
+			},
+			InvalidStateException::class,
+			'Parameter "id" should not be empty'
 		);
 	}
 
-	public function testFloatInQuery()
+	public function testFloatInQuery(): void
 	{
-		$endpoint = new Endpoint;
+		$endpoint = new Endpoint();
 
-		$scoreEndpointParameter = new EndpointParameter;
+		$scoreEndpointParameter = new EndpointParameter();
 		$scoreEndpointParameter->setName('score');
 		$scoreEndpointParameter->setType('float');
 		$scoreEndpointParameter->setIn($scoreEndpointParameter::IN_QUERY);
-		$scoreEndpointParameter->setRequired(FALSE);
-		$scoreEndpointParameter->setAllowEmpty(TRUE);
+		$scoreEndpointParameter->setRequired(false);
+		$scoreEndpointParameter->setAllowEmpty(true);
 
 		$endpoint->addParameter($scoreEndpointParameter);
 
 		$request = $this->request
 			->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint)
 			->withAttribute(RequestAttributes::ATTR_PARAMETERS, [
-				'score' => NULL,
+				'score' => null,
 			]);
 
 		$noScoreResponse = $this->requestParameterMapping->map($request, $this->response);
 
-		Assert::equal(['score' => NULL], $noScoreResponse->getAttribute(RequestAttributes::ATTR_PARAMETERS));
+		Assert::equal(['score' => null], $noScoreResponse->getAttribute(RequestAttributes::ATTR_PARAMETERS));
 
 		$requestWithIdAndScore = $request->withAttribute(
 			RequestAttributes::ATTR_PARAMETERS,
@@ -170,27 +164,27 @@ final class TestRequestParameterMapping extends TestCase
 			$scoreResponse->getAttribute(RequestAttributes::ATTR_PARAMETERS)
 		);
 
-		$scoreEndpointParameter->setRequired(TRUE);
+		$scoreEndpointParameter->setRequired(true);
 
 		Assert::throws(
-            function () use ($request) {
-                $this->requestParameterMapping->map($request, $this->response);
-            },
-            InvalidStateException::class,
-            'Parameter "score" should be provided in request attributes'
+			function () use ($request): void {
+				$this->requestParameterMapping->map($request, $this->response);
+			},
+			InvalidStateException::class,
+			'Parameter "score" should be provided in request attributes'
 		);
 	}
 
-	public function testStringInCookie()
+	public function testStringInCookie(): void
 	{
-		$endpoint = new Endpoint;
+		$endpoint = new Endpoint();
 
-		$sessionEndpointParameter = new EndpointParameter;
+		$sessionEndpointParameter = new EndpointParameter();
 		$sessionEndpointParameter->setName('session');
 		$sessionEndpointParameter->setType('string');
 		$sessionEndpointParameter->setIn($sessionEndpointParameter::IN_COOKIE);
-		$sessionEndpointParameter->setRequired(FALSE);
-		$sessionEndpointParameter->setAllowEmpty(FALSE);
+		$sessionEndpointParameter->setRequired(false);
+		$sessionEndpointParameter->setAllowEmpty(false);
 
 		$endpoint->addParameter($sessionEndpointParameter);
 
@@ -199,12 +193,12 @@ final class TestRequestParameterMapping extends TestCase
 			->withAttribute(RequestAttributes::ATTR_PARAMETERS, [])
 			->withCookieParams(
 				[
-					'session' => NULL,
+					'session' => null,
 				]
 			);
 
 		$responseWithoutCookie = $this->requestParameterMapping->map($request, $this->response);
-		Assert::equal(['session' => NULL], $responseWithoutCookie->getCookieParams());
+		Assert::equal(['session' => null], $responseWithoutCookie->getCookieParams());
 
 		$requestWithEmptyCookie = $request->withCookieParams(
 			[
@@ -213,11 +207,11 @@ final class TestRequestParameterMapping extends TestCase
 		);
 
 		Assert::throws(
-            function () use ($requestWithEmptyCookie) {
-                $this->requestParameterMapping->map($requestWithEmptyCookie, $this->response);
-            },
-            InvalidStateException::class,
-            'Parameter "session" should not be empty'
+			function () use ($requestWithEmptyCookie): void {
+				$this->requestParameterMapping->map($requestWithEmptyCookie, $this->response);
+			},
+			InvalidStateException::class,
+			'Parameter "session" should not be empty'
 		);
 
 		$requestWithCookie = $request->withCookieParams(
@@ -234,16 +228,16 @@ final class TestRequestParameterMapping extends TestCase
 		Assert::equal(['session' => 'bar-baz-key'], $cookieResponse->getCookieParams());
 	}
 
-	public function testStringInHeader()
+	public function testStringInHeader(): void
 	{
-		$endpoint = new Endpoint;
+		$endpoint = new Endpoint();
 
-		$authEndpointParameter = new EndpointParameter;
+		$authEndpointParameter = new EndpointParameter();
 		$authEndpointParameter->setName('auth');
 		$authEndpointParameter->setType('string');
 		$authEndpointParameter->setIn($authEndpointParameter::IN_HEADER);
-		$authEndpointParameter->setRequired(TRUE);
-		$authEndpointParameter->setAllowEmpty(FALSE);
+		$authEndpointParameter->setRequired(true);
+		$authEndpointParameter->setAllowEmpty(false);
 
 		$endpoint->addParameter($authEndpointParameter);
 
@@ -260,11 +254,11 @@ final class TestRequestParameterMapping extends TestCase
 		);
 
 		Assert::throws(
-            function () use ($requestWithEmptyHeader) {
-                $this->requestParameterMapping->map($requestWithEmptyHeader, $this->response);
-            },
-            InvalidStateException::class,
-            'Parameter "auth" should not be empty'
+			function () use ($requestWithEmptyHeader): void {
+				$this->requestParameterMapping->map($requestWithEmptyHeader, $this->response);
+			},
+			InvalidStateException::class,
+			'Parameter "auth" should not be empty'
 		);
 
 		$requestWithHeader = $request->withHeader(
@@ -288,4 +282,4 @@ final class TestRequestParameterMapping extends TestCase
 
 }
 
-(new TestRequestParameterMapping)->run();
+(new TestRequestParameterMapping())->run();

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Tests\Fixtures\Controllers;
 
@@ -17,56 +17,38 @@ final class FoobarController extends ApiV1Controller
 	/**
 	 * @Path("/baz1")
 	 * @Method("GET")
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return void
 	 */
-	public function baz1(ApiRequest $request, ApiResponse $response)
+	public function baz1(ApiRequest $request, ApiResponse $response): void
 	{
 	}
 
 	/**
 	 * @Path("/baz2")
 	 * @Method({"GET", "POST"})
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return void
 	 */
-	public function baz2(ApiRequest $request, ApiResponse $response)
+	public function baz2(ApiRequest $request, ApiResponse $response): void
 	{
 	}
 
 	/**
 	 * @Path("/baz2")
 	 * @Method(methods={"PUT"})
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return void
 	 */
-	public function baz3(ApiRequest $request, ApiResponse $response)
+	public function baz3(ApiRequest $request, ApiResponse $response): void
 	{
 	}
 
-	/**
-	 * @return void
-	 */
-	public function getData1()
+	public function getData1(): void
 	{
 		// Skip this method
 	}
 
-	/**
-	 * @return void
-	 */
-	protected function getData2()
+	protected function getData2(): void
 	{
 		// Skip this method
 	}
 
-	/**
-	 * @return void
-	 */
-	protected function getData3()
+	protected function getData3(): void
 	{
 		// Skip this method
 	}

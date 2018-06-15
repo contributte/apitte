@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI;
 
@@ -9,18 +9,17 @@ class Helpers
 {
 
 	/**
-	 * @param array $definitions
-	 * @param int $default
-	 * @return array
+	 * @param mixed[] $definitions
+	 * @return mixed[]
 	 */
-	public static function sort(array $definitions, $default = 10)
+	public static function sort(array $definitions, int $default = 10): array
 	{
 		// Sort by priority
-		uasort($definitions, function ($a, $b) use ($default) {
-			$p1 = isset($a['priority']) ? $a['priority'] : $default;
-			$p2 = isset($b['priority']) ? $b['priority'] : $default;
+		uasort($definitions, function (int $a, int $b) use ($default) {
+			$p1 = $a['priority'] ?? $default;
+			$p2 = $b['priority'] ?? $default;
 
-			if ($p1 == $p2) {
+			if ($p1 === $p2) {
 				return 0;
 			}
 
@@ -31,11 +30,10 @@ class Helpers
 	}
 
 	/**
-	 * @param array $definitions
-	 * @param ContainerBuilder $builder
+	 * @param mixed[] $definitions
 	 * @return ServiceDefinition[]
 	 */
-	public static function getDefinitions(array $definitions, ContainerBuilder $builder)
+	public static function getDefinitions(array $definitions, ContainerBuilder $builder): array
 	{
 		return array_map(function ($name) use ($builder) {
 			return $builder->getDefinition($name);

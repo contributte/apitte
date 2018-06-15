@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Response;
 
@@ -10,17 +10,17 @@ abstract class BasicEntity extends AbstractEntity
 	use TReflectionProperties;
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getResponseProperties()
+	public function getResponseProperties(): array
 	{
 		return $this->getProperties();
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function toResponse()
+	public function toResponse(): array
 	{
 		return $this->toArray();
 	}

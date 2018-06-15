@@ -1,21 +1,20 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Parameter;
 
-class IntegerTypeMapper extends AbstractTypeMapper
+class IntegerTypeMapper implements ITypeMapper
 {
 
 	/**
 	 * @param mixed $value
-	 * @return int|NULL
 	 */
-	public function normalize($value)
+	public function normalize($value): ?int
 	{
-		if ($value === NULL) {
+		if ($value === null) {
 			return $value;
 		}
 
-		return intval($value);
+		return (int) $value;
 	}
 
 }

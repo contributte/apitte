@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
@@ -16,7 +16,7 @@ final class RequestParameters
 	private $parameters = [];
 
 	/**
-	 * @param RequestParameter[] $values
+	 * @param mixed[] $values
 	 */
 	public function __construct(array $values)
 	{
@@ -25,7 +25,7 @@ final class RequestParameters
 				throw new AnnotationException('Empty @RequestParameters given');
 			}
 			$this->parameters = $values['value'];
-		} else if (isset($values['parameters'])) {
+		} elseif (isset($values['parameters'])) {
 			if (empty($values['parameters'])) {
 				throw new AnnotationException('Empty @RequestParameters given');
 			}
@@ -38,7 +38,7 @@ final class RequestParameters
 	/**
 	 * @return RequestParameter[]
 	 */
-	public function getParameters()
+	public function getParameters(): array
 	{
 		return $this->parameters;
 	}

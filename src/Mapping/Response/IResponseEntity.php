@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Response;
 
@@ -6,13 +6,13 @@ interface IResponseEntity
 {
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getResponseProperties();
+	public function getResponseProperties(): array;
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function toResponse();
+	public function toResponse(): array;
 
 }

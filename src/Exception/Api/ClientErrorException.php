@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Exception\Api;
 
 use Apitte\Core\Exception\ApiException;
-use Exception;
+use Throwable;
 
 /**
  * Used for client/application errors (4xx)
@@ -12,12 +12,9 @@ class ClientErrorException extends ApiException
 {
 
 	/**
-	 * @param string $message
-	 * @param int $code
-	 * @param Exception $previous
 	 * @param mixed $context
 	 */
-	public function __construct($message = '', $code = 400, Exception $previous = NULL, $context = NULL)
+	public function __construct(string $message = '', int $code = 400, ?Throwable $previous = null, $context = null)
 	{
 		parent::__construct($message, $code, $previous, $context);
 	}

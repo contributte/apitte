@@ -1,11 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Http;
 
 interface ResponseAttributes
 {
 
-	const ATTR_ENTITY = 'apitte.core.entity';
-	const ATTR_ENDPOINT = 'apitte.core.endpoint';
+	public const
+		ATTR_ENTITY = 'apitte.core.entity',
+		ATTR_ENDPOINT = 'apitte.core.endpoint';
 
 }

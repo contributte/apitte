@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Router;
 
@@ -15,19 +15,12 @@ class SimpleRouter implements IRouter
 	/** @var Schema */
 	private $schema;
 
-	/**
-	 * @param Schema $schema
-	 */
 	public function __construct(Schema $schema)
 	{
 		$this->schema = $schema;
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @return ServerRequestInterface|NULL
-	 */
-	public function match(ServerRequestInterface $request)
+	public function match(ServerRequestInterface $request): ?ServerRequestInterface
 	{
 		$endpoints = $this->schema->getEndpoints();
 
@@ -36,9 +29,9 @@ class SimpleRouter implements IRouter
 			$matched = $this->matchEndpoint($endpoint, $request);
 
 			// Skip if endpoint is not matched
-			if ($matched === NULL) continue;
+			if ($matched === null) continue;
 
-			// If matched is not NULL, returns given ServerRequestInterface
+			// If matched is not null, returns given ServerRequestInterface
 			// with all parsed arguments and data,
 			// also append given Endpoint
 			$matched = $matched
@@ -48,19 +41,14 @@ class SimpleRouter implements IRouter
 			return $matched;
 		}
 
-		return NULL;
+		return null;
 	}
 
-	/**
-	 * @param Endpoint $endpoint
-	 * @param ServerRequestInterface $request
-	 * @return ServerRequestInterface|NULL
-	 */
-	protected function matchEndpoint(Endpoint $endpoint, ServerRequestInterface $request)
+	protected function matchEndpoint(Endpoint $endpoint, ServerRequestInterface $request): ?ServerRequestInterface
 	{
 		// Skip unsupported HTTP method
 		if (!$endpoint->hasMethod($request->getMethod())) {
-			return NULL;
+			return null;
 		}
 
 		// Try match given URL (path) by build pattern
@@ -69,12 +57,7 @@ class SimpleRouter implements IRouter
 		return $request;
 	}
 
-	/**
-	 * @param Endpoint $endpoint
-	 * @param ServerRequestInterface $request
-	 * @return ServerRequestInterface|NULL
-	 */
-	protected function compareUrl(Endpoint $endpoint, ServerRequestInterface $request)
+	protected function compareUrl(Endpoint $endpoint, ServerRequestInterface $request): ?ServerRequestInterface
 	{
 		// Parse url from request
 		$url = $request->getUri()->getPath();
@@ -87,7 +70,7 @@ class SimpleRouter implements IRouter
 		$match = Regex::match($url, $endpoint->getPattern());
 
 		// Skip if there's no match
-		if ($match === NULL) return NULL;
+		if ($match === null) return null;
 
 		$parameters = [];
 
@@ -99,7 +82,7 @@ class SimpleRouter implements IRouter
 		// Fill query parameters with query params
 		$queryParams = $request->getQueryParams();
 		foreach ($endpoint->getParametersByIn(EndpointParameter::IN_QUERY) as $param) {
-			$parameters[$param->getName()] = isset($queryParams[$param->getName()]) ? $queryParams[$param->getName()] : NULL;
+			$parameters[$param->getName()] = $queryParams[$param->getName()] ?? null;
 		}
 
 		// Set attributes to request

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Plugin;
 
@@ -8,25 +8,14 @@ interface Plugin
 {
 
 	/**
-	 * @param array $config
-	 * @return void
+	 * @param mixed[] $config
 	 */
-	public function setupPlugin(array $config = []);
+	public function setupPlugin(array $config = []): void;
 
-	/**
-	 * @return void
-	 */
-	public function loadPluginConfiguration();
+	public function loadPluginConfiguration(): void;
 
-	/**
-	 * @return void
-	 */
-	public function beforePluginCompile();
+	public function beforePluginCompile(): void;
 
-	/**
-	 * @param ClassType $class
-	 * @return void
-	 */
-	public function afterPluginCompile(ClassType $class);
+	public function afterPluginCompile(ClassType $class): void;
 
 }

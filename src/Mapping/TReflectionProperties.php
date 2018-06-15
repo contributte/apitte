@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping;
 
@@ -7,13 +7,13 @@ use ReflectionObject;
 trait TReflectionProperties
 {
 
-	/** @var array */
+	/** @var mixed[] */
 	protected $properties = [];
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getProperties()
+	public function getProperties(): array
 	{
 		if (!$this->properties) {
 			$properties = [];
@@ -28,10 +28,11 @@ trait TReflectionProperties
 				// If property is not public, then skip it.
 				if (!$property->isPublic()) continue;
 
-				$properties[$property->getName()] = [
-					'name' => $property->getName(),
+				$name = $property->getName();
+				$properties[$name] = [
+					'name' => $name,
 					'type' => $property->getValue($this),
-					'defaultValue' => isset($defaultProperties[$property->getName()]) ? $defaultProperties[$property->getName()] : NULL,
+					'defaultValue' => $defaultProperties[$name] ?? null,
 				];
 			}
 
@@ -42,9 +43,9 @@ trait TReflectionProperties
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function toArray()
+	public function toArray(): array
 	{
 		$data = [];
 		$properties = $this->getProperties();

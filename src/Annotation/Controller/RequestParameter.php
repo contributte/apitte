@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Annotation\Controller;
 
@@ -17,23 +17,23 @@ final class RequestParameter
 	/** @var string */
 	private $name;
 
-	/** @var string */
+	/** @var string|null */
 	private $type;
 
-	/** @var string */
+	/** @var string|null */
 	private $description;
 
 	/** @var string */
-	private $in = EndpointParameter::IN_PATH;
+	private $in;
 
 	/** @var bool */
-	private $required = TRUE;
+	private $required;
 
 	/** @var bool */
-	private $deprecated = FALSE;
+	private $deprecated;
 
 	/** @var bool */
-	private $allowEmpty = FALSE;
+	private $allowEmpty;
 
 	/**
 	 * @param mixed[] $values
@@ -49,68 +49,47 @@ final class RequestParameter
 		}
 
 		$this->name = $values['name'];
-		$this->type = Arrays::get($values, 'type', NULL);
-		$this->description = Arrays::get($values, 'description', NULL);
+		$this->type = Arrays::get($values, 'type', null);
+		$this->description = Arrays::get($values, 'description', null);
 
 		// @todo validation allowed values
 		$this->in = Arrays::get($values, 'in', EndpointParameter::IN_PATH);
-		$this->required = Arrays::get($values, 'required', TRUE);
-		$this->deprecated = Arrays::get($values, 'deprecated', FALSE);
-		$this->allowEmpty = Arrays::get($values, 'allowEmpty', FALSE);
+		$this->required = Arrays::get($values, 'required', true);
+		$this->deprecated = Arrays::get($values, 'deprecated', false);
+		$this->allowEmpty = Arrays::get($values, 'allowEmpty', false);
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getType()
+	public function getType(): ?string
 	{
 		return $this->type;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getDescription()
+	public function getDescription(): ?string
 	{
 		return $this->description;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getIn()
+	public function getIn(): string
 	{
 		return $this->in;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isRequired()
+	public function isRequired(): bool
 	{
 		return $this->required;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isDeprecated()
+	public function isDeprecated(): bool
 	{
 		return $this->deprecated;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isAllowEmpty()
+	public function isAllowEmpty(): bool
 	{
 		return $this->allowEmpty;
 	}

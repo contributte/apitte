@@ -26,10 +26,11 @@ composer require apitte/core
 
 | State       | Version      | Branch   | PHP      | Composer                                        |
 |-------------|--------------|----------|----------|-------------------------------------------------|
-| development | `^0.4.0`     | `master` | `>= 7.1` | `minimum-stability: dev`, `prefer-stable: true` |
+| development | `^0.5.0`     | `master` | `>= 7.1` | `minimum-stability: dev`, `prefer-stable: true` |
+| stable      | `^0.4.0`     | `master` | `>= 7.1` |                                                 |
 | stable      | `^0.3.0`     | `master` | `>= 5.6` |                                                 |
 
-## Example 
+## Example
 
 Just define some endpoints, I mean controllers. Place some annotations and thats all.
 
@@ -55,7 +56,7 @@ final class HelloController implements IController
      * @Path("/world")
      * @Method("GET")
      */
-    public function index(ApiRequest $request, ApiResponse $response)
+    public function index(ApiRequest $request, ApiResponse $response): ApiResponse
     {
         return $response->writeBody('Hello world!');
     }
@@ -101,6 +102,15 @@ As you can see, the architecture is ultra simple. `ApiRequest` & `ApiResponse` w
         </a>
         </br>
         <a href="https://github.com/f3l1x">Milan Felix Šulc</a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/mabar">
+            <img width="150" height="150" src="https://avatars0.githubusercontent.com/u/20974277?s=400&v=4">
+        </a>
+        </br>
+        <a href="https://github.com/mabar">Marek Bartoš</a>
       </td>
     </tr>
   <tbody>

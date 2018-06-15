@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Schema\Validation;
 
@@ -10,20 +10,12 @@ use Apitte\Core\Utils\Helpers;
 class FullpathValidation implements IValidation
 {
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	public function validate(SchemaBuilder $builder)
+	public function validate(SchemaBuilder $builder): void
 	{
 		$this->validateDuplicities($builder);
 	}
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return void
-	 */
-	protected function validateDuplicities(SchemaBuilder $builder)
+	protected function validateDuplicities(SchemaBuilder $builder): void
 	{
 		$controllers = $builder->getControllers();
 

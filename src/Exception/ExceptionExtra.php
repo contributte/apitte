@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Exception;
 
-use Exception;
+use Throwable;
 
 trait ExceptionExtra
 {
@@ -19,10 +19,9 @@ trait ExceptionExtra
 	}
 
 	/**
-	 * @param int $code
 	 * @return static
 	 */
-	public function withCode($code)
+	public function withCode(int $code)
 	{
 		$this->code = $code;
 
@@ -30,7 +29,7 @@ trait ExceptionExtra
 	}
 
 	/**
-	 * @param string $message
+	 * @param string|string[] $message
 	 * @return static
 	 */
 	public function withMessage($message)
@@ -41,10 +40,9 @@ trait ExceptionExtra
 	}
 
 	/**
-	 * @param Exception $exception
 	 * @return static
 	 */
-	public function withPrevious(Exception $exception)
+	public function withPrevious(Throwable $exception)
 	{
 		$this->previous = $exception;
 
@@ -63,11 +61,10 @@ trait ExceptionExtra
 	}
 
 	/**
-	 * @param string $type
 	 * @param mixed $context
 	 * @return static
 	 */
-	public function withTypedContext($type, $context)
+	public function withTypedContext(string $type, $context)
 	{
 		$this->context = [$type => $context];
 

@@ -1,28 +1,21 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Exception\Api;
 
-use Exception;
+use Throwable;
 
 class MessageException extends ClientErrorException
 {
 
-	/**
-	 * @param string $errmessage
-	 * @param int $code
-	 * @param Exception $previous
-	 * @param string $message
-	 */
-	public function __construct($errmessage = '', $code = 500, Exception $previous = NULL, $message = NULL)
+	public function __construct(string $errmessage = '', int $code = 500, ?Throwable $previous = null, ?string $message = null)
 	{
 		parent::__construct($errmessage, $code, $previous, $message);
 	}
 
 	/**
-	 * @param string $message
-	 * @return static
+	 * @param string|string[] $message
 	 */
-	public function withMessage($message)
+	public function withMessage($message): self
 	{
 		parent::withMessage($message);
 		$message = is_array($message) ? $message : [$message];

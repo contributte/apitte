@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping;
 
@@ -18,25 +18,15 @@ class RequestEntityMapping
 	/** @var IEntityValidator */
 	protected $validator;
 
-	/**
-	 * @param IEntityValidator $validator
-	 * @return void
-	 */
-	public function setValidator(IEntityValidator $validator)
+	public function setValidator(IEntityValidator $validator): void
 	{
 		$this->validator = $validator;
 	}
 
 	/**
-	 * MAPPING *****************************************************************
+	 * @param ApiRequest $request
 	 */
-
-	/**
-	 * @param ServerRequestInterface|ApiRequest $request
-	 * @param ResponseInterface $response
-	 * @return ServerRequestInterface
-	 */
-	public function map(ServerRequestInterface $request, ResponseInterface $response)
+	public function map(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
 	{
 		/** @var Endpoint $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
@@ -60,14 +50,12 @@ class RequestEntityMapping
 	}
 
 	/**
-	 * @param EndpointRequestMapper $mapper
-	 * @param ServerRequestInterface|ApiRequest $request
-	 * @return IRequestEntity|NULL
+	 * @param ApiRequest $request
 	 */
-	protected function createEntity(EndpointRequestMapper $mapper, ServerRequestInterface $request)
+	protected function createEntity(EndpointRequestMapper $mapper, ServerRequestInterface $request): ?IRequestEntity
 	{
 		$entityClass = $mapper->getEntity();
-		$entity = new $entityClass;
+		$entity = new $entityClass();
 
 		// Validate entity type
 		if (!($entity instanceof IRequestEntity)) {
@@ -76,10 +64,10 @@ class RequestEntityMapping
 
 		// Allow modify entity in extended class
 		$entity = $this->modify($entity, $request);
-		if (!$entity) return NULL;
+		if (!$entity) return null;
 
 		// Try to validate entity only if its enabled
-		if ($mapper->isValidation() === TRUE) {
+		if ($mapper->isValidation() === true) {
 			$this->validate($entity);
 		}
 
@@ -87,20 +75,14 @@ class RequestEntityMapping
 	}
 
 	/**
-	 * @param IRequestEntity $entity
-	 * @param ServerRequestInterface|ApiRequest $request
-	 * @return IRequestEntity|NULL
+	 * @param ApiRequest $request
 	 */
-	protected function modify(IRequestEntity $entity, ServerRequestInterface $request)
+	protected function modify(IRequestEntity $entity, ServerRequestInterface $request): ?IRequestEntity
 	{
 		return $entity->fromRequest($request);
 	}
 
-	/**
-	 * @param IRequestEntity $entity
-	 * @return void
-	 */
-	protected function validate(IRequestEntity $entity)
+	protected function validate(IRequestEntity $entity): void
 	{
 		if (!$this->validator) return;
 		$this->validator->validate($entity);

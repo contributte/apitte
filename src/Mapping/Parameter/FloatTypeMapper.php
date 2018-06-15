@@ -1,21 +1,20 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Parameter;
 
-class FloatTypeMapper extends AbstractTypeMapper
+class FloatTypeMapper implements ITypeMapper
 {
 
 	/**
 	 * @param mixed $value
-	 * @return float|NULL
 	 */
-	public function normalize($value)
+	public function normalize($value): ?float
 	{
-		if ($value === NULL) {
+		if ($value === null) {
 			return $value;
 		}
 
-		return floatval($value);
+		return (float) $value;
 	}
 
 }

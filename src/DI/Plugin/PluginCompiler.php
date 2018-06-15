@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Plugin;
 
@@ -13,46 +13,31 @@ class PluginCompiler
 	/** @var ApiExtension */
 	protected $extension;
 
-	/**
-	 * @param PluginManager $manager
-	 * @param ApiExtension $extension
-	 */
 	public function __construct(PluginManager $manager, ApiExtension $extension)
 	{
 		$this->manager = $manager;
 		$this->extension = $extension;
 	}
 
-	/**
-	 * @return ApiExtension
-	 */
-	public function getExtension()
+	public function getExtension(): ApiExtension
 	{
 		return $this->extension;
 	}
 
-	/**
-	 * @param string $name
-	 * @return AbstractPlugin|NULL
-	 */
-	public function getPlugin($name)
+	public function getPlugin(string $name): ?AbstractPlugin
 	{
 		$plugins = $this->manager->getPlugins();
 
-		return isset($plugins[$name]) ? $plugins[$name] : NULL;
+		return $plugins[$name] ?? null;
 	}
 
-	/**
-	 * @param string $class
-	 * @return AbstractPlugin|NULL
-	 */
-	public function getPluginByType($class)
+	public function getPluginByType(string $class): ?AbstractPlugin
 	{
 		foreach ($this->manager->getPlugins() as $plugin) {
 			if (get_class($plugin['inst']) === $class) return $plugin;
 		}
 
-		return NULL;
+		return null;
 	}
 
 }

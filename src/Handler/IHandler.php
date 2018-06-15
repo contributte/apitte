@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Handler;
 
@@ -9,9 +9,7 @@ interface IHandler
 {
 
 	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return mixeds
+	 * @return mixed
 	 */
 	public function handle(ServerRequestInterface $request, ResponseInterface $response);
 

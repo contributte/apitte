@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Dispatcher;
 
@@ -18,28 +18,19 @@ class CoreDispatcher implements IDispatcher
 	/** @var IHandler */
 	protected $handler;
 
-	/**
-	 * @param IRouter $router
-	 * @param IHandler $handler
-	 */
 	public function __construct(IRouter $router, IHandler $handler)
 	{
 		$this->router = $router;
 		$this->handler = $handler;
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		// Try match request to our routes
 		$matchedRequest = $this->match($request, $response);
 
 		// If there is no match route <=> endpoint,
-		if ($matchedRequest === NULL) {
+		if ($matchedRequest === null) {
 			return $this->fallback($request, $response);
 		}
 
@@ -47,22 +38,12 @@ class CoreDispatcher implements IDispatcher
 		return $this->handle($matchedRequest, $response);
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ServerRequestInterface
-	 */
-	protected function match(ServerRequestInterface $request, ResponseInterface $response)
+	protected function match(ServerRequestInterface $request, ResponseInterface $response): ?ServerRequestInterface
 	{
 		return $this->router->match($request);
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface
-	 */
-	protected function handle(ServerRequestInterface $request, ResponseInterface $response)
+	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		$response = $this->handler->handle($request, $response);
 
@@ -74,12 +55,7 @@ class CoreDispatcher implements IDispatcher
 		return $response;
 	}
 
-	/**
-	 * @param ServerRequestInterface $request
-	 * @param ResponseInterface $response
-	 * @return ResponseInterface|void
-	 */
-	protected function fallback(ServerRequestInterface $request, ResponseInterface $response)
+	protected function fallback(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		throw new BadRequestException('No matched route by given URL', 404);
 	}

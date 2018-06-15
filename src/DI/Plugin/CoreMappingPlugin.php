@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Plugin;
 
@@ -18,9 +18,9 @@ use Apitte\Core\Mapping\Validator\NullValidator;
 class CoreMappingPlugin extends AbstractPlugin
 {
 
-	const PLUGIN_NAME = 'mapping';
+	public const PLUGIN_NAME = 'mapping';
 
-	/** @var array */
+	/** @var mixed[] */
 	protected $defaults = [
 		'types' => [
 			'int' => IntegerTypeMapper::class,
@@ -32,9 +32,6 @@ class CoreMappingPlugin extends AbstractPlugin
 		],
 	];
 
-	/**
-	 * @param PluginCompiler $compiler
-	 */
 	public function __construct(PluginCompiler $compiler)
 	{
 		parent::__construct($compiler);
@@ -43,10 +40,8 @@ class CoreMappingPlugin extends AbstractPlugin
 
 	/**
 	 * Register services
-	 *
-	 * @return void
 	 */
-	public function loadPluginConfiguration()
+	public function loadPluginConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->getConfig();

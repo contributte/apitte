@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Plugin;
 
@@ -14,114 +14,74 @@ abstract class AbstractPlugin implements Plugin
 	/** @var string */
 	protected $name;
 
-	/** @var array */
+	/** @var mixed[] */
 	protected $config = [];
 
-	/** @var array */
+	/** @var mixed[] */
 	protected $defaults = [];
 
-	/**
-	 * @param PluginCompiler $compiler
-	 */
 	public function __construct(PluginCompiler $compiler)
 	{
 		$this->compiler = $compiler;
 	}
 
-	/**
-	 * GETTERS/SETTERS *********************************************************
-	 */
-
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
 	/**
-	 * @return array
+	 * @return mixed[]
 	 */
-	public function getConfig()
+	public function getConfig(): array
 	{
 		return $this->config;
 	}
 
 	/**
-	 * PLUGIN EXTENSION ********************************************************
-	 */
-
-	/**
 	 * Process and validate config
 	 *
-	 * @param array $config
-	 * @return void
+	 * @param mixed[] $config
 	 */
-	public function setupPlugin(array $config = [])
+	public function setupPlugin(array $config = []): void
 	{
 		if (!$this->defaults) return;
 		$this->setupConfig($this->defaults, $config);
 	}
 
-	/**
-	 * @return void
-	 */
-	public function loadPluginConfiguration()
+	public function loadPluginConfiguration(): void
 	{
 	}
 
-	/**
-	 * @return void
-	 */
-	public function beforePluginCompile()
+	public function beforePluginCompile(): void
 	{
 	}
 
-	/**
-	 * @param ClassType $class
-	 * @return void
-	 */
-	public function afterPluginCompile(ClassType $class)
+	public function afterPluginCompile(ClassType $class): void
 	{
 	}
 
-	/**
-	 * HELPERS *****************************************************************
-	 */
-
-	/**
-	 * @param string $id
-	 * @return string
-	 */
-	protected function prefix($id)
+	protected function prefix(string $id): string
 	{
 		return $this->compiler->getExtension()->prefix($this->name . '.' . $id);
 	}
 
-	/**
-	 * @param string $id
-	 * @return string
-	 */
-	protected function extensionPrefix($id)
+	protected function extensionPrefix(string $id): string
 	{
 		return $this->compiler->getExtension()->prefix($id);
 	}
 
-	/**
-	 * @return ContainerBuilder
-	 */
-	protected function getContainerBuilder()
+	protected function getContainerBuilder(): ContainerBuilder
 	{
 		return $this->compiler->getExtension()->getContainerBuilder();
 	}
 
 	/**
-	 * @param array $expected
-	 * @param array $config
-	 * @return array
+	 * @param mixed[] $expected
+	 * @param mixed[] $config
+	 * @return mixed[]
 	 */
-	protected function setupConfig(array $expected, array $config)
+	protected function setupConfig(array $expected, array $config): array
 	{
 		return $this->config = $this->compiler->getExtension()->validateConfig($expected, $config, $this->name);
 	}

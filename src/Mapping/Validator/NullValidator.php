@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\Mapping\Validator;
 
@@ -7,9 +7,9 @@ class NullValidator implements IEntityValidator
 
 	/**
 	 * @param object $entity
-	 * @return void
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function validate($entity)
+	public function validate($entity): void
 	{
 		// Hell nothing..
 	}

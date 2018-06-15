@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Apitte\Core\DI\Plugin;
 
@@ -12,7 +12,6 @@ use Apitte\Core\Schema\Validation\ControllerPathValidation;
 use Apitte\Core\Schema\Validation\FullpathValidation;
 use Apitte\Core\Schema\Validation\GroupPathValidation;
 use Apitte\Core\Schema\Validation\IdValidation;
-use Apitte\Core\Schema\Validation\IValidation;
 use Apitte\Core\Schema\Validation\PathValidation;
 use Apitte\Core\Schema\Validation\RequestMapperValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
@@ -20,12 +19,12 @@ use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
 class CoreSchemaPlugin extends AbstractPlugin
 {
 
-	const PLUGIN_NAME = 'schema';
+	public const PLUGIN_NAME = 'schema';
 
 	// Loader types
-	const LOADERS = ['annotations', 'neon', 'php'];
+	public const LOADERS = ['annotations', 'neon', 'php'];
 
-	/** @var IValidation[] */
+	/** @var string[] */
 	public static $validations = [
 		'controllerPath' => ControllerPathValidation::class,
 		'groupPath' => GroupPathValidation::class,
@@ -38,14 +37,11 @@ class CoreSchemaPlugin extends AbstractPlugin
 	/** @var IDecorator[] */
 	public static $decorators = [];
 
-	/** @var array */
+	/** @var mixed[] */
 	protected $defaults = [
 		'loader' => 'annotations',
 	];
 
-	/**
-	 * @param PluginCompiler $compiler
-	 */
 	public function __construct(PluginCompiler $compiler)
 	{
 		parent::__construct($compiler);
@@ -54,10 +50,8 @@ class CoreSchemaPlugin extends AbstractPlugin
 
 	/**
 	 * Decorate services
-	 *
-	 * @return void
 	 */
-	public function beforePluginCompile()
+	public function beforePluginCompile(): void
 	{
 		// Receive container builder
 		$builder = $this->getContainerBuilder();
@@ -71,13 +65,9 @@ class CoreSchemaPlugin extends AbstractPlugin
 	}
 
 	/**
-	 * HELPERS *****************************************************************
+	 * @return mixed[]
 	 */
-
-	/**
-	 * @return array
-	 */
-	protected function compileSchema()
+	protected function compileSchema(): array
 	{
 		// Instance schema builder
 		$builder = new SchemaBuilder();
@@ -100,37 +90,29 @@ class CoreSchemaPlugin extends AbstractPlugin
 		return $schema;
 	}
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return SchemaBuilder
-	 */
-	protected function loadSchema(SchemaBuilder $builder)
+	protected function loadSchema(SchemaBuilder $builder): SchemaBuilder
 	{
 		// Load schema from...
 		if ($this->config['loader'] === 'annotations') {
 			$loader = new DoctrineAnnotationLoader($this->getContainerBuilder());
 
 			return $loader->load($builder);
-		} else if ($this->config['loader'] === 'neon') {
+		} elseif ($this->config['loader'] === 'neon') {
 			throw new InvalidStateException('Not implemented');
-		} else if ($this->config['loader'] === 'php') {
+		} elseif ($this->config['loader'] === 'php') {
 			throw new InvalidStateException('Not implemented');
 		} else {
 			throw new InvalidStateException('Unknown loader type');
 		}
 	}
 
-	/**
-	 * @param SchemaBuilder $builder
-	 * @return SchemaBuilder
-	 */
-	protected function validateSchema(SchemaBuilder $builder)
+	protected function validateSchema(SchemaBuilder $builder): SchemaBuilder
 	{
 		$validator = new SchemaBuilderValidator();
 
 		// Add all validators at compile-time
 		foreach (self::$validations as $validation) {
-			$validator->add(new $validation);
+			$validator->add(new $validation());
 		}
 
 		// Validate schema

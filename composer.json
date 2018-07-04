@@ -20,7 +20,7 @@
     "ninjify/qa": "^0.4.0",
     "ninjify/nunjuck": "^0.2.0",
     "mockery/mockery": "^0.9.9",
-    "nette/di": "~2.4.10"
+    "nette/di": "~2.4.12"
   },
   "autoload": {
     "psr-4": {
@@ -32,6 +32,8 @@
       "Tests\\Fixtures\\": "tests/fixtures"
     }
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "scripts": {
     "qa": [
       "linter src tests",
@@ -52,8 +54,6 @@
       "temp/phpstan/vendor/bin/phpstan analyse -l 1 -c phpstan.neon src"
     ]
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "extra": {
     "branch-alias": {
       "dev-master": "0.3.x-dev"

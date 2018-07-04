@@ -28,12 +28,6 @@ class ServiceHandler implements IHandler
 		// Create and trigger callback
 		$callback = $this->createCallback($request, $response);
 		$response = $callback($request, $response);
-
-		// Validate if response is returned
-		if ($response === null) {
-			throw new InvalidStateException('Handler returned response cannot be null');
-		}
-
 		return $response;
 	}
 
@@ -54,7 +48,7 @@ class ServiceHandler implements IHandler
 
 	protected function getEndpoint(ServerRequestInterface $request): Endpoint
 	{
-		/** @var Endpoint $endpoint */
+		/** @var Endpoint|null $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 
 		// Validate that we have an endpoint

@@ -15,10 +15,10 @@ use Psr\Http\Message\ServerRequestInterface;
 class RequestEntityMapping
 {
 
-	/** @var IEntityValidator */
+	/** @var IEntityValidator|null */
 	protected $validator;
 
-	public function setValidator(IEntityValidator $validator): void
+	public function setValidator(?IEntityValidator $validator): void
 	{
 		$this->validator = $validator;
 	}
@@ -28,7 +28,7 @@ class RequestEntityMapping
 	 */
 	public function map(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
 	{
-		/** @var Endpoint $endpoint */
+		/** @var Endpoint|null $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 
 		// Validate that we have an endpoint

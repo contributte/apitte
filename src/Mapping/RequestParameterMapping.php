@@ -34,7 +34,7 @@ class RequestParameterMapping
 	 */
 	public function map(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
 	{
-		/** @var Endpoint $endpoint */
+		/** @var Endpoint|null $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 
 		// Validate that we have an endpoint

@@ -26,7 +26,7 @@ use Nette\Utils\Reflection;
 final class DoctrineAnnotationLoader extends AbstractContainerLoader
 {
 
-	/** @var AnnotationReader */
+	/** @var AnnotationReader|null */
 	private $reader;
 
 	/** @var mixed[] */

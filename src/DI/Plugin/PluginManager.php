@@ -12,7 +12,7 @@ final class PluginManager
 	/** @var PluginCompiler */
 	private $compiler;
 
-	/** @var AbstractPlugin[] */
+	/** @var mixed[] */
 	private $plugins = [];
 
 	public function __construct(ApiExtension $extension)
@@ -61,7 +61,7 @@ final class PluginManager
 	}
 
 	/**
-	 * @return AbstractPlugin[]
+	 * @return mixed[]
 	 */
 	public function getPlugins(): array
 	{

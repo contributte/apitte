@@ -12,13 +12,12 @@ interface IDecorator
 	public const ON_DISPATCHER_EXCEPTION = 'dispatcher.exception';
 
 	// Handler
-	public const
-		ON_HANDLER_BEFORE = 'handler.before',
-		ON_HANDLER_AFTER = 'handler.after';
+	public const ON_HANDLER_BEFORE = 'handler.before';
+	public const ON_HANDLER_AFTER = 'handler.after';
 
 	/**
 	 * @param mixed[] $context
-	 * @return ServerRequestInterface|ResponseInterface
+	 * @return ServerRequestInterface|ResponseInterface|null
 	 */
 	public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = []);
 

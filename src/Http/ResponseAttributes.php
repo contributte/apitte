@@ -5,8 +5,7 @@ namespace Apitte\Core\Http;
 interface ResponseAttributes
 {
 
-	public const
-		ATTR_ENTITY = 'apitte.core.entity',
-		ATTR_ENDPOINT = 'apitte.core.endpoint';
+	public const ATTR_ENTITY = 'apitte.core.entity';
+	public const ATTR_ENDPOINT = 'apitte.core.endpoint';
 
 }

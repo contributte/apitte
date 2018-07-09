@@ -36,7 +36,7 @@ class DecoratedDispatcher extends CoreDispatcher
 	 * @param ApiRequest|ServerRequestInterface $request
 	 * @param ApiResponse|ResponseInterface $response
 	 */
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ?ResponseInterface
 	{
 		try {
 			// Route and call handler
@@ -51,13 +51,10 @@ class DecoratedDispatcher extends CoreDispatcher
 		}
 
 		if (isset($e)) {
-			if ($this->decoratorManager->hasDecorators(IDecorator::ON_DISPATCHER_EXCEPTION)) {
-				// Trigger exception decorator
-				$response = $this->decoratorManager->decorateResponse(IDecorator::ON_DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
-			} else {
-				// If there's no decorator to handle this exception, throw again
-				throw $e;
-			}
+			// Trigger exception decorator
+			$response = $this->decoratorManager->decorateResponse(IDecorator::ON_DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
+			// If there's no decorator to handle this exception, throw again
+			if ($response === null) throw $e;
 		}
 
 		return $response;
@@ -67,7 +64,7 @@ class DecoratedDispatcher extends CoreDispatcher
 	 * @param ApiRequest $request
 	 * @param ApiResponse $response
 	 */
-	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ?ResponseInterface
 	{
 		// Pass endpoint to response
 		if (($endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, null))) {

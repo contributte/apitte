@@ -5,20 +5,18 @@ namespace Apitte\Core\Schema;
 final class EndpointParameter
 {
 
-	public const
-		TYPE_SCALAR = 'scalar',
-		TYPE_STRING = 'string',
-		TYPE_INTEGER = 'int',
-		TYPE_FLOAT = 'float',
-		TYPE_BOOLEAN = 'bool',
-		TYPE_DATETIME = 'datetime',
-		TYPE_OBJECT = 'object';
+	public const TYPE_SCALAR = 'scalar';
+	public const TYPE_STRING = 'string';
+	public const TYPE_INTEGER = 'int';
+	public const TYPE_FLOAT = 'float';
+	public const TYPE_BOOLEAN = 'bool';
+	public const TYPE_DATETIME = 'datetime';
+	public const TYPE_OBJECT = 'object';
 
-	public const
-		IN_QUERY = 'query',
-		IN_COOKIE = 'cookie',
-		IN_HEADER = 'header',
-		IN_PATH = 'path';
+	public const IN_QUERY = 'query';
+	public const IN_COOKIE = 'cookie';
+	public const IN_HEADER = 'header';
+	public const IN_PATH = 'path';
 
 	/** @var string|null */
 	private $name;

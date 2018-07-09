@@ -10,13 +10,12 @@ final class Endpoint
 {
 
 	// Methods
-	public const
-		METHOD_GET = 'GET',
-		METHOD_POST = 'POST',
-		METHOD_PUT = 'PUT',
-		METHOD_DELETE = 'DELETE',
-		METHOD_OPTIONS = 'OPTIONS',
-		METHOD_PATCH = 'PATCH';
+	public const METHOD_GET = 'GET';
+	public const METHOD_POST = 'POST';
+	public const METHOD_PUT = 'PUT';
+	public const METHOD_DELETE = 'DELETE';
+	public const METHOD_OPTIONS = 'OPTIONS';
+	public const METHOD_PATCH = 'PATCH';
 
 	public const METHODS = [
 		self::METHOD_GET,
@@ -28,10 +27,9 @@ final class Endpoint
 	];
 
 	// Tags
-	public const
-		TAG_ID = 'id',
-		TAG_GROUP_IDS = 'group.ids',
-		TAG_GROUP_PATHS = 'group.paths';
+	public const TAG_ID = 'id';
+	public const TAG_GROUP_IDS = 'group.ids';
+	public const TAG_GROUP_PATHS = 'group.paths';
 
 	/** @var string[] */
 	private $methods = [];

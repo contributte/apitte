@@ -13,11 +13,10 @@ use Nette\PhpGenerator\ClassType;
 class ApiExtension extends CompilerExtension
 {
 
-	public const
-		CORE_DECORATOR_TAG = 'apitte.core.decorator',
-		NEGOTIATION_TRANSFORMER_TAG = 'apitte.negotiator.transformer',
-		NEGOTIATION_NEGOTIATOR_TAG = 'apitte.negotiation.negotiator',
-		NEGOTIATION_RESOLVER_TAG = 'apitte.negotiation.resolver';
+	public const CORE_DECORATOR_TAG = 'apitte.core.decorator';
+	public const NEGOTIATION_TRANSFORMER_TAG = 'apitte.negotiator.transformer';
+	public const NEGOTIATION_NEGOTIATOR_TAG = 'apitte.negotiation.negotiator';
+	public const NEGOTIATION_RESOLVER_TAG = 'apitte.negotiation.resolver';
 
 	/** @var mixed[] */
 	protected $defaults = [

@@ -23,13 +23,13 @@ class DecoratorManager
 	/**
 	 * @param mixed[] $context
 	 */
-	public function decorateRequest(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
+	public function decorateRequest(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ?ServerRequestInterface
 	{
 		$decorators = $this->decorators[$type] ?? [];
 
 		/** @var IDecorator $decorator */
 		foreach ($decorators as $decorator) {
-			/** @var ServerRequestInterface $request */
+			/** @var ServerRequestInterface|null $request */
 			$request = $decorator->decorate($request, $response, $context);
 		}
 
@@ -39,13 +39,13 @@ class DecoratorManager
 	/**
 	 * @param mixed[] $context
 	 */
-	public function decorateResponse(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ResponseInterface
+	public function decorateResponse(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ?ResponseInterface
 	{
 		$decorators = $this->decorators[$type] ?? [];
 
 		/** @var IDecorator $decorator */
 		foreach ($decorators as $decorator) {
-			/** @var ResponseInterface $response */
+			/** @var ResponseInterface|null $response */
 			$response = $decorator->decorate($request, $response, $context);
 		}
 

@@ -28,13 +28,13 @@
   "require-dev": {
     "ninjify/qa": "^0.8.0",
     "ninjify/nunjuck": "^0.2.0",
-    "mockery/mockery": "^0.9.9",
-    "nette/di": "~2.4.12",
-    "symfony/validator": "^4.1.0"
+    "mockery/mockery": "^1.1.0",
+    "nette/di": "~2.4.13",
+    "symfony/validator": "^4.1.1"
   },
   "conflict": {
-    "nette/di": "< 2.4.12",
-    "nette/utils": "<2.5.2"
+    "nette/di": "< 2.4.13",
+    "nette/utils": "< 2.5.2"
   },
   "autoload": {
     "psr-4": {

@@ -53,14 +53,14 @@ final class ArrayHydrator implements IHydrator
 		$handler->setArguments($data['handler']['arguments']);
 		$endpoint->setHandler($handler);
 
-		if (isset($data['id'])) {
-			$endpoint->addTag(Endpoint::TAG_ID, $data['id']);
-		}
-
 		if (isset($data['tags'])) {
 			foreach ($data['tags'] as $name => $value) {
 				$endpoint->addTag($name, $value);
 			}
+		}
+
+		if (isset($data['id'])) {
+			$endpoint->addTag(Endpoint::TAG_ID, $data['id']);
 		}
 
 		if (isset($data['attributes']['pattern'])) {

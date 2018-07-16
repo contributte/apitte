@@ -15,7 +15,7 @@ class Helpers
 	public static function sort(array $definitions, int $default = 10): array
 	{
 		// Sort by priority
-		uasort($definitions, function (int $a, int $b) use ($default) {
+		uasort($definitions, function (array $a, array $b) use ($default) {
 			$p1 = $a['priority'] ?? $default;
 			$p2 = $b['priority'] ?? $default;
 

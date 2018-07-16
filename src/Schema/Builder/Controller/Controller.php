@@ -106,7 +106,7 @@ final class Controller
 		$this->groupPaths[] = $path;
 	}
 
-	public function addTag(string $name, string $value): void
+	public function addTag(string $name, ?string $value): void
 	{
 		$this->tags[$name] = $value;
 	}

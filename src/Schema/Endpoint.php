@@ -28,8 +28,6 @@ final class Endpoint
 
 	// Tags
 	public const TAG_ID = 'id';
-	public const TAG_GROUP_IDS = 'group.ids';
-	public const TAG_GROUP_PATHS = 'group.paths';
 
 	/** @var string[] */
 	private $methods = [];

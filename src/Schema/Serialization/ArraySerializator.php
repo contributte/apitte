@@ -91,7 +91,7 @@ final class ArraySerializator implements ISerializator
 				'arguments' => $method->getArguments(),
 			],
 			'id' => $id,
-			'tags' => $method->getTags(),
+			'tags' => array_merge($controller->getTags(), $method->getTags()),
 			'methods' => $method->getMethods(),
 			'mask' => $mask,
 			'description' => $method->getDescription(),

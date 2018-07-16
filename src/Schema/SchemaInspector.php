@@ -19,14 +19,6 @@ class SchemaInspector
 	/**
 	 * @return Endpoint[]
 	 */
-	public function getEndpointByGroup(string $group): array
-	{
-		return $this->getEndpointsByTag(Endpoint::TAG_GROUP_IDS, $group);
-	}
-
-	/**
-	 * @return Endpoint[]
-	 */
 	public function getEndpointsByTag(string $name, ?string $value = null): array
 	{
 		$key = rtrim(sprintf('%s/%s', $name, (string) $value), '/');

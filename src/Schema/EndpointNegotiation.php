@@ -39,7 +39,7 @@ final class EndpointNegotiation
 		return $this->renderer;
 	}
 
-	public function setRenderer(string $renderer): void
+	public function setRenderer(?string $renderer): void
 	{
 		$this->renderer = $renderer;
 	}

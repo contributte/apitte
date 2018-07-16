@@ -67,7 +67,7 @@ class ApiResponse extends ProxyResponse
 		return $this->withAttribute(ResponseAttributes::ATTR_ENTITY, $entity);
 	}
 
-	public function getEndpoint(): Endpoint
+	public function getEndpoint(): ?Endpoint
 	{
 		return $this->getAttribute(ResponseAttributes::ATTR_ENDPOINT, null);
 	}

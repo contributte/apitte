@@ -59,7 +59,10 @@ class ServiceCallback
 		$this->arguments = $args;
 	}
 
-	public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	/**
+	 * @return mixed
+	 */
+	public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		return call_user_func_array([$this->service, $this->method], $this->arguments);
 	}

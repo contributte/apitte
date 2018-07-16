@@ -28,13 +28,13 @@ class PluginCompiler
 	{
 		$plugins = $this->manager->getPlugins();
 
-		return $plugins[$name] ?? null;
+		return $plugins[$name]['inst'] ?? null;
 	}
 
 	public function getPluginByType(string $class): ?AbstractPlugin
 	{
 		foreach ($this->manager->getPlugins() as $plugin) {
-			if (get_class($plugin['inst']) === $class) return $plugin;
+			if (get_class($plugin['inst']) === $class) return $plugin['inst'];
 		}
 
 		return null;

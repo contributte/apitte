@@ -103,8 +103,6 @@ As you can see, the architecture is ultra simple. `ApiRequest` & `ApiResponse` w
         </br>
         <a href="https://github.com/f3l1x">Milan Felix Šulc</a>
       </td>
-    </tr>
-    <tr>
       <td align="center">
         <a href="https://github.com/mabar">
             <img width="150" height="150" src="https://avatars0.githubusercontent.com/u/20974277?s=400&v=4">

@@ -24,7 +24,7 @@ class CoreDispatcher implements IDispatcher
 		$this->handler = $handler;
 	}
 
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ?ResponseInterface
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		// Try match request to our routes
 		$matchedRequest = $this->match($request, $response);
@@ -43,7 +43,7 @@ class CoreDispatcher implements IDispatcher
 		return $this->router->match($request);
 	}
 
-	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ?ResponseInterface
+	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		$response = $this->handler->handle($request, $response);
 

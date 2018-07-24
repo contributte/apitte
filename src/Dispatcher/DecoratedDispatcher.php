@@ -36,7 +36,7 @@ class DecoratedDispatcher extends CoreDispatcher
 	 * @param ApiRequest|ServerRequestInterface $request
 	 * @param ApiResponse|ResponseInterface $response
 	 */
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ?ResponseInterface
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		try {
 			// Route and call handler
@@ -64,7 +64,7 @@ class DecoratedDispatcher extends CoreDispatcher
 	 * @param ApiRequest $request
 	 * @param ApiResponse $response
 	 */
-	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ?ResponseInterface
+	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		// Pass endpoint to response
 		if (($endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, null))) {

@@ -8,6 +8,6 @@ use Psr\Http\Message\ServerRequestInterface;
 interface IDispatcher
 {
 
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ?ResponseInterface;
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface;
 
 }

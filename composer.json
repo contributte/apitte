@@ -23,7 +23,7 @@
   "require": {
     "php": ">= 7.1",
     "contributte/psr7-http-message": "^0.5.0",
-    "contributte/phpdoc": "^0.1.0"
+    "contributte/phpdoc": "^0.2"
   },
   "require-dev": {
     "ninjify/qa": "^0.8.0",

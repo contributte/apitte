@@ -286,7 +286,14 @@ api:
             validator: Apitte\Core\Mapping\Validator\BasicValidator
 
             # Symfony/Validator
-            validator: Apitte\Core\Mapping\Validator\SymfonyValidator
+            validator: Apitte\Core\Mapping\Validator\SymfonyValidator(@phpdoc.reader)
+```
+
+If you want use SymfonyValidator so also register PhpdocExtension
+
+```yaml
+extensions:
+    phpdoc: Contributte\PhpDoc\DI\PhpDocExtension
 ```
 
 Your entity could looks like this.

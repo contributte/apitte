@@ -4,14 +4,21 @@ namespace Apitte\Core\Mapping\Validator;
 
 use Apitte\Core\Exception\Api\ValidationException;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\CachedReader;
-use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validation;
 
 class SymfonyValidator implements IEntityValidator
 {
+
+	/** @var Reader */
+	private $reader;
+
+	public function __construct(Reader $reader)
+	{
+		$this->reader = $reader;
+		AnnotationReader::addGlobalIgnoredName('mapping');
+	}
 
 	/**
 	 * @param object $entity
@@ -20,12 +27,8 @@ class SymfonyValidator implements IEntityValidator
 	 */
 	public function validate($entity): void
 	{
-		AnnotationRegistry::registerLoader('class_exists');
-		AnnotationReader::addGlobalIgnoredName('mapping');
-		$annotationReader = new CachedReader(new AnnotationReader(), new ArrayCache());
-
 		$validator = Validation::createValidatorBuilder()
-			->enableAnnotationMapping($annotationReader)
+			->enableAnnotationMapping($this->reader)
 			->getValidator();
 
 		/** @var ConstraintViolationInterface[] $violations */

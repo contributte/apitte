@@ -149,7 +149,7 @@ final class ArraySerializator implements ISerializator
 		// and number fo parameters in mask
 		if (count($pathParameters) > count($maskParameters)) {
 			throw new InvalidStateException(sprintf(
-				'Controller "%s::%s()" has more @RequestParameters (%d / %d) then typed in his mask.',
+				'Method "%s::%s()" has more @RequestParameter(in=path) (%d / %d) then typed in its mask.',
 				$controller->getClass(),
 				$method->getName(),
 				count($pathParameters),

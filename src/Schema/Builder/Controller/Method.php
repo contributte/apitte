@@ -155,6 +155,9 @@ final class Method
 		return $this->arguments;
 	}
 
+	/**
+	 * @internal
+	 */
 	public function addParameter(string $name): MethodParameter
 	{
 		$parameter = new MethodParameter($name);

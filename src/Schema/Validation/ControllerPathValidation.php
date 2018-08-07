@@ -28,6 +28,8 @@ class ControllerPathValidation implements IValidation
 				);
 			}
 
+			if ($path === '/') continue;
+
 			// MUST: Starts with slash (/)
 			if (substr($path, 0, 1) !== '/') {
 				throw new InvalidSchemaException(

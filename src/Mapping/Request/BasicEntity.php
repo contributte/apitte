@@ -72,7 +72,7 @@ abstract class BasicEntity extends AbstractEntity
 
 	protected function fromBodyRequest(ApiRequest $request): self
 	{
-		return $this->factory($request->getJsonBody(true));
+		return $this->factory((array) $request->getJsonBody(true));
 	}
 
 	protected function fromGetRequest(ApiRequest $request): self

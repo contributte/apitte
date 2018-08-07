@@ -18,7 +18,7 @@ class SnapshotException extends RuntimeException
 
 	public function __construct(Throwable $exception, ServerRequestInterface $request, ResponseInterface $response)
 	{
-		parent::__construct(null, 0, $exception);
+		parent::__construct('', 0, $exception);
 		$this->request = $request;
 		$this->response = $response;
 	}

@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
+use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
@@ -123,4 +124,44 @@ test(function (): void {
 	];
 
 	Assert::same($expected, $serializator->serialize($builder));
+});
+
+// Serialize: Exception - duplicate mask parameter - in controller
+test(function (): void {
+	$serializator = new ArraySerializator();
+
+	$builder = new SchemaBuilder();
+
+	$c1 = $builder->addController('c1-class');
+	$c1->setId('c1-id');
+	$c1->setPath('{c1-p1}/{c1-p1}');
+
+	// Only pairs Controller + Method are validated, so Method must be defined
+	$m1 = $c1->addMethod('m1');
+	$m1->setPath('{m1-p1}');
+
+	$m1p1 = $m1->addParameter('m1-p1');
+	$m1p1->setIn(EndpointParameter::IN_PATH);
+
+	Assert::exception(function () use ($serializator, $builder): void {
+		$serializator->serialize($builder);
+	}, InvalidStateException::class, 'Duplicate mask parameter "c1-p1" in path "/{c1-p1}/{c1-p1}/{m1-p1}"');
+});
+
+// Serialize: Exception - duplicate mask parameter - in method
+test(function (): void {
+	$serializator = new ArraySerializator();
+
+	$builder = new SchemaBuilder();
+
+	$c1 = $builder->addController('c1-class');
+	$c1->setId('c1-id');
+	$c1->setPath('{c1-p1}');
+
+	$m1 = $c1->addMethod('m1');
+	$m1->setPath('{m1-p1}/{m1-p1}');
+
+	Assert::exception(function () use ($serializator, $builder): void {
+		$serializator->serialize($builder);
+	}, InvalidStateException::class, 'Duplicate mask parameter "m1-p1" in path "/{c1-p1}/{m1-p1}/{m1-p1}"');
 });

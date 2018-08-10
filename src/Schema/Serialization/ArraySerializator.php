@@ -129,7 +129,7 @@ final class ArraySerializator implements ISerializator
 
 			// Duplication check
 			if (isset($maskParameters[$variableName])) {
-				throw new InvalidStateException(sprintf(sprintf('Duplicate mask parameter "%s" in path "%s"', $variableName, $endpoint['mask'])));
+				throw new InvalidStateException(sprintf('Duplicate mask parameter "%s" in path "%s"', $variableName, $endpoint['mask']));
 			}
 
 			// Build parameter pattern

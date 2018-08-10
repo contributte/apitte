@@ -23,7 +23,7 @@ final class Controller
 	/** @var string[] */
 	private $groupPaths = [];
 
-	/** @var string[] */
+	/** @var mixed[] */
 	private $tags = [];
 
 	public function __construct(string $class)
@@ -106,17 +106,30 @@ final class Controller
 		$this->groupPaths[] = $path;
 	}
 
-	public function addTag(string $name, ?string $value): void
+	/**
+	 * @return mixed[]
+	 */
+	public function getTags(): array
+	{
+		return $this->tags;
+	}
+
+	/**
+	 * @param mixed $value
+	 */
+	public function addTag(string $name, $value = null): void
 	{
 		$this->tags[$name] = $value;
 	}
 
 	/**
-	 * @return string[]
+	 * @param mixed[] $tags
 	 */
-	public function getTags(): array
+	public function addTags(array $tags): void
 	{
-		return $this->tags;
+		foreach ($tags as $name => $value) {
+			$this->addTag($name, $value);
+		}
 	}
 
 }

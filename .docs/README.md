@@ -119,7 +119,7 @@ At the end, open your browser and locate to `localhost/<api-project>/hello/world
 | `@Path`              | Method | `path={a-zA-Z0-9}`                                                                                                                                                             | Set `path` to target method. A.k.a. URL path.                                     |
 | `@RequestParameters` | Method | `@RequestParameter`                                                                                                                                                            | Group annotation for `@RequestParameter`.                                         |
 | `@RequestParameter`  | Method | `name={string}`, `type={int/string/float/bool}`, `description={string}`, `in={path/query}`, `required={true/false}`, `deprecated={true/false}`, `allowEmpty={true/false}` | Define dynamic typed parameter.                                                   |
-| `@Tag`               | Method | `name={string}`, `value={string}`                                                                                                                                              | Add `tag` to target method.                                                       |
+| `@Tag`               | Method | `name={string}`, `value={mixed}`                                                                                                                                              | Add `tag` to target method.                                                       |
 
 ## Plugins
 

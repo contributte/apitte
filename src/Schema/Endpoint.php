@@ -212,18 +212,18 @@ final class Endpoint
 	 */
 	public function getTag(string $name)
 	{
-		return $this->hasTag($name) ? $this->tags[$name] : null;
+		return $this->tags[$name] ?? null;
 	}
 
 	public function hasTag(string $name): bool
 	{
-		return array_key_exists($name, $this->tags);
+		return isset($this->tags[$name]);
 	}
 
 	/**
 	 * @param mixed $value
 	 */
-	public function addTag(string $name, $value): void
+	public function addTag(string $name, $value = null): void
 	{
 		$this->tags[$name] = $value;
 	}

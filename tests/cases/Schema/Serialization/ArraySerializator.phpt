@@ -42,6 +42,7 @@ test(function (): void {
 	$m3->addMethod(Endpoint::METHOD_POST);
 	$m3->setPath('m3-path/{m3-p1}');
 	$m3->addTag('m3-t1');
+	$m3->addTag('m3-t2', 'm3-t2-value');
 	$m3->setDescription('m3-description');
 	$m3->addArgument('m3-a1', Psr7Response::class);
 
@@ -85,7 +86,7 @@ test(function (): void {
 				'arguments' => ['m3-a1' => 'Contributte\\Psr7\\Psr7Response'],
 			],
 			'id' => 'c1-group-id.c1-id.m3-id',
-			'tags' => ['c1-t1' => 'c1-t1-value', 'm3-t1'],
+			'tags' => ['c1-t1' => 'c1-t1-value', 'm3-t1' => null, 'm3-t2' => 'm3-t2-value'],
 			'methods' => ['GET', 'POST'],
 			'mask' => '/group1-path/group2-path/c1-path/m3-path/{m3-p1}',
 			'description' => 'm3-description',

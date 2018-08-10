@@ -20,7 +20,7 @@ final class Method
 	/** @var string[] */
 	private $methods = [];
 
-	/** @var string[] */
+	/** @var mixed[] */
 	private $tags = [];
 
 	/** @var string[] */
@@ -110,25 +110,28 @@ final class Method
 	}
 
 	/**
-	 * @return string[]
+	 * @return mixed[]
 	 */
 	public function getTags(): array
 	{
 		return $this->tags;
 	}
 
-	public function addTag(string $tag): void
+	/**
+	 * @param mixed $value
+	 */
+	public function addTag(string $name, $value = null): void
 	{
-		$this->tags[] = $tag;
+		$this->tags[$name] = $value;
 	}
 
 	/**
-	 * @param string[] $tags
+	 * @param mixed[] $tags
 	 */
 	public function addTags(array $tags): void
 	{
-		foreach ($tags as $tag) {
-			$this->addTag($tag);
+		foreach ($tags as $name => $value) {
+			$this->addTag($name, $value);
 		}
 	}
 

@@ -102,7 +102,7 @@ final class ArrayHydrator implements IHydrator
 
 		if (isset($data['responseMapper'])) {
 			$responseMapper = new EndpointResponseMapper();
-			$responseMapper->setEntity($data['requestMapper']['entity']);
+			$responseMapper->setEntity($data['responseMapper']['entity']);
 			$endpoint->setResponseMapper($responseMapper);
 		}
 

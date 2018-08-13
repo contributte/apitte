@@ -35,6 +35,13 @@ test(function (): void {
 	$m2->addMethod(Endpoint::METHOD_POST);
 	$m2->addMethod(Endpoint::METHOD_PUT);
 	$m2->setPath('m2-path');
+	$m2->setRequestMapper([
+		'entity' => 'An\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity',
+		'validation' => true,
+	]);
+	$m2->setResponseMapper([
+		'entity' => 'An\Class\Which\Implements\Apitte\Core\Mapping\Response\IResponseEntity',
+	]);
 
 	$m3 = $c1->addMethod('m3');
 	$m3->setId('m3-id');
@@ -78,6 +85,13 @@ test(function (): void {
 			'parameters' => [],
 			'negotiations' => [],
 			'attributes' => ['pattern' => '/group1-path/group2-path/c1-path/m2-path'],
+			'requestMapper' => [
+				'entity' => 'An\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Request\\IRequestEntity',
+				'validation' => true,
+			],
+			'responseMapper' => [
+				'entity' => 'An\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Response\\IResponseEntity',
+			],
 		],
 		[
 			'handler' => [

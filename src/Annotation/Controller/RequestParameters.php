@@ -25,11 +25,6 @@ final class RequestParameters
 				throw new AnnotationException('Empty @RequestParameters given');
 			}
 			$this->parameters = $values['value'];
-		} elseif (isset($values['parameters'])) {
-			if (empty($values['parameters'])) {
-				throw new AnnotationException('Empty @RequestParameters given');
-			}
-			$this->parameters = $values['parameters'];
 		} else {
 			throw new AnnotationException('No @RequestParameters given');
 		}

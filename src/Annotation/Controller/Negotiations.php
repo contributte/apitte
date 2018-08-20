@@ -25,11 +25,6 @@ final class Negotiations
 				throw new AnnotationException('Empty @Negotiations given');
 			}
 			$this->negotiations = $values['value'];
-		} elseif (isset($values['negotiations'])) {
-			if (empty($values['negotiations'])) {
-				throw new AnnotationException('Empty @Negotiations given');
-			}
-			$this->negotiations = $values['negotiations'];
 		} else {
 			throw new AnnotationException('No @Negotiations given');
 		}

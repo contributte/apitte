@@ -26,7 +26,7 @@ final class Negotiations
 			}
 			$this->negotiations = $values['value'];
 		} else {
-			throw new AnnotationException('No @Negotiations given');
+			throw new AnnotationException('No @Negotiation given in @Negotiations');
 		}
 
 		$haveDefault = null;

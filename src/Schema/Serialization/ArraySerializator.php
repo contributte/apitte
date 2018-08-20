@@ -145,16 +145,24 @@ final class ArraySerializator implements ISerializator
 			return $pattern;
 		});
 
-		// Integrity check for number of defined parameters in annotations
-		// and number fo parameters in mask
-		if (count($pathParameters) > count($maskParameters)) {
-			throw new InvalidStateException(sprintf(
-				'Method "%s::%s()" has more @RequestParameter(in=path) (%d / %d) then typed in its mask.',
-				$controller->getClass(),
-				$method->getName(),
-				count($pathParameters),
-				count($maskParameters)
-			));
+		// Check if mask parameter is also defined in @RequestParameters
+		foreach ($maskParameters as $maskParameter) {
+			foreach ($pathParameters as $parameter) {
+				if ($maskParameter['name'] === $parameter->getName()) {
+					continue 2;
+				}
+			}
+			throw new InvalidStateException(sprintf('Mask parameter "%s" is not defined as @RequestParameter(in=path)', $maskParameter['name']));
+		}
+
+		// Check if @RequestParameter(in=path) is also defined in mask
+		foreach ($pathParameters as $parameter) {
+			foreach ($maskParameters as $maskParameter) {
+				if ($maskParameter['name'] === $parameter->getName()) {
+					continue 2;
+				}
+			}
+			throw new InvalidStateException(sprintf('@RequestParameter(name="%s", in=path) is not defined in mask (in @GroupPath, @ControllerPath or @Path)', $parameter->getName()));
 		}
 
 		// Fulfill endpoint parameters (in path)

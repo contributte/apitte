@@ -28,6 +28,20 @@ final class RequestParameters
 		} else {
 			throw new AnnotationException('No @RequestParameter given in @RequestParameters');
 		}
+
+		$takenNames = [];
+		/** @var RequestParameter $value */
+		foreach ($values['value'] as $value) {
+			if (!isset($takenNames[$value->getIn()][$value->getName()])) {
+				$takenNames[$value->getIn()][$value->getName()] = $value;
+			} else {
+				throw new AnnotationException(sprintf(
+					'Multiple @RequestParameter annotations with "name=%s" and "in=%s" given. Each parameter must have unique combination of location and name.',
+					$value->getName(),
+					$value->getIn()
+				));
+			}
+		}
 	}
 
 	/**

@@ -13,7 +13,7 @@ final class Negotiations
 {
 
 	/** @var Negotiation[] */
-	private $negotations = [];
+	private $negotiations = [];
 
 	/**
 	 * @param mixed[] $values
@@ -24,12 +24,12 @@ final class Negotiations
 			if (empty($values['value'])) {
 				throw new AnnotationException('Empty @Negotiations given');
 			}
-			$this->negotations = $values['value'];
-		} elseif (isset($values['negotations'])) {
-			if (empty($values['negotations'])) {
+			$this->negotiations = $values['value'];
+		} elseif (isset($values['negotiations'])) {
+			if (empty($values['negotiations'])) {
 				throw new AnnotationException('Empty @Negotiations given');
 			}
-			$this->negotations = $values['negotations'];
+			$this->negotiations = $values['negotiations'];
 		} else {
 			throw new AnnotationException('No @Negotiations given');
 		}
@@ -38,9 +38,9 @@ final class Negotiations
 	/**
 	 * @return Negotiation[]
 	 */
-	public function getNegotations(): array
+	public function getNegotiations(): array
 	{
-		return $this->negotations;
+		return $this->negotiations;
 	}
 
 }

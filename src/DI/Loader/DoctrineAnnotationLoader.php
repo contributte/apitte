@@ -262,7 +262,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				// Parse @Negotiations =====================
 				if (get_class($annotation) === Negotiations::class) {
 					/** @var Negotiations $annotation */
-					foreach ($annotation->getNegotations() as $n) {
+					foreach ($annotation->getNegotiations() as $n) {
 						$negotiation = $schemaMethod->addNegotiation();
 						$negotiation->setSuffix($n->getSuffix());
 						$negotiation->setDefault($n->isDefault());

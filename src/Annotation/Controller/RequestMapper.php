@@ -30,7 +30,7 @@ final class RequestMapper
 		$this->entity = $values['entity'];
 
 		if (isset($values['validation'])) {
-			$this->validation = (bool) $values['validation'];
+			$this->validation = $values['validation'];
 		}
 	}
 

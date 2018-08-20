@@ -3,7 +3,7 @@
 namespace Apitte\Core\Annotation\Controller;
 
 use Doctrine\Common\Annotations\Annotation\Target;
-use Nette\Utils\Arrays;
+use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
@@ -23,13 +23,16 @@ final class Tag
 	 */
 	public function __construct(array $values)
 	{
-		if (isset($values['value']) && !isset($values['name'])) {
-			$values['name'] = $values['value'];
-			unset($values['value']);
+		if (!isset($values['name'])) {
+			throw new AnnotationException('No @Tag name given');
+		}
+
+		if (empty($values['name'])) {
+			throw new AnnotationException('Empty @Tag name given');
 		}
 
 		$this->name = $values['name'];
-		$this->value = Arrays::get($values, 'value', null);
+		$this->value = $values['value'] ?? null;
 	}
 
 	public function getName(): string

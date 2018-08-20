@@ -5,7 +5,6 @@ namespace Apitte\Core\Annotation\Controller;
 use Apitte\Core\Schema\EndpointParameter;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
-use Nette\Utils\Arrays;
 
 /**
  * @Annotation
@@ -40,23 +39,31 @@ final class RequestParameter
 	 */
 	public function __construct(array $values)
 	{
-		if (!isset($values['name'])) {
-			throw new AnnotationException('Name is required at @RequestParameter');
+		if (!isset($values['name']) || empty($values['name'])) {
+			throw new AnnotationException('Empty @RequestParameter name given');
 		}
 
-		if (!isset($values['type']) && !isset($values['description'])) {
-			throw new AnnotationException('Type or description is required at @RequestParameter');
+		if ((!isset($values['type']) || empty($values['type'])) &&
+			(!isset($values['description']) || empty($values['description']))
+		) {
+			throw new AnnotationException('Non-empty type or description is required at @RequestParameter');
 		}
 
 		$this->name = $values['name'];
-		$this->type = Arrays::get($values, 'type', null);
-		$this->description = Arrays::get($values, 'description', null);
+		$this->description = $values['description'] ?? null;
+		$this->required = $values['required'] ?? true;
+		$this->allowEmpty = $values['allowEmpty'] ?? false;
+		$this->deprecated = $values['deprecated'] ?? false;
 
-		// @todo validation allowed values
-		$this->in = Arrays::get($values, 'in', EndpointParameter::IN_PATH);
-		$this->required = Arrays::get($values, 'required', true);
-		$this->deprecated = Arrays::get($values, 'deprecated', false);
-		$this->allowEmpty = Arrays::get($values, 'allowEmpty', false);
+		$this->type = $values['type'] ?? null;
+		if (!in_array($this->type, array_merge(EndpointParameter::TYPES, [null]), true)) {
+			throw new AnnotationException(sprintf('Invalid @RequestParameter type "%s". Choose one of %s::TYPE_*', $this->type, EndpointParameter::class));
+		}
+
+		$this->in = $values['in'] ?? EndpointParameter::IN_PATH;
+		if (!in_array($this->in, EndpointParameter::IN, true)) {
+			throw new AnnotationException(sprintf('Invalid @RequestParameter in "%s". Choose one of %s::IN_*', $this->in, EndpointParameter::class));
+		}
 	}
 
 	public function getName(): string

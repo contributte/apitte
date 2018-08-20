@@ -26,7 +26,7 @@ final class RequestParameters
 			}
 			$this->parameters = $values['value'];
 		} else {
-			throw new AnnotationException('No @RequestParameters given');
+			throw new AnnotationException('No @RequestParameter given in @RequestParameters');
 		}
 	}
 

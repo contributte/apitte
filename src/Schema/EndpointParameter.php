@@ -13,10 +13,27 @@ final class EndpointParameter
 	public const TYPE_DATETIME = 'datetime';
 	public const TYPE_OBJECT = 'object';
 
+	public const TYPES = [
+		self::TYPE_SCALAR,
+		self::TYPE_STRING,
+		self::TYPE_INTEGER,
+		self::TYPE_FLOAT,
+		self::TYPE_BOOLEAN,
+		self::TYPE_DATETIME,
+		self::TYPE_OBJECT,
+	];
+
 	public const IN_QUERY = 'query';
 	public const IN_COOKIE = 'cookie';
 	public const IN_HEADER = 'header';
 	public const IN_PATH = 'path';
+
+	public const IN = [
+		self::IN_QUERY,
+		self::IN_COOKIE,
+		self::IN_HEADER,
+		self::IN_PATH,
+	];
 
 	/** @var string|null */
 	private $name;

@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Apitte\Core\Mapping\Request\IRequestEntity;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 
@@ -25,6 +26,14 @@ final class RequestMapper
 	{
 		if (!isset($values['entity']) || empty($values['entity'])) {
 			throw new AnnotationException('Empty @RequestMapper entity given');
+		}
+
+		if (!class_exists($values['entity'])) {
+			throw new AnnotationException(sprintf('@RequestMapper entity "%s" does not exists', $values['entity']));
+		}
+
+		if (!isset(class_implements($values['entity'])[IRequestEntity::class])) {
+			throw new AnnotationException(sprintf('@RequestMapper entity "%s" does not implements "%s"', $values['entity'], IRequestEntity::class));
 		}
 
 		$this->entity = $values['entity'];

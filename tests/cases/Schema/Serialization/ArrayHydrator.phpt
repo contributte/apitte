@@ -28,11 +28,11 @@ test(function (): void {
 			'negotiations' => [],
 			'attributes' => ['pattern' => '/group1-path/group2-path/c1-path/m2-path'],
 			'requestMapper' => [
-				'entity' => 'An\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Request\\IRequestEntity',
+				'entity' => 'A\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Request\\IRequestEntity',
 				'validation' => true,
 			],
 			'responseMapper' => [
-				'entity' => 'An\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Response\\IResponseEntity',
+				'entity' => 'A\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Response\\IResponseEntity',
 			],
 		],
 		[
@@ -97,11 +97,11 @@ test(function (): void {
 	Assert::same([], $endpoint1->getNegotiations());
 
 	$requestMapper1 = $endpoint1->getRequestMapper();
-	Assert::same('An\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity', $requestMapper1->getEntity());
+	Assert::same('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity', $requestMapper1->getEntity());
 	Assert::same(true, $requestMapper1->isValidation());
 
 	$responseMapper1 = $endpoint1->getResponseMapper();
-	Assert::same('An\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Response\\IResponseEntity', $responseMapper1->getEntity());
+	Assert::same('A\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Response\\IResponseEntity', $responseMapper1->getEntity());
 
 	Assert::same(['c1-t1' => 'c1-t1-value'], $endpoint1->getTags());
 	Assert::same('c1-t1-value', $endpoint1->getTag('c1-t1'));

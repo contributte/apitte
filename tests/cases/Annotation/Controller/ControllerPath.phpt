@@ -10,36 +10,33 @@ use Apitte\Core\Annotation\Controller\ControllerPath;
 use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
-// Value
+// OK
 test(function (): void {
-	$path = new ControllerPath(['value' => 'FakeControllerPath']);
+	$path = new ControllerPath([
+		'value' => 'FakeControllerPath',
+	]);
+	Assert::same('FakeControllerPath', $path->getPath());
+
+	$path = new ControllerPath([
+		'path' => 'FakeControllerPath',
+	]);
 	Assert::equal('FakeControllerPath', $path->getPath());
-	Assert::exception(function (): void {
-		new ControllerPath(['value' => '']);
-	}, AnnotationException::class, 'Empty @ControllerPath given');
 });
 
-// Path
+// Exception - empty path
 test(function (): void {
-	$path = new ControllerPath(['path' => 'FakeControllerPath']);
-	Assert::equal('FakeControllerPath', $path->getPath());
-
 	Assert::exception(function (): void {
-		new ControllerPath(['path' => '']);
+		new ControllerPath([
+			'path' => '',
+		]);
 	}, AnnotationException::class, 'Empty @ControllerPath given');
-});
 
-// Fails
-test(function (): void {
 	Assert::exception(function (): void {
-		new ControllerPath(['path']);
-	}, AnnotationException::class, 'No @ControllerPath given');
-	Assert::exception(function (): void {
-		new ControllerPath(['value']);
-	}, AnnotationException::class, 'No @ControllerPath given');
-	Assert::exception(function (): void {
-		new ControllerPath(['a']);
-	}, AnnotationException::class, 'No @ControllerPath given');
+		new ControllerPath([
+			'value' => '',
+		]);
+	}, AnnotationException::class, 'Empty @ControllerPath given');
+
 	Assert::exception(function (): void {
 		new ControllerPath([]);
 	}, AnnotationException::class, 'No @ControllerPath given');

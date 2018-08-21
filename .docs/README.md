@@ -183,7 +183,7 @@ These decorators are registered by default. Be careful about priorities.
 |-------------|------------------------------|-------------------|----------|-------------------------------|
 | core        | `RequestParametersDecorator` | `handler.before`  | 100      | Enable `@RequestParameter(s)` |
 | core        | `RequestEntityDecorator`     | `handler.before`  | 101      | Enable `@RequestMapper`       |
-| negotiation | `ResponseEntityDecorator`    | `handler.after `  | 500      | Converts response entity to different formats |
+| negotiation | `ResponseEntityDecorator`    | `handler.after `  | 500      | Enable `@ResponseMapper`<br>Converts response entity to different formats |
 
 ### CoreMappingPlugin
 
@@ -233,13 +233,15 @@ Don't forget to register default one, because filling of `types` overrides defau
 
 #### Entity
 
+##### RequestMapper
+
 Let's try to picture you have a datagrid with many filter options. You can describe all options manually or
 use value object, entity, for it. And it leads us to `@RequestMapper`.
 
 We have some entity with described fields.
 
 ```php
-namespace App\Controllers\Entity;
+namespace App\Controllers\Entity\Request;
 
 use Apitte\Core\Mapping\Request\BasicEntity;
 
@@ -261,7 +263,7 @@ the entity from request attributes. So simple, right?
 /**
  * @Path("/filter")
  * @Method("GET")
- * @RequestMapper(entity="App\Controllers\Entity\UserFilter")
+ * @RequestMapper(entity="App\Controllers\Entity\Request\UserFilter")
  */
 public function filter(ApiRequest $request)
 {
@@ -312,6 +314,40 @@ final class UserFilter extends BasicEntity
 	 */
 	public $userId;
 
+}
+```
+
+##### ResponseMapper
+
+`@ResponseMapper` is almost same as `@RequestMapper`. It just applies to response instead of request.
+
+You could use it to for example to filter values or convert output to different format.
+
+```php
+namespace App\Controllers\Entity\Response;
+
+use Apitte\Core\Mapping\Response\BasicEntity;
+
+final class UserFilter extends BasicEntity
+{
+
+	/**  @var int */
+	public $userId;
+
+	/**  @var string */
+	public $email;
+}
+```
+
+```php
+/**
+ * @Path("/filter")
+ * @Method("GET")
+ * @ResponseMapper(entity="App\Controllers\Entity\Response\UserFilter")
+ */
+public function filter(ApiRequest $request)
+{
+    return $request->getEntity();
 }
 ```
 

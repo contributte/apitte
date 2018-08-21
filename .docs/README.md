@@ -8,6 +8,7 @@
   + [Controllers](#controllers)
   + [Request & Response](#request---response)
 * [Annotations - list of all annotations](#annotations)
+* [Decorators](#decorators)
 * [Plugins](#plugins)
   + [CoreDecoratorPlugin](#coredecoratorplugin)
     - [Default decorators](#default-decorators)
@@ -120,6 +121,19 @@ At the end, open your browser and locate to `localhost/<api-project>/hello/world
 | `@RequestParameters` | Method | `@RequestParameter`                                                                                                                                                       | Group annotation for `@RequestParameter`.                                         |
 | `@RequestParameter`  | Method | `name={string}`, `type={int/string/float/bool}`, `description={string}`, `in={path/query}`, `required={true/false}`, `deprecated={true/false}`, `allowEmpty={true/false}` | Define dynamic typed parameter.                                                   |
 | `@Tag`               | Method | `name={string}`, `value={mixed}`                                                                                                                                          | Add `tag` to target method.                                                       |
+
+## Decorators
+
+#### FileResponseDecorator
+
+- Transform response for simply send of file
+
+```php
+use Apitte\Core\Response\Decorator\FileResponseDecorator;
+
+$decorator = new FileResponseDecorator();
+$response = $decorator->decorate(ResponseInterface $response, StreamInterface $data, string $filename);
+```
 
 ## Plugins
 

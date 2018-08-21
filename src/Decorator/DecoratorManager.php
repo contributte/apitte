@@ -27,10 +27,11 @@ class DecoratorManager
 	{
 		$decorators = $this->decorators[$type] ?? [];
 
-		/** @var IDecorator $decorator */
 		foreach ($decorators as $decorator) {
 			/** @var ServerRequestInterface|null $request */
 			$request = $decorator->decorate($request, $response, $context);
+
+			if ($request === null) return null; // Cannot pass null to next decorator
 		}
 
 		return $request;
@@ -46,10 +47,11 @@ class DecoratorManager
 		// If there is no exception handler defined so return null (and exception will be thrown in DecoratedDispatcher)
 		if ($type === IDecorator::ON_DISPATCHER_EXCEPTION && $decorators === []) return null;
 
-		/** @var IDecorator $decorator */
 		foreach ($decorators as $decorator) {
 			/** @var ResponseInterface|null $response */
 			$response = $decorator->decorate($request, $response, $context);
+
+			if ($response === null) return null; // Cannot pass null to next decorator
 		}
 
 		return $response;

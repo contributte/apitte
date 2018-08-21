@@ -43,27 +43,26 @@ final class RequestParameter
 			throw new AnnotationException('Empty @RequestParameter name given');
 		}
 
-		if ((!isset($values['type']) || empty($values['type'])) &&
-			(!isset($values['description']) || empty($values['description']))
-		) {
-			throw new AnnotationException('Non-empty type or description is required at @RequestParameter');
+		if (!isset($values['type']) || empty($values['type'])) {
+			throw new AnnotationException('Empty @RequestParameter type given');
 		}
 
+		if (!in_array($values['type'], EndpointParameter::TYPES, true)) {
+			throw new AnnotationException(sprintf('Invalid @RequestParameter type "%s". Choose one of %s::TYPE_*', $values['type'], EndpointParameter::class));
+		}
+
+		$in = $values['in'] ?? EndpointParameter::IN_PATH;
+		if (!in_array($in, EndpointParameter::IN, true)) {
+			throw new AnnotationException(sprintf('Invalid @RequestParameter in "%s". Choose one of %s::IN_*', $in, EndpointParameter::class));
+		}
+
+		$this->in = $in;
 		$this->name = $values['name'];
-		$this->description = $values['description'] ?? null;
+		$this->type = $values['type'];
 		$this->required = $values['required'] ?? true;
 		$this->allowEmpty = $values['allowEmpty'] ?? false;
 		$this->deprecated = $values['deprecated'] ?? false;
-
-		$this->type = $values['type'] ?? null;
-		if (!in_array($this->type, array_merge(EndpointParameter::TYPES, [null]), true)) {
-			throw new AnnotationException(sprintf('Invalid @RequestParameter type "%s". Choose one of %s::TYPE_*', $this->type, EndpointParameter::class));
-		}
-
-		$this->in = $values['in'] ?? EndpointParameter::IN_PATH;
-		if (!in_array($this->in, EndpointParameter::IN, true)) {
-			throw new AnnotationException(sprintf('Invalid @RequestParameter in "%s". Choose one of %s::IN_*', $this->in, EndpointParameter::class));
-		}
+		$this->description = $values['description'] ?? null;
 	}
 
 	public function getName(): string

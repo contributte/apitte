@@ -16,30 +16,14 @@ test(function (): void {
 	$requestParameter = new RequestParameter([
 		'name' => 'Parameter',
 		'description' => 'Desc',
-	]);
-	Assert::same('Parameter', $requestParameter->getName());
-	Assert::same('Desc', $requestParameter->getDescription());
-	Assert::null($requestParameter->getType());
-	Assert::same(EndpointParameter::IN_PATH, $requestParameter->getIn());
-
-	$requestParameter = new RequestParameter([
-		'name' => 'Parameter',
 		'type' => EndpointParameter::TYPE_STRING,
 		'in' => EndpointParameter::IN_QUERY,
 	]);
-	Assert::same('Parameter', $requestParameter->getName());
-	Assert::same(EndpointParameter::TYPE_STRING, $requestParameter->getType());
-	Assert::null($requestParameter->getDescription());
-	Assert::same(EndpointParameter::IN_QUERY, $requestParameter->getIn());
 
-	$requestParameter = new RequestParameter([
-		'name' => 'Parameter',
-		'description' => 'Desc',
-		'type' => EndpointParameter::TYPE_OBJECT,
-	]);
-	Assert::equal('Parameter', $requestParameter->getName());
-	Assert::equal('Desc', $requestParameter->getDescription());
-	Assert::equal(EndpointParameter::TYPE_OBJECT, $requestParameter->getType());
+	Assert::same('Parameter', $requestParameter->getName());
+	Assert::same('Desc', $requestParameter->getDescription());
+	Assert::same(EndpointParameter::TYPE_STRING, $requestParameter->getType());
+	Assert::same(EndpointParameter::IN_QUERY, $requestParameter->getIn());
 });
 
 // Exception - no name
@@ -61,7 +45,14 @@ test(function (): void {
 		new RequestParameter([
 			'name' => 'Param',
 		]);
-	}, AnnotationException::class, 'Non-empty type or description is required at @RequestParameter');
+	}, AnnotationException::class, 'Empty @RequestParameter type given');
+
+	Assert::exception(function (): void {
+		new RequestParameter([
+			'name' => 'Param',
+			'type' => '',
+		]);
+	}, AnnotationException::class, 'Empty @RequestParameter type given');
 });
 
 // Exception - invalid type

@@ -35,6 +35,7 @@ class DecoratedDispatcher extends CoreDispatcher
 	/**
 	 * @param ApiRequest|ServerRequestInterface $request
 	 * @param ApiResponse|ResponseInterface $response
+	 * @return ApiResponse|ResponseInterface $response
 	 */
 	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
@@ -63,6 +64,7 @@ class DecoratedDispatcher extends CoreDispatcher
 	/**
 	 * @param ApiRequest $request
 	 * @param ApiResponse $response
+	 * @return ApiResponse|ResponseInterface $response
 	 */
 	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{

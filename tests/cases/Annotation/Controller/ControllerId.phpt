@@ -12,34 +12,31 @@ use Tester\Assert;
 
 // Value
 test(function (): void {
-	$controller = new ControllerId(['value' => 'controller']);
-	Assert::equal('controller', $controller->getName());
-	Assert::exception(function (): void {
-		new ControllerId(['value' => '']);
-	}, AnnotationException::class, 'Empty @ControllerId given');
+	$controller = new ControllerId([
+		'value' => 'controller',
+	]);
+	Assert::same('controller', $controller->getName());
+
+	$controller = new ControllerId([
+		'name' => 'controller',
+	]);
+	Assert::same('controller', $controller->getName());
 });
 
-// Name
+// Exception - no name
 test(function (): void {
-	$controller = new ControllerId(['name' => 'controller']);
-	Assert::equal('controller', $controller->getName());
-
 	Assert::exception(function (): void {
-		new ControllerId(['name' => '']);
+		new ControllerId([
+			'name' => '',
+		]);
 	}, AnnotationException::class, 'Empty @ControllerId given');
-});
 
-// Fails
-test(function (): void {
 	Assert::exception(function (): void {
-		new ControllerId(['name']);
-	}, AnnotationException::class, 'No @ControllerId given');
-	Assert::exception(function (): void {
-		new ControllerId(['value']);
-	}, AnnotationException::class, 'No @ControllerId given');
-	Assert::exception(function (): void {
-		new ControllerId(['a']);
-	}, AnnotationException::class, 'No @ControllerId given');
+		new ControllerId([
+			'value' => '',
+		]);
+	}, AnnotationException::class, 'Empty @ControllerId given');
+
 	Assert::exception(function (): void {
 		new ControllerId([]);
 	}, AnnotationException::class, 'No @ControllerId given');

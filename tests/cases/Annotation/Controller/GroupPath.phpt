@@ -10,36 +10,33 @@ use Apitte\Core\Annotation\Controller\GroupPath;
 use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
-// Value
+// OK
 test(function (): void {
-	$groupPath = new GroupPath(['value' => 'GroupPath']);
-	Assert::equal('GroupPath', $groupPath->getPath());
-	Assert::exception(function (): void {
-		new GroupPath(['value' => '']);
-	}, AnnotationException::class, 'Empty @GroupPath given');
+	$path = new GroupPath([
+		'value' => 'FakeGroupPath',
+	]);
+	Assert::same('FakeGroupPath', $path->getPath());
+
+	$path = new GroupPath([
+		'path' => 'FakeGroupPath',
+	]);
+	Assert::equal('FakeGroupPath', $path->getPath());
 });
 
-// Path
+// Exception - empty path
 test(function (): void {
-	$GroupPath = new GroupPath(['path' => 'GroupPath']);
-	Assert::equal('GroupPath', $GroupPath->getPath());
-
 	Assert::exception(function (): void {
-		new GroupPath(['path' => '']);
+		new GroupPath([
+			'path' => '',
+		]);
 	}, AnnotationException::class, 'Empty @GroupPath given');
-});
 
-// Fails
-test(function (): void {
 	Assert::exception(function (): void {
-		new GroupPath(['path']);
-	}, AnnotationException::class, 'No @GroupPath given');
-	Assert::exception(function (): void {
-		new GroupPath(['value']);
-	}, AnnotationException::class, 'No @GroupPath given');
-	Assert::exception(function (): void {
-		new GroupPath(['a']);
-	}, AnnotationException::class, 'No @GroupPath given');
+		new GroupPath([
+			'value' => '',
+		]);
+	}, AnnotationException::class, 'Empty @GroupPath given');
+
 	Assert::exception(function (): void {
 		new GroupPath([]);
 	}, AnnotationException::class, 'No @GroupPath given');

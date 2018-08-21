@@ -12,34 +12,31 @@ use Tester\Assert;
 
 // Value
 test(function (): void {
-	$id = new Id(['value' => 'Id']);
-	Assert::equal('Id', $id->getName());
-	Assert::exception(function (): void {
-		new Id(['value' => '']);
-	}, AnnotationException::class, 'Empty @Id given');
+	$id = new Id([
+		'value' => 'id',
+	]);
+	Assert::same('id', $id->getName());
+
+	$id = new Id([
+		'name' => 'id',
+	]);
+	Assert::same('id', $id->getName());
 });
 
-// Name
+// Exception - no name
 test(function (): void {
-	$id = new Id(['name' => 'Id']);
-	Assert::equal('Id', $id->getName());
-
 	Assert::exception(function (): void {
-		new Id(['name' => '']);
+		new Id([
+			'name' => '',
+		]);
 	}, AnnotationException::class, 'Empty @Id given');
-});
 
-// Fails
-test(function (): void {
 	Assert::exception(function (): void {
-		new Id(['name']);
-	}, AnnotationException::class, 'No @Id given');
-	Assert::exception(function (): void {
-		new Id(['value']);
-	}, AnnotationException::class, 'No @Id given');
-	Assert::exception(function (): void {
-		new Id(['a']);
-	}, AnnotationException::class, 'No @Id given');
+		new Id([
+			'value' => '',
+		]);
+	}, AnnotationException::class, 'Empty @Id given');
+
 	Assert::exception(function (): void {
 		new Id([]);
 	}, AnnotationException::class, 'No @Id given');

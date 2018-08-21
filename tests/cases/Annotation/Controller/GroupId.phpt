@@ -12,34 +12,31 @@ use Tester\Assert;
 
 // Value
 test(function (): void {
-	$group = new GroupId(['value' => 'group']);
-	Assert::equal('group', $group->getName());
-	Assert::exception(function (): void {
-		new GroupId(['value' => '']);
-	}, AnnotationException::class, 'Empty @GroupId given');
+	$group = new GroupId([
+		'value' => 'group',
+	]);
+	Assert::same('group', $group->getName());
+
+	$group = new GroupId([
+		'name' => 'group',
+	]);
+	Assert::same('group', $group->getName());
 });
 
-// Name
+// Exception - no name
 test(function (): void {
-	$group = new GroupId(['name' => 'group']);
-	Assert::equal('group', $group->getName());
-
 	Assert::exception(function (): void {
-		new GroupId(['name' => '']);
+		new GroupId([
+			'name' => '',
+		]);
 	}, AnnotationException::class, 'Empty @GroupId given');
-});
 
-// Fails
-test(function (): void {
 	Assert::exception(function (): void {
-		new GroupId(['name']);
-	}, AnnotationException::class, 'No @GroupId given');
-	Assert::exception(function (): void {
-		new GroupId(['value']);
-	}, AnnotationException::class, 'No @GroupId given');
-	Assert::exception(function (): void {
-		new GroupId(['a']);
-	}, AnnotationException::class, 'No @GroupId given');
+		new GroupId([
+			'value' => '',
+		]);
+	}, AnnotationException::class, 'Empty @GroupId given');
+
 	Assert::exception(function (): void {
 		new GroupId([]);
 	}, AnnotationException::class, 'No @GroupId given');

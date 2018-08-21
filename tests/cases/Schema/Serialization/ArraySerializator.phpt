@@ -200,21 +200,3 @@ test(function (): void {
 		$serializator->serialize($builder);
 	}, InvalidStateException::class, '@RequestParameter(name="m1-p1", in=path) is not defined in mask (in @GroupPath, @ControllerPath or @Path)');
 });
-
-// Serialize: Exception - Parameter in path is not defined in mask
-test(function (): void {
-	$serializator = new ArraySerializator();
-
-	$builder = new SchemaBuilder();
-
-	$c1 = $builder->addController('c1-class');
-	$c1->setId('c1-id');
-	$c1->setPath('path');
-
-	$m1 = $c1->addMethod('m1');
-	$m1->setPath('{m1-p1}');
-
-	Assert::exception(function () use ($serializator, $builder): void {
-		$serializator->serialize($builder);
-	}, InvalidStateException::class, 'Mask parameter "m1-p1" is not defined as @RequestParameter(in=path)');
-});

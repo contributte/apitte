@@ -145,16 +145,6 @@ final class ArraySerializator implements ISerializator
 			return $pattern;
 		});
 
-		// Check if mask parameter is also defined in @RequestParameters
-		foreach ($maskParameters as $maskParameter) {
-			foreach ($pathParameters as $parameter) {
-				if ($maskParameter['name'] === $parameter->getName()) {
-					continue 2;
-				}
-			}
-			throw new InvalidStateException(sprintf('Mask parameter "%s" is not defined as @RequestParameter(in=path)', $maskParameter['name']));
-		}
-
 		// Check if @RequestParameter(in=path) is also defined in mask
 		foreach ($pathParameters as $parameter) {
 			foreach ($maskParameters as $maskParameter) {

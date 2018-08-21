@@ -80,6 +80,7 @@ As you can see, the architecture is ultra simple. `ApiRequest` & `ApiResponse` w
   + [Controllers](https://github.com/apitte/core/tree/master/.docs#controllers)
   + [Request & Response](https://github.com/apitte/core/tree/master/.docs#request---response)
 * [Annotations - list of all annotations](https://github.com/apitte/core/tree/master/.docs#annotations)
+* [Decorators](https://github.com/apitte/core/tree/master/.docs#decorators)
 * [Plugins](https://github.com/apitte/core/tree/master/.docs#plugins)
   + [CoreDecoratorPlugin](https://github.com/apitte/core/tree/master/.docs#coredecoratorplugin)
     - [Default decorators](https://github.com/apitte/core/tree/master/.docs#default-decorators)

@@ -16,7 +16,7 @@ final class RequestParameter
 	/** @var string */
 	private $name;
 
-	/** @var string|null */
+	/** @var string */
 	private $type;
 
 	/** @var string|null */
@@ -47,22 +47,13 @@ final class RequestParameter
 			throw new AnnotationException('Empty @RequestParameter type given');
 		}
 
-		if (!in_array($values['type'], EndpointParameter::TYPES, true)) {
-			throw new AnnotationException(sprintf('Invalid @RequestParameter type "%s". Choose one of %s::TYPE_*', $values['type'], EndpointParameter::class));
-		}
-
-		$in = $values['in'] ?? EndpointParameter::IN_PATH;
-		if (!in_array($in, EndpointParameter::IN, true)) {
-			throw new AnnotationException(sprintf('Invalid @RequestParameter in "%s". Choose one of %s::IN_*', $in, EndpointParameter::class));
-		}
-
-		$this->in = $in;
 		$this->name = $values['name'];
 		$this->type = $values['type'];
 		$this->required = $values['required'] ?? true;
 		$this->allowEmpty = $values['allowEmpty'] ?? false;
 		$this->deprecated = $values['deprecated'] ?? false;
 		$this->description = $values['description'] ?? null;
+		$this->in = $values['in'] ?? EndpointParameter::IN_PATH;
 	}
 
 	public function getName(): string
@@ -70,7 +61,7 @@ final class RequestParameter
 		return $this->name;
 	}
 
-	public function getType(): ?string
+	public function getType(): string
 	{
 		return $this->type;
 	}

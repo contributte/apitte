@@ -54,24 +54,3 @@ test(function (): void {
 		]);
 	}, AnnotationException::class, 'Empty @RequestParameter type given');
 });
-
-// Exception - invalid type
-test(function (): void {
-	Assert::exception(function (): void {
-		new RequestParameter([
-			'name' => 'Param',
-			'type' => 'foo',
-		]);
-	}, AnnotationException::class, sprintf('Invalid @RequestParameter type "%s". Choose one of %s::TYPE_*', 'foo', EndpointParameter::class));
-});
-
-// Exception - invalid in
-test(function (): void {
-	Assert::exception(function (): void {
-		new RequestParameter([
-			'name' => 'Param',
-			'type' => EndpointParameter::TYPE_STRING,
-			'in' => 'foo',
-		]);
-	}, AnnotationException::class, sprintf('Invalid @RequestParameter in "%s". Choose one of %s::IN_*', 'foo', EndpointParameter::class));
-});

@@ -45,39 +45,3 @@ test(function (): void {
 		$negotiations = new Negotiations([]);
 	}, AnnotationException::class, 'No @Negotiation given in @Negotiations');
 });
-
-// Exception - multiple defaults
-test(function (): void {
-	Assert::exception(function (): void {
-		$negotiations = new Negotiations([
-			'value' => [
-				$negotiation1 = new Negotiation([
-					'suffix' => 'json',
-					'default' => true,
-				]),
-				$negotiation2 = new Negotiation([
-					'suffix' => 'xml',
-					'default' => true,
-				]),
-			],
-		]);
-	}, AnnotationException::class, 'Multiple @Negotiation annotations with "default=true" given. Only one @Negotiation could be default.');
-});
-
-// Exception - collision of suffixes
-test(function (): void {
-	Assert::exception(function (): void {
-		$negotiations = new Negotiations([
-			'value' => [
-				$negotiation1 = new Negotiation([
-					'suffix' => 'json',
-					'default' => true,
-				]),
-				$negotiation2 = new Negotiation([
-					'suffix' => 'json',
-					'default' => false,
-				]),
-			],
-		]);
-	}, AnnotationException::class, 'Multiple @Negotiation with "suffix=json" given. Each @Negotiation must have unique suffix');
-});

@@ -4,7 +4,6 @@ namespace Apitte\Core\Annotation\Controller;
 
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
-use ReflectionClass;
 
 /**
  * @Annotation
@@ -17,7 +16,7 @@ final class Negotiation
 	private $suffix;
 
 	/** @var bool */
-	private $default = false;
+	private $default;
 
 	/** @var string|null */
 	private $renderer;
@@ -32,23 +31,8 @@ final class Negotiation
 		}
 
 		$this->suffix = $values['suffix'];
-
-		if (isset($values['default'])) {
-			$this->default = $values['default'];
-		}
-
-		if (isset($values['renderer'])) {
-			if (!class_exists($values['renderer'])) {
-				throw new AnnotationException(sprintf('Renderer "%s" at @Negotiation does not exists', $values['renderer']));
-			}
-
-			$reflection = new ReflectionClass($values['renderer']);
-			if (!$reflection->hasMethod('__invoke')) {
-				throw new AnnotationException(sprintf('Renderer "%s" does not implement __invoke(ApiRequest $request, ApiResponse $response, array $context): ApiResponse', $values['renderer']));
-			}
-
-			$this->renderer = $values['renderer'];
-		}
+		$this->default = $values['default'] ?? false;
+		$this->renderer = $values['renderer'] ?? null;
 	}
 
 	public function getSuffix(): string

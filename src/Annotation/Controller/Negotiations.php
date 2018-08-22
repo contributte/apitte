@@ -28,24 +28,6 @@ final class Negotiations
 		} else {
 			throw new AnnotationException('No @Negotiation given in @Negotiations');
 		}
-
-		$haveDefault = null;
-		$takenSuffixes = [];
-		/** @var Negotiation $negotiation */
-		foreach ($values['value'] as $negotiation) {
-			if ($negotiation->isDefault() === true) {
-				if ($haveDefault !== null) {
-					throw new AnnotationException('Multiple @Negotiation annotations with "default=true" given. Only one @Negotiation could be default.');
-				}
-				$haveDefault = $negotiation;
-			}
-
-			if (!isset($takenSuffixes[$negotiation->getSuffix()])) {
-				$takenSuffixes[$negotiation->getSuffix()] = $negotiation;
-			} else {
-				throw new AnnotationException(sprintf('Multiple @Negotiation with "suffix=%s" given. Each @Negotiation must have unique suffix', $negotiation->getSuffix()));
-			}
-		}
 	}
 
 	/**

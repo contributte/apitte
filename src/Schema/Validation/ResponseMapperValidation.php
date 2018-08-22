@@ -3,10 +3,10 @@
 namespace Apitte\Core\Schema\Validation;
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
-use Apitte\Core\Mapping\Request\IRequestEntity;
+use Apitte\Core\Mapping\Response\IResponseEntity;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 
-class RequestMapperValidation implements IValidation
+class ResponseMapperValidation implements IValidation
 {
 
 	public function validate(SchemaBuilder $builder): void
@@ -21,15 +21,15 @@ class RequestMapperValidation implements IValidation
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
 
-				$mapper = $method->getRequestMapper();
+				$mapper = $method->getResponseMapper();
 
-				// Skip if @RequestMapper is not set
+				// Skip if @ResponseMapper is not set
 				if ($mapper === null) continue;
 
 				if (!class_exists($mapper->getEntity(), true)) {
 					throw new InvalidSchemaException(
 						sprintf(
-							'Request mapping entity "%s" in "%s::%s()" does not exist"',
+							'Response mapping entity "%s" in "%s::%s()" does not exist"',
 							$mapper->getEntity(),
 							$controller->getClass(),
 							$method->getName()
@@ -37,13 +37,13 @@ class RequestMapperValidation implements IValidation
 					);
 				}
 
-				if (!isset(class_implements($mapper->getEntity())[IRequestEntity::class])) {
+				if (!isset(class_implements($mapper->getEntity())[IResponseEntity::class])) {
 					throw new InvalidSchemaException(sprintf(
-						'Request mapping entity "%s" in "%s::%s()" does not implement "%s"',
+						'Response mapping entity "%s" in "%s::%s()" does not implement "%s"',
 						$mapper->getEntity(),
 						$controller->getClass(),
 						$method->getName(),
-						IRequestEntity::class
+						IResponseEntity::class
 					));
 				}
 			}

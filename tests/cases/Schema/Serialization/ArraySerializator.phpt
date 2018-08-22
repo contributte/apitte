@@ -35,13 +35,8 @@ test(function (): void {
 	$m2->addMethod(Endpoint::METHOD_POST);
 	$m2->addMethod(Endpoint::METHOD_PUT);
 	$m2->setPath('m2-path');
-	$m2->setRequestMapper([
-		'entity' => 'A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity',
-		'validation' => true,
-	]);
-	$m2->setResponseMapper([
-		'entity' => 'A\Class\Which\Implements\Apitte\Core\Mapping\Response\IResponseEntity',
-	]);
+	$m2->setRequestMapper('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity', true);
+	$m2->setResponseMapper('A\Class\Which\Implements\Apitte\Core\Mapping\Response\IResponseEntity');
 
 	$m3 = $c1->addMethod('m3');
 	$m3->setId('m3-id');
@@ -53,25 +48,21 @@ test(function (): void {
 	$m3->setDescription('m3-description');
 	$m3->addArgument('m3-a1', Psr7Response::class);
 
-	$m3n1 = $m3->addNegotiation();
-	$m3n1->setSuffix('json');
+	$m3n1 = $m3->addNegotiation('json');
 	$m3n1->setDefault(true);
 	$m3n1->setRenderer('A\\Middleware\\Implementing\\Class');
 
-	$m3n2 = $m3->addNegotiation();
-	$m3n2->setSuffix('xml');
+	$m3n2 = $m3->addNegotiation('xml');
 	$m3n2->setDefault(true);
 
-	$m3p1 = $m3->addParameter('m3-p1');
-	$m3p1->setType(EndpointParameter::TYPE_INTEGER);
+	$m3p1 = $m3->addParameter('m3-p1', EndpointParameter::TYPE_INTEGER);
 	$m3p1->setDescription('m3-p1-desc');
 	$m3p1->setIn(EndpointParameter::IN_PATH);
 	$m3p1->setRequired(true);
 	$m3p1->setAllowEmpty(true);
 	$m3p1->setDeprecated(true);
 
-	$m3p2 = $m3->addParameter('m3-p2');
-	$m3p2->setType(EndpointParameter::TYPE_STRING);
+	$m3p2 = $m3->addParameter('m3-p2', EndpointParameter::TYPE_STRING);
 	$m3p2->setIn(EndpointParameter::IN_QUERY);
 
 	$expected = [
@@ -110,18 +101,18 @@ test(function (): void {
 					'type' => 'int',
 					'description' => 'm3-p1-desc',
 					'in' => 'path',
-					'required' => 1,
-					'allowEmpty' => 1,
-					'deprecated' => 1,
+					'required' => true,
+					'allowEmpty' => true,
+					'deprecated' => true,
 				],
 				'm3-p2' => [
 					'name' => 'm3-p2',
 					'type' => 'string',
 					'description' => null,
 					'in' => 'query',
-					'required' => 1,
-					'allowEmpty' => 0,
-					'deprecated' => 0,
+					'required' => true,
+					'allowEmpty' => false,
+					'deprecated' => false,
 				],
 			],
 			'negotiations' => [
@@ -130,7 +121,11 @@ test(function (): void {
 					'default' => true,
 					'renderer' => 'A\\Middleware\\Implementing\\Class',
 				],
-				['suffix' => 'xml', 'default' => true, 'renderer' => null],
+				[
+					'suffix' => 'xml',
+					'default' => true,
+					'renderer' => null,
+				],
 			],
 			'attributes' => [
 				'pattern' => '/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)',
@@ -155,8 +150,7 @@ test(function (): void {
 	$m1 = $c1->addMethod('m1');
 	$m1->setPath('{m1-p1}');
 
-	$m1p1 = $m1->addParameter('m1-p1');
-	$m1p1->setIn(EndpointParameter::IN_PATH);
+	$m1p1 = $m1->addParameter('m1-p1', EndpointParameter::IN_PATH);
 
 	Assert::exception(function () use ($serializator, $builder): void {
 		$serializator->serialize($builder);
@@ -193,8 +187,7 @@ test(function (): void {
 	$m1 = $c1->addMethod('m1');
 	$m1->setPath('path');
 
-	$m1p1 = $m1->addParameter('m1-p1');
-	$m1p1->setIn(EndpointParameter::IN_PATH);
+	$m1p1 = $m1->addParameter('m1-p1', EndpointParameter::IN_PATH);
 
 	Assert::exception(function () use ($serializator, $builder): void {
 		$serializator->serialize($builder);

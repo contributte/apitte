@@ -15,6 +15,7 @@ use Apitte\Core\Mapping\Parameter\IntegerTypeMapper;
 use Apitte\Core\Mapping\Parameter\StringTypeMapper;
 use Apitte\Core\Mapping\RequestParameterMapping;
 use Apitte\Core\Schema\Endpoint;
+use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointParameter;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
@@ -52,11 +53,11 @@ final class TestRequestParameterMapping extends TestCase
 
 	public function testIntInPath(): void
 	{
-		$endpoint = new Endpoint();
+		$handler = new EndpointHandler('class', 'method');
 
-		$idEndpointParameter = new EndpointParameter();
-		$idEndpointParameter->setName('id');
-		$idEndpointParameter->setType('int');
+		$endpoint = new Endpoint($handler);
+
+		$idEndpointParameter = new EndpointParameter('id', EndpointParameter::TYPE_INTEGER);
 		$idEndpointParameter->setIn($idEndpointParameter::IN_PATH);
 		$idEndpointParameter->setRequired(false);
 		$idEndpointParameter->setAllowEmpty(true);
@@ -124,11 +125,11 @@ final class TestRequestParameterMapping extends TestCase
 
 	public function testFloatInQuery(): void
 	{
-		$endpoint = new Endpoint();
+		$handler = new EndpointHandler('class', 'method');
 
-		$scoreEndpointParameter = new EndpointParameter();
-		$scoreEndpointParameter->setName('score');
-		$scoreEndpointParameter->setType('float');
+		$endpoint = new Endpoint($handler);
+
+		$scoreEndpointParameter = new EndpointParameter('score', EndpointParameter::TYPE_FLOAT);
 		$scoreEndpointParameter->setIn($scoreEndpointParameter::IN_QUERY);
 		$scoreEndpointParameter->setRequired(false);
 		$scoreEndpointParameter->setAllowEmpty(true);
@@ -177,11 +178,11 @@ final class TestRequestParameterMapping extends TestCase
 
 	public function testStringInCookie(): void
 	{
-		$endpoint = new Endpoint();
+		$handler = new EndpointHandler('class', 'method');
 
-		$sessionEndpointParameter = new EndpointParameter();
-		$sessionEndpointParameter->setName('session');
-		$sessionEndpointParameter->setType('string');
+		$endpoint = new Endpoint($handler);
+
+		$sessionEndpointParameter = new EndpointParameter('session', EndpointParameter::TYPE_STRING);
 		$sessionEndpointParameter->setIn($sessionEndpointParameter::IN_COOKIE);
 		$sessionEndpointParameter->setRequired(false);
 		$sessionEndpointParameter->setAllowEmpty(false);
@@ -230,11 +231,11 @@ final class TestRequestParameterMapping extends TestCase
 
 	public function testStringInHeader(): void
 	{
-		$endpoint = new Endpoint();
+		$handler = new EndpointHandler('class', 'method');
 
-		$authEndpointParameter = new EndpointParameter();
-		$authEndpointParameter->setName('auth');
-		$authEndpointParameter->setType('string');
+		$endpoint = new Endpoint($handler);
+
+		$authEndpointParameter = new EndpointParameter('auth', EndpointParameter::TYPE_STRING);
 		$authEndpointParameter->setIn($authEndpointParameter::IN_HEADER);
 		$authEndpointParameter->setRequired(true);
 		$authEndpointParameter->setAllowEmpty(false);

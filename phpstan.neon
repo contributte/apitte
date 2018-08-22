@@ -5,17 +5,15 @@ includes:
 
 parameters:
 	ignoreErrors:
+		# phpstan bug
+		- '#^Parameter \#1 \$function of function call_user_func_array expects callable, array\<int, object\|string\> given.$#'
+
 		# Missing strict comparison
 		- '#^Construct empty\(\) is not allowed. Use more strict comparison.$#'
 		- '#^Only booleans are allowed in#'
-		- '#string|null given.$#'
 
 		# Magic access
 		- '#^Access to private property \$previous of parent class Exception.$#'
-
-		# Shoudl not happen - $method and $class are just missing in __construct
-		- '#^Cannot call method getMethod\(\) on Apitte\\Core\\Schema\\EndpointHandler\|null.$#'
-		- '#^Cannot call method getClass\(\) on Apitte\\Core\\Schema\\EndpointHandler\|null.$#'
 
 		# There is no apitte/negotiation dependency
 		- '#^Return typehint of method Apitte\\Core\\Http\\ApiResponse::getEntity\(\) has invalid type Apitte\\Negotiation\\Http\\AbstractEntity.$#'

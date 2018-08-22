@@ -39,19 +39,19 @@ final class ArrayHydrator implements IHydrator
 			throw new InvalidStateException("Schema route 'handler' is required");
 		}
 
-		$endpoint = new Endpoint();
+		$handler = new EndpointHandler(
+			$data['handler']['class'],
+			$data['handler']['method']
+		);
+		$handler->setArguments($data['handler']['arguments']);
+
+		$endpoint = new Endpoint($handler);
 		$endpoint->setMethods($data['methods']);
 		$endpoint->setMask($data['mask']);
 
 		if (isset($data['description'])) {
 			$endpoint->setDescription($data['description']);
 		}
-
-		$handler = new EndpointHandler();
-		$handler->setClass($data['handler']['class']);
-		$handler->setMethod($data['handler']['method']);
-		$handler->setArguments($data['handler']['arguments']);
-		$endpoint->setHandler($handler);
 
 		if (isset($data['tags'])) {
 			foreach ($data['tags'] as $name => $value) {
@@ -69,14 +69,15 @@ final class ArrayHydrator implements IHydrator
 
 		if (isset($data['parameters'])) {
 			foreach ($data['parameters'] as $param) {
-				$parameter = new EndpointParameter();
-				$parameter->setName($param['name']);
-				$parameter->setType($param['type']);
+				$parameter = new EndpointParameter(
+					$param['name'],
+					$param['type']
+				);
 				$parameter->setDescription($param['description']);
 				$parameter->setIn($param['in']);
-				$parameter->setRequired((bool) $param['required']);
-				$parameter->setDeprecated((bool) $param['deprecated']);
-				$parameter->setAllowEmpty((bool) $param['allowEmpty']);
+				$parameter->setRequired($param['required']);
+				$parameter->setDeprecated($param['deprecated']);
+				$parameter->setAllowEmpty($param['allowEmpty']);
 
 				$endpoint->addParameter($parameter);
 			}
@@ -84,8 +85,7 @@ final class ArrayHydrator implements IHydrator
 
 		if (isset($data['negotiations'])) {
 			foreach ($data['negotiations'] as $nego) {
-				$negotiation = new EndpointNegotiation();
-				$negotiation->setSuffix($nego['suffix']);
+				$negotiation = new EndpointNegotiation($nego['suffix']);
 				$negotiation->setDefault($nego['default']);
 				$negotiation->setRenderer($nego['renderer']);
 
@@ -94,15 +94,17 @@ final class ArrayHydrator implements IHydrator
 		}
 
 		if (isset($data['requestMapper'])) {
-			$requestMapper = new EndpointRequestMapper();
-			$requestMapper->setEntity($data['requestMapper']['entity']);
-			$requestMapper->setValidation($data['requestMapper']['validation']);
+			$requestMapper = new EndpointRequestMapper(
+				$data['requestMapper']['entity'],
+				$data['requestMapper']['validation']
+			);
 			$endpoint->setRequestMapper($requestMapper);
 		}
 
 		if (isset($data['responseMapper'])) {
-			$responseMapper = new EndpointResponseMapper();
-			$responseMapper->setEntity($data['responseMapper']['entity']);
+			$responseMapper = new EndpointResponseMapper(
+				$data['responseMapper']['entity']
+			);
 			$endpoint->setResponseMapper($responseMapper);
 		}
 

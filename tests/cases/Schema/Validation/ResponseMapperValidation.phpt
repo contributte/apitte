@@ -1,18 +1,18 @@
 <?php declare(strict_types = 1);
 
 /**
- * Test: Schema\Validation\RequestMapperValidation
+ * Test: Schema\Validation\ResponseMapperValidation
  */
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
-use Apitte\Core\Mapping\Request\IRequestEntity;
+use Apitte\Core\Mapping\Response\IResponseEntity;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
-use Apitte\Core\Schema\Validation\RequestMapperValidation;
+use Apitte\Core\Schema\Validation\ResponseMapperValidation;
 use Tester\Assert;
-use Tests\Fixtures\Mapping\Request\FooEntity;
-use Tests\Fixtures\Mapping\Request\InvalidEntity;
+use Tests\Fixtures\Mapping\Response\FooEntity;
+use Tests\Fixtures\Mapping\Response\InvalidEntity;
 
 // Validate: empty, no error
 test(function (): void {
@@ -22,7 +22,7 @@ test(function (): void {
 	$c1m1 = $c1->addMethod('foo');
 
 	Assert::noError(function () use ($builder): void {
-		$validator = new RequestMapperValidation();
+		$validator = new ResponseMapperValidation();
 		$validator->validate($builder);
 	});
 });
@@ -33,10 +33,10 @@ test(function (): void {
 
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo');
-	$c1m1->setRequestMapper(FooEntity::class);
+	$c1m1->setResponseMapper(FooEntity::class);
 
 	Assert::noError(function () use ($builder): void {
-		$validator = new RequestMapperValidation();
+		$validator = new ResponseMapperValidation();
 		$validator->validate($builder);
 	});
 });
@@ -47,12 +47,12 @@ test(function (): void {
 
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo');
-	$c1m1->setRequestMapper('bar');
+	$c1m1->setResponseMapper('bar');
 
 	Assert::exception(function () use ($builder): void {
-		$validator = new RequestMapperValidation();
+		$validator = new ResponseMapperValidation();
 		$validator->validate($builder);
-	}, InvalidSchemaException::class, 'Request mapping entity "bar" in "c1::foo()" does not exist"');
+	}, InvalidSchemaException::class, 'Response mapping entity "bar" in "c1::foo()" does not exist"');
 });
 
 // Validate: entity is invalid
@@ -61,20 +61,20 @@ test(function (): void {
 
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo');
-	$c1m1->setRequestMapper(InvalidEntity::class);
+	$c1m1->setResponseMapper(InvalidEntity::class);
 
 	Assert::exception(
 		function () use ($builder): void {
-			$validator = new RequestMapperValidation();
+			$validator = new ResponseMapperValidation();
 			$validator->validate($builder);
 		},
 		InvalidSchemaException::class,
 		sprintf(
-			'Request mapping entity "%s" in "%s::%s()" does not implement "%s"',
+			'Response mapping entity "%s" in "%s::%s()" does not implement "%s"',
 			InvalidEntity::class,
 			'c1',
 			'foo',
-			IRequestEntity::class
+			IResponseEntity::class
 		)
 	);
 });

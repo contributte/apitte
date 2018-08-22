@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace Apitte\Core\Schema;
+namespace Apitte\Core\Schema\Builder\Controller;
 
-final class EndpointResponseMapper
+class ResponseMapper
 {
 
 	/** @var string */

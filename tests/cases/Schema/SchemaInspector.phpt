@@ -7,6 +7,7 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Schema\Endpoint;
+use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\Schema;
 use Apitte\Core\Schema\SchemaInspector;
 use Tester\Assert;
@@ -15,7 +16,9 @@ use Tester\Assert;
 test(function (): void {
 	$schema = new Schema();
 
-	$e1 = new Endpoint();
+	$handler = new EndpointHandler('class', 'method');
+
+	$e1 = new Endpoint($handler);
 	$e1->addTag('bar', 'bar1');
 	$schema->addEndpoint($e1);
 
@@ -28,19 +31,21 @@ test(function (): void {
 test(function (): void {
 	$schema = new Schema();
 
-	$e1 = new Endpoint();
+	$handler = new EndpointHandler('class', 'method');
+
+	$e1 = new Endpoint($handler);
 	$e1->addTag('foo', 'foo1');
 	$schema->addEndpoint($e1);
 
-	$e2 = new Endpoint();
+	$e2 = new Endpoint($handler);
 	$e2->addTag('foo', 'foo2');
 	$schema->addEndpoint($e2);
 
-	$e3 = new Endpoint();
+	$e3 = new Endpoint($handler);
 	$e3->addTag('foo', 'foo3');
 	$schema->addEndpoint($e3);
 
-	$e4 = new Endpoint();
+	$e4 = new Endpoint($handler);
 	$e4->addTag('bar', 'bar1');
 	$schema->addEndpoint($e4);
 
@@ -53,19 +58,21 @@ test(function (): void {
 test(function (): void {
 	$schema = new Schema();
 
-	$e1 = new Endpoint();
+	$handler = new EndpointHandler('class', 'method');
+
+	$e1 = new Endpoint($handler);
 	$e1->addTag('foo', 'foo1');
 	$schema->addEndpoint($e1);
 
-	$e2 = new Endpoint();
+	$e2 = new Endpoint($handler);
 	$e2->addTag('foo', 'foo2');
 	$schema->addEndpoint($e2);
 
-	$e3 = new Endpoint();
+	$e3 = new Endpoint($handler);
 	$e3->addTag('foo', 'foo3');
 	$schema->addEndpoint($e3);
 
-	$e4 = new Endpoint();
+	$e4 = new Endpoint($handler);
 	$e4->addTag('bar', 'bar1');
 	$schema->addEndpoint($e4);
 

@@ -9,6 +9,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Endpoint;
+use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Schema;
 use Contributte\Psr7\Psr7ServerRequestFactory;
@@ -16,12 +17,13 @@ use Tester\Assert;
 
 // Match parameter {id}
 test(function (): void {
-	$endpoint = new Endpoint();
+	$handler = new EndpointHandler('class', 'method');
+
+	$endpoint = new Endpoint($handler);
 	$endpoint->addMethod('GET');
 	$endpoint->setPattern('#^/users/(?P<id>[^/]+)#');
 
-	$id = new EndpointParameter();
-	$id->setName('id');
+	$id = new EndpointParameter('id');
 	$endpoint->addParameter($id);
 
 	$schema = new Schema();
@@ -41,16 +43,16 @@ test(function (): void {
 
 // Match parameters {foo}/{bar}
 test(function (): void {
-	$endpoint = new Endpoint();
+	$handler = new EndpointHandler('class', 'method');
+
+	$endpoint = new Endpoint($handler);
 	$endpoint->addMethod('GET');
 	$endpoint->setPattern('#^/users/(?P<foo>[^/]+)/(?P<bar>[^/]+)#');
 
-	$foo = new EndpointParameter();
-	$foo->setName('foo');
+	$foo = new EndpointParameter('foo');
 	$endpoint->addParameter($foo);
 
-	$bar = new EndpointParameter();
-	$bar->setName('bar');
+	$bar = new EndpointParameter('bar');
 	$endpoint->addParameter($bar);
 
 	$schema = new Schema();
@@ -69,7 +71,9 @@ test(function (): void {
 
 // Not match
 test(function (): void {
-	$endpoint = new Endpoint();
+	$handler = new EndpointHandler('class', 'method');
+
+	$endpoint = new Endpoint($handler);
 	$endpoint->addMethod('GET');
 
 	$schema = new Schema();

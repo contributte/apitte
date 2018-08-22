@@ -5,7 +5,7 @@ namespace Apitte\Core\Schema;
 final class EndpointNegotiation
 {
 
-	/** @var string|null */
+	/** @var string */
 	private $suffix;
 
 	/** @var bool */
@@ -14,14 +14,14 @@ final class EndpointNegotiation
 	/** @var string|null */
 	private $renderer;
 
-	public function getSuffix(): ?string
-	{
-		return $this->suffix;
-	}
-
-	public function setSuffix(?string $suffix): void
+	public function __construct(string $suffix)
 	{
 		$this->suffix = $suffix;
+	}
+
+	public function getSuffix(): string
+	{
+		return $this->suffix;
 	}
 
 	public function isDefault(): bool

@@ -14,6 +14,7 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
+use Apitte\Core\Schema\EndpointHandler;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -44,7 +45,8 @@ test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
-	$endpoint = new Endpoint();
+	$handler = new EndpointHandler('class', 'method');
+	$endpoint = new Endpoint($handler);
 	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), new DecoratorManager());

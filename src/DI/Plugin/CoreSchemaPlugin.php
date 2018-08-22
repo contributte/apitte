@@ -12,8 +12,11 @@ use Apitte\Core\Schema\Validation\ControllerPathValidation;
 use Apitte\Core\Schema\Validation\FullpathValidation;
 use Apitte\Core\Schema\Validation\GroupPathValidation;
 use Apitte\Core\Schema\Validation\IdValidation;
+use Apitte\Core\Schema\Validation\NegotiationValidation;
 use Apitte\Core\Schema\Validation\PathValidation;
 use Apitte\Core\Schema\Validation\RequestMapperValidation;
+use Apitte\Core\Schema\Validation\RequestParameterValidation;
+use Apitte\Core\Schema\Validation\ResponseMapperValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
 
 class CoreSchemaPlugin extends AbstractPlugin
@@ -27,11 +30,14 @@ class CoreSchemaPlugin extends AbstractPlugin
 	/** @var string[] */
 	public static $validations = [
 		'controllerPath' => ControllerPathValidation::class,
-		'groupPath' => GroupPathValidation::class,
-		'path' => PathValidation::class,
 		'fullPath' => FullpathValidation::class,
+		'groupPath' => GroupPathValidation::class,
 		'id' => IdValidation::class,
+		'negotiation' => NegotiationValidation::class,
+		'path' => PathValidation::class,
 		'requestMapper' => RequestMapperValidation::class,
+		'requestParameter' => RequestParameterValidation::class,
+		'responseMapper' => ResponseMapperValidation::class,
 	];
 
 	/** @var IDecorator[] */
@@ -85,9 +91,7 @@ class CoreSchemaPlugin extends AbstractPlugin
 
 		// Convert schema to array (for DI)
 		$generator = new ArraySerializator();
-		$schema = $generator->serialize($builder);
-
-		return $schema;
+		return $generator->serialize($builder);
 	}
 
 	protected function loadSchema(SchemaBuilder $builder): SchemaBuilder
@@ -97,13 +101,17 @@ class CoreSchemaPlugin extends AbstractPlugin
 			$loader = new DoctrineAnnotationLoader($this->getContainerBuilder());
 
 			return $loader->load($builder);
-		} elseif ($this->config['loader'] === 'neon') {
-			throw new InvalidStateException('Not implemented');
-		} elseif ($this->config['loader'] === 'php') {
-			throw new InvalidStateException('Not implemented');
-		} else {
-			throw new InvalidStateException('Unknown loader type');
 		}
+
+		if ($this->config['loader'] === 'neon') {
+			throw new InvalidStateException('Not implemented');
+		}
+
+		if ($this->config['loader'] === 'php') {
+			throw new InvalidStateException('Not implemented');
+		}
+
+		throw new InvalidStateException('Unknown loader type');
 	}
 
 	protected function validateSchema(SchemaBuilder $builder): SchemaBuilder

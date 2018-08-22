@@ -10,7 +10,7 @@ final class MethodParameter
 	/** @var string */
 	private $name;
 
-	/** @var string|null */
+	/** @var string */
 	private $type;
 
 	/** @var string|null */
@@ -28,9 +28,10 @@ final class MethodParameter
 	/** @var bool */
 	private $allowEmpty = false;
 
-	public function __construct(string $name)
+	public function __construct(string $name, string $type = EndpointParameter::TYPE_SCALAR)
 	{
 		$this->name = $name;
+		$this->type = $type;
 	}
 
 	public function getName(): string
@@ -38,14 +39,9 @@ final class MethodParameter
 		return $this->name;
 	}
 
-	public function getType(): ?string
+	public function getType(): string
 	{
 		return $this->type;
-	}
-
-	public function setType(?string $type): void
-	{
-		$this->type = $type;
 	}
 
 	public function getDescription(): ?string
@@ -65,7 +61,6 @@ final class MethodParameter
 
 	public function setIn(string $in): void
 	{
-		// @todo validation
 		$this->in = $in;
 	}
 

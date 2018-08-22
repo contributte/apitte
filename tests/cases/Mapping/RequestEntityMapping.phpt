@@ -12,6 +12,7 @@ use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Request\IRequestEntity;
 use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Schema\Endpoint;
+use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointRequestMapper;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
@@ -25,9 +26,9 @@ test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
 	$mapping = new RequestEntityMapping();
 
-	$endpoint = new Endpoint();
-	$mapper = new EndpointRequestMapper();
-	$mapper->setEntity(FooEntity::class);
+	$handler = new EndpointHandler('class', 'method');
+	$endpoint = new Endpoint($handler);
+	$mapper = new EndpointRequestMapper(FooEntity::class);
 	$endpoint->setRequestMapper($mapper);
 
 	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
@@ -44,9 +45,9 @@ test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
 	$mapping = new RequestEntityMapping();
 
-	$endpoint = new Endpoint();
-	$mapper = new EndpointRequestMapper();
-	$mapper->setEntity(FooEntity::class);
+	$handler = new EndpointHandler('class', 'method');
+	$endpoint = new Endpoint($handler);
+	$mapper = new EndpointRequestMapper(FooEntity::class);
 	$endpoint->setRequestMapper($mapper);
 
 	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
@@ -61,9 +62,9 @@ test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
 	$mapping = new RequestEntityMapping();
 
-	$endpoint = new Endpoint();
-	$mapper = new EndpointRequestMapper();
-	$mapper->setEntity(InvalidEntity::class);
+	$handler = new EndpointHandler('class', 'method');
+	$endpoint = new Endpoint($handler);
+	$mapper = new EndpointRequestMapper(InvalidEntity::class);
 	$endpoint->setRequestMapper($mapper);
 
 	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
@@ -79,7 +80,8 @@ test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
 	$mapping = new RequestEntityMapping();
 
-	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, new Endpoint());
+	$handler = new EndpointHandler('class', 'method');
+	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, new Endpoint($handler));
 
 	Assert::same($request, $mapping->map($request, $response));
 });

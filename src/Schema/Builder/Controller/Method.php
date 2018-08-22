@@ -2,6 +2,8 @@
 
 namespace Apitte\Core\Schema\Builder\Controller;
 
+use Apitte\Core\Schema\EndpointParameter;
+
 final class Method
 {
 
@@ -32,11 +34,11 @@ final class Method
 	/** @var MethodNegotiation[] */
 	private $negotiations = [];
 
-	/** @var mixed[] */
-	private $requestMapper = [];
+	/** @var RequestMapper|null */
+	private $requestMapper;
 
-	/** @var mixed[] */
-	private $responseMapper = [];
+	/** @var ResponseMapper|null */
+	private $responseMapper;
 
 	public function __construct(string $name)
 	{
@@ -161,9 +163,9 @@ final class Method
 	/**
 	 * @internal
 	 */
-	public function addParameter(string $name): MethodParameter
+	public function addParameter(string $name, string $type = EndpointParameter::TYPE_SCALAR): MethodParameter
 	{
-		$parameter = new MethodParameter($name);
+		$parameter = new MethodParameter($name, $type);
 		$this->parameters[$name] = $parameter;
 
 		return $parameter;
@@ -182,9 +184,9 @@ final class Method
 		return $this->parameters;
 	}
 
-	public function addNegotiation(): MethodNegotiation
+	public function addNegotiation(string $suffix): MethodNegotiation
 	{
-		$negotiation = new MethodNegotiation();
+		$negotiation = new MethodNegotiation($suffix);
 		$this->negotiations[] = $negotiation;
 
 		return $negotiation;
@@ -198,36 +200,24 @@ final class Method
 		return $this->negotiations;
 	}
 
-	/**
-	 * @return mixed[]
-	 */
-	public function getRequestMapper(): array
+	public function getRequestMapper(): ?RequestMapper
 	{
 		return $this->requestMapper;
 	}
 
-	/**
-	 * @param mixed[] $requestMapper
-	 */
-	public function setRequestMapper(array $requestMapper): void
+	public function setRequestMapper(string $entity, bool $validation = true): void
 	{
-		$this->requestMapper = $requestMapper;
+		$this->requestMapper = new RequestMapper($entity, $validation);
 	}
 
-	/**
-	 * @return mixed[]
-	 */
-	public function getResponseMapper(): array
+	public function getResponseMapper(): ?ResponseMapper
 	{
 		return $this->responseMapper;
 	}
 
-	/**
-	 * @param mixed[] $responseMapper
-	 */
-	public function setResponseMapper(array $responseMapper): void
+	public function setResponseMapper(string $entity): void
 	{
-		$this->responseMapper = $responseMapper;
+		$this->responseMapper = new ResponseMapper($entity);
 	}
 
 }

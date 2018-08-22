@@ -47,12 +47,9 @@ test(function (): void {
 
 	};
 
-	$eh = new EndpointHandler();
-	$eh->setClass(get_class($controller));
-	$eh->setMethod('foobar');
+	$eh = new EndpointHandler(get_class($controller), 'foobar');
 
-	$endpoint = new Endpoint();
-	$endpoint->setHandler($eh);
+	$endpoint = new Endpoint($eh);
 
 	$container = Mockery::mock(Container::class);
 	$container->shouldReceive('getByType')

@@ -5,33 +5,29 @@ namespace Apitte\Core\Schema;
 final class EndpointHandler
 {
 
-	/** @var string|null */
+	/** @var string */
 	private $class;
 
-	/** @var string|null */
+	/** @var string */
 	private $method;
 
 	/** @var mixed[] */
 	private $arguments = [];
 
-	public function getClass(): ?string
+	public function __construct(string $class, string $method)
+	{
+		$this->class = $class;
+		$this->method = $method;
+	}
+
+	public function getClass(): string
 	{
 		return $this->class;
 	}
 
-	public function setClass(?string $class): void
-	{
-		$this->class = $class;
-	}
-
-	public function getMethod(): ?string
+	public function getMethod(): string
 	{
 		return $this->method;
-	}
-
-	public function setMethod(?string $method): void
-	{
-		$this->method = $method;
 	}
 
 	/**

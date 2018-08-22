@@ -248,8 +248,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				if (get_class($annotation) === RequestParameters::class) {
 					/** @var RequestParameters $annotation */
 					foreach ($annotation->getParameters() as $p) {
-						$parameter = $schemaMethod->addParameter($p->getName());
-						$parameter->setType($p->getType());
+						$parameter = $schemaMethod->addParameter($p->getName(), $p->getType());
 						$parameter->setDescription($p->getDescription());
 						$parameter->setIn($p->getIn());
 						$parameter->setRequired($p->isRequired());
@@ -263,8 +262,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				if (get_class($annotation) === Negotiations::class) {
 					/** @var Negotiations $annotation */
 					foreach ($annotation->getNegotiations() as $n) {
-						$negotiation = $schemaMethod->addNegotiation();
-						$negotiation->setSuffix($n->getSuffix());
+						$negotiation = $schemaMethod->addNegotiation($n->getSuffix());
 						$negotiation->setDefault($n->isDefault());
 						$negotiation->setRenderer($n->getRenderer());
 					}
@@ -274,19 +272,14 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				// Parse @RequestMapper ====================
 				if (get_class($annotation) === RequestMapper::class) {
 					/** @var RequestMapper $annotation */
-					$schemaMethod->setRequestMapper([
-						'entity' => $annotation->getEntity(),
-						'validation' => $annotation->isValidation(),
-					]);
+					$schemaMethod->setRequestMapper($annotation->getEntity(), $annotation->isValidation());
 					continue;
 				}
 
 				// Parse @ResponseMapper ===================
 				if (get_class($annotation) === ResponseMapper::class) {
 					/** @var ResponseMapper $annotation */
-					$schemaMethod->setResponseMapper([
-						'entity' => $annotation->getEntity(),
-					]);
+					$schemaMethod->setResponseMapper($annotation->getEntity());
 					continue;
 				}
 			}

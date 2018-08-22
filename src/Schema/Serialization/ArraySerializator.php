@@ -195,10 +195,15 @@ final class ArraySerializator implements ISerializator
 	{
 		// Add request & response mappers
 		if ($method->getRequestMapper()) {
-			$endpoint['requestMapper'] = $method->getRequestMapper();
+			$endpoint['requestMapper'] = [
+				'entity' => $method->getRequestMapper()->getEntity(),
+				'validation' => $method->getRequestMapper()->isValidation(),
+			];
 		}
 		if ($method->getResponseMapper()) {
-			$endpoint['responseMapper'] = $method->getResponseMapper();
+			$endpoint['responseMapper'] = [
+				'entity' => $method->getResponseMapper()->getEntity(),
+			];
 		}
 	}
 
@@ -225,9 +230,9 @@ final class ArraySerializator implements ISerializator
 			$p['type'] = $param->getType();
 			$p['description'] = $param->getDescription();
 			$p['in'] = $param->getIn();
-			$p['required'] = (int) $param->isRequired();
-			$p['allowEmpty'] = (int) $param->isAllowEmpty();
-			$p['deprecated'] = (int) $param->isDeprecated();
+			$p['required'] = $param->isRequired();
+			$p['allowEmpty'] = $param->isAllowEmpty();
+			$p['deprecated'] = $param->isDeprecated();
 		}
 
 		// Update endpoint

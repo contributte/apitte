@@ -38,7 +38,7 @@ final class Endpoint
 	/** @var string|null */
 	private $pattern;
 
-	/** @var EndpointHandler|null */
+	/** @var EndpointHandler */
 	private $handler;
 
 	/** @var string|null */
@@ -61,6 +61,11 @@ final class Endpoint
 
 	/** @var mixed[] */
 	private $metadata = [];
+
+	public function __construct(EndpointHandler $handler)
+	{
+		$this->handler = $handler;
+	}
 
 	/**
 	 * @return string[]
@@ -120,14 +125,9 @@ final class Endpoint
 		$this->pattern = $pattern;
 	}
 
-	public function getHandler(): ?EndpointHandler
+	public function getHandler(): EndpointHandler
 	{
 		return $this->handler;
-	}
-
-	public function setHandler(?EndpointHandler $handler): void
-	{
-		$this->handler = $handler;
 	}
 
 	public function getDescription(): ?string

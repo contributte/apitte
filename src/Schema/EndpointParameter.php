@@ -11,7 +11,6 @@ final class EndpointParameter
 	public const TYPE_FLOAT = 'float';
 	public const TYPE_BOOLEAN = 'bool';
 	public const TYPE_DATETIME = 'datetime';
-	public const TYPE_OBJECT = 'object';
 
 	public const TYPES = [
 		self::TYPE_SCALAR,
@@ -20,7 +19,6 @@ final class EndpointParameter
 		self::TYPE_FLOAT,
 		self::TYPE_BOOLEAN,
 		self::TYPE_DATETIME,
-		self::TYPE_OBJECT,
 	];
 
 	public const IN_QUERY = 'query';

@@ -230,7 +230,7 @@ public function detail(ApiRequest $request)
 ```
 
 It converts request parameters to defined types. By default, you can use `int`, `float`, `string`. Or defined
-more types in neon.
+more types (scalar, bool, datetime) in neon.
 
 ```yaml
 api:
@@ -240,7 +240,6 @@ api:
                 int: Apitte\Core\Mapping\Parameter\IntegerTypeMapper
                 float: Apitte\Core\Mapping\Parameter\FloatTypeMapper
                 string: Apitte\Core\Mapping\Parameter\StringTypeMapper
-                special: App\MySpecialType
 ```
 
 Don't forget to register default one, because filling of `types` overrides default types.

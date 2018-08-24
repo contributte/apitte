@@ -7,21 +7,24 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Mapping\Parameter\StringTypeMapper;
+use Apitte\Core\Schema\EndpointParameter;
 use Tester\Assert;
 use Tester\TestCase;
 
 final class TestStringTypeMapper extends TestCase
 {
 
-	public function testNormalize(): void
+	public function testOk(): void
 	{
-		$floatTypeMapper = new StringTypeMapper();
+		$mapper = new StringTypeMapper();
+		$parameter = new EndpointParameter('foo', EndpointParameter::TYPE_STRING);
 
-		Assert::same(null, $floatTypeMapper->normalize(null));
-		Assert::same('0', $floatTypeMapper->normalize(0));
-		Assert::same('0.33', $floatTypeMapper->normalize(0.33));
-		Assert::same('1.99', $floatTypeMapper->normalize(1.99));
-		Assert::same('-10', $floatTypeMapper->normalize(-10));
+		Assert::same(null, $mapper->normalize(null, $parameter));
+		Assert::same(null, $mapper->normalize('', $parameter));
+		Assert::same('0', $mapper->normalize(0, $parameter));
+		Assert::same('0.33', $mapper->normalize(0.33, $parameter));
+		Assert::same('1.99', $mapper->normalize(1.99, $parameter));
+		Assert::same('-10', $mapper->normalize(-10, $parameter));
 	}
 
 }

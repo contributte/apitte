@@ -6,7 +6,7 @@
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
@@ -87,8 +87,9 @@ final class TestRequestParameterMapping extends TestCase
 			function () use ($request): void {
 				$this->requestParameterMapping->map($request, $this->response);
 			},
-			InvalidStateException::class,
-			'Parameter "id" should be provided in request attributes'
+			ClientErrorException::class,
+			'Parameter "id" should be provided in request attributes',
+			400
 		);
 
 		// ---- test correct map int parameter
@@ -118,8 +119,9 @@ final class TestRequestParameterMapping extends TestCase
 			function () use ($requestWithEmptyId): void {
 				$this->requestParameterMapping->map($requestWithEmptyId, $this->response);
 			},
-			InvalidStateException::class,
-			'Parameter "id" should not be empty'
+			ClientErrorException::class,
+			'Parameter "id" should not be empty',
+			400
 		);
 	}
 
@@ -171,8 +173,9 @@ final class TestRequestParameterMapping extends TestCase
 			function () use ($request): void {
 				$this->requestParameterMapping->map($request, $this->response);
 			},
-			InvalidStateException::class,
-			'Parameter "score" should be provided in request attributes'
+			ClientErrorException::class,
+			'Parameter "score" should be provided in request attributes',
+			400
 		);
 	}
 
@@ -211,8 +214,9 @@ final class TestRequestParameterMapping extends TestCase
 			function () use ($requestWithEmptyCookie): void {
 				$this->requestParameterMapping->map($requestWithEmptyCookie, $this->response);
 			},
-			InvalidStateException::class,
-			'Parameter "session" should not be empty'
+			ClientErrorException::class,
+			'Parameter "session" should not be empty',
+			400
 		);
 
 		$requestWithCookie = $request->withCookieParams(
@@ -258,8 +262,9 @@ final class TestRequestParameterMapping extends TestCase
 			function () use ($requestWithEmptyHeader): void {
 				$this->requestParameterMapping->map($requestWithEmptyHeader, $this->response);
 			},
-			InvalidStateException::class,
-			'Parameter "auth" should not be empty'
+			ClientErrorException::class,
+			'Parameter "auth" should not be empty',
+			400
 		);
 
 		$requestWithHeader = $request->withHeader(

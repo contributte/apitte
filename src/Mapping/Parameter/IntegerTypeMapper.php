@@ -2,6 +2,8 @@
 
 namespace Apitte\Core\Mapping\Parameter;
 
+use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
+
 class IntegerTypeMapper implements ITypeMapper
 {
 
@@ -10,11 +12,15 @@ class IntegerTypeMapper implements ITypeMapper
 	 */
 	public function normalize($value): ?int
 	{
-		if ($value === null) {
-			return $value;
+		if ($value === null || $value === '') {
+			return null;
 		}
 
-		return (int) $value;
+		if (is_int($value) || (is_string($value) && preg_match('#^-?[0-9]+\z#', $value))) {
+			return (int) $value;
+		}
+
+		throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_INTEGER);
 	}
 
 }

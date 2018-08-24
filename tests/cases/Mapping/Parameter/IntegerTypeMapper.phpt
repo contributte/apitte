@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
+use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 use Apitte\Core\Mapping\Parameter\IntegerTypeMapper;
 use Tester\Assert;
 use Tester\TestCase;
@@ -13,15 +14,28 @@ use Tester\TestCase;
 final class TestIntegerTypeMapper extends TestCase
 {
 
-	public function testNormalize(): void
+	public function testOk(): void
 	{
-		$floatTypeMapper = new IntegerTypeMapper();
+		$mapper = new IntegerTypeMapper();
 
-		Assert::same(null, $floatTypeMapper->normalize(null));
-		Assert::same(0, $floatTypeMapper->normalize(0));
-		Assert::same(0, $floatTypeMapper->normalize('0.33'));
-		Assert::same(1, $floatTypeMapper->normalize('1.99'));
-		Assert::same(-10, $floatTypeMapper->normalize('-10'));
+		Assert::same(null, $mapper->normalize(null));
+		Assert::same(null, $mapper->normalize(''));
+		Assert::same(0, $mapper->normalize(0));
+		Assert::same(13, $mapper->normalize('13'));
+		Assert::same(-10, $mapper->normalize('-10'));
+	}
+
+	public function testFail(): void
+	{
+		$mapper = new IntegerTypeMapper();
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize('string');
+		}, InvalidArgumentTypeException::class);
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize('1.99');
+		}, InvalidArgumentTypeException::class);
 	}
 
 }

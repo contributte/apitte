@@ -22,7 +22,7 @@
 
 ## Installation
 
-Simpliest way to register this core API library is via [Nette\DI\CompilerExtension](https://api.nette.org/2.4/Nette.DI.CompilerExtension.html).
+Simplest way to register this core API library is via [Nette\DI\CompilerExtension](https://api.nette.org/2.4/Nette.DI.CompilerExtension.html).
 
 ```
 composer require apitte/core
@@ -106,21 +106,21 @@ At the end, open your browser and locate to `localhost/<api-project>/hello/world
 
 ## Annotations
 
-| Annotation           | Target | Attributes                                                                                                                                                                | Description                                                                       |
-|----------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| `@Controller`        | Class  | none                                                                                                                                                                      | Mark as as type `controller`.                                                     |
-| `@ControllerId`      | Class  | value=`{a-z, A-Z, 0-9, _}`                                                                                                                                                | Prefix all children methods ids with `id`.                                        |
-| `@ControllerPath`    | Class  | value=`{a-z, A-Z, 0-9, -_/}`                                                                                                                                              | Prefix all children methods paths with `path`.                                    |
-| `@GroupId`           | Class  | value=`{a-z, A-Z, 0-9, _}`                                                                                                                                                | Prefix all children methods ids with `id`. Can be set only on abstract class.     |
-| `@GroupPath`         | Class  | value=`{a-z, A-Z, 0-9, -_/}`                                                                                                                                              | Prefix all children methods paths with `path`. Can be set only on abstract class. |
-| `@Id`                | Method | value=`{a-z, A-Z, 0-9, _}`                                                                                                                                                | Set `id` to target method.                                                        |
-| `@Method`            | Method | GET, POST, PUT, OPTION, DELETE, HEAD                                                                                                                                      | Set `method` to target method.                                                    |
-| `@Negotiations`      | Method | `@Negotiation`                                                                                                                                                            | Group annotation for `@Negotiation`.                                              |
-| `@Negotiation`       | Method | `suffix={string}`, `default={true/false}`, `renderer={string}`                                                                                                            | Define negotiation mode to target method.                                         |
-| `@Path`              | Method | `value={a-z, A-Z, 0-9, -_/{}}`                                                                                                                                            | Set `path` to target method. A.k.a. URL path.                                     |
-| `@RequestParameters` | Method | `@RequestParameter`                                                                                                                                                       | Group annotation for `@RequestParameter`.                                         |
-| `@RequestParameter`  | Method | `name={string}`, `type={int/string/float/bool}`, `description={string}`, `in={path/query}`, `required={true/false}`, `deprecated={true/false}`, `allowEmpty={true/false}` | Define dynamic typed parameter.                                                   |
-| `@Tag`               | Method | `name={string}`, `value={mixed}`                                                                                                                                          | Add `tag` to target method.                                                       |
+| Annotation           | Target | Attributes                                                                                                                                                                                | Description                                                                       |
+|----------------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| `@Controller`        | Class  | none                                                                                                                                                                                      | Mark as as type `controller`.                                                     |
+| `@ControllerId`      | Class  | value=`{a-z, A-Z, 0-9, _}`                                                                                                                                                                | Prefix all children methods ids with `id`.                                        |
+| `@ControllerPath`    | Class  | value=`{a-z, A-Z, 0-9, -_/}`                                                                                                                                                              | Prefix all children methods paths with `path`.                                    |
+| `@GroupId`           | Class  | value=`{a-z, A-Z, 0-9, _}`                                                                                                                                                                | Prefix all children methods ids with `id`. Can be set only on abstract class.     |
+| `@GroupPath`         | Class  | value=`{a-z, A-Z, 0-9, -_/}`                                                                                                                                                              | Prefix all children methods paths with `path`. Can be set only on abstract class. |
+| `@Id`                | Method | value=`{a-z, A-Z, 0-9, _}`                                                                                                                                                                | Set `id` to target method.                                                        |
+| `@Method`            | Method | GET, POST, PUT, OPTION, DELETE, HEAD                                                                                                                                                      | Set `method` to target method.                                                    |
+| `@Negotiations`      | Method | `@Negotiation`                                                                                                                                                                            | Group annotation for `@Negotiation`.                                              |
+| `@Negotiation`       | Method | `suffix={string}`, `default={true/false}`, `renderer={string}`                                                                                                                            | Define negotiation mode to target method.                                         |
+| `@Path`              | Method | `value={a-z, A-Z, 0-9, -_/{}}`                                                                                                                                                            | Set `path` to target method. A.k.a. URL path.                                     |
+| `@RequestParameters` | Method | `@RequestParameter`                                                                                                                                                                       | Group annotation for `@RequestParameter`.                                         |
+| `@RequestParameter`  | Method | `name={string}`, `type={scalar/string/int/float/bool/datetime}`, `description={string}`, `in={path/query}`, `required={true/false}`, `deprecated={true/false}`, `allowEmpty={true/false}` | Define dynamic typed parameter.                                                   |
+| `@Tag`               | Method | `name={string}`, `value={mixed}`                                                                                                                                                          | Add `tag` to target method.                                                       |
 
 ## Decorators
 
@@ -150,7 +150,7 @@ Another available plugins are:
 
 - [`apitte\debug`](https://github.com/apitte/debug) - adds debugging tools for developing
 - [`apitte\middlewares`](https://github.com/apitte/middlewares) - adds support for middlewares, depends on [`contributte\middlewares`](https://github.com/contributte/middlewares)
-- [`apitte\negotiation`](https://github.com/apitte/negotiation) - adds support for varient content negotiations (.json, .debug, .csv, etc.)
+- [`apitte\negotiation`](https://github.com/apitte/negotiation) - adds support for variant content negotiations (.json, .debug, .csv, etc.)
 - [`apitte\openapi`](https://github.com/apitte/openapi) - adds support for openapi and swagger
 - [`apitte\events`](https://github.com/apitte/events) - [WIP] - adds support for symfony/event-dispatcher (which is ported into nette via [`contributte\event-dispatcher`](https://github.com/contributte/event-dispatcher))
 
@@ -168,8 +168,8 @@ Each **decorator** should be registered with tag `apitte.core.decorator`.
 
 Each decorator should provide `type` attribute:
 
-- `handle.before` - called before controller method is trigged (after endpoint is matched in router)
-- `handle.after` - called after controller method is trigged (after logic in controller)
+- `handle.before` - called before controller method is triggered (after endpoint is matched in router)
+- `handle.after` - called after controller method is triggered (after logic in controller)
 - `dispatcher.exception` - called if exception has been occurred
 
 Also you should define a priority for better sorting. Default is 10.
@@ -207,12 +207,12 @@ api:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
           types: []
           request:
-            validator:
+            validator: Apitte\Core\Mapping\Validator\NullValidator
 ```
 
 #### Types
 
-This plugin allows you to define new annotations.
+This plugin allows you to define annotation @RequestParameter which validates and converts data type of GET parameters.
 
 ```php
 /**
@@ -229,17 +229,40 @@ public function detail(ApiRequest $request)
 }
 ```
 
-It converts request parameters to defined types. By default, you can use `int`, `float`, `string`. Or defined
-more types (scalar, bool, datetime) in neon.
+Available data types are `scalar`, `string`, `int`, `float`, `bool` and `datetime`.
+
+- `scalar`
+    - Tries to automatically convert value to boolean, int or float.
+    - Returns string, if conversion is not possible.
+- `string`
+    - Simply returns given value.
+- `int`
+    - Converts value to int.
+    - Could overflow to float if value is bigger than PHP could handle. If it is your case then replace `IntegerTypeMapper` with `StringTypeMapper`
+- `float`
+    - Converts value to float.
+    - Accepts values which have decimals divided by comma `,` or dot `.`
+- `bool`
+    - Converts `'true'` and `'1'` to `true`
+    - and `false` and `0` to `false`
+- `datetime`
+    - Converts value to DateTimeImmutable.
+- Each of the data types could return null if @RequestParameter(allowEmpty=true)
+- If conversion is not possible so API returns HTTP 400
+
+You can override these types by your own implementation.
 
 ```yaml
 api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
             types:
+                scalar: Apitte\Core\Mapping\Parameter\ScalarTypeMapper
+                string: Apitte\Core\Mapping\Parameter\StringTypeMapper
                 int: Apitte\Core\Mapping\Parameter\IntegerTypeMapper
                 float: Apitte\Core\Mapping\Parameter\FloatTypeMapper
-                string: Apitte\Core\Mapping\Parameter\StringTypeMapper
+                bool: Apitte\Core\Mapping\Parameter\BooleanTypeMapper
+                datetime: Apitte\Core\Mapping\Parameter\DateTimeTypeMapper
 ```
 
 #### Entity
@@ -267,7 +290,7 @@ final class UserFilter extends BasicEntity
 }
 ```
 
-And some endoint with `@RequestMapper` annotation. There's a method `ApiRequest::getEntity()`, it gets
+And some endpoint with `@RequestMapper` annotation. There's a method `ApiRequest::getEntity()`, it gets
 the entity from request attributes. So simple, right?
 
 ```php
@@ -290,7 +313,6 @@ pick the validator you want to.
 api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
-          types: []
           request:
             # By default
             validator: Apitte\Core\Mapping\Validator\NullValidator

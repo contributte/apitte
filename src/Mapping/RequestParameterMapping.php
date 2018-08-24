@@ -2,17 +2,28 @@
 
 namespace Apitte\Core\Mapping;
 
+use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Parameter\ITypeMapper;
 use Apitte\Core\Schema\Endpoint;
+use Apitte\Core\Schema\EndpointParameter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RequestParameterMapping
 {
+
+	/** @var string[] */
+	protected static $messages = [
+		InvalidArgumentTypeException::TYPE_INTEGER => '%s parameter "%s" should be of type integer.',
+		InvalidArgumentTypeException::TYPE_FLOAT => '%s parameter "%s" should be of type float or integer.',
+		InvalidArgumentTypeException::TYPE_BOOLEAN => '%s parameter "%s" should be of type boolean. Pass "true" or "1" for true and "false" or "0" for false.',
+		InvalidArgumentTypeException::TYPE_DATETIME => '%s parameter "%s" should be of type datetime in format ISO 8601 (Y-m-d\TH:i:sP).',
+	];
 
 	/** @var string[]|ITypeMapper[] */
 	protected $types = [];
@@ -69,21 +80,21 @@ class RequestParameterMapping
 							break;
 						}
 
-						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
+						throw new ClientErrorException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
 					}
 
 					// Obtain request parameter values
 					$value = $requestParameters[$parameter->getName()];
 
 					if ($value === null && $parameter->isRequired()) {
-						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
+						throw new ClientErrorException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
 					}
 					if ($value === '' && !$parameter->isAllowEmpty()) {
-						throw new InvalidStateException(sprintf('Parameter "%s" should not be empty', $parameter->getName()));
+						throw new ClientErrorException(sprintf('Parameter "%s" should not be empty', $parameter->getName()));
 					}
 
 					// Normalize value
-					$normalizedValue = $mapper->normalize($value);
+					$normalizedValue = $this->normalize($value, $parameter, $mapper);
 
 					// Update requests
 					$requestParameters[$parameter->getName()] = $normalizedValue;
@@ -97,21 +108,21 @@ class RequestParameterMapping
 							break;
 						}
 
-						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request cookies', $parameter->getName()));
+						throw new ClientErrorException(sprintf('Parameter "%s" should be provided in request cookies', $parameter->getName()));
 					}
 
 					// Obtain request parameter values
 					$value = $cookieParams[$parameter->getName()];
 
 					if ($value === null && $parameter->isRequired()) {
-						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
+						throw new ClientErrorException(sprintf('Parameter "%s" should be provided in request attributes', $parameter->getName()));
 					}
 					if ($value === '' && !$parameter->isAllowEmpty()) {
-						throw new InvalidStateException(sprintf('Parameter "%s" should not be empty', $parameter->getName()));
+						throw new ClientErrorException(sprintf('Parameter "%s" should not be empty', $parameter->getName()));
 					}
 
 					// Normalize value
-					$normalizedValue = $mapper->normalize($value);
+					$normalizedValue = $this->normalize($value, $parameter, $mapper);
 
 					// Update requests
 					$cookieParams[$parameter->getName()] = $normalizedValue;
@@ -126,7 +137,7 @@ class RequestParameterMapping
 							break;
 						}
 
-						throw new InvalidStateException(sprintf('Parameter "%s" should be provided in request header', $parameter->getName()));
+						throw new ClientErrorException(sprintf('Parameter "%s" should be provided in request header', $parameter->getName()));
 					}
 
 					// Obtain request parameter values
@@ -136,10 +147,10 @@ class RequestParameterMapping
 					// Normalize value
 					foreach ($values as $index => $value) {
 						if ($value === '' && !$parameter->isAllowEmpty()) {
-							throw new InvalidStateException(sprintf('Parameter "%s" should not be empty', $parameter->getName()));
+							throw new ClientErrorException(sprintf('Parameter "%s" should not be empty', $parameter->getName()));
 						}
 
-						$normalizedValues[$index] = $mapper->normalize($value);
+						$normalizedValues[$index] = $this->normalize($value, $parameter, $mapper);
 					}
 
 					// Update requests
@@ -151,6 +162,23 @@ class RequestParameterMapping
 		}
 
 		return $request;
+	}
+
+	/**
+	 * @param mixed $value
+	 * @return mixed
+	 */
+	protected function normalize($value, EndpointParameter $parameter, ITypeMapper $mapper)
+	{
+		try {
+			return $mapper->normalize($value);
+		} catch (InvalidArgumentTypeException $e) {
+			throw new ClientErrorException(sprintf(
+				self::$messages[$e->getType()],
+				ucfirst($parameter->getIn()),
+				$parameter->getName()
+			));
+		}
 	}
 
 	protected function getMapper(string $type): ?ITypeMapper

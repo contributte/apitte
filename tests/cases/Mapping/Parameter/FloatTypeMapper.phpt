@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
+use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 use Apitte\Core\Mapping\Parameter\FloatTypeMapper;
 use Tester\Assert;
 use Tester\TestCase;
@@ -13,15 +14,25 @@ use Tester\TestCase;
 final class TestFloatTypeMapper extends TestCase
 {
 
-	public function testNormalize(): void
+	public function testOk(): void
 	{
-		$floatTypeMapper = new FloatTypeMapper();
+		$mapper = new FloatTypeMapper();
 
-		Assert::same(null, $floatTypeMapper->normalize(null));
-		Assert::same(0.0, $floatTypeMapper->normalize(0));
-		Assert::same(0.33, $floatTypeMapper->normalize('0.33'));
-		Assert::same(1.99, $floatTypeMapper->normalize('1.99'));
-		Assert::same(-10.0, $floatTypeMapper->normalize('-10'));
+		Assert::same(null, $mapper->normalize(null));
+		Assert::same(null, $mapper->normalize(''));
+		Assert::same(0.0, $mapper->normalize(0));
+		Assert::same(13.0, $mapper->normalize('13'));
+		Assert::same(1.99, $mapper->normalize('1.99'));
+		Assert::same(-10.0, $mapper->normalize('-10'));
+	}
+
+	public function testFail(): void
+	{
+		$mapper = new FloatTypeMapper();
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize('string');
+		}, InvalidArgumentTypeException::class);
 	}
 
 }

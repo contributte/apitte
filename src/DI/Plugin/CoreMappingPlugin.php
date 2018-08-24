@@ -44,9 +44,7 @@ class CoreMappingPlugin extends AbstractPlugin
 	public function loadPluginConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->getConfig();
-
-		if (empty($config['types'])) throw new InvalidStateException('No mapping types provided');
+		$config = $this->setupConfig($this->defaults, $this->getConfig());
 
 		$builder->addDefinition($this->prefix('request.parameters.decorator'))
 			->setFactory(RequestParametersDecorator::class)

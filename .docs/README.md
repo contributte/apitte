@@ -242,8 +242,6 @@ api:
                 string: Apitte\Core\Mapping\Parameter\StringTypeMapper
 ```
 
-Don't forget to register default one, because filling of `types` overrides default types.
-
 #### Entity
 
 ##### RequestMapper

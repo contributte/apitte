@@ -18,7 +18,7 @@ class RequestParameterMapping
 {
 
 	/** @var string[] */
-	protected static $messages = [
+	protected static $exceptions = [
 		InvalidArgumentTypeException::TYPE_INTEGER => '%s parameter "%s" should be of type integer.',
 		InvalidArgumentTypeException::TYPE_FLOAT => '%s parameter "%s" should be of type float or integer.',
 		InvalidArgumentTypeException::TYPE_BOOLEAN => '%s parameter "%s" should be of type boolean. Pass "true" or "1" for true and "false" or "0" for false.',
@@ -174,7 +174,7 @@ class RequestParameterMapping
 			return $mapper->normalize($value);
 		} catch (InvalidArgumentTypeException $e) {
 			throw new ClientErrorException(sprintf(
-				self::$messages[$e->getType()],
+				self::$exceptions[$e->getType()],
 				ucfirst($parameter->getIn()),
 				$parameter->getName()
 			));

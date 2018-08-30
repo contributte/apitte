@@ -43,7 +43,7 @@ class BasicValidator implements IEntityValidator
 		$properties = $entity->getProperties();
 		$rf = new ReflectionObject($entity);
 
-		foreach ($properties as $propertyName => $property) {
+		foreach (array_keys($properties) as $propertyName) {
 			$propertyRf = $rf->getProperty($propertyName);
 			$doc = $propertyRf->getDocComment();
 

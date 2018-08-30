@@ -27,6 +27,6 @@ test(function (): void {
 // Exception - suffix
 test(function (): void {
 	Assert::exception(function (): void {
-		$negotiation = new Negotiation([]);
+		new Negotiation([]);
 	}, AnnotationException::class, 'Suffix is required at @Negotiation');
 });

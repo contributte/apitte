@@ -24,13 +24,13 @@ test(function (): void {
 // Exception - empty name
 test(function (): void {
 	Assert::exception(function (): void {
-		$tag = new Tag([
+		new Tag([
 			'value' => null,
 		]);
 	}, AnnotationException::class, 'No @Tag name given');
 
 	Assert::exception(function (): void {
-		$tag = new Tag([
+		new Tag([
 			'name' => '',
 			'value' => null,
 		]);

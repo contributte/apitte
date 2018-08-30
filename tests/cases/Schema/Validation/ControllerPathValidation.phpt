@@ -29,7 +29,7 @@ test(function (): void {
 	$validation = new ControllerPathValidation();
 	$builder = new SchemaBuilder();
 
-	$c1 = $builder->addController('c1');
+	$builder->addController('c1');
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);

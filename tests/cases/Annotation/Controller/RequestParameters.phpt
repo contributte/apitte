@@ -37,11 +37,11 @@ test(function (): void {
 // Exception - empty negotiations
 test(function (): void {
 	Assert::exception(function (): void {
-		$parameters = new RequestParameters([]);
+		new RequestParameters([]);
 	}, AnnotationException::class, 'No @RequestParameter given in @RequestParameters');
 
 	Assert::exception(function (): void {
-		$parameters = new RequestParameters([
+		new RequestParameters([
 			'value' => [],
 		]);
 	}, AnnotationException::class, 'Empty @RequestParameters given');
@@ -51,7 +51,7 @@ test(function (): void {
 test(function (): void {
 	Assert::exception(
 		function (): void {
-			$parameters = new RequestParameters([
+			new RequestParameters([
 				'value' => [
 					$parameter1 = new RequestParameter([
 						'name' => 'foo',

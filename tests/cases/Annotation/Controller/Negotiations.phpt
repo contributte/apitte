@@ -36,12 +36,12 @@ test(function (): void {
 // Exception - empty negotiations
 test(function (): void {
 	Assert::exception(function (): void {
-		$negotiations = new Negotiations([
+		new Negotiations([
 			'value' => [],
 		]);
 	}, AnnotationException::class, 'Empty @Negotiations given');
 
 	Assert::exception(function (): void {
-		$negotiations = new Negotiations([]);
+		new Negotiations([]);
 	}, AnnotationException::class, 'No @Negotiation given in @Negotiations');
 });

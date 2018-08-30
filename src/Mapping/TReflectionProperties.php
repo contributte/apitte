@@ -18,7 +18,7 @@ trait TReflectionProperties
 		if (!$this->properties) {
 			$properties = [];
 			$rf = new ReflectionObject($this);
-			$class = get_class($this);
+			$class = static::class;
 
 			$defaultProperties = $rf->getDefaultProperties();
 			foreach ($rf->getProperties() as $property) {

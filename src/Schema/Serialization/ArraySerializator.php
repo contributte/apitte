@@ -84,7 +84,7 @@ final class ArraySerializator implements ISerializator
 		}
 
 		// Create endpoint
-		$endpoint = [
+		return [
 			'handler' => [
 				'class' => $controller->getClass(),
 				'method' => $method->getName(),
@@ -101,8 +101,6 @@ final class ArraySerializator implements ISerializator
 				'pattern' => null,
 			],
 		];
-
-		return $endpoint;
 	}
 
 	/**

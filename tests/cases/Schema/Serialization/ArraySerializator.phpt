@@ -28,7 +28,7 @@ test(function (): void {
 	$c1->addGroupPath('group2-path');
 	$c1->addTag('c1-t1', 'c1-t1-value');
 
-	$m1 = $c1->addMethod('m1'); // Skipped, missing path
+	$c1->addMethod('m1'); // Skipped, missing path
 
 	$m2 = $c1->addMethod('m2');
 	$m2->addMethod(Endpoint::METHOD_GET);
@@ -150,7 +150,7 @@ test(function (): void {
 	$m1 = $c1->addMethod('m1');
 	$m1->setPath('{m1-p1}');
 
-	$m1p1 = $m1->addParameter('m1-p1', EndpointParameter::IN_PATH);
+	$m1->addParameter('m1-p1', EndpointParameter::IN_PATH);
 
 	Assert::exception(function () use ($serializator, $builder): void {
 		$serializator->serialize($builder);
@@ -187,7 +187,7 @@ test(function (): void {
 	$m1 = $c1->addMethod('m1');
 	$m1->setPath('path');
 
-	$m1p1 = $m1->addParameter('m1-p1', EndpointParameter::IN_PATH);
+	$m1->addParameter('m1-p1', EndpointParameter::IN_PATH);
 
 	Assert::exception(function () use ($serializator, $builder): void {
 		$serializator->serialize($builder);

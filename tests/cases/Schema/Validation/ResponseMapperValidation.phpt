@@ -19,7 +19,7 @@ test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
-	$c1m1 = $c1->addMethod('foo');
+	$c1->addMethod('foo');
 
 	Assert::noError(function () use ($builder): void {
 		$validator = new ResponseMapperValidation();

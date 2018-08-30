@@ -142,8 +142,8 @@ test(function (): void {
 	$c1m1 = $c1->addMethod('method');
 	$c1m1->setId('bar1');
 
-	$n1 = $c1m1->addNegotiation('json');
-	$n2 = $c1m1->addNegotiation('json');
+	$c1m1->addNegotiation('json');
+	$c1m1->addNegotiation('json');
 
 	Assert::exception(
 		function () use ($validation, $builder): void {

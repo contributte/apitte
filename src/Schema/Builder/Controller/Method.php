@@ -147,8 +147,8 @@ final class Method
 	 */
 	public function addArguments(array $arguments): void
 	{
-		foreach ($arguments as $type => $name) {
-			$this->addArgument($type, $name);
+		foreach ($arguments as $name => $type) {
+			$this->addArgument($name, $type);
 		}
 	}
 

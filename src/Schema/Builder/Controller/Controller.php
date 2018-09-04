@@ -104,6 +104,14 @@ final class Controller
 		return $this->groupPaths;
 	}
 
+	/**
+	 * @param string[] $groupPaths
+	 */
+	public function setGroupPaths(array $groupPaths): void
+	{
+		$this->groupPaths = $groupPaths;
+	}
+
 	public function addGroupPath(string $path): void
 	{
 		$this->groupPaths[] = $path;

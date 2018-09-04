@@ -3,6 +3,7 @@
 namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
+use Apitte\Core\DI\Loader\NeonLoader;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
@@ -33,6 +34,7 @@ class CoreSchemaPlugin extends AbstractPlugin
 	/** @var mixed[] */
 	protected $defaults = [
 		'loader' => 'annotations',
+        'schema' => [],
 		'validations' => [
 			'controllerPath' => ControllerPathValidation::class,
 			'fullPath' => FullpathValidation::class,
@@ -101,7 +103,8 @@ class CoreSchemaPlugin extends AbstractPlugin
 		}
 
 		if ($this->config['loader'] === 'neon') {
-			throw new InvalidStateException('Not implemented');
+			$loader = new NeonLoader($this->config['schema']);
+			return $loader->load($builder);
 		}
 
 		if ($this->config['loader'] === 'php') {

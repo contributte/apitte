@@ -22,10 +22,8 @@ final class TestBooleanTypeMapper extends TestCase
 		Assert::same(null, $mapper->normalize(''));
 		Assert::same(true, $mapper->normalize(true));
 		Assert::same(true, $mapper->normalize('true'));
-		Assert::same(true, $mapper->normalize('1'));
 		Assert::same(false, $mapper->normalize(false));
 		Assert::same(false, $mapper->normalize('false'));
-		Assert::same(false, $mapper->normalize('0'));
 	}
 
 	public function testFail(): void
@@ -34,6 +32,14 @@ final class TestBooleanTypeMapper extends TestCase
 
 		Assert::exception(function () use ($mapper): void {
 			$mapper->normalize('string');
+		}, InvalidArgumentTypeException::class);
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize('0');
+		}, InvalidArgumentTypeException::class);
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize('1');
 		}, InvalidArgumentTypeException::class);
 	}
 

@@ -28,7 +28,7 @@ final class MethodParameter
 	/** @var bool */
 	private $allowEmpty = false;
 
-	public function __construct(string $name, string $type = EndpointParameter::TYPE_SCALAR)
+	public function __construct(string $name, string $type = EndpointParameter::TYPE_STRING)
 	{
 		$this->name = $name;
 		$this->type = $type;

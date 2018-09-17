@@ -163,7 +163,7 @@ final class Method
 	/**
 	 * @internal
 	 */
-	public function addParameter(string $name, string $type = EndpointParameter::TYPE_SCALAR): MethodParameter
+	public function addParameter(string $name, string $type = EndpointParameter::TYPE_STRING): MethodParameter
 	{
 		$parameter = new MethodParameter($name, $type);
 		$this->parameters[$name] = $parameter;

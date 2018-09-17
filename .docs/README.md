@@ -242,8 +242,8 @@ Available data types are `scalar`, `string`, `int`, `float`, `bool` and `datetim
     - Converts value to float.
     - Accepts values which have decimals divided by comma `,` or dot `.`
 - `bool`
-    - Converts `'true'` and `'1'` to `true`
-    - and `false` and `0` to `false`
+    - Converts `'true'` to `true`
+    - and `'false'` to `false`
 - `datetime`
     - Converts value to DateTimeImmutable.
 - Each of the data types could return null if @RequestParameter(allowEmpty=true)

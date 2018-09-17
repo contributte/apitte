@@ -20,11 +20,11 @@ class BooleanTypeMapper implements ITypeMapper
 			return $value;
 		}
 
-		if ($value === '1' || $value === 'true') {
+		if ($value === 'true') {
 			return true;
 		}
 
-		if ($value === '0' || $value === 'false') {
+		if ($value === 'false') {
 			return false;
 		}
 

@@ -42,7 +42,7 @@ final class ArraySerializator implements ISerializator
 	/**
 	 * @return mixed[]
 	 */
-	protected function serializeEndpoint(Controller $controller, Method $method): array
+	private function serializeEndpoint(Controller $controller, Method $method): array
 	{
 		$endpoint = $this->serializeInit($controller, $method);
 		$this->serializeNegotiations($endpoint, $method);
@@ -55,7 +55,7 @@ final class ArraySerializator implements ISerializator
 	/**
 	 * @return mixed[]
 	 */
-	protected function serializeInit(Controller $controller, Method $method): array
+	private function serializeInit(Controller $controller, Method $method): array
 	{
 		// Build full mask (@GroupPath(s) + @ControllerPath + @Path)
 		// without duplicated slashes (//)
@@ -106,7 +106,7 @@ final class ArraySerializator implements ISerializator
 	/**
 	 * @param mixed[] $endpoint
 	 */
-	protected function serializePattern(array &$endpoint, Controller $controller, Method $method): void
+	private function serializePattern(array &$endpoint, Controller $controller, Method $method): void
 	{
 		$mask = $endpoint['mask'];
 		$maskParameters = [];
@@ -174,7 +174,7 @@ final class ArraySerializator implements ISerializator
 	/**
 	 * @param mixed[] $endpoint
 	 */
-	protected function serializeNegotiations(array &$endpoint, Method $method): void
+	private function serializeNegotiations(array &$endpoint, Method $method): void
 	{
 		// Add negotiations
 		foreach ($method->getNegotiations() as $negotiation) {
@@ -189,7 +189,7 @@ final class ArraySerializator implements ISerializator
 	/**
 	 * @param mixed[] $endpoint
 	 */
-	protected function serializeMappers(array &$endpoint, Method $method): void
+	private function serializeMappers(array &$endpoint, Method $method): void
 	{
 		// Add request & response mappers
 		if ($method->getRequestMapper()) {
@@ -209,7 +209,7 @@ final class ArraySerializator implements ISerializator
 	 * @param mixed[] $endpoint
 	 * @param mixed[] $parameter
 	 */
-	protected function serializeEndpointParameter(array &$endpoint, array $parameter, Method $method): void
+	private function serializeEndpointParameter(array &$endpoint, array $parameter, Method $method): void
 	{
 		// Build parameters
 		$p = [

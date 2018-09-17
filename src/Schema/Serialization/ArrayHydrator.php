@@ -33,7 +33,7 @@ final class ArrayHydrator implements IHydrator
 	/**
 	 * @param mixed[] $data
 	 */
-	protected function hydrateEndpoint(array $data): Endpoint
+	private function hydrateEndpoint(array $data): Endpoint
 	{
 		if (!isset($data['handler'])) {
 			throw new InvalidStateException("Schema route 'handler' is required");

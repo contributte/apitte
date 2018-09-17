@@ -214,7 +214,7 @@ final class ArraySerializator implements ISerializator
 		// Build parameters
 		$p = [
 			'name' => $parameter['name'],
-			'type' => EndpointParameter::TYPE_SCALAR,
+			'type' => EndpointParameter::TYPE_STRING,
 			'description' => null,
 			'in' => $parameter['in'],
 			'required' => true,

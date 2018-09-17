@@ -119,7 +119,7 @@ At the end, open your browser and locate to `localhost/<api-project>/hello/world
 | `@Negotiation`       | Method | `suffix={string}`, `default={true/false}`, `renderer={string}`                                                                                                                            | Define negotiation mode to target method.                                         |
 | `@Path`              | Method | `value={a-z, A-Z, 0-9, -_/{}}`                                                                                                                                                            | Set `path` to target method. A.k.a. URL path.                                     |
 | `@RequestParameters` | Method | `@RequestParameter`                                                                                                                                                                       | Group annotation for `@RequestParameter`.                                         |
-| `@RequestParameter`  | Method | `name={string}`, `type={scalar/string/int/float/bool/datetime}`, `description={string}`, `in={path/query/header/cookie}`, `required={true/false}`, `deprecated={true/false}`, `allowEmpty={true/false}` | Define dynamic typed parameter.                                                   |
+| `@RequestParameter`  | Method | `name={string}`, `type={string/int/float/bool/datetime}`, `description={string}`, `in={path/query/header/cookie}`, `required={true/false}`, `deprecated={true/false}`, `allowEmpty={true/false}` | Define dynamic typed parameter.                                                   |
 | `@Tag`               | Method | `name={string}`, `value={mixed}`                                                                                                                                                          | Add `tag` to target method.                                                       |
 
 ## Decorators
@@ -228,11 +228,8 @@ public function detail(ApiRequest $request)
 }
 ```
 
-Available data types are `scalar`, `string`, `int`, `float`, `bool` and `datetime`.
+Available data types are `string`, `int`, `float`, `bool` and `datetime`.
 
-- `scalar`
-    - Tries to automatically convert value to boolean, int or float.
-    - Returns string, if conversion is not possible.
 - `string`
     - Simply returns given value.
 - `int`
@@ -256,7 +253,6 @@ api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
             types:
-                scalar: Apitte\Core\Mapping\Parameter\ScalarTypeMapper
                 string: Apitte\Core\Mapping\Parameter\StringTypeMapper
                 int: Apitte\Core\Mapping\Parameter\IntegerTypeMapper
                 float: Apitte\Core\Mapping\Parameter\FloatTypeMapper

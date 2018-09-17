@@ -10,7 +10,6 @@ use Apitte\Core\Mapping\Parameter\BooleanTypeMapper;
 use Apitte\Core\Mapping\Parameter\DateTimeTypeMapper;
 use Apitte\Core\Mapping\Parameter\FloatTypeMapper;
 use Apitte\Core\Mapping\Parameter\IntegerTypeMapper;
-use Apitte\Core\Mapping\Parameter\ScalarTypeMapper;
 use Apitte\Core\Mapping\Parameter\StringTypeMapper;
 use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Mapping\RequestParameterMapping;
@@ -25,7 +24,6 @@ class CoreMappingPlugin extends AbstractPlugin
 	/** @var mixed[] */
 	protected $defaults = [
 		'types' => [
-			'scalar' => ScalarTypeMapper::class,
 			'string' => StringTypeMapper::class,
 			'int' => IntegerTypeMapper::class,
 			'float' => FloatTypeMapper::class,

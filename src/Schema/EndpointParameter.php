@@ -5,7 +5,6 @@ namespace Apitte\Core\Schema;
 final class EndpointParameter
 {
 
-	public const TYPE_SCALAR = 'scalar';
 	public const TYPE_STRING = 'string';
 	public const TYPE_INTEGER = 'int';
 	public const TYPE_FLOAT = 'float';
@@ -13,7 +12,6 @@ final class EndpointParameter
 	public const TYPE_DATETIME = 'datetime';
 
 	public const TYPES = [
-		self::TYPE_SCALAR,
 		self::TYPE_STRING,
 		self::TYPE_INTEGER,
 		self::TYPE_FLOAT,
@@ -54,7 +52,7 @@ final class EndpointParameter
 	/** @var bool */
 	private $allowEmpty = false;
 
-	public function __construct(string $name, string $type = self::TYPE_SCALAR)
+	public function __construct(string $name, string $type = self::TYPE_STRING)
 	{
 		$this->name = $name;
 		$this->type = $type;

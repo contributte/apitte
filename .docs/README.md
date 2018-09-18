@@ -152,7 +152,6 @@ Another available plugins are:
 - [`apitte\middlewares`](https://github.com/apitte/middlewares) - adds support for middlewares, depends on [`contributte\middlewares`](https://github.com/contributte/middlewares)
 - [`apitte\negotiation`](https://github.com/apitte/negotiation) - adds support for variant content negotiations (.json, .debug, .csv, etc.)
 - [`apitte\openapi`](https://github.com/apitte/openapi) - adds support for openapi and swagger
-- [`apitte\events`](https://github.com/apitte/events) - [WIP] - adds support for symfony/event-dispatcher (which is ported into nette via [`contributte\event-dispatcher`](https://github.com/contributte/event-dispatcher))
 
 ### CoreDecoratorPlugin
 

@@ -9,7 +9,6 @@ require_once __DIR__ . '/../../bootstrap.php';
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\RequestAttributes;
-use Apitte\Core\Mapping\Request\IRequestEntity;
 use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
@@ -18,7 +17,6 @@ use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Tester\Assert;
 use Tests\Fixtures\Mapping\Request\FooEntity;
-use Tests\Fixtures\Mapping\Request\InvalidEntity;
 
 // Add entity to request
 test(function (): void {
@@ -54,24 +52,6 @@ test(function (): void {
 	$request = $request->withMethod('foo');
 
 	Assert::same($request, $mapping->map($request, $response));
-});
-
-// Exception - invalid entity
-test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
-	$mapping = new RequestEntityMapping();
-
-	$handler = new EndpointHandler('class', 'method');
-	$endpoint = new Endpoint($handler);
-	$mapper = new EndpointRequestMapper(InvalidEntity::class);
-	$endpoint->setRequestMapper($mapper);
-
-	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
-
-	Assert::exception(function () use ($mapping, $request, $response): void {
-		$request = $mapping->map($request, $response);
-	}, InvalidStateException::class, sprintf('Instantiated entity "%s" does not implement "%s"', InvalidEntity::class, IRequestEntity::class));
 });
 
 // No request mapper, return request

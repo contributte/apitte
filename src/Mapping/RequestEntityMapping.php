@@ -57,11 +57,6 @@ class RequestEntityMapping
 		$entityClass = $mapper->getEntity();
 		$entity = new $entityClass();
 
-		// Validate entity type
-		if (!($entity instanceof IRequestEntity)) {
-			throw new InvalidStateException(sprintf('Instantiated entity "%s" does not implement "%s"', get_class($entity), IRequestEntity::class));
-		}
-
 		// Allow modify entity in extended class
 		$entity = $this->modify($entity, $request);
 		if (!$entity) return null;

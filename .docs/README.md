@@ -237,7 +237,7 @@ Available data types are `scalar`, `string`, `int`, `float`, `bool` and `datetim
     - Simply returns given value.
 - `int`
     - Converts value to int.
-    - Could overflow to float if value is bigger than PHP could handle. If it is your case then replace `IntegerTypeMapper` with `StringTypeMapper`
+    - Could overflow to float if value is bigger than PHP could handle. If it is your case then replace `IntegerTypeMapper` with your own implementation.
 - `float`
     - Converts value to float.
     - Accepts values which have decimals divided by comma `,` or dot `.`

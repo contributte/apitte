@@ -64,7 +64,7 @@ test(function (): void {
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$dispatcher->dispatch($request, $response);
-	}, InvalidStateException::class, sprintf('Handler returned response must implement "%s"', ResponseInterface::class));
+	}, InvalidStateException::class, sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
 });
 
 // Match request, use invalid handler, throw exception

@@ -25,6 +25,7 @@ use Tests\Fixtures\Decorator\ThrowExceptionFromContextResponseDecorator;
 use Tests\Fixtures\Handler\ErroneousHandler;
 use Tests\Fixtures\Handler\FakeNullHandler;
 use Tests\Fixtures\Handler\FakeResponseHandler;
+use Tests\Fixtures\Handler\ReturnFooBarHandler;
 use Tests\Fixtures\Router\FakeRouter;
 
 //TODO - EarlyReturnResponseException
@@ -64,6 +65,18 @@ test(function (): void {
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$dispatcher->dispatch($request, $response);
 	}, InvalidStateException::class, sprintf('Handler returned response must implement "%s"', ResponseInterface::class));
+});
+
+// Match request, use invalid handler, throw exception
+test(function (): void {
+	$request = Psr7ServerRequestFactory::fromSuperGlobal();
+	$response = Psr7ResponseFactory::fromGlobal();
+
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ReturnFooBarHandler(), new DecoratorManager());
+
+	Assert::exception(function () use ($dispatcher, $request, $response): void {
+		$dispatcher->dispatch($request, $response);
+	}, InvalidStateException::class, sprintf('If you want return anything else than "%s" from your api endpoint then install "apitte/negotiation".', ResponseInterface::class));
 });
 
 // Match request, decorate request, throw exception, return response from exception

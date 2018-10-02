@@ -19,6 +19,7 @@ parameters:
 		- '#^Return typehint of method Apitte\\Core\\Http\\ApiResponse::getEntity\(\) has invalid type Apitte\\Negotiation\\Http\\AbstractEntity.$#'
 		- '#^Parameter \$entity of method Apitte\\Core\\Http\\ApiResponse::withEntity\(\) has invalid typehint type Apitte\\Negotiation\\Http\\AbstractEntity.$#'
 		- '#^Call to static method from\(\) on an unknown class Apitte\\Negotiation\\Http\\#'
+		- '#^Class Apitte\\Negotiation\\Http\\ArrayEntity not found.$#'
 
 		# Maybe will cause application fail - DecoratorManager::decorateResponse could return null, but DecoratedDispatcher is not always able to handle it.
 		- '#Method Apitte\\Core\\Dispatcher\\DecoratedDispatcher::handle\(\) should return Psr\\Http\\Message\\ResponseInterface but returns Psr\\Http\\Message\\ResponseInterface|null.#'

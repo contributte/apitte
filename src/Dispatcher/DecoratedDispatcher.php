@@ -96,10 +96,13 @@ class DecoratedDispatcher extends CoreDispatcher
 		// if result is IResponseEntity convert it manually to MappingEntity,
 		// otherwise use result as response
 		if (is_array($result)) {
+			$this->checkNegotiationInstalled();
 			$response = $response->withEntity(ArrayEntity::from($result));
 		} elseif (is_scalar($result)) {
+			$this->checkNegotiationInstalled();
 			$response = $response->withEntity(ScalarEntity::from($result));
 		} elseif ($result instanceof IResponseEntity) {
+			$this->checkNegotiationInstalled();
 			$response = $response->withEntity(MappingEntity::from($result));
 		} else {
 			$response = $result;
@@ -118,6 +121,16 @@ class DecoratedDispatcher extends CoreDispatcher
 		}
 
 		return $response;
+	}
+
+	protected function checkNegotiationInstalled(): void
+	{
+		if (!class_exists(ArrayEntity::class)) {
+			throw new InvalidStateException(sprintf(
+				'If you want return anything else than "%s" from your api endpoint then install "apitte/negotiation".',
+				ResponseInterface::class
+			));
+		}
 	}
 
 }

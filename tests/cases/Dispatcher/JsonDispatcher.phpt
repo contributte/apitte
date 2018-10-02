@@ -47,7 +47,7 @@ test(function (): void {
 	$dispatcher = new JsonDispatcher(new FakeRouter(true), new FakeNullHandler());
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$dispatcher->dispatch($request, $response);
-	}, InvalidStateException::class, sprintf('Handler returned response must implement "%s"', ResponseInterface::class));
+	}, InvalidStateException::class, sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
 });
 
 // Not matched, use fallback, write error to response body

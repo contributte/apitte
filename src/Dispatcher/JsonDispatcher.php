@@ -26,7 +26,7 @@ class JsonDispatcher extends CoreDispatcher
 
 		// Validate if response is ResponseInterface
 		if (!($response instanceof ResponseInterface)) {
-			throw new InvalidStateException(sprintf('Handler returned response must implement "%s"', ResponseInterface::class));
+			throw new InvalidStateException(sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
 		}
 
 		return $response;

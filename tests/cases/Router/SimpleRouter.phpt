@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../../bootstrap.php';
 
+use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Endpoint;
@@ -69,18 +70,64 @@ test(function (): void {
 	Assert::equal('baz', $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS)['bar']);
 });
 
-// Not match
+// Matched second endpoint, first have invalid method
+test(function (): void {
+	$handler = new EndpointHandler('class', 'method');
+
+	$schema = new Schema();
+
+	$endpoint1 = new Endpoint($handler);
+	$endpoint1->addMethod('GET');
+	$endpoint1->setPattern('#/foo#');
+	$schema->addEndpoint($endpoint1);
+
+	$endpoint2 = new Endpoint($handler);
+	$endpoint2->addMethod('POST');
+	$endpoint2->setPattern('#/foo#');
+	$schema->addEndpoint($endpoint2);
+
+	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/foo')
+		->withMethod('POST');
+	$router = new SimpleRouter($schema);
+	$matched = $router->match($request);
+
+	Assert::same($matched->getAttribute(RequestAttributes::ATTR_ENDPOINT), $endpoint2);
+});
+
+// Not matched, invalid method
 test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
 	$endpoint->addMethod('GET');
+	$endpoint->setPattern('#/foo#');
+	$endpoint->setMask('/foo');
+
+	$schema = new Schema();
+	$schema->addEndpoint($endpoint);
+
+	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/foo')
+		->withMethod('POST');
+	$router = new SimpleRouter($schema);
+
+	Assert::exception(function () use ($router, $request): void {
+		$router->match($request);
+	}, ClientErrorException::class, 'Method "POST" is not allowed for endpoint "/foo".');
+});
+
+// Not matched, invalid url
+test(function (): void {
+	$handler = new EndpointHandler('class', 'method');
+
+	$endpoint = new Endpoint($handler);
+	$endpoint->addMethod('GET');
+	$endpoint->setPattern('#/foo#');
 
 	$schema = new Schema();
 	$schema->addEndpoint($endpoint);
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()
-		->withMethod('POST');
+		->withMethod('GET');
 	$router = new SimpleRouter($schema);
 	$matched = $router->match($request);
 

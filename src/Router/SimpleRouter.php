@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Router;
 
+use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
@@ -24,9 +25,15 @@ class SimpleRouter implements IRouter
 	{
 		$endpoints = $this->schema->getEndpoints();
 
+		$exception = null;
+		$matched = null;
 		// Iterate over all endpoints
 		foreach ($endpoints as $endpoint) {
-			$matched = $this->matchEndpoint($endpoint, $request);
+			try {
+				$matched = $this->matchEndpoint($endpoint, $request);
+			} catch (ClientErrorException $exception) {
+				// Don't throw exception unless we know there is no endpoint with same mask which support requested http method
+			}
 
 			// Skip if endpoint is not matched
 			if ($matched === null) continue;
@@ -41,18 +48,22 @@ class SimpleRouter implements IRouter
 			return $matched;
 		}
 
+		if ($exception !== null) {
+			throw $exception;
+		}
+
 		return null;
 	}
 
 	protected function matchEndpoint(Endpoint $endpoint, ServerRequestInterface $request): ?ServerRequestInterface
 	{
-		// Skip unsupported HTTP method
-		if (!$endpoint->hasMethod($request->getMethod())) {
-			return null;
-		}
-
 		// Try match given URL (path) by build pattern
 		$request = $this->compareUrl($endpoint, $request);
+
+		// Skip unsupported HTTP method
+		if ($request !== null && !$endpoint->hasMethod($request->getMethod())) {
+			throw new ClientErrorException(sprintf('Method "%s" is not allowed for endpoint "%s".', $request->getMethod(), $endpoint->getMask()), 405);
+		}
 
 		return $request;
 	}

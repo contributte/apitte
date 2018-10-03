@@ -21,7 +21,7 @@ class RequestParameterMapping
 	protected static $exceptions = [
 		InvalidArgumentTypeException::TYPE_INTEGER => '%s parameter "%s" should be of type integer.',
 		InvalidArgumentTypeException::TYPE_FLOAT => '%s parameter "%s" should be of type float or integer.',
-		InvalidArgumentTypeException::TYPE_BOOLEAN => '%s parameter "%s" should be of type boolean. Pass "true" or "1" for true and "false" or "0" for false.',
+		InvalidArgumentTypeException::TYPE_BOOLEAN => '%s parameter "%s" should be of type boolean. Pass "true" for true or "false" for false.',
 		InvalidArgumentTypeException::TYPE_DATETIME => '%s parameter "%s" should be of type datetime in format ISO 8601 (Y-m-d\TH:i:sP).',
 	];
 

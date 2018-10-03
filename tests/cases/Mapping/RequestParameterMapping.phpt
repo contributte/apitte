@@ -10,6 +10,8 @@ use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
+use Apitte\Core\Mapping\Parameter\BooleanTypeMapper;
+use Apitte\Core\Mapping\Parameter\DateTimeTypeMapper;
 use Apitte\Core\Mapping\Parameter\FloatTypeMapper;
 use Apitte\Core\Mapping\Parameter\IntegerTypeMapper;
 use Apitte\Core\Mapping\Parameter\StringTypeMapper;
@@ -38,9 +40,11 @@ final class TestRequestParameterMapping extends TestCase
 	{
 		$this->requestParameterMapping = new RequestParameterMapping();
 
-		$this->requestParameterMapping->addMapper('string', new StringTypeMapper());
-		$this->requestParameterMapping->addMapper('int', new IntegerTypeMapper());
-		$this->requestParameterMapping->addMapper('float', new FloatTypeMapper());
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_BOOLEAN, new BooleanTypeMapper());
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_DATETIME, new DateTimeTypeMapper());
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_FLOAT, new FloatTypeMapper());
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_INTEGER, new IntegerTypeMapper());
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_STRING, new StringTypeMapper());
 
 		$this->request = new ApiRequest(
 			new ServerRequest(
@@ -58,7 +62,7 @@ final class TestRequestParameterMapping extends TestCase
 		$endpoint = new Endpoint($handler);
 
 		$idEndpointParameter = new EndpointParameter('id', EndpointParameter::TYPE_INTEGER);
-		$idEndpointParameter->setIn($idEndpointParameter::IN_PATH);
+		$idEndpointParameter->setIn(EndpointParameter::IN_PATH);
 		$idEndpointParameter->setRequired(false);
 		$idEndpointParameter->setAllowEmpty(true);
 
@@ -132,7 +136,7 @@ final class TestRequestParameterMapping extends TestCase
 		$endpoint = new Endpoint($handler);
 
 		$scoreEndpointParameter = new EndpointParameter('score', EndpointParameter::TYPE_FLOAT);
-		$scoreEndpointParameter->setIn($scoreEndpointParameter::IN_QUERY);
+		$scoreEndpointParameter->setIn(EndpointParameter::IN_QUERY);
 		$scoreEndpointParameter->setRequired(false);
 		$scoreEndpointParameter->setAllowEmpty(true);
 
@@ -186,7 +190,7 @@ final class TestRequestParameterMapping extends TestCase
 		$endpoint = new Endpoint($handler);
 
 		$sessionEndpointParameter = new EndpointParameter('session', EndpointParameter::TYPE_STRING);
-		$sessionEndpointParameter->setIn($sessionEndpointParameter::IN_COOKIE);
+		$sessionEndpointParameter->setIn(EndpointParameter::IN_COOKIE);
 		$sessionEndpointParameter->setRequired(false);
 		$sessionEndpointParameter->setAllowEmpty(false);
 
@@ -240,7 +244,7 @@ final class TestRequestParameterMapping extends TestCase
 		$endpoint = new Endpoint($handler);
 
 		$authEndpointParameter = new EndpointParameter('auth', EndpointParameter::TYPE_STRING);
-		$authEndpointParameter->setIn($authEndpointParameter::IN_HEADER);
+		$authEndpointParameter->setIn(EndpointParameter::IN_HEADER);
 		$authEndpointParameter->setRequired(true);
 		$authEndpointParameter->setAllowEmpty(false);
 
@@ -283,6 +287,65 @@ final class TestRequestParameterMapping extends TestCase
 				'other',
 			],
 			$headerResponse->getHeader('auth')
+		);
+	}
+
+	public function testDatetimeInQuery(): void
+	{
+		$handler = new EndpointHandler('class', 'method');
+
+		$endpoint = new Endpoint($handler);
+
+		$parameter = new EndpointParameter('datetime', EndpointParameter::TYPE_DATETIME);
+		$parameter->setIn(EndpointParameter::IN_QUERY);
+		$parameter->setRequired(true);
+		$parameter->setAllowEmpty(false);
+
+		$endpoint->addParameter($parameter);
+
+		$requestWithDatetime = $this->request
+			->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint)
+			->withAttribute(RequestAttributes::ATTR_PARAMETERS, ['datetime' => '2010-12-07T23:00:00+01:00']);
+
+		$this->requestParameterMapping->map($requestWithDatetime, $this->response);
+
+		$requestWithInvalidDatetime = $this->request
+			->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint)
+			->withAttribute(RequestAttributes::ATTR_PARAMETERS, ['datetime' => 'foobar']);
+
+		Assert::throws(
+			function () use ($requestWithInvalidDatetime): void {
+				$this->requestParameterMapping->map($requestWithInvalidDatetime, $this->response);
+			},
+			ClientErrorException::class,
+			'Query parameter "datetime" should be of type datetime in format ISO 8601 (Y-m-d\TH:i:sP).',
+			400
+		);
+
+		$requestWithEmptyDatetime = $this->request
+			->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint)
+			->withAttribute(RequestAttributes::ATTR_PARAMETERS, ['datetime' => '']);
+
+		Assert::throws(
+			function () use ($requestWithEmptyDatetime): void {
+				$this->requestParameterMapping->map($requestWithEmptyDatetime, $this->response);
+			},
+			ClientErrorException::class,
+			'Parameter "datetime" should not be empty',
+			400
+		);
+
+		$requestWithNoDatetime = $this->request
+			->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint)
+			->withAttribute(RequestAttributes::ATTR_PARAMETERS, []);
+
+		Assert::throws(
+			function () use ($requestWithNoDatetime): void {
+				$this->requestParameterMapping->map($requestWithNoDatetime, $this->response);
+			},
+			ClientErrorException::class,
+			'Parameter "datetime" should be provided in request attributes',
+			400
 		);
 	}
 

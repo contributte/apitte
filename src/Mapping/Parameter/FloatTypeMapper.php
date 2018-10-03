@@ -12,10 +12,6 @@ class FloatTypeMapper implements ITypeMapper
 	 */
 	public function normalize($value): ?float
 	{
-		if ($value === null || $value === '') {
-			return null;
-		}
-
 		if (is_string($value)) {
 			$value = str_replace(',', '.', $value); // Accept also comma as decimal separator
 		}

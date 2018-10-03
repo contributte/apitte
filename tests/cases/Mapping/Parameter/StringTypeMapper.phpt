@@ -19,8 +19,6 @@ final class TestStringTypeMapper extends TestCase
 		$mapper = new StringTypeMapper();
 		$parameter = new EndpointParameter('foo', EndpointParameter::TYPE_STRING);
 
-		Assert::same(null, $mapper->normalize(null, $parameter));
-		Assert::same(null, $mapper->normalize('', $parameter));
 		Assert::same('0', $mapper->normalize(0, $parameter));
 		Assert::same('0.33', $mapper->normalize(0.33, $parameter));
 		Assert::same('1.99', $mapper->normalize(1.99, $parameter));

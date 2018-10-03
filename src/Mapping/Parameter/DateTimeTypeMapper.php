@@ -14,10 +14,6 @@ class DateTimeTypeMapper implements ITypeMapper
 	 */
 	public function normalize($value): ?DateTimeImmutable
 	{
-		if ($value === null || $value === '') {
-			return null;
-		}
-
 		try {
 			$value = DateTimeImmutable::createFromFormat(DATE_ATOM, $value);
 		} catch (TypeError $e) {

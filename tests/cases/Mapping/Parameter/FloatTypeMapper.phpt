@@ -18,8 +18,6 @@ final class TestFloatTypeMapper extends TestCase
 	{
 		$mapper = new FloatTypeMapper();
 
-		Assert::same(null, $mapper->normalize(null));
-		Assert::same(null, $mapper->normalize(''));
 		Assert::same(0.0, $mapper->normalize(0));
 		Assert::same(13.0, $mapper->normalize('13'));
 		Assert::same(1.99, $mapper->normalize('1.99'));
@@ -29,6 +27,14 @@ final class TestFloatTypeMapper extends TestCase
 	public function testFail(): void
 	{
 		$mapper = new FloatTypeMapper();
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize('');
+		}, InvalidArgumentTypeException::class);
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize(null);
+		}, InvalidArgumentTypeException::class);
 
 		Assert::exception(function () use ($mapper): void {
 			$mapper->normalize('string');

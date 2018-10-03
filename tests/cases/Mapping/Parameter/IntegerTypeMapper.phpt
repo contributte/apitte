@@ -18,8 +18,6 @@ final class TestIntegerTypeMapper extends TestCase
 	{
 		$mapper = new IntegerTypeMapper();
 
-		Assert::same(null, $mapper->normalize(null));
-		Assert::same(null, $mapper->normalize(''));
 		Assert::same(0, $mapper->normalize(0));
 		Assert::same(13, $mapper->normalize('13'));
 		Assert::same(-10, $mapper->normalize('-10'));
@@ -28,6 +26,14 @@ final class TestIntegerTypeMapper extends TestCase
 	public function testFail(): void
 	{
 		$mapper = new IntegerTypeMapper();
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize('');
+		}, InvalidArgumentTypeException::class);
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize(null);
+		}, InvalidArgumentTypeException::class);
 
 		Assert::exception(function () use ($mapper): void {
 			$mapper->normalize('string');

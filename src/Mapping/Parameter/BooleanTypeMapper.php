@@ -12,19 +12,11 @@ class BooleanTypeMapper implements ITypeMapper
 	 */
 	public function normalize($value): ?bool
 	{
-		if ($value === null || $value === '') {
-			return null;
-		}
-
-		if (is_bool($value)) {
-			return $value;
-		}
-
-		if ($value === 'true') {
+		if ($value === 'true' || $value === true) {
 			return true;
 		}
 
-		if ($value === 'false') {
+		if ($value === 'false' || $value === false) {
 			return false;
 		}
 

@@ -10,12 +10,8 @@ class IntegerTypeMapper implements ITypeMapper
 	/**
 	 * @param mixed $value
 	 */
-	public function normalize($value): ?int
+	public function normalize($value): int
 	{
-		if ($value === null || $value === '') {
-			return null;
-		}
-
 		if (is_int($value) || (is_string($value) && preg_match('#^-?[0-9]+\z#', $value))) {
 			return (int) $value;
 		}

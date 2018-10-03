@@ -170,6 +170,8 @@ class RequestParameterMapping
 	 */
 	protected function normalize($value, EndpointParameter $parameter, ITypeMapper $mapper)
 	{
+		if ($value === '' || $value === null) return null;
+
 		try {
 			return $mapper->normalize($value);
 		} catch (InvalidArgumentTypeException $e) {

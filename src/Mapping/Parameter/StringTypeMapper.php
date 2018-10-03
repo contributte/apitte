@@ -10,10 +10,6 @@ class StringTypeMapper implements ITypeMapper
 	 */
 	public function normalize($value): ?string
 	{
-		if ($value === null || $value === '') {
-			return null;
-		}
-
 		return (string) $value;
 	}
 

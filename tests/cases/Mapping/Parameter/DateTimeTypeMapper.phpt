@@ -18,9 +18,6 @@ final class TestDateTimeTypeMapper extends TestCase
 	{
 		$mapper = new DateTimeTypeMapper();
 
-		Assert::same(null, $mapper->normalize(null));
-		Assert::same(null, $mapper->normalize(''));
-
 		$datetime = $mapper->normalize('2010-12-07T23:00:00Z');
 		Assert::type(DateTimeImmutable::class, $datetime);
 
@@ -34,6 +31,14 @@ final class TestDateTimeTypeMapper extends TestCase
 	public function testFail(): void
 	{
 		$mapper = new DateTimeTypeMapper();
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize('');
+		}, InvalidArgumentTypeException::class);
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize(null);
+		}, InvalidArgumentTypeException::class);
 
 		Assert::exception(function () use ($mapper): void {
 			$mapper->normalize('string');

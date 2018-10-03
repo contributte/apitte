@@ -7,7 +7,7 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Dispatcher\CoreDispatcher;
-use Apitte\Core\Exception\Logical\BadRequestException;
+use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
@@ -47,5 +47,5 @@ test(function (): void {
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$dispatcher->dispatch($request, $response);
-	}, BadRequestException::class, 'No matched route by given URL');
+	}, ClientErrorException::class, 'No matched route by given URL');
 });

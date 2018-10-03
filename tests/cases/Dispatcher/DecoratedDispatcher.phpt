@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 use Apitte\Core\Decorator\DecoratorManager;
 use Apitte\Core\Decorator\IDecorator;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
-use Apitte\Core\Exception\Logical\BadRequestException;
+use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
@@ -142,5 +142,5 @@ test(function (): void {
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$response = $dispatcher->dispatch($request, $response);
-	}, BadRequestException::class, 'No matched route by given URL');
+	}, ClientErrorException::class, 'No matched route by given URL');
 });

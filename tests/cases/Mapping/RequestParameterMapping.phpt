@@ -92,7 +92,7 @@ final class TestRequestParameterMapping extends TestCase
 				$this->requestParameterMapping->map($request, $this->response);
 			},
 			ClientErrorException::class,
-			'Parameter "id" should be provided in request attributes',
+			'Path request parameter "id" should be provided.',
 			400
 		);
 
@@ -124,7 +124,7 @@ final class TestRequestParameterMapping extends TestCase
 				$this->requestParameterMapping->map($requestWithEmptyId, $this->response);
 			},
 			ClientErrorException::class,
-			'Parameter "id" should not be empty',
+			'Path request parameter "id" should not be empty.',
 			400
 		);
 	}
@@ -178,7 +178,7 @@ final class TestRequestParameterMapping extends TestCase
 				$this->requestParameterMapping->map($request, $this->response);
 			},
 			ClientErrorException::class,
-			'Parameter "score" should be provided in request attributes',
+			'Query request parameter "score" should be provided.',
 			400
 		);
 	}
@@ -219,7 +219,7 @@ final class TestRequestParameterMapping extends TestCase
 				$this->requestParameterMapping->map($requestWithEmptyCookie, $this->response);
 			},
 			ClientErrorException::class,
-			'Parameter "session" should not be empty',
+			'Cookie request parameter "session" should not be empty.',
 			400
 		);
 
@@ -267,7 +267,7 @@ final class TestRequestParameterMapping extends TestCase
 				$this->requestParameterMapping->map($requestWithEmptyHeader, $this->response);
 			},
 			ClientErrorException::class,
-			'Parameter "auth" should not be empty',
+			'Header request parameter "auth" should not be empty.',
 			400
 		);
 
@@ -318,7 +318,7 @@ final class TestRequestParameterMapping extends TestCase
 				$this->requestParameterMapping->map($requestWithInvalidDatetime, $this->response);
 			},
 			ClientErrorException::class,
-			'Query parameter "datetime" should be of type datetime in format ISO 8601 (Y-m-d\TH:i:sP).',
+			'Query request parameter "datetime" should be of type datetime in format ISO 8601 (Y-m-d\TH:i:sP).',
 			400
 		);
 
@@ -331,7 +331,7 @@ final class TestRequestParameterMapping extends TestCase
 				$this->requestParameterMapping->map($requestWithEmptyDatetime, $this->response);
 			},
 			ClientErrorException::class,
-			'Parameter "datetime" should not be empty',
+			'Query request parameter "datetime" should not be empty.',
 			400
 		);
 
@@ -344,7 +344,7 @@ final class TestRequestParameterMapping extends TestCase
 				$this->requestParameterMapping->map($requestWithNoDatetime, $this->response);
 			},
 			ClientErrorException::class,
-			'Parameter "datetime" should be provided in request attributes',
+			'Query request parameter "datetime" should be provided.',
 			400
 		);
 	}

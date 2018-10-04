@@ -27,25 +27,23 @@ class CoreSchemaPlugin extends AbstractPlugin
 	// Loader types
 	public const LOADERS = ['annotations', 'neon', 'php'];
 
-	/** @var string[] */
-	public static $validations = [
-		'controllerPath' => ControllerPathValidation::class,
-		'fullPath' => FullpathValidation::class,
-		'groupPath' => GroupPathValidation::class,
-		'id' => IdValidation::class,
-		'negotiation' => NegotiationValidation::class,
-		'path' => PathValidation::class,
-		'requestMapper' => RequestMapperValidation::class,
-		'requestParameter' => RequestParameterValidation::class,
-		'responseMapper' => ResponseMapperValidation::class,
-	];
-
 	/** @var IDecorator[] */
 	public static $decorators = [];
 
 	/** @var mixed[] */
 	protected $defaults = [
 		'loader' => 'annotations',
+		'validations' => [
+			'controllerPath' => ControllerPathValidation::class,
+			'fullPath' => FullpathValidation::class,
+			'groupPath' => GroupPathValidation::class,
+			'id' => IdValidation::class,
+			'negotiation' => NegotiationValidation::class,
+			'path' => PathValidation::class,
+			'requestMapper' => RequestMapperValidation::class,
+			'requestParameter' => RequestParameterValidation::class,
+			'responseMapper' => ResponseMapperValidation::class,
+		],
 	];
 
 	public function __construct(PluginCompiler $compiler)
@@ -119,7 +117,7 @@ class CoreSchemaPlugin extends AbstractPlugin
 		$validator = new SchemaBuilderValidator();
 
 		// Add all validators at compile-time
-		foreach (self::$validations as $validation) {
+		foreach ($this->config['validations'] as $validation) {
 			$validator->add(new $validation());
 		}
 

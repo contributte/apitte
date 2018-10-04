@@ -95,22 +95,15 @@ class DecoratedDispatcher extends CoreDispatcher
 		// if result is scalar convert it manually to ScalarEntity,
 		// if result is IResponseEntity convert it manually to MappingEntity,
 		// otherwise use result as response
-		if (is_array($result)) {
-			$this->checkNegotiationInstalled();
-			$response = $response->withEntity(ArrayEntity::from($result));
-		} elseif (is_scalar($result)) {
-			$this->checkNegotiationInstalled();
-			$response = $response->withEntity(ScalarEntity::from($result));
-		} elseif ($result instanceof IResponseEntity) {
-			$this->checkNegotiationInstalled();
-			$response = $response->withEntity(MappingEntity::from($result));
+		if (is_array($result) || is_scalar($result) || $result instanceof IResponseEntity) {
+			$response = $this->negotiate($result, $response);
 		} else {
-			$response = $result;
-		}
+			// Validate if response is ResponseInterface
+			if (!($result instanceof ResponseInterface)) {
+				throw new InvalidStateException(sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
+			}
 
-		// Validate if response is ResponseInterface
-		if (!($response instanceof ResponseInterface)) {
-			throw new InvalidStateException(sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
+			$response = $result;
 		}
 
 		try {
@@ -123,7 +116,11 @@ class DecoratedDispatcher extends CoreDispatcher
 		return $response;
 	}
 
-	protected function checkNegotiationInstalled(): void
+	/**
+	 * @param mixed $result
+	 * @param ApiResponse|ResponseInterface $response
+	 */
+	protected function negotiate($result, ResponseInterface $response): ApiResponse
 	{
 		if (!class_exists(ArrayEntity::class)) {
 			throw new InvalidStateException(sprintf(
@@ -131,6 +128,16 @@ class DecoratedDispatcher extends CoreDispatcher
 				ResponseInterface::class
 			));
 		}
+
+		if (is_array($result)) {
+			$response = $response->withEntity(ArrayEntity::from($result));
+		} elseif (is_scalar($result)) {
+			$response = $response->withEntity(ScalarEntity::from($result));
+		} elseif ($result instanceof IResponseEntity) {
+			$response = $response->withEntity(MappingEntity::from($result));
+		}
+
+		return $response;
 	}
 
 }

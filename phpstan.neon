@@ -23,3 +23,6 @@ parameters:
 
 		# Maybe will cause application fail - DecoratorManager::decorateResponse could return null, but DecoratedDispatcher is not always able to handle it.
 		- '#Method Apitte\\Core\\Dispatcher\\DecoratedDispatcher::handle\(\) should return Psr\\Http\\Message\\ResponseInterface but returns Psr\\Http\\Message\\ResponseInterface|null.#'
+
+		# DecoratedDispatcher
+		- '#Call to an undefined method Psr\\Http\\Message\\ResponseInterface::withEntity\(\)#'

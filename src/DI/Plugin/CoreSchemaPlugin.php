@@ -41,7 +41,6 @@ class CoreSchemaPlugin extends AbstractPlugin
 			'negotiation' => NegotiationValidation::class,
 			'path' => PathValidation::class,
 			'requestMapper' => RequestMapperValidation::class,
-			'requestParameter' => RequestParameterValidation::class,
 			'responseMapper' => ResponseMapperValidation::class,
 		],
 	];
@@ -114,10 +113,17 @@ class CoreSchemaPlugin extends AbstractPlugin
 
 	protected function validateSchema(SchemaBuilder $builder): SchemaBuilder
 	{
+		$validations = $this->config['validations'];
+
+		$coreMappingPlugin = $this->compiler->getPlugin(CoreMappingPlugin::PLUGIN_NAME);
+		if ($coreMappingPlugin !== null) {
+			$validations['requestParameter'] = RequestParameterValidation::class;
+		}
+
 		$validator = new SchemaBuilderValidator();
 
 		// Add all validators at compile-time
-		foreach ($this->config['validations'] as $validation) {
+		foreach ($validations as $validation) {
 			$validator->add(new $validation());
 		}
 

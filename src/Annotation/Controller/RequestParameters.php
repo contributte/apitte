@@ -24,7 +24,7 @@ final class RequestParameters
 			if (empty($values['value'])) {
 				throw new AnnotationException('Empty @RequestParameters given');
 			}
-			$this->parameters = $values['value'];
+			$this->parameters = is_array($values['value']) ? $values['value'] : [$values['value']];
 		} else {
 			throw new AnnotationException('No @RequestParameter given in @RequestParameters');
 		}

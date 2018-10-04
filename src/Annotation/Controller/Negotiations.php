@@ -24,7 +24,7 @@ final class Negotiations
 			if (empty($values['value'])) {
 				throw new AnnotationException('Empty @Negotiations given');
 			}
-			$this->negotiations = $values['value'];
+			$this->negotiations = is_array($values['value']) ? $values['value'] : [$values['value']];
 		} else {
 			throw new AnnotationException('No @Negotiation given in @Negotiations');
 		}

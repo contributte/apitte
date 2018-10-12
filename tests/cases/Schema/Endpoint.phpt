@@ -101,3 +101,13 @@ test(function (): void {
 
 	Assert::same(['p1' => $p1, 'p2' => $p2], $endpoint->getParametersByIn(EndpointParameter::IN_COOKIE));
 });
+
+test(function (): void {
+	$handler = new EndpointHandler('class', 'method');
+
+	$endpoint = new Endpoint($handler);
+
+	$endpoint->addTag('t1');
+
+	Assert::true($endpoint->hasTag('t1'));
+});

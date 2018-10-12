@@ -217,7 +217,7 @@ final class Endpoint
 
 	public function hasTag(string $name): bool
 	{
-		return isset($this->tags[$name]);
+		return array_key_exists($name, $this->tags);
 	}
 
 	/**

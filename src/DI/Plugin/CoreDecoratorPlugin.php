@@ -27,7 +27,7 @@ class CoreDecoratorPlugin extends AbstractPlugin
 		$builder = $this->getContainerBuilder();
 
 		$builder->getDefinition($this->extensionPrefix('core.dispatcher'))
-			->setClass(DecoratedDispatcher::class)
+			->setType(DecoratedDispatcher::class)
 			->setFactory(DecoratedDispatcher::class);
 
 		$builder->addDefinition($this->prefix('decorator.manager'))
@@ -63,7 +63,7 @@ class CoreDecoratorPlugin extends AbstractPlugin
 			$tag = $decorator->getTag(ApiExtension::CORE_DECORATOR_TAG);
 
 			if (!isset($tag['type'])) {
-				throw new InvalidStateException(sprintf('Missing "type" attribute in tag "%s" at service "%s"', ApiExtension::CORE_DECORATOR_TAG, $decorator->getClass()));
+				throw new InvalidStateException(sprintf('Missing "type" attribute in tag "%s" at service "%s"', ApiExtension::CORE_DECORATOR_TAG, $decorator->getType()));
 			}
 
 			foreach ((array) $tag['type'] as $type) {

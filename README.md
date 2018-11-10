@@ -7,10 +7,10 @@
 [![Build Status](https://img.shields.io/travis/apitte/core.svg?style=flat-square)](https://travis-ci.org/apitte/core)
 [![Code coverage](https://img.shields.io/coveralls/apitte/core.svg?style=flat-square)](https://coveralls.io/r/apitte/core)
 [![Licence](https://img.shields.io/packagist/l/apitte/core.svg?style=flat-square)](https://packagist.org/packages/apitte/core)
-
 [![Downloads this Month](https://img.shields.io/packagist/dm/apitte/core.svg?style=flat-square)](https://packagist.org/packages/apitte/core)
 [![Downloads total](https://img.shields.io/packagist/dt/apitte/core.svg?style=flat-square)](https://packagist.org/packages/apitte/core)
 [![Latest stable](https://img.shields.io/packagist/v/apitte/core.svg?style=flat-square)](https://packagist.org/packages/apitte/core)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
 
 ## Discussion / Help
 
@@ -32,7 +32,7 @@ composer require apitte/core
 
 ## Example
 
-Just define some endpoints, I mean controllers. Place some annotations and thats all.
+Just define some endpoints, I mean controllers. Place some annotations and that is all.
 
 ```php
 namespace App\Controllers;
@@ -106,13 +106,13 @@ As you can see, the architecture is ultra simple. `ApiRequest` & `ApiResponse` w
       </td>
       <td align="center">
         <a href="https://github.com/mabar">
-            <img width="150" height="150" src="https://avatars0.githubusercontent.com/u/20974277?s=400&v=4">
+            <img width="150" height="150" src="https://avatars0.githubusercontent.com/u/20974277?s=150&v=4">
         </a>
         </br>
         <a href="https://github.com/mabar">Marek Bartoš</a>
       </td>
     </tr>
-  <tbody>
+  </tbody>
 </table>
 
 -----

@@ -10,19 +10,21 @@
     "annotation"
   ],
   "type": "library",
-  "license": [
-    "MIT"
-  ],
+  "license": "MIT",
   "homepage": "https://github.com/apitte/core",
   "authors": [
     {
       "name": "Milan Felix Šulc",
       "homepage": "https://f3l1x.io"
+    },
+    {
+      "name": "Marek Bartoš",
+      "homepage": "https://marek-bartos.cz"
     }
   ],
   "require": {
     "php": ">= 7.1",
-    "contributte/psr7-http-message": "^0.5.0",
+    "contributte/psr7-http-message": "^0.5.1",
     "contributte/phpdoc": "^0.2"
   },
   "require-dev": {
@@ -53,17 +55,18 @@
       "linter src tests",
       "codesniffer src tests"
     ],
-    "tester": [
-      "tester -s -p phpdbg --colors 1 -C tests/cases"
+    "tests": [
+      "tester -s -p php --colors 1 -C tests/cases"
     ],
     "coverage": [
-      "tester -s -p phpdbg --colors 1 -C -d extension=xdebug.so --coverage ./coverage.xml --coverage-src ./src tests/cases"
+      "tester -s -p phpdbg --colors 1 -C --coverage ./coverage.xml --coverage-src ./src tests/cases"
     ],
     "phpstan-install": [
       "mkdir -p temp/phpstan",
-      "composer require -d temp/phpstan phpstan/phpstan:0.10.1",
-      "composer require -d temp/phpstan phpstan/phpstan-nette:0.10",
-      "composer require -d temp/phpstan phpstan/phpstan-strict-rules:0.10"
+      "composer require -d temp/phpstan phpstan/phpstan:^0.10",
+      "composer require -d temp/phpstan phpstan/phpstan-deprecation-rules:^0.10",
+      "composer require -d temp/phpstan phpstan/phpstan-nette:^0.10",
+      "composer require -d temp/phpstan phpstan/phpstan-strict-rules:^0.10"
     ],
     "phpstan": [
       "temp/phpstan/vendor/bin/phpstan analyse -l max -c phpstan.neon src"
@@ -71,7 +74,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "0.4.x-dev"
+      "dev-master": "0.5.x-dev"
     }
   }
 }

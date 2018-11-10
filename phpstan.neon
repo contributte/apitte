@@ -1,12 +1,16 @@
 includes:
-	- temp/phpstan/vendor/phpstan/phpstan-strict-rules/rules.neon
+	- temp/phpstan/vendor/phpstan/phpstan-deprecation-rules/rules.neon
 	- temp/phpstan/vendor/phpstan/phpstan-nette/extension.neon
 	- temp/phpstan/vendor/phpstan/phpstan-nette/rules.neon
+	- temp/phpstan/vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
 	ignoreErrors:
+		# deprecated with no replacement until 2.0.0
+		- '#^Call to deprecated method registerLoader\(\) of class Doctrine\\Common\\Annotations\\AnnotationRegistry\.$#'
+
 		# phpstan bug
-		- '#^Parameter \#1 \$function of function call_user_func_array expects callable, array\<int, object\|string\> given.$#'
+		- '#^Parameter \#1 \$function of function call_user_func_array expects callable, array\(object, string\) given\.$#'
 
 		# Missing strict comparison
 		- '#^Construct empty\(\) is not allowed. Use more strict comparison.$#'

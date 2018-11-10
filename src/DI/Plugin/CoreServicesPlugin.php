@@ -37,15 +37,15 @@ class CoreServicesPlugin extends AbstractPlugin
 			->setFactory(WrappedDispatcher::class, ['@' . $this->prefix('dispatcher')]);
 
 		$builder->addDefinition($this->prefix('router'))
-			->setClass(IRouter::class)
+			->setType(IRouter::class)
 			->setFactory(SimpleRouter::class);
 
 		$builder->addDefinition($this->prefix('handler'))
-			->setClass(IHandler::class)
+			->setType(IHandler::class)
 			->setFactory(ServiceHandler::class);
 
 		$builder->addDefinition($this->prefix('schema'))
-			->setClass(Schema::class);
+			->setFactory(Schema::class);
 	}
 
 }

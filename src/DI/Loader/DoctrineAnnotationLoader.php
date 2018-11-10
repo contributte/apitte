@@ -45,14 +45,14 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		// Iterate over all controllers
 		foreach ($controllers as $def) {
 			// Analyse all parent classes
-			$class = $this->analyseClass($def->getClass());
+			$class = $this->analyseClass($def->getType());
 
 			// Check if a controller or his abstract has @Controller annotation,
 			// otherwise, skip this controller
 			if (!$this->acceptController($class)) continue;
 
 			// Create scheme endpoint
-			$schemeController = $builder->addController($def->getClass());
+			$schemeController = $builder->addController($def->getType());
 
 			// Parse @Controller, @ControllerPath, @ControllerId
 			$this->parseControllerClassAnnotations($schemeController, $class);

@@ -33,7 +33,7 @@ abstract class AbstractContainerLoader implements ILoader
 	protected function addDependencies(array $definitions): void
 	{
 		foreach ($definitions as $def) {
-			$this->builder->addDependency($def->getClass());
+			$this->builder->addDependency($def->getType());
 		}
 	}
 

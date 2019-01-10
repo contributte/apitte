@@ -47,6 +47,8 @@ final class ArraySerializator implements ISerializator
 		$endpoint = $this->serializeInit($controller, $method);
 		$this->serializeNegotiations($endpoint, $method);
 		$this->serializePattern($endpoint, $controller, $method);
+		$this->serializeEndpointRequest($endpoint, $method);
+		$this->serializeEndpointResponses($endpoint, $method);
 		$this->serializeMappers($endpoint, $method);
 
 		return $endpoint;
@@ -96,9 +98,14 @@ final class ArraySerializator implements ISerializator
 			'mask' => $mask,
 			'description' => $method->getDescription(),
 			'parameters' => [],
+			'responses' => [],
 			'negotiations' => [],
 			'attributes' => [
 				'pattern' => null,
+			],
+			'openApi' => [
+				'controller' => $controller->getOpenApi(),
+				'method' => $method->getOpenApi(),
 			],
 		];
 	}
@@ -235,6 +242,42 @@ final class ArraySerializator implements ISerializator
 
 		// Update endpoint
 		$endpoint['parameters'][$parameter['name']] = $p;
+	}
+
+	/**
+	 * @param mixed[] $endpoint
+	 */
+	private function serializeEndpointRequest(array &$endpoint, Method $method): void
+	{
+		$request = $method->getRequest();
+		if ($request === null) {
+			return;
+		}
+		$requestData = ['required' => $request->isRequired()];
+		if ($request->getDescription() !== null) {
+			$requestData['description'] = $request->getDescription();
+		}
+		if ($request->getEntity() !== null) {
+			$requestData['entity'] = $request->getEntity();
+		}
+		$endpoint['request'] = $requestData;
+	}
+
+	/**
+	 * @param mixed[] $endpoint
+	 */
+	private function serializeEndpointResponses(array &$endpoint, Method $method): void
+	{
+		foreach ($method->getResponses() as $response) {
+			$responseData = [
+				'code' => $response->getCode(),
+				'description' => $response->getDescription(),
+			];
+			if ($response->getEntity() !== null) {
+				$responseData['entity'] = $response->getEntity();
+			}
+			$endpoint['responses'][$response->getCode()] = $responseData;
+		}
 	}
 
 }

@@ -47,6 +47,12 @@ final class Endpoint
 	/** @var EndpointParameter[] */
 	private $parameters = [];
 
+	/** @var EndpointRequest|null */
+	private $request;
+
+	/** @var EndpointResponse[] */
+	private $responses = [];
+
 	/** @var EndpointNegotiation[] */
 	private $negotiations = [];
 
@@ -61,6 +67,9 @@ final class Endpoint
 
 	/** @var mixed[] */
 	private $metadata = [];
+
+	/** @var mixed[] */
+	private $openApi = [];
 
 	public function __construct(EndpointHandler $handler)
 	{
@@ -176,6 +185,60 @@ final class Endpoint
 		foreach ($parameters as $param) {
 			$this->addParameter($param);
 		}
+	}
+
+	/**
+	 * @return EndpointResponse[]
+	 */
+	public function getResponses(): array
+	{
+		return $this->responses;
+	}
+
+	public function hasResponse(string $code): bool
+	{
+		return isset($this->responses[$code]);
+	}
+
+	public function addResponse(EndpointResponse $response): void
+	{
+		$this->responses[$response->getCode()] = $response;
+	}
+
+	/**
+	 * @param EndpointResponse[] $responses
+	 */
+	public function setResponses(array $responses): void
+	{
+		foreach ($responses as $response) {
+			$this->addResponse($response);
+		}
+	}
+
+	public function setRequest(?EndpointRequest $request): void
+	{
+		$this->request = $request;
+	}
+
+	public function getRequest(): ?EndpointRequest
+	{
+		return $this->request;
+	}
+
+	/**
+	 * @return mixed[]
+	 */
+	public function getOpenApi(): array
+	{
+		return $this->openApi;
+	}
+
+	/**
+	 * @param mixed[] $openApi
+	 */
+	public function setOpenApi(array $openApi): void
+	{
+		$this->openApi = $openApi;
 	}
 
 	/**

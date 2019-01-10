@@ -28,8 +28,14 @@ final class Method
 	/** @var string[] */
 	private $arguments = [];
 
+	/** @var MethodRequest|null */
+	private $request;
+
 	/** @var MethodParameter[] */
 	private $parameters = [];
+
+	/** @var MethodResponse[] */
+	private $responses = [];
 
 	/** @var MethodNegotiation[] */
 	private $negotiations = [];
@@ -39,6 +45,9 @@ final class Method
 
 	/** @var ResponseMapper|null */
 	private $responseMapper;
+
+	/** @var mixed[] */
+	private $openApi = [];
 
 	public function __construct(string $name)
 	{
@@ -171,9 +180,32 @@ final class Method
 		return $parameter;
 	}
 
+	public function getRequest(): ?MethodRequest
+	{
+		return $this->request;
+	}
+
+	public function setRequest(?MethodRequest $request): ?MethodRequest
+	{
+		$this->request = $request;
+		return $request;
+	}
+
+	public function addResponse(string $code, string $description): MethodResponse
+	{
+		$response = new MethodResponse($code, $description);
+		$this->responses[$code] = $response;
+		return $response;
+	}
+
 	public function hasParameter(string $name): bool
 	{
 		return isset($this->parameters[$name]);
+	}
+
+	public function hasResponse(string $code): bool
+	{
+		return isset($this->responses[$code]);
 	}
 
 	/**
@@ -182,6 +214,30 @@ final class Method
 	public function getParameters(): array
 	{
 		return $this->parameters;
+	}
+
+	/**
+	 * @return MethodResponse[]
+	 */
+	public function getResponses(): array
+	{
+		return $this->responses;
+	}
+
+	/**
+	 * @param mixed[] $openApi
+	 */
+	public function setOpenApi(array $openApi): void
+	{
+		$this->openApi = $openApi;
+	}
+
+	/**
+	 * @return mixed[]
+	 */
+	public function getOpenApi(): array
+	{
+		return $this->openApi;
 	}
 
 	public function addNegotiation(string $suffix): MethodNegotiation

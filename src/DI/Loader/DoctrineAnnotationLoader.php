@@ -10,13 +10,17 @@ use Apitte\Core\Annotation\Controller\GroupPath;
 use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Negotiations;
+use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
+use Apitte\Core\Annotation\Controller\Request;
 use Apitte\Core\Annotation\Controller\RequestMapper;
 use Apitte\Core\Annotation\Controller\RequestParameters;
 use Apitte\Core\Annotation\Controller\ResponseMapper;
+use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
+use Apitte\Core\Schema\Builder\Controller\MethodRequest;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -155,6 +159,13 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				$controller->addTag($annotation->getName(), $annotation->getValue());
 			}
 
+			// Parse @OpenApi ============================
+			if (get_class($annotation) === OpenApi::class) {
+				/** @var OpenApi $annotation */
+				$controller->setOpenApi($annotation->getData());
+				continue;
+			}
+
 			// Parse @GroupId ==============================
 			if (get_class($annotation) === GroupId::class) {
 				throw new InvalidStateException(sprintf('Annotation @GroupId cannot be on non-abstract "%s"', $class->getName()));
@@ -255,6 +266,33 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$parameter->setDeprecated($p->isDeprecated());
 						$parameter->setAllowEmpty($p->isAllowEmpty());
 					}
+					continue;
+				}
+
+				// Parse @Response ================
+				if (get_class($annotation) === Responses::class) {
+					/** @var Responses $annotation */
+					foreach ($annotation->getResponses() as $r) {
+						$response = $schemaMethod->addResponse($r->getCode(), $r->getDescription());
+						$response->setEntity($r->getEntity());
+					}
+					continue;
+				}
+
+				// Parse @Request ================
+				if (get_class($annotation) === Request::class) {
+					/** @var Request $annotation */
+					$request = $schemaMethod->setRequest(new MethodRequest());
+					$request->setDescription($annotation->getDescription());
+					$request->setEntity($annotation->getEntity());
+					$request->setRequired($annotation->isRequired());
+					continue;
+				}
+
+				// Parse @OpenApi ================
+				if (get_class($annotation) === OpenApi::class) {
+					/** @var OpenApi $annotation */
+					$schemaMethod->setOpenApi($annotation->getData());
 					continue;
 				}
 

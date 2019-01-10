@@ -7,6 +7,7 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Schema\Builder\Controller\MethodRequest;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
@@ -48,6 +49,17 @@ test(function (): void {
 	$m3->setDescription('m3-description');
 	$m3->addArgument('m3-a1', Psr7Response::class);
 
+	$m3r = new MethodRequest();
+	$m3r->setRequired(true);
+	$m3r->setEntity('SomeClass');
+	$m3->setRequest($m3r);
+
+	$m3->addResponse('200', 'Success')
+		->setEntity('SomeClass[]');
+	$m3->addResponse('404', 'Not found');
+
+	$m3->setOpenApi(['openapi' => '3.0.2']);
+
 	$m3n1 = $m3->addNegotiation('json');
 	$m3n1->setDefault(true);
 	$m3n1->setRenderer('A\\Middleware\\Implementing\\Class');
@@ -74,8 +86,10 @@ test(function (): void {
 			'mask' => '/group1-path/group2-path/c1-path/m2-path',
 			'description' => null,
 			'parameters' => [],
+			'responses' => [],
 			'negotiations' => [],
 			'attributes' => ['pattern' => '/group1-path/group2-path/c1-path/m2-path'],
+			'openApi' => ['controller' => [], 'method' => []],
 			'requestMapper' => [
 				'entity' => 'A\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Request\\IRequestEntity',
 				'validation' => true,
@@ -115,6 +129,14 @@ test(function (): void {
 					'deprecated' => false,
 				],
 			],
+			'responses' => [
+				200 => [
+					'code' => '200',
+					'description' => 'Success',
+					'entity' => 'SomeClass[]',
+				],
+				404 => ['code' => '404', 'description' => 'Not found'],
+			],
 			'negotiations' => [
 				[
 					'suffix' => 'json',
@@ -130,6 +152,8 @@ test(function (): void {
 			'attributes' => [
 				'pattern' => '/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)',
 			],
+			'openApi' => ['controller' => [], 'method' => ['openapi' => '3.0.2']],
+			'request' => ['required' => true, 'entity' => 'SomeClass'],
 		],
 	];
 

@@ -26,6 +26,9 @@ final class Controller
 	/** @var mixed[] */
 	private $tags = [];
 
+	/** @var mixed[] */
+	private $openApi = [];
+
 	public function __construct(string $class)
 	{
 		$this->class = $class;
@@ -130,6 +133,22 @@ final class Controller
 		foreach ($tags as $name => $value) {
 			$this->addTag($name, $value);
 		}
+	}
+
+	/**
+	 * @param mixed[] $openApi
+	 */
+	public function setOpenApi(array $openApi): void
+	{
+		$this->openApi = $openApi;
+	}
+
+	/**
+	 * @return mixed[]
+	 */
+	public function getOpenApi(): array
+	{
+		return $this->openApi;
 	}
 
 }

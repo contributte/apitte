@@ -7,7 +7,9 @@ use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
+use Apitte\Core\Schema\EndpointRequest;
 use Apitte\Core\Schema\EndpointRequestMapper;
+use Apitte\Core\Schema\EndpointResponse;
 use Apitte\Core\Schema\EndpointResponseMapper;
 use Apitte\Core\Schema\Schema;
 
@@ -81,6 +83,37 @@ final class ArrayHydrator implements IHydrator
 
 				$endpoint->addParameter($parameter);
 			}
+		}
+
+		if (isset($data['request'])) {
+			$request = new EndpointRequest();
+			if (isset($data['request']['description'])) {
+				$request->setDescription($data['request']['description']);
+			}
+			if (isset($data['request']['entity'])) {
+				$request->setEntity($data['request']['entity']);
+			}
+			if (isset($data['request']['required'])) {
+				$request->setRequired($data['request']['required']);
+			}
+			$endpoint->setRequest($request);
+		}
+
+		if (isset($data['responses'])) {
+			foreach ($data['responses'] as $res) {
+				$response = new EndpointResponse(
+					$res['code'],
+					$res['description']
+				);
+				if (isset($res['entity'])) {
+					$response->setEntity($res['entity']);
+				}
+				$endpoint->addResponse($response);
+			}
+		}
+
+		if (isset($data['openApi'])) {
+			$endpoint->setOpenApi($data['openApi']);
 		}
 
 		if (isset($data['negotiations'])) {

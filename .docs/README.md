@@ -96,7 +96,7 @@ services:
     - App\Controllers\HelloController
 ```
 
-At the end, open your browser and locate to `localhost/<api-project>/hello/worldd`.
+At the end, open your browser and locate to `localhost/<api-project>/hello/world`.
 
 **Tip** The `@ControllerPath("/")` annotation with the `@Path("/")` annotation target to homepage, e.q. `localhost/<api-project>`.
 

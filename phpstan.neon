@@ -1,32 +1,45 @@
 includes:
-	- temp/phpstan/vendor/phpstan/phpstan-deprecation-rules/rules.neon
-	- temp/phpstan/vendor/phpstan/phpstan-nette/extension.neon
-	- temp/phpstan/vendor/phpstan/phpstan-nette/rules.neon
-	- temp/phpstan/vendor/phpstan/phpstan-strict-rules/rules.neon
+	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
+	- vendor/phpstan/phpstan-nette/extension.neon
+	- vendor/phpstan/phpstan-nette/rules.neon
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
 	ignoreErrors:
 		# deprecated with no replacement until 2.0.0
 		- '#^Call to deprecated method registerLoader\(\) of class Doctrine\\Common\\Annotations\\AnnotationRegistry\.$#'
 
-		# phpstan bug
-		- '#^Parameter \#1 \$function of function call_user_func_array expects callable, array\(object, string\) given\.$#'
-
-		# Missing strict comparison
-		- '#^Construct empty\(\) is not allowed. Use more strict comparison.$#'
-		- '#^Only booleans are allowed in#'
+		# Intended property access - required for reflection
+		- '#^Variable property access on (\$this|static)\(Apitte\\Core\\Mapping\\(Request|Response)\\BasicEntity\)\.$#'
+		- '#^Variable property access on Apitte\\Core\\Mapping\\Request\\BasicEntity\.$#'
 
 		# Magic access
 		- '#^Access to private property \$previous of parent class Exception.$#'
 
 		# There is no apitte/negotiation dependency
-		- '#^Return typehint of method Apitte\\Core\\Http\\ApiResponse::getEntity\(\) has invalid type Apitte\\Negotiation\\Http\\AbstractEntity.$#'
-		- '#^Parameter \$entity of method Apitte\\Core\\Http\\ApiResponse::withEntity\(\) has invalid typehint type Apitte\\Negotiation\\Http\\AbstractEntity.$#'
+		- '#^Return typehint of method Apitte\\Core\\Http\\ApiResponse::getEntity\(\) has invalid type Apitte\\Negotiation\\Http\\AbstractEntity\.$#'
+		- '#^Parameter \$entity of method Apitte\\Core\\Http\\ApiResponse::withEntity\(\) has invalid typehint type Apitte\\Negotiation\\Http\\AbstractEntity\.$#'
 		- '#^Call to static method from\(\) on an unknown class Apitte\\Negotiation\\Http\\#'
-		- '#^Class Apitte\\Negotiation\\Http\\ArrayEntity not found.$#'
+		- '#^Class Apitte\\Negotiation\\Http\\AbstractEntity not found\.$#'
+
+		# Phpstan bug
+		- '#^Parameter \#1 \$function of function call_user_func_array expects callable\(\)\: mixed, array\(object, string\) given\.#'
+
+		# Phpstan don't know that variable could be set through catch
+		- message: '#^Strict comparison using !== between null and null will always evaluate to false\.$#'
+		  path: %currentWorkingDirectory%/src/Router/SimpleRouter.php
 
 		# Maybe will cause application fail - DecoratorManager::decorateResponse could return null, but DecoratedDispatcher is not always able to handle it.
-		- '#Method Apitte\\Core\\Dispatcher\\DecoratedDispatcher::handle\(\) should return Psr\\Http\\Message\\ResponseInterface but returns Psr\\Http\\Message\\ResponseInterface|null.#'
+		- '#^Method Apitte\\Core\\Dispatcher\\DecoratedDispatcher::handle\(\) should return Psr\\Http\\Message\\ResponseInterface but returns Psr\\Http\\Message\\ResponseInterface\|null\.$#'
 
-		# DecoratedDispatcher
-		- '#Call to an undefined method Psr\\Http\\Message\\ResponseInterface::withEntity\(\)#'
+		# Maybe later - complicated to fix
+		- '#^.*should be contravariant with parameter.*$#'
+		- message: '#^.* Psr\\Http\\Message\\ServerRequestInterface\|null given\.$#'
+		  path: %currentWorkingDirectory%/src/Dispatcher/DecoratedDispatcher.php
+
+		# Missing strict comparison
+		- message: '#^.*string\|null given\.$#'
+		  path: %currentWorkingDirectory%/src/DI/Loader/DoctrineAnnotationLoader.php
+		- message: '#^Construct empty\(\) is not allowed. Use more strict comparison.$#'
+		  path: %currentWorkingDirectory%/src/Annotation
+		- '#^Only booleans are allowed in#'

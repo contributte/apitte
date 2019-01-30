@@ -10,8 +10,8 @@ final class Method
 	/** @var string */
 	private $name;
 
-	/** @var string|null */
-	private $path;
+	/** @var string */
+	private $path = '';
 
 	/** @var string|null */
 	private $id;
@@ -59,12 +59,12 @@ final class Method
 		return $this->name;
 	}
 
-	public function getPath(): ?string
+	public function getPath(): string
 	{
 		return $this->path;
 	}
 
-	public function setPath(?string $path): void
+	public function setPath(string $path): void
 	{
 		$this->path = $path;
 	}
@@ -185,10 +185,9 @@ final class Method
 		return $this->request;
 	}
 
-	public function setRequest(?MethodRequest $request): ?MethodRequest
+	public function setRequest(?MethodRequest $request): void
 	{
 		$this->request = $request;
-		return $request;
 	}
 
 	public function addResponse(string $code, string $description): MethodResponse

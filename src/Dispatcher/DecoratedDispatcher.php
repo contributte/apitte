@@ -13,6 +13,7 @@ use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Response\IResponseEntity;
 use Apitte\Core\Router\IRouter;
+use Apitte\Negotiation\Http\AbstractEntity;
 use Apitte\Negotiation\Http\ArrayEntity;
 use Apitte\Negotiation\Http\MappingEntity;
 use Apitte\Negotiation\Http\ScalarEntity;
@@ -118,11 +119,11 @@ class DecoratedDispatcher extends CoreDispatcher
 
 	/**
 	 * @param mixed $result
-	 * @param ApiResponse|ResponseInterface $response
+	 * @param ApiResponse $response
 	 */
 	protected function negotiate($result, ResponseInterface $response): ApiResponse
 	{
-		if (!class_exists(ArrayEntity::class)) {
+		if (!class_exists(AbstractEntity::class)) {
 			throw new InvalidStateException(sprintf(
 				'If you want return anything else than "%s" from your api endpoint then install "apitte/negotiation".',
 				ResponseInterface::class

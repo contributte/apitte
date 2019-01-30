@@ -2,8 +2,12 @@
 
 namespace Apitte\Core\Exception;
 
+use Exception;
 use Throwable;
 
+/**
+ * @mixin Exception
+ */
 trait ExceptionExtra
 {
 

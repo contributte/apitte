@@ -217,12 +217,14 @@ class RequestParameterMapping
 	{
 		if (!isset($this->types[$type])) return null;
 
+		$mapper = $this->types[$type];
+
 		// Initialize mapper
-		if (!is_object($this->types[$type])) {
-			$this->types[$type] = new $this->types[$type]();
+		if (!is_object($mapper)) {
+			$this->types[$type] = $mapper = new $mapper();
 		}
 
-		return $this->types[$type];
+		return $mapper;
 	}
 
 }

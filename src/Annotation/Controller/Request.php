@@ -26,7 +26,7 @@ final class Request
 	public function __construct(array $values)
 	{
 		$this->description = $values['description'] ?? null;
-		$this->description = $values['entity'] ?? null;
+		$this->entity = $values['entity'] ?? null;
 		if (isset($values['required']) && $values['required'] === true) {
 			$this->required = true;
 		}

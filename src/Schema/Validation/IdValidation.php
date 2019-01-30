@@ -24,7 +24,7 @@ class IdValidation implements IValidation
 			foreach ($controller->getMethods() as $method) {
 
 				// Skip if @Id is not set
-				if (empty($method->getId())) continue;
+				if ($method->getId() === null || $method->getId() === '') continue;
 
 				$fullid = implode('.', array_merge(
 					$controller->getGroupIds(),
@@ -58,7 +58,7 @@ class IdValidation implements IValidation
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
 				// Skip if @Id is not set
-				if (empty($method->getId())) continue;
+				if ($method->getId() === null || $method->getId() === '') continue;
 
 				$id = $method->getId();
 

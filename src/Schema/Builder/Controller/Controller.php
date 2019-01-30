@@ -14,8 +14,8 @@ final class Controller
 	/** @var string|null */
 	private $id;
 
-	/** @var string|null */
-	private $path;
+	/** @var string */
+	private $path = '';
 
 	/** @var string[] */
 	private $groupIds = [];
@@ -39,12 +39,12 @@ final class Controller
 		return $this->class;
 	}
 
-	public function getPath(): ?string
+	public function getPath(): string
 	{
 		return $this->path;
 	}
 
-	public function setPath(?string $path): void
+	public function setPath(string $path): void
 	{
 		$this->path = $path;
 	}

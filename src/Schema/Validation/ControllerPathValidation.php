@@ -22,7 +22,7 @@ class ControllerPathValidation implements IValidation
 		foreach ($controllers as $controller) {
 			$path = $controller->getPath();
 
-			if ($path === null) {
+			if ($path === '') {
 				throw new InvalidSchemaException(
 					sprintf('@ControllerPath in "%s" must be set.', $controller->getClass())
 				);

@@ -29,7 +29,7 @@ final class ArraySerializator implements ISerializator
 			foreach ($controller->getMethods() as $method) {
 
 				// Skip invalid methods
-				if (empty($method->getPath())) continue;
+				if ($method->getPath() === '') continue;
 
 				$endpoint = $this->serializeEndpoint($controller, $method);
 				$schema[] = $endpoint;
@@ -74,7 +74,7 @@ final class ArraySerializator implements ISerializator
 
 		// Build full id (@GroupId(s) + @ControllerId + @Id)
 		// If @Id is empty, then fullid is also empty
-		if (empty($method->getId())) {
+		if ($method->getId() === null || $method->getId() === '') {
 			$id = null;
 		} else {
 			$idp = array_merge(
@@ -199,15 +199,18 @@ final class ArraySerializator implements ISerializator
 	private function serializeMappers(array &$endpoint, Method $method): void
 	{
 		// Add request & response mappers
-		if ($method->getRequestMapper()) {
+		$requestMapper = $method->getRequestMapper();
+		if ($requestMapper !== null) {
 			$endpoint['requestMapper'] = [
-				'entity' => $method->getRequestMapper()->getEntity(),
-				'validation' => $method->getRequestMapper()->isValidation(),
+				'entity' => $requestMapper->getEntity(),
+				'validation' => $requestMapper->isValidation(),
 			];
 		}
-		if ($method->getResponseMapper()) {
+
+		$responseMapper = $method->getResponseMapper();
+		if ($responseMapper !== null) {
 			$endpoint['responseMapper'] = [
-				'entity' => $method->getResponseMapper()->getEntity(),
+				'entity' => $responseMapper->getEntity(),
 			];
 		}
 	}

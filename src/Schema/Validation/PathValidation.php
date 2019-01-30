@@ -21,7 +21,7 @@ class PathValidation implements IValidation
 		$controllers = $builder->getControllers();
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
-				if (empty($method->getPath())) {
+				if ($method->getPath() === '') {
 					throw (new InvalidSchemaException(
 						sprintf(
 							'"%s::%s()" has empty @Path.',

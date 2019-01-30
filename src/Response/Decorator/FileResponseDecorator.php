@@ -29,7 +29,7 @@ class FileResponseDecorator
 			->withHeader('Expires', '0')
 			->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
 			->withHeader('Pragma', 'public')
-			->withHeader('Content-Length', $stream->getSize())
+			->withHeader('Content-Length', (string) $stream->getSize())
 			->withBody($stream);
 	}
 

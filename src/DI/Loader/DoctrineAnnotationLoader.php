@@ -281,11 +281,11 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse @Request ================
 				if (get_class($annotation) === Request::class) {
-					/** @var Request $annotation */
-					$request = $schemaMethod->setRequest(new MethodRequest());
+					$request = new MethodRequest();
 					$request->setDescription($annotation->getDescription());
 					$request->setEntity($annotation->getEntity());
 					$request->setRequired($annotation->isRequired());
+					$schemaMethod->setRequest($request);
 					continue;
 				}
 

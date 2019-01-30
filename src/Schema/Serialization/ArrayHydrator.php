@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Schema\Serialization;
 
+use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
@@ -17,11 +18,14 @@ final class ArrayHydrator implements IHydrator
 {
 
 	/**
-	 * @param mixed[] $data
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+	 * @param mixed $data
 	 */
 	public function hydrate($data): Schema
 	{
+		if (!is_array($data)) {
+			throw new InvalidArgumentException(sprintf('%s support only arrays hydration.', static::class));
+		}
+
 		$schema = new Schema();
 
 		foreach ($data as $endpoint) {

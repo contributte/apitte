@@ -310,7 +310,7 @@ final class Endpoint
 
 	protected function generatePattern(): string
 	{
-		$rawPattern = $this->getAttribute('pattern', null);
+		$rawPattern = $this->getAttribute('pattern');
 
 		if ($rawPattern === null) {
 			throw new InvalidStateException('Pattern attribute is required');

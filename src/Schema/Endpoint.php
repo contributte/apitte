@@ -308,7 +308,7 @@ final class Endpoint
 		return Arrays::get($this->metadata, $key, $default);
 	}
 
-	protected function generatePattern(): string
+	private function generatePattern(): string
 	{
 		$rawPattern = $this->getAttribute('pattern');
 

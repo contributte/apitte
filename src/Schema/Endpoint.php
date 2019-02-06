@@ -327,10 +327,18 @@ final class Endpoint
 		}
 
 		if ($suffixes) {
-			return sprintf('#%s(?:%s)?$/?\z#A', $rawPattern, implode('|', $suffixes));
-		} else {
-			return sprintf('#%s$/?\z#A', $rawPattern);
+			return sprintf(
+				'#%s' . // Always start with raw pattern
+				'(?:%s)?$#', // Optionally contains dot followed by one of suffixes
+				$rawPattern,
+				implode('|', $suffixes)
+			);
 		}
+
+		return sprintf(
+			'#%s$#', // Exactly match raw pattern
+			$rawPattern
+		);
 	}
 
 	public function getRequestMapper(): ?EndpointRequestMapper

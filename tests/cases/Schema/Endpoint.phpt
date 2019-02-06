@@ -74,7 +74,7 @@ test(function (): void {
 	}, InvalidStateException::class, 'Pattern attribute is required');
 });
 
-// GetPattern: test pattern, with and without suffixes, without variables
+// GetPattern: test pattern - without suffixes, without variables
 test(function (): void {
 	$data = [
 		[
@@ -83,14 +83,9 @@ test(function (): void {
 			'suffixes' => [],
 		],
 		[
-			'rawPattern' => '/path/to/users',
-			'uri' => '/path/to/users.json',
-			'suffixes' => ['.json', '.xml', '.tar.gz'],
-		],
-		[
-			'rawPattern' => '/path/to/users',
-			'uri' => '/path/to/users.tar.gz',
-			'suffixes' => ['.json', '.xml', '.tar.gz'],
+			'rawPattern' => '/path/to/users\.something',
+			'uri' => '/path/to/users.something',
+			'suffixes' => [],
 		],
 	];
 
@@ -110,7 +105,46 @@ test(function (): void {
 	}
 });
 
-// GetPattern: test pattern, with and without suffixes, with variables
+// GetPattern: test pattern - with suffixes, without variables
+test(function (): void {
+	$data = [
+		[
+			'rawPattern' => '/path/to/users',
+			'uri' => '/path/to/users.json',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+			'actualSuffix' => '.json',
+		],
+		[
+			'rawPattern' => '/path/to/users',
+			'uri' => '/path/to/users.tar.gz',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+			'actualSuffix' => '.tar.gz',
+		],
+		[
+			'rawPattern' => '/path/to/users\.something',
+			'uri' => '/path/to/users.something.tar.gz',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+			'actualSuffix' => '.tar.gz',
+		],
+	];
+
+	foreach ($data as $parameters) {
+		$handler = new EndpointHandler('class', 'method');
+		$endpoint = new Endpoint($handler);
+
+		$endpoint->setAttribute('pattern', $parameters['rawPattern']);
+
+		foreach ($parameters['suffixes'] as $suffix) {
+			$negotiation = new EndpointNegotiation($suffix);
+			$endpoint->addNegotiation($negotiation);
+		}
+
+		// Test regex matches uri path
+		Assert::same([$parameters['uri'], $parameters['actualSuffix']], Regex::match($parameters['uri'], $endpoint->getPattern()));
+	}
+});
+
+// GetPattern: test pattern - without suffixes, with variables
 test(function (): void {
 	$data = [
 		[
@@ -119,14 +153,9 @@ test(function (): void {
 			'suffixes' => [],
 		],
 		[
-			'rawPattern' => '/path/to/users/(?P<id>[^/]+)',
-			'uri' => '/path/to/users/1.json',
-			'suffixes' => ['.json', '.xml', '.tar.gz'],
-		],
-		[
-			'rawPattern' => '/path/to/users/(?P<id>[^/]+)',
-			'uri' => '/path/to/users/1.tar.gz',
-			'suffixes' => ['.json', '.xml', '.tar.gz'],
+			'rawPattern' => '/path/to/users\.something/(?P<id>[^/]+)',
+			'uri' => '/path/to/users.something/1',
+			'suffixes' => [],
 		],
 	];
 
@@ -143,6 +172,45 @@ test(function (): void {
 
 		// Test regex matches uri path and find parameter
 		Assert::same([$parameters['uri'], 'id' => '1', '1'], Regex::match($parameters['uri'], $endpoint->getPattern()));
+	}
+});
+
+// GetPattern: test pattern - with suffixes, with variables
+test(function (): void {
+	$data = [
+		[
+			'rawPattern' => '/path/to/users/(?P<id>[^/]+)',
+			'uri' => '/path/to/users/1.json',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+			'actualSuffix' => '.json',
+		],
+		[
+			'rawPattern' => '/path/to/users/(?P<id>[^/]+)',
+			'uri' => '/path/to/users/1.tar.gz',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+			'actualSuffix' => '.tar.gz',
+		],
+		[
+			'rawPattern' => '/path/to/users\.something/(?P<id>[^/]+)',
+			'uri' => '/path/to/users.something/1.tar.gz',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+			'actualSuffix' => '.tar.gz',
+		],
+	];
+
+	foreach ($data as $parameters) {
+		$handler = new EndpointHandler('class', 'method');
+		$endpoint = new Endpoint($handler);
+
+		$endpoint->setAttribute('pattern', $parameters['rawPattern']);
+
+		foreach ($parameters['suffixes'] as $suffix) {
+			$negotiation = new EndpointNegotiation($suffix);
+			$endpoint->addNegotiation($negotiation);
+		}
+
+		// Test regex matches uri path and find parameter
+		Assert::same([$parameters['uri'], 'id' => '1', '1', $parameters['actualSuffix']], Regex::match($parameters['uri'], $endpoint->getPattern()));
 	}
 });
 

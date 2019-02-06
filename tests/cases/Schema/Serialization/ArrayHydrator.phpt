@@ -95,7 +95,7 @@ test(function (): void {
 	Assert::same('/group1-path/group2-path/c1-path/m2-path', $endpoint1->getMask());
 	Assert::same('/group1-path/group2-path/c1-path/m2-path', $endpoint1->getAttribute('pattern'));
 	Assert::same(null, $endpoint1->getAttribute('missing'));
-	Assert::same('#/group1-path/group2-path/c1-path/m2-path$/?\z#A', $endpoint1->getPattern());
+	Assert::same('#/group1-path/group2-path/c1-path/m2-path$#', $endpoint1->getPattern());
 	Assert::same(null, $endpoint1->getDescription());
 	Assert::same([], $endpoint1->getParameters());
 	Assert::same([], $endpoint1->getNegotiations());
@@ -121,7 +121,7 @@ test(function (): void {
 	Assert::same('/group1-path/group2-path/c1-path/m3-path/{m3-p1}', $endpoint2->getMask());
 	Assert::same('/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)', $endpoint2->getAttribute('pattern'));
 	Assert::same(null, $endpoint2->getAttribute('missing'));
-	Assert::same('#/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)(?:json|xml)?$/?\z#A', $endpoint2->getPattern());
+	Assert::same('#/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)(?:json|xml)?$#', $endpoint2->getPattern());
 	Assert::same('m3-description', $endpoint2->getDescription());
 
 	Assert::same(null, $endpoint2->getRequestMapper());

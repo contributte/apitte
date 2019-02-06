@@ -10,7 +10,9 @@ use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
+use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
+use Apitte\Core\Utils\Regex;
 use Tester\Assert;
 
 // AddMethod: success
@@ -70,6 +72,78 @@ test(function (): void {
 	Assert::exception(function () use ($endpoint): void {
 		$endpoint->getPattern();
 	}, InvalidStateException::class, 'Pattern attribute is required');
+});
+
+// GetPattern: test pattern, with and without suffixes, without variables
+test(function (): void {
+	$data = [
+		[
+			'rawPattern' => '/path/to/users',
+			'uri' => '/path/to/users',
+			'suffixes' => [],
+		],
+		[
+			'rawPattern' => '/path/to/users',
+			'uri' => '/path/to/users.json',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+		],
+		[
+			'rawPattern' => '/path/to/users',
+			'uri' => '/path/to/users.tar.gz',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+		],
+	];
+
+	foreach ($data as $parameters) {
+		$handler = new EndpointHandler('class', 'method');
+		$endpoint = new Endpoint($handler);
+
+		$endpoint->setAttribute('pattern', $parameters['rawPattern']);
+
+		foreach ($parameters['suffixes'] as $suffix) {
+			$negotiation = new EndpointNegotiation($suffix);
+			$endpoint->addNegotiation($negotiation);
+		}
+
+		// Test regex matches uri path
+		Assert::same([$parameters['uri']], Regex::match($parameters['uri'], $endpoint->getPattern()));
+	}
+});
+
+// GetPattern: test pattern, with and without suffixes, with variables
+test(function (): void {
+	$data = [
+		[
+			'rawPattern' => '/path/to/users/(?P<id>[^/]+)',
+			'uri' => '/path/to/users/1',
+			'suffixes' => [],
+		],
+		[
+			'rawPattern' => '/path/to/users/(?P<id>[^/]+)',
+			'uri' => '/path/to/users/1.json',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+		],
+		[
+			'rawPattern' => '/path/to/users/(?P<id>[^/]+)',
+			'uri' => '/path/to/users/1.tar.gz',
+			'suffixes' => ['.json', '.xml', '.tar.gz'],
+		],
+	];
+
+	foreach ($data as $parameters) {
+		$handler = new EndpointHandler('class', 'method');
+		$endpoint = new Endpoint($handler);
+
+		$endpoint->setAttribute('pattern', $parameters['rawPattern']);
+
+		foreach ($parameters['suffixes'] as $suffix) {
+			$negotiation = new EndpointNegotiation($suffix);
+			$endpoint->addNegotiation($negotiation);
+		}
+
+		// Test regex matches uri path and find parameter
+		Assert::same([$parameters['uri'], 'id' => '1', '1'], Regex::match($parameters['uri'], $endpoint->getPattern()));
+	}
 });
 
 // GetParametersByIn: empty

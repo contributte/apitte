@@ -37,6 +37,7 @@ abstract class BasicEntity extends AbstractEntity
 
 	/**
 	 * @param mixed[] $data
+	 * @return static
 	 */
 	public function factory(array $data): self
 	{
@@ -70,11 +71,17 @@ abstract class BasicEntity extends AbstractEntity
 		return $value;
 	}
 
+	/**
+	 * @return static
+	 */
 	protected function fromBodyRequest(ApiRequest $request): self
 	{
 		return $this->factory((array) $request->getJsonBody(true));
 	}
 
+	/**
+	 * @return static
+	 */
 	protected function fromGetRequest(ApiRequest $request): self
 	{
 		return $this->factory($request->getQueryParams());

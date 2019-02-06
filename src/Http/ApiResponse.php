@@ -48,6 +48,7 @@ class ApiResponse extends ProxyResponse
 
 	/**
 	 * @param mixed $value
+	 * @return static
 	 */
 	public function withAttribute(string $name, $value): self
 	{
@@ -62,6 +63,9 @@ class ApiResponse extends ProxyResponse
 		return $this->getAttribute(ResponseAttributes::ATTR_ENTITY, null);
 	}
 
+	/**
+	 * @return static
+	 */
 	public function withEntity(AbstractEntity $entity): self
 	{
 		return $this->withAttribute(ResponseAttributes::ATTR_ENTITY, $entity);
@@ -72,6 +76,9 @@ class ApiResponse extends ProxyResponse
 		return $this->getAttribute(ResponseAttributes::ATTR_ENDPOINT, null);
 	}
 
+	/**
+	 * @return static
+	 */
 	public function withEndpoint(Endpoint $endpoint): self
 	{
 		return $this->withAttribute(ResponseAttributes::ATTR_ENDPOINT, $endpoint);

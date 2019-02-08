@@ -93,12 +93,3 @@ test(function (): void {
 
 	Assert::same($response, $manager->decorateResponse(IDecorator::ON_HANDLER_AFTER, $request, $response));
 });
-
-// Decorate response exception - no decorators
-test(function (): void {
-	$manager = new DecoratorManager();
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
-
-	Assert::same(null, $manager->decorateResponse(IDecorator::ON_DISPATCHER_EXCEPTION, $request, $response));
-});

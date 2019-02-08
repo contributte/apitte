@@ -20,6 +20,7 @@ class ApiExtension extends CompilerExtension
 
 	/** @var mixed[] */
 	protected $defaults = [
+		'catchException' => true,
 		'debug' => '%debugMode%',
 		'plugins' => [
 			CoreServicesPlugin::class => [],
@@ -40,7 +41,7 @@ class ApiExtension extends CompilerExtension
 		// Initialize whole config
 		$config = $this->processConfig();
 
-		// Register all definede plugins
+		// Register all defined plugins
 		$this->pm->loadPlugins($config['plugins']);
 
 		// Load services from all plugins

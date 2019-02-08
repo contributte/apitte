@@ -2,13 +2,12 @@
 
 namespace Apitte\Core\Dispatcher;
 
+use Apitte\Core\ErrorHandler\IErrorHandler;
 use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
-use Apitte\Core\Utils\Helpers;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
 use Throwable;
 
 class WrappedDispatcher implements IDispatcher
@@ -17,17 +16,13 @@ class WrappedDispatcher implements IDispatcher
 	/** @var IDispatcher */
 	protected $inner;
 
-	/** @var LoggerInterface */
-	private $logger;
+	/** @var IErrorHandler */
+	private $errorHandler;
 
-	/** @var bool */
-	private $catchExceptions;
-
-	public function __construct(IDispatcher $inner, LoggerInterface $logger, bool $catchExceptions = false)
+	public function __construct(IDispatcher $inner, IErrorHandler $errorHandler)
 	{
 		$this->inner = $inner;
-		$this->logger = $logger;
-		$this->catchExceptions = $catchExceptions;
+		$this->errorHandler = $errorHandler;
 	}
 
 	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -41,15 +36,7 @@ class WrappedDispatcher implements IDispatcher
 			$response = $this->inner->dispatch($request, $response);
 		} catch (Throwable $exception) {
 			// Log exception
-			$this->logger->error($exception->getMessage(), ['exception' => Helpers::throwableToArray($exception)]);
-
-			// Rethrow exception if it should not be catch (debug only)
-			if (!$this->catchExceptions) {
-				if ($exception instanceof SnapshotException) {
-					throw $exception->getPrevious();
-				}
-				throw $exception;
-			}
+			$this->errorHandler->handle($exception);
 
 			// Return response from exception if possible (returned by DecoratedDispatcher)
 			if ($exception instanceof SnapshotException) {

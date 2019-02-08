@@ -2,7 +2,6 @@
 
 namespace Apitte\Core\ErrorHandler;
 
-use Apitte\Core\Utils\Helpers;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -19,7 +18,7 @@ class PsrErrorHandler extends SimpleErrorHandler
 
 	public function handle(Throwable $throwable): void
 	{
-		$this->logger->error($throwable->getMessage(), ['exception' => Helpers::throwableToArray($throwable)]);
+		$this->logger->error($throwable->getMessage(), ['exception' => $throwable]);
 
 		parent::handle($throwable);
 	}

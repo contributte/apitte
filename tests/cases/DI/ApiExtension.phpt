@@ -12,7 +12,6 @@ use Nette\DI\Container;
 use Nette\DI\ContainerLoader;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\FoobarController;
-use Tests\Fixtures\Utils\FakeLogger;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -24,9 +23,6 @@ test(function (): void {
 		$compiler->addConfig([
 			'parameters' => [
 				'debugMode' => true,
-			],
-			'services' => [
-				FakeLogger::class,
 			],
 		]);
 	}, 1);
@@ -49,7 +45,6 @@ test(function (): void {
 			],
 			'services' => [
 				FoobarController::class,
-				FakeLogger::class,
 			],
 		]);
 	}, 2);

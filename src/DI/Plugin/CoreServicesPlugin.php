@@ -4,12 +4,13 @@ namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\Dispatcher\JsonDispatcher;
 use Apitte\Core\Dispatcher\WrappedDispatcher;
+use Apitte\Core\ErrorHandler\IErrorHandler;
+use Apitte\Core\ErrorHandler\PsrErrorHandler;
 use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Schema;
-use Psr\Log\LoggerInterface;
 
 class CoreServicesPlugin extends AbstractPlugin
 {
@@ -38,8 +39,13 @@ class CoreServicesPlugin extends AbstractPlugin
 		// Catch exception only in debug mode if explicitly enabled
 		$catchException = !$globalConfig['debug'] || $globalConfig['catchException'];
 
+		$builder->addDefinition($this->prefix('errorHandler'))
+			->setFactory(PsrErrorHandler::class)
+			->setType(IErrorHandler::class)
+			->addSetup('setCatchException', [$catchException]);
+
 		$builder->addDefinition($this->prefix('dispatcher.wrapper'))
-			->setFactory(WrappedDispatcher::class, ['@' . $this->prefix('dispatcher'), '@' . LoggerInterface::class, $catchException]);
+			->setFactory(WrappedDispatcher::class, ['@' . $this->prefix('dispatcher')]);
 
 		$builder->addDefinition($this->prefix('router'))
 			->setType(IRouter::class)

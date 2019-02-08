@@ -7,8 +7,6 @@ use Throwable;
 interface IErrorHandler
 {
 
-	public function setCatchException(bool $catchException): void;
-
 	/**
 	 * Log error and rethrow if it should not be catch
 	 *

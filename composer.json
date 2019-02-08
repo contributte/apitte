@@ -32,12 +32,13 @@
     "ninjify/nunjuck": "^0.2.0",
     "mockery/mockery": "^1.1.0",
     "nette/di": "~2.4.13",
+    "psr/log": "^1.1",
     "symfony/validator": "^4.1.1",
+    "tracy/tracy": "^2.5",
     "phpstan/phpstan-shim": "^0.11",
     "phpstan/phpstan-deprecation-rules": "^0.11",
     "phpstan/phpstan-nette": "^0.11",
-    "phpstan/phpstan-strict-rules": "^0.11",
-    "psr/log": "^1.1"
+    "phpstan/phpstan-strict-rules": "^0.11"
   },
   "conflict": {
     "nette/di": "< 2.4.13",

@@ -9,6 +9,7 @@ use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Schema;
+use Psr\Log\LoggerInterface;
 
 class CoreServicesPlugin extends AbstractPlugin
 {
@@ -28,13 +29,17 @@ class CoreServicesPlugin extends AbstractPlugin
 	{
 		// Receive container builder
 		$builder = $this->getContainerBuilder();
+		$globalConfig = $this->compiler->getExtension()->getConfig();
 
 		$builder->addDefinition($this->prefix('dispatcher'))
 			->setFactory(JsonDispatcher::class)
 			->setAutowired(false);
 
+		// Catch exception only in debug mode if explicitly enabled
+		$catchException = !$globalConfig['debug'] || $globalConfig['catchException'];
+
 		$builder->addDefinition($this->prefix('dispatcher.wrapper'))
-			->setFactory(WrappedDispatcher::class, ['@' . $this->prefix('dispatcher')]);
+			->setFactory(WrappedDispatcher::class, ['@' . $this->prefix('dispatcher'), '@' . LoggerInterface::class, $catchException]);
 
 		$builder->addDefinition($this->prefix('router'))
 			->setType(IRouter::class)

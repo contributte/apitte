@@ -2,10 +2,14 @@
 
 namespace Apitte\Core\Dispatcher;
 
+use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
+use Apitte\Core\Utils\Helpers;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 class WrappedDispatcher implements IDispatcher
 {
@@ -13,9 +17,17 @@ class WrappedDispatcher implements IDispatcher
 	/** @var IDispatcher */
 	protected $inner;
 
-	public function __construct(IDispatcher $inner)
+	/** @var LoggerInterface */
+	private $logger;
+
+	/** @var bool */
+	private $catchExceptions;
+
+	public function __construct(IDispatcher $inner, LoggerInterface $logger, bool $catchExceptions = false)
 	{
 		$this->inner = $inner;
+		$this->logger = $logger;
+		$this->catchExceptions = $catchExceptions;
 	}
 
 	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -24,8 +36,26 @@ class WrappedDispatcher implements IDispatcher
 		$request = $this->createApiRequest($request);
 		$response = $this->createApiResponse($response);
 
-		// Dispatch our classes
-		$response = $this->inner->dispatch($request, $response);
+		try {
+			// Dispatch our classes
+			$response = $this->inner->dispatch($request, $response);
+		} catch (Throwable $exception) {
+			// Log exception
+			$this->logger->error($exception->getMessage(), ['exception' => Helpers::throwableToArray($exception)]);
+
+			// Rethrow exception if it should not be catch (debug only)
+			if (!$this->catchExceptions) {
+				if ($exception instanceof SnapshotException) {
+					throw $exception->getPrevious();
+				}
+				throw $exception;
+			}
+
+			// Return response from exception if possible (returned by DecoratedDispatcher)
+			if ($exception instanceof SnapshotException) {
+				return $exception->getResponse();
+			}
+		}
 
 		// Unwrap response
 		$response = $this->unwrap($response);

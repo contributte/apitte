@@ -9,8 +9,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 use Apitte\Core\Decorator\DecoratorManager;
 use Apitte\Core\Decorator\IDecorator;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
-use Apitte\Core\Exception\Api\ClientErrorException;
-use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
@@ -64,7 +63,7 @@ test(function (): void {
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$dispatcher->dispatch($request, $response);
-	}, InvalidStateException::class, sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
+	}, SnapshotException::class, sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
 });
 
 // Match request, use invalid handler, throw exception
@@ -76,7 +75,7 @@ test(function (): void {
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$dispatcher->dispatch($request, $response);
-	}, InvalidStateException::class, sprintf('If you want return anything else than "%s" from your api endpoint then install "apitte/negotiation".', ResponseInterface::class));
+	}, SnapshotException::class, sprintf('If you want return anything else than "%s" from your api endpoint then install "apitte/negotiation".', ResponseInterface::class));
 });
 
 // Match request, decorate request, throw exception, return response from exception
@@ -155,5 +154,5 @@ test(function (): void {
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$response = $dispatcher->dispatch($request, $response);
-	}, ClientErrorException::class, 'No matched route by given URL');
+	}, SnapshotException::class, 'No matched route by given URL');
 });

@@ -7,6 +7,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
+/**
+ * @method Throwable getPrevious()
+ */
 class SnapshotException extends RuntimeException
 {
 
@@ -18,7 +21,7 @@ class SnapshotException extends RuntimeException
 
 	public function __construct(Throwable $exception, ServerRequestInterface $request, ResponseInterface $response)
 	{
-		parent::__construct('', 0, $exception);
+		parent::__construct($exception->getMessage(), $exception->getCode(), $exception);
 		$this->request = $request;
 		$this->response = $response;
 	}

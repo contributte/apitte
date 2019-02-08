@@ -43,22 +43,24 @@ class DecoratedDispatcher extends CoreDispatcher
 		try {
 			// Route and call handler
 			$response = parent::dispatch($request, $response);
-		} catch (SnapshotException $e) {
-			// Mine data from snapshot
-			$request = $e->getRequest();
-			$response = $e->getResponse();
-			$e = $e->getPrevious();
 		} catch (Throwable $e) {
-			// Process exception in the next lines
-		}
 
-		if (isset($e)) {
+			// Get response from snapshot
+			if ($e instanceof SnapshotException) {
+				$request = $e->getRequest();
+				$response = $e->getResponse();
+				$e = $e->getPrevious();
+			}
+
 			// Trigger exception decorator
 			$response = $this->decoratorManager->decorateResponse(IDecorator::ON_DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
-			// Rethrow exception so WrappedDispatcher could log it and return response if possible
+
+			// Create new snapshot with response from decorator
 			if ($response !== null) {
-				throw new SnapshotException($e, $request, $response);
+				$e = new SnapshotException($e, $request, $response);
 			}
+
+			// Rethrow exception so WrappedDispatcher could log it and return response if possible
 			throw $e;
 		}
 

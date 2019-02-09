@@ -50,7 +50,7 @@ class SimpleErrorHandler implements IErrorHandler
 
 		$data = [
 			'status' => 'error',
-			'code' => $error->getCode(),
+			'code' => $code,
 			'message' => $error->getMessage(),
 		];
 

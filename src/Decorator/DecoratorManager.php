@@ -44,6 +44,9 @@ class DecoratorManager
 	{
 		$decorators = $this->decorators[$type] ?? [];
 
+		// If there is no exception handler defined so return null (and exception will be thrown in DecoratedDispatcher)
+		if ($type === IDecorator::ON_DISPATCHER_EXCEPTION && $decorators === []) return null;
+
 		foreach ($decorators as $decorator) {
 			/** @var ResponseInterface|null $response */
 			$response = $decorator->decorate($request, $response, $context);

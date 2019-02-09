@@ -55,13 +55,13 @@ class DecoratedDispatcher extends CoreDispatcher
 			// Trigger exception decorator
 			$response = $this->decoratorManager->decorateResponse(IDecorator::ON_DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
 
-			// Create new snapshot with response from decorator
-			if ($response !== null) {
-				$e = new SnapshotException($e, $request, $response);
+			// Rethrow exception so error could be logged and transformed into response by error handler
+			if ($response === null) {
+				throw $e;
 			}
 
-			// Rethrow exception so WrappedDispatcher could log it and return response if possible
-			throw $e;
+			// Rethrow error with response from decorator so error could be logged and response returned
+			throw new SnapshotException($e, $request, $response);
 		}
 
 		return $response;

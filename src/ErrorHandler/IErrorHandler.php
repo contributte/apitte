@@ -2,16 +2,15 @@
 
 namespace Apitte\Core\ErrorHandler;
 
+use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 interface IErrorHandler
 {
 
 	/**
-	 * Log error and rethrow if it should not be catch
-	 *
-	 * @throws Throwable
+	 * Log error and generate response
 	 */
-	public function handle(Throwable $throwable): void;
+	public function handle(Throwable $error): ResponseInterface;
 
 }

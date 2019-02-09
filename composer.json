@@ -24,6 +24,7 @@
   ],
   "require": {
     "php": ">= 7.1",
+    "ext-json": "*",
     "contributte/psr7-http-message": "^0.5.1",
     "contributte/phpdoc": "^0.2"
   },

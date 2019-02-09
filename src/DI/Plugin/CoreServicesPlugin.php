@@ -5,16 +5,14 @@ namespace Apitte\Core\DI\Plugin;
 use Apitte\Core\Dispatcher\JsonDispatcher;
 use Apitte\Core\Dispatcher\WrappedDispatcher;
 use Apitte\Core\ErrorHandler\IErrorHandler;
-use Apitte\Core\ErrorHandler\PsrErrorHandler;
+use Apitte\Core\ErrorHandler\PsrLogErrorHandler;
 use Apitte\Core\ErrorHandler\SimpleErrorHandler;
-use Apitte\Core\ErrorHandler\TracyErrorHandler;
 use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Schema;
 use Psr\Log\LoggerInterface;
-use Tracy\ILogger;
 
 class CoreServicesPlugin extends AbstractPlugin
 {
@@ -49,10 +47,8 @@ class CoreServicesPlugin extends AbstractPlugin
 			->addSetup('setCatchException', [$catchException]);
 
 		// Set handler with logging, if logger available
-		if ($builder->findByType(ILogger::class) !== []) {
-			$errorHandler->setFactory(TracyErrorHandler::class);
-		} elseif ($builder->findByType(LoggerInterface::class) !== []) {
-			$errorHandler->setFactory(PsrErrorHandler::class);
+		if ($builder->findByType(LoggerInterface::class) !== []) {
+			$errorHandler->setFactory(PsrLogErrorHandler::class);
 		}
 
 		$builder->addDefinition($this->prefix('dispatcher.wrapper'))

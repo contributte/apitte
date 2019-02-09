@@ -51,7 +51,7 @@ class SimpleErrorHandler implements IErrorHandler
 		$data = [
 			'status' => 'error',
 			'code' => $code,
-			'message' => $error->getMessage(),
+			'message' => $error instanceof ApiResponse ? $error->getMessage() : 'Application encountered an internal error. Please try again later.',
 		];
 
 		if ($error instanceof ApiException && $error->getContext() !== null) {

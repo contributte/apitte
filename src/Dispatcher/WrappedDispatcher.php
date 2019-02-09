@@ -3,7 +3,6 @@
 namespace Apitte\Core\Dispatcher;
 
 use Apitte\Core\ErrorHandler\IErrorHandler;
-use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -35,13 +34,8 @@ class WrappedDispatcher implements IDispatcher
 			// Dispatch our classes
 			$response = $this->inner->dispatch($request, $response);
 		} catch (Throwable $exception) {
-			// Log exception
-			$this->errorHandler->handle($exception);
-
-			// Return response from exception if possible (returned by DecoratedDispatcher)
-			if ($exception instanceof SnapshotException) {
-				return $exception->getResponse();
-			}
+			// Process exception so it could be logged and transformed into response
+			$response = $this->errorHandler->handle($exception);
 		}
 
 		// Unwrap response

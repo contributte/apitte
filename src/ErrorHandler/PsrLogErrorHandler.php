@@ -2,10 +2,12 @@
 
 namespace Apitte\Core\ErrorHandler;
 
+use Apitte\Core\Exception\ApiException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class PsrErrorHandler extends SimpleErrorHandler
+class PsrLogErrorHandler extends SimpleErrorHandler
 {
 
 	/** @var LoggerInterface */
@@ -16,11 +18,14 @@ class PsrErrorHandler extends SimpleErrorHandler
 		$this->logger = $logger;
 	}
 
-	public function handle(Throwable $throwable): void
+	public function handle(Throwable $error): ResponseInterface
 	{
-		$this->logger->error($throwable->getMessage(), ['exception' => $throwable]);
+		// Log exception only if it's not designed to be displayed
+		if (!($error instanceof ApiException)) {
+			$this->logger->error($error->getMessage(), ['exception' => $error]);
+		}
 
-		parent::handle($throwable);
+		return parent::handle($error);
 	}
 
 }

@@ -90,7 +90,6 @@ final class ArraySerializator implements ISerializator
 			'handler' => [
 				'class' => $controller->getClass(),
 				'method' => $method->getName(),
-				'arguments' => $method->getArguments(),
 			],
 			'id' => $id,
 			'tags' => array_merge($controller->getTags(), $method->getTags()),

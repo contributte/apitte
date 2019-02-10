@@ -25,9 +25,6 @@ final class Method
 	/** @var mixed[] */
 	private $tags = [];
 
-	/** @var string[] */
-	private $arguments = [];
-
 	/** @var MethodRequest|null */
 	private $request;
 
@@ -144,29 +141,6 @@ final class Method
 		foreach ($tags as $name => $value) {
 			$this->addTag($name, $value);
 		}
-	}
-
-	public function addArgument(string $name, string $type): void
-	{
-		$this->arguments[$name] = $type;
-	}
-
-	/**
-	 * @param mixed[] $arguments
-	 */
-	public function addArguments(array $arguments): void
-	{
-		foreach ($arguments as $name => $type) {
-			$this->addArgument($name, $type);
-		}
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public function getArguments(): array
-	{
-		return $this->arguments;
 	}
 
 	public function addParameter(string $name, string $type = EndpointParameter::TYPE_STRING): MethodParameter

@@ -49,7 +49,6 @@ final class ArrayHydrator implements IHydrator
 			$data['handler']['class'],
 			$data['handler']['method']
 		);
-		$handler->setArguments($data['handler']['arguments']);
 
 		$endpoint = new Endpoint($handler);
 		$endpoint->setMethods($data['methods']);

@@ -4,7 +4,6 @@ namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
 use Apitte\Core\DI\Loader\NeonLoader;
-use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
@@ -19,22 +18,29 @@ use Apitte\Core\Schema\Validation\RequestMapperValidation;
 use Apitte\Core\Schema\Validation\RequestParameterValidation;
 use Apitte\Core\Schema\Validation\ResponseMapperValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
+use Nette\DI\Config\Adapters\NeonAdapter;
+use Nette\Utils\Arrays;
 
 class CoreSchemaPlugin extends AbstractPlugin
 {
 
 	public const PLUGIN_NAME = 'schema';
 
-	// Loader types
-	public const LOADERS = ['annotations', 'neon', 'php'];
-
 	/** @var IDecorator[] */
 	public static $decorators = [];
 
 	/** @var mixed[] */
 	protected $defaults = [
-		'loader' => 'annotations',
-        'schema' => [],
+		'loaders' => [
+			'annotations' => [
+				'enable' => true,
+			],
+			'neon' => [
+				'enable' => false,
+				'files' => [],
+			],
+		],
+		'schema' => [],
 		'validations' => [
 			'controllerPath' => ControllerPathValidation::class,
 			'fullPath' => FullpathValidation::class,
@@ -95,23 +101,32 @@ class CoreSchemaPlugin extends AbstractPlugin
 
 	protected function loadSchema(SchemaBuilder $builder): SchemaBuilder
 	{
-		// Load schema from...
-		if ($this->config['loader'] === 'annotations') {
+		$loaders = $this->config['loaders'];
+
+		//TODO - resolve limitation - Controller defined by one of loaders cannot be modified by other loaders
+
+		if ($loaders['annotations']['enable'] === true) {
 			$loader = new DoctrineAnnotationLoader($this->getContainerBuilder());
 
-			return $loader->load($builder);
+			$builder = $loader->load($builder);
 		}
 
-		if ($this->config['loader'] === 'neon') {
-			$loader = new NeonLoader($this->config['schema']);
-			return $loader->load($builder);
+		if ($loaders['neon']['enable'] === true) {
+			// Expand path to files
+			$files = $this->compiler->getExtension()->validateConfig($loaders['neon']['files']);
+
+			// Load schema from files
+			$adapter = new NeonAdapter();
+			$schema = [];
+			foreach ($files as $file) {
+				$schema = Arrays::mergeTree($schema, $adapter->load($file));
+			}
+
+			$loader = new NeonLoader($schema);
+			$builder = $loader->load($builder);
 		}
 
-		if ($this->config['loader'] === 'php') {
-			throw new InvalidStateException('Not implemented');
-		}
-
-		throw new InvalidStateException('Unknown loader type');
+		return $builder;
 	}
 
 	protected function validateSchema(SchemaBuilder $builder): SchemaBuilder

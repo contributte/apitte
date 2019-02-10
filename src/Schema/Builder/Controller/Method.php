@@ -169,9 +169,6 @@ final class Method
 		return $this->arguments;
 	}
 
-	/**
-	 * @internal
-	 */
 	public function addParameter(string $name, string $type = EndpointParameter::TYPE_STRING): MethodParameter
 	{
 		$parameter = new MethodParameter($name, $type);

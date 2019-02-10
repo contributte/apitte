@@ -25,7 +25,6 @@ use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Nette\Reflection\ClassType;
-use Nette\Utils\Reflection;
 
 final class DoctrineAnnotationLoader extends AbstractContainerLoader
 {
@@ -320,12 +319,6 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 					$schemaMethod->setResponseMapper($annotation->getEntity());
 					continue;
 				}
-			}
-
-			// Parse method typed parameters
-			foreach ($method->getParameters() as $parameter) {
-				$type = Reflection::getParameterType($parameter);
-				$schemaMethod->addArgument($parameter->getName(), $type);
 			}
 		}
 	}

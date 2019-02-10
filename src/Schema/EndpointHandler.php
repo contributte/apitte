@@ -11,9 +11,6 @@ final class EndpointHandler
 	/** @var string */
 	private $method;
 
-	/** @var mixed[] */
-	private $arguments = [];
-
 	public function __construct(string $class, string $method)
 	{
 		$this->class = $class;
@@ -28,22 +25,6 @@ final class EndpointHandler
 	public function getMethod(): string
 	{
 		return $this->method;
-	}
-
-	/**
-	 * @return mixed[]
-	 */
-	public function getArguments(): array
-	{
-		return $this->arguments;
-	}
-
-	/**
-	 * @param mixed[] $arguments
-	 */
-	public function setArguments(array $arguments): void
-	{
-		$this->arguments = $arguments;
 	}
 
 }

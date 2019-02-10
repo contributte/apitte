@@ -9,7 +9,6 @@ require_once __DIR__ . '/../../../bootstrap.php';
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
-use Contributte\Psr7\Psr7Response;
 use Tester\Assert;
 
 // AddMethod: success
@@ -113,7 +112,6 @@ test(function (): void {
 	$handler1 = $endpoint1->getHandler();
 	Assert::same('c1-class', $handler1->getClass());
 	Assert::same('m2', $handler1->getMethod());
-	Assert::same([], $handler1->getArguments());
 
 	// Endpoint 2
 	$endpoint2 = $endpoints[1];
@@ -133,7 +131,6 @@ test(function (): void {
 	$handler2 = $endpoint2->getHandler();
 	Assert::same('c1-class', $handler2->getClass());
 	Assert::same('m3', $handler2->getMethod());
-	Assert::same(['m3-a1' => Psr7Response::class], $handler2->getArguments());
 
 	$parameters2 = $endpoint2->getParameters();
 	Assert::count(2, $parameters2);

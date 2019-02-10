@@ -12,7 +12,6 @@ use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
-use Contributte\Psr7\Psr7Response;
 use Tester\Assert;
 
 // Serialize: success
@@ -47,7 +46,6 @@ test(function (): void {
 	$m3->addTag('m3-t1');
 	$m3->addTag('m3-t2', 'm3-t2-value');
 	$m3->setDescription('m3-description');
-	$m3->addArgument('m3-a1', Psr7Response::class);
 
 	$m3r = new MethodRequest();
 	$m3r->setRequired(true);
@@ -79,7 +77,7 @@ test(function (): void {
 
 	$expected = [
 		[
-			'handler' => ['class' => 'c1-class', 'method' => 'm2', 'arguments' => []],
+			'handler' => ['class' => 'c1-class', 'method' => 'm2'],
 			'id' => null,
 			'tags' => ['c1-t1' => 'c1-t1-value'],
 			'methods' => ['GET', 'POST', 'PUT'],
@@ -102,7 +100,6 @@ test(function (): void {
 			'handler' => [
 				'class' => 'c1-class',
 				'method' => 'm3',
-				'arguments' => ['m3-a1' => 'Contributte\\Psr7\\Psr7Response'],
 			],
 			'id' => 'c1-group-id.c1-id.m3-id',
 			'tags' => ['c1-t1' => 'c1-t1-value', 'm3-t1' => null, 'm3-t2' => 'm3-t2-value'],

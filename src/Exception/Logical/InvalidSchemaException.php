@@ -18,7 +18,7 @@ final class InvalidSchemaException extends LogicalException
 	/**
 	 * @return static
 	 */
-	public function withController(Controller $controller)
+	public function withController(Controller $controller): self
 	{
 		$this->controller = $controller;
 
@@ -28,7 +28,7 @@ final class InvalidSchemaException extends LogicalException
 	/**
 	 * @return static
 	 */
-	public function withMethod(Method $method)
+	public function withMethod(Method $method): self
 	{
 		$this->method = $method;
 

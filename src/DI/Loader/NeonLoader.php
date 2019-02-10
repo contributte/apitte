@@ -4,6 +4,7 @@ namespace Apitte\Core\DI\Loader;
 
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\Controller\Method;
+use Apitte\Core\Schema\Builder\Controller\MethodRequest;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\EndpointParameter;
 
@@ -11,7 +12,7 @@ class NeonLoader implements ILoader
 {
 
 	/** @var mixed[] */
-	private $schema = [];
+	private $schema;
 
 	/**
 	 * @param mixed[] $schema
@@ -24,52 +25,119 @@ class NeonLoader implements ILoader
 	public function load(SchemaBuilder $builder): SchemaBuilder
 	{
 		foreach ($this->schema as $class => $settings) {
-			$schemaController = $builder->addController($class);
-			$schemaController->setId($settings['id'] ?? null);
-			$schemaController->setPath($settings['path']);
-			$this->addControllerMethods($schemaController, $settings);
-			$schemaController->addTags($settings['tags'] ?? []);
-			$schemaController->setGroupIds($settings['groupIds'] ?? []);
-			$schemaController->setGroupPaths($settings['groupPaths'] ?? []);
+			$controller = $builder->addController($class);
+			$controller->setId($settings['id'] ?? null);
+			$controller->setPath($settings['path'] ?? '');
+			$controller->setGroupIds($settings['groupIds'] ?? []);
+			$controller->setGroupPaths($settings['groupPaths'] ?? []);
+			$controller->addTags($settings['tags'] ?? []);
+			$controller->setOpenApi($settings['openapi'] ?? []);
+			$this->addControllerMethods($controller, $settings['methods'] ?? []);
 		}
 		return $builder;
 	}
 
 	/**
-	 * @param mixed[] $settings
+	 * @param mixed[] $methodsSettings
 	 */
-	private function addControllerMethods(Controller $schemaController, array $settings): void
+	private function addControllerMethods(Controller $controller, array $methodsSettings): void
 	{
-		if (!isset($settings['methods'])) {
-			return;
-		}
-		foreach ($settings['methods'] as $methodName => $methodSettings) {
-			$method = $schemaController->addMethod($methodName);
-			$method->setId($methodSettings['id'] ?? null);
-			$method->addMethods($methodSettings['methods'] ?? []);
-			$method->setPath($methodSettings['path']);
-			$method->setDescription($methodSettings['description'] ?? '');
-			$method->addTags($methodSettings['tags'] ?? []);
-			$this->setMethodParameters($method, $methodSettings);
+		foreach ($methodsSettings as $name => $settings) {
+			$method = $controller->addMethod($name);
+			$method->setId($settings['id'] ?? null);
+			$method->setPath($settings['path'] ?? '');
+			$method->setDescription($settings['description'] ?? '');
+			$method->addMethods($settings['methods'] ?? []);
+			$method->addTags($settings['tags'] ?? []);
+			$method->setOpenApi($settings['openapi'] ?? []);
+			$this->setMethodParameters($method, $settings['parameters'] ?? []);
+			$this->setNegotiations($method, $settings['negotiations'] ?? []);
+			$this->setRequest($method, $settings['request'] ?? null);
+			$this->setRequestMapper($method, $settings['requestMapper'] ?? null);
+			$this->setResponses($method, $settings['responses'] ?? null);
+			$this->setResponseMapper($method, $settings['responseMapper'] ?? null);
 		}
 	}
 
 	/**
-	 * @param mixed[] $methodSettings
+	 * @param mixed[] $parametersSettings
 	 */
-	private function setMethodParameters(Method $method, array $methodSettings): void
+	private function setMethodParameters(Method $method, array $parametersSettings): void
 	{
-		if (!isset($methodSettings['parameters'])) {
+		foreach ($parametersSettings as $name => $settings) {
+			$parameter = $method->addParameter($name, $settings['type'] ?? EndpointParameter::TYPE_STRING);
+			$parameter->setIn($settings['in'] ?? EndpointParameter::IN_PATH);
+			$parameter->setDescription($settings['description'] ?? null);
+			$parameter->setRequired($settings['required'] ?? true);
+			$parameter->setAllowEmpty($settings['allowEmpty'] ?? false);
+			$parameter->setDeprecated($settings['deprecated'] ?? false);
+		}
+	}
+
+	/**
+	 * @param mixed[] $negotiationsSettings
+	 */
+	private function setNegotiations(Method $method, array $negotiationsSettings): void
+	{
+		foreach ($negotiationsSettings as $suffix => $settings) {
+			$negotiation = $method->addNegotiation($suffix);
+			$negotiation->setDefault($settings['default'] ?? false);
+			$negotiation->setRenderer($settings['renderer'] ?? null);
+		}
+	}
+
+	/**
+	 * @param mixed[]|null $requestSettings
+	 */
+	private function setRequest(Method $method, ?array $requestSettings): void
+	{
+		if ($requestSettings === null) {
 			return;
 		}
-		foreach ($methodSettings['parameters'] as $parameterName => $parameterSettings) {
-			$parameter = $method->addParameter($parameterName, $parameterSettings['type'] ?? EndpointParameter::TYPE_STRING);
-			$parameter->setIn($parameterSettings['in'] ?? EndpointParameter::IN_PATH);
-			$parameter->setDescription($parameterSettings['description'] ?? null);
-			$parameter->setRequired(isset($parameterSettings['required']) ? (bool) $parameterSettings['required'] : true);
-			$parameter->setAllowEmpty(isset($parameterSettings['allowEmpty']) ? (bool) $parameterSettings['allowEmpty'] : false);
-			$parameter->setDeprecated(isset($parameterSettings['deprecated']) ? (bool) $parameterSettings['deprecated'] : false);
+
+		$request = new MethodRequest();
+
+		$request->setRequired($requestSettings['required'] ?? false);
+		$request->setDescription($requestSettings['description'] ?? null);
+		$request->setEntity($requestSettings['entity'] ?? null);
+
+		$method->setRequest($request);
+	}
+
+	/**
+	 * @param mixed[]|null $requestMapperSettings
+	 */
+	private function setRequestMapper(Method $method, ?array $requestMapperSettings): void
+	{
+		if ($requestMapperSettings === null) {
+			return;
 		}
+		$method->setRequestMapper($requestMapperSettings['entity'], $requestMapperSettings['validation'] ?? true);
+	}
+
+	/**
+	 * @param mixed[]|null $responses
+	 */
+	private function setResponses(Method $method, ?array $responses): void
+	{
+		if ($responses === null) {
+			return;
+		}
+
+		foreach ($responses as $response) {
+			$method->addResponse($response['code'], $response['description'] ?? '');
+		}
+	}
+
+	/**
+	 * @param mixed[]|null $responseMapperSettings
+	 */
+	private function setResponseMapper(Method $method, ?array $responseMapperSettings): void
+	{
+		if ($responseMapperSettings === null) {
+			return;
+		}
+		$method->setResponseMapper($responseMapperSettings['entity']);
 	}
 
 }

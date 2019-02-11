@@ -16,21 +16,10 @@ test(function (): void {
 		'value' => 'FakeGroupPath',
 	]);
 	Assert::same('FakeGroupPath', $path->getPath());
-
-	$path = new GroupPath([
-		'path' => 'FakeGroupPath',
-	]);
-	Assert::equal('FakeGroupPath', $path->getPath());
 });
 
 // Exception - empty path
 test(function (): void {
-	Assert::exception(function (): void {
-		new GroupPath([
-			'path' => '',
-		]);
-	}, AnnotationException::class, 'Empty @GroupPath given');
-
 	Assert::exception(function (): void {
 		new GroupPath([
 			'value' => '',

@@ -13,7 +13,7 @@ final class Response
 {
 
 	/** @var string */
-	private $code = 'default';
+	private $code;
 
 	/** @var string */
 	private $description;
@@ -26,12 +26,18 @@ final class Response
 	 */
 	public function __construct(array $values)
 	{
-		if (!isset($values['description']) || empty($values['description'])) {
+		if (!isset($values['description'])) {
+			throw new AnnotationException('No @Response description given');
+		}
+
+		$description = $values['description'];
+		if ($description === null || $description === '') {
 			throw new AnnotationException('Empty @Response description given');
 		}
+
 		$this->code = $values['code'] ?? 'default';
 		$this->entity = $values['entity'] ?? null;
-		$this->description = $values['description'];
+		$this->description = $description;
 	}
 
 	public function getDescription(): string

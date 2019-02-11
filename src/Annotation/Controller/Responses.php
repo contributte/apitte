@@ -20,27 +20,34 @@ final class Responses
 	 */
 	public function __construct(array $values)
 	{
-		if (isset($values['value'])) {
-			if (empty($values['value'])) {
-				throw new AnnotationException('Empty @Responses given');
-			}
-			$this->responses = is_array($values['value']) ? $values['value'] : [$values['value']];
-		} else {
+		if (!isset($values['value'])) {
 			throw new AnnotationException('No @Response given in @Responses');
 		}
 
+		$responses = $values['value'];
+		if ($responses === []) {
+			throw new AnnotationException('Empty @Responses given');
+		}
+
+		// Wrap single given response into array
+		if (!is_array($responses)) {
+			$responses = [$responses];
+		}
+
 		$takenCodes = [];
-		/** @var Response $value */
-		foreach ($values['value'] as $value) {
-			if (!isset($takenCodes[$value->getCode()])) {
-				$takenCodes[$value->getCode()] = $value;
+		/** @var Response $response */
+		foreach ($responses as $response) {
+			if (!isset($takenCodes[$response->getCode()])) {
+				$takenCodes[$response->getCode()] = $response;
 			} else {
 				throw new AnnotationException(sprintf(
 					'Multiple @Response annotations with "code=%s" given. Each response must have unique code.',
-					$value->getCode()
+					$response->getCode()
 				));
 			}
 		}
+
+		$this->responses = $responses;
 	}
 
 	/**

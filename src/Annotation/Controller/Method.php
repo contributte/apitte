@@ -20,21 +20,21 @@ final class Method
 	 */
 	public function __construct(array $values)
 	{
-		if (isset($values['value'])) {
-			if (is_array($values['value'])) {
-				$this->methods = $values['value'];
-			} elseif (is_string($values['value']) && !empty($values['value'])) {
-				$this->methods = [$values['value']];
-			} else {
-				throw new AnnotationException('Invalid @Method given');
-			}
-		} elseif (isset($values['methods']) && !empty($values['methods'])) {
-			$this->methods = $values['methods'];
-		} elseif (isset($values['method'])) {
-			$this->methods = [$values['method']];
-		} else {
+		if (!isset($values['value'])) {
 			throw new AnnotationException('No @Method given');
 		}
+
+		$methods = $values['value'];
+		if ($methods === [] || $methods === null || $methods === '') {
+			throw new AnnotationException('Empty @Method given');
+		}
+
+		// Wrap single given method into array
+		if (!is_array($methods)) {
+			$methods = [$methods];
+		}
+
+		$this->methods = $methods;
 	}
 
 	/**

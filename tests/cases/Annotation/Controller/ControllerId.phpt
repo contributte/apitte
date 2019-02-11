@@ -16,21 +16,10 @@ test(function (): void {
 		'value' => 'controller',
 	]);
 	Assert::same('controller', $controller->getName());
-
-	$controller = new ControllerId([
-		'name' => 'controller',
-	]);
-	Assert::same('controller', $controller->getName());
 });
 
 // Exception - no name
 test(function (): void {
-	Assert::exception(function (): void {
-		new ControllerId([
-			'name' => '',
-		]);
-	}, AnnotationException::class, 'Empty @ControllerId given');
-
 	Assert::exception(function (): void {
 		new ControllerId([
 			'value' => '',

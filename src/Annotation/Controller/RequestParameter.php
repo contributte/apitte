@@ -39,16 +39,26 @@ final class RequestParameter
 	 */
 	public function __construct(array $values)
 	{
-		if (!isset($values['name']) || empty($values['name'])) {
+		if (!isset($values['name'])) {
+			throw new AnnotationException('No @RequestParameter name given');
+		}
+
+		$name = $values['name'];
+		if ($name === null || $name === '') {
 			throw new AnnotationException('Empty @RequestParameter name given');
 		}
 
-		if (!isset($values['type']) || empty($values['type'])) {
+		if (!isset($values['type'])) {
+			throw new AnnotationException('No @RequestParameter type given');
+		}
+
+		$type = $values['type'];
+		if ($type === null || $type === '') {
 			throw new AnnotationException('Empty @RequestParameter type given');
 		}
 
-		$this->name = $values['name'];
-		$this->type = $values['type'];
+		$this->name = $name;
+		$this->type = $type;
 		$this->required = $values['required'] ?? true;
 		$this->allowEmpty = $values['allowEmpty'] ?? false;
 		$this->deprecated = $values['deprecated'] ?? false;

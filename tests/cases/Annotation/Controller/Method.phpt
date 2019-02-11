@@ -10,34 +10,26 @@ use Tester\Assert;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-// Value
+// Ok
 test(function (): void {
 	$method = new Method(['value' => 'GET']);
 	Assert::equal(['GET'], $method->getMethods());
 
 	$method = new Method(['value' => ['GET', 'POST']]);
 	Assert::equal(['GET', 'POST'], $method->getMethods());
-
-	Assert::exception(function (): void {
-		new Method(['value' => 0]);
-	}, AnnotationException::class, 'Invalid @Method given');
 });
 
-// Methods
-test(function (): void {
-	$method = new Method(['methods' => ['GET', 'POST']]);
-	Assert::equal(['GET', 'POST'], $method->getMethods());
-});
-
-// Method
-test(function (): void {
-	$method = new Method(['method' => 'GET']);
-	Assert::equal(['GET'], $method->getMethods());
-});
-
-// Fails
+// Empty method
 test(function (): void {
 	Assert::exception(function (): void {
 		new Method([]);
 	}, AnnotationException::class, 'No @Method given');
+
+	Assert::exception(function (): void {
+		new Method(['value' => []]);
+	}, AnnotationException::class, 'Empty @Method given');
+
+	Assert::exception(function (): void {
+		new Method(['value' => '']);
+	}, AnnotationException::class, 'Empty @Method given');
 });

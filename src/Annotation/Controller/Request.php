@@ -18,7 +18,7 @@ final class Request
 	private $entity;
 
 	/** @var bool */
-	private $required = false;
+	private $required;
 
 	/**
 	 * @param mixed[] $values
@@ -27,9 +27,7 @@ final class Request
 	{
 		$this->description = $values['description'] ?? null;
 		$this->entity = $values['entity'] ?? null;
-		if (isset($values['required']) && $values['required'] === true) {
-			$this->required = true;
-		}
+		$this->required = $values['required'] ?? false;
 	}
 
 	public function getEntity(): ?string

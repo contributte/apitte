@@ -31,7 +31,7 @@ test(function (): void {
 test(function (): void {
 	Assert::exception(function (): void {
 		new RequestMapper([]);
-	}, AnnotationException::class, 'Empty @RequestMapper entity given');
+	}, AnnotationException::class, 'No @RequestMapper entity given');
 
 	Assert::exception(function (): void {
 		new RequestMapper([

@@ -20,19 +20,16 @@ final class ControllerId
 	 */
 	public function __construct(array $values)
 	{
-		if (isset($values['value'])) {
-			if (empty($values['value'])) {
-				throw new AnnotationException('Empty @ControllerId given');
-			}
-			$this->name = $values['value'];
-		} elseif (isset($values['name'])) {
-			if (empty($values['name'])) {
-				throw new AnnotationException('Empty @ControllerId given');
-			}
-			$this->name = $values['name'];
-		} else {
+		if (!isset($values['value'])) {
 			throw new AnnotationException('No @ControllerId given');
 		}
+
+		$value = $values['value'];
+		if ($value === null || $value === '') {
+			throw new AnnotationException('Empty @ControllerId given');
+		}
+
+		$this->name = $value;
 	}
 
 	public function getName(): string

@@ -23,7 +23,7 @@ test(function (): void {
 test(function (): void {
 	Assert::exception(function (): void {
 		new ResponseMapper([]);
-	}, AnnotationException::class, 'Empty @ResponseMapper entity given');
+	}, AnnotationException::class, 'No @ResponseMapper entity given');
 
 	Assert::exception(function (): void {
 		new ResponseMapper([

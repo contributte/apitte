@@ -32,7 +32,7 @@ final class FoobarController extends ApiV1Controller
 
 	/**
 	 * @Path("/baz2")
-	 * @Method(methods={"PUT"})
+	 * @Method({"PUT"})
 	 */
 	public function baz3(ApiRequest $request, ApiResponse $response): void
 	{

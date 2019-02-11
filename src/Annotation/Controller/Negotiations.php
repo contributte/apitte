@@ -20,14 +20,21 @@ final class Negotiations
 	 */
 	public function __construct(array $values)
 	{
-		if (isset($values['value'])) {
-			if (empty($values['value'])) {
-				throw new AnnotationException('Empty @Negotiations given');
-			}
-			$this->negotiations = is_array($values['value']) ? $values['value'] : [$values['value']];
-		} else {
+		if (!isset($values['value'])) {
 			throw new AnnotationException('No @Negotiation given in @Negotiations');
 		}
+
+		$negotiations = $values['value'];
+		if ($negotiations === []) {
+			throw new AnnotationException('Empty @Negotiations given');
+		}
+
+		// Wrap single given request parameter into array
+		if (!is_array($negotiations)) {
+			$negotiations = [$negotiations];
+		}
+
+		$this->negotiations = $negotiations;
 	}
 
 	/**

@@ -16,21 +16,10 @@ test(function (): void {
 		'value' => 'FakePath',
 	]);
 	Assert::same('FakePath', $path->getPath());
-
-	$path = new Path([
-		'path' => 'FakePath',
-	]);
-	Assert::equal('FakePath', $path->getPath());
 });
 
 // Exception - empty path
 test(function (): void {
-	Assert::exception(function (): void {
-		new Path([
-			'path' => '',
-		]);
-	}, AnnotationException::class, 'Empty @Path given');
-
 	Assert::exception(function (): void {
 		new Path([
 			'value' => '',

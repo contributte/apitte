@@ -20,28 +20,35 @@ final class RequestParameters
 	 */
 	public function __construct(array $values)
 	{
-		if (isset($values['value'])) {
-			if (empty($values['value'])) {
-				throw new AnnotationException('Empty @RequestParameters given');
-			}
-			$this->parameters = is_array($values['value']) ? $values['value'] : [$values['value']];
-		} else {
+		if (!isset($values['value'])) {
 			throw new AnnotationException('No @RequestParameter given in @RequestParameters');
 		}
 
+		$parameters = $values['value'];
+		if ($parameters === []) {
+			throw new AnnotationException('Empty @RequestParameters given');
+		}
+
+		// Wrap single given request parameter into array
+		if (!is_array($parameters)) {
+			$parameters = [$parameters];
+		}
+
 		$takenNames = [];
-		/** @var RequestParameter $value */
-		foreach ($values['value'] as $value) {
-			if (!isset($takenNames[$value->getIn()][$value->getName()])) {
-				$takenNames[$value->getIn()][$value->getName()] = $value;
+		/** @var RequestParameter $parameter */
+		foreach ($parameters as $parameter) {
+			if (!isset($takenNames[$parameter->getIn()][$parameter->getName()])) {
+				$takenNames[$parameter->getIn()][$parameter->getName()] = $parameter;
 			} else {
 				throw new AnnotationException(sprintf(
 					'Multiple @RequestParameter annotations with "name=%s" and "in=%s" given. Each parameter must have unique combination of location and name.',
-					$value->getName(),
-					$value->getIn()
+					$parameter->getName(),
+					$parameter->getIn()
 				));
 			}
 		}
+
+		$this->parameters = $parameters;
 	}
 
 	/**

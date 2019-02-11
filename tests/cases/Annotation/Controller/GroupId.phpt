@@ -16,21 +16,10 @@ test(function (): void {
 		'value' => 'group',
 	]);
 	Assert::same('group', $group->getName());
-
-	$group = new GroupId([
-		'name' => 'group',
-	]);
-	Assert::same('group', $group->getName());
 });
 
 // Exception - no name
 test(function (): void {
-	Assert::exception(function (): void {
-		new GroupId([
-			'name' => '',
-		]);
-	}, AnnotationException::class, 'Empty @GroupId given');
-
 	Assert::exception(function (): void {
 		new GroupId([
 			'value' => '',

@@ -30,7 +30,7 @@ test(function (): void {
 test(function (): void {
 	Assert::exception(function (): void {
 		new RequestParameter([]);
-	}, AnnotationException::class, 'Empty @RequestParameter name given');
+	}, AnnotationException::class, 'No @RequestParameter name given');
 
 	Assert::exception(function (): void {
 		new RequestParameter([
@@ -39,13 +39,13 @@ test(function (): void {
 	}, AnnotationException::class, 'Empty @RequestParameter name given');
 });
 
-// Exception - no type nor description
+// Exception - no type
 test(function (): void {
 	Assert::exception(function (): void {
 		new RequestParameter([
 			'name' => 'Param',
 		]);
-	}, AnnotationException::class, 'Empty @RequestParameter type given');
+	}, AnnotationException::class, 'No @RequestParameter type given');
 
 	Assert::exception(function (): void {
 		new RequestParameter([

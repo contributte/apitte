@@ -27,11 +27,12 @@ final class Tag
 			throw new AnnotationException('No @Tag name given');
 		}
 
-		if (empty($values['name'])) {
+		$name = $values['name'];
+		if ($name === null || $name === '') {
 			throw new AnnotationException('Empty @Tag name given');
 		}
 
-		$this->name = $values['name'];
+		$this->name = $name;
 		$this->value = $values['value'] ?? null;
 	}
 

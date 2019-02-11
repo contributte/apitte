@@ -20,19 +20,16 @@ final class GroupPath
 	 */
 	public function __construct(array $values)
 	{
-		if (isset($values['value'])) {
-			if (empty($values['value'])) {
-				throw new AnnotationException('Empty @GroupPath given');
-			}
-			$this->path = $values['value'];
-		} elseif (isset($values['path'])) {
-			if (empty($values['path'])) {
-				throw new AnnotationException('Empty @GroupPath given');
-			}
-			$this->path = $values['path'];
-		} else {
+		if (!isset($values['value'])) {
 			throw new AnnotationException('No @GroupPath given');
 		}
+
+		$value = $values['value'];
+		if ($value === null || $value === '') {
+			throw new AnnotationException('Empty @GroupPath given');
+		}
+
+		$this->path = $value;
 	}
 
 	public function getPath(): string

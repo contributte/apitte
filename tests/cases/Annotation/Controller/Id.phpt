@@ -16,21 +16,10 @@ test(function (): void {
 		'value' => 'id',
 	]);
 	Assert::same('id', $id->getName());
-
-	$id = new Id([
-		'name' => 'id',
-	]);
-	Assert::same('id', $id->getName());
 });
 
 // Exception - no name
 test(function (): void {
-	Assert::exception(function (): void {
-		new Id([
-			'name' => '',
-		]);
-	}, AnnotationException::class, 'Empty @Id given');
-
 	Assert::exception(function (): void {
 		new Id([
 			'value' => '',

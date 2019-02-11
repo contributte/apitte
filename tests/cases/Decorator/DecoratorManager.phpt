@@ -28,19 +28,6 @@ test(function (): void {
 	Assert::same($request, $manager->decorateRequest(IDecorator::ON_HANDLER_BEFORE, $request, $response));
 });
 
-// Decorate request - return null
-test(function (): void {
-	$manager = new DecoratorManager();
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
-
-	$manager->addDecorator(IDecorator::ON_HANDLER_BEFORE, new ReturnRequestDecorator());
-	$manager->addDecorator(IDecorator::ON_HANDLER_BEFORE, new ReturnNullDecorator());
-	$manager->addDecorator(IDecorator::ON_HANDLER_BEFORE, new ReturnRequestDecorator());
-
-	Assert::same(null, $manager->decorateRequest(IDecorator::ON_HANDLER_BEFORE, $request, $response));
-});
-
 // Decorate request - no decorators
 test(function (): void {
 	$manager = new DecoratorManager();

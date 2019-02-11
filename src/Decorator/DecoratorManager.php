@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Decorator;
 
+use Apitte\Core\Exception\Logical\InvalidStateException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -23,7 +24,7 @@ class DecoratorManager
 	/**
 	 * @param mixed[] $context
 	 */
-	public function decorateRequest(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ?ServerRequestInterface
+	public function decorateRequest(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
 	{
 		$decorators = $this->decorators[$type] ?? [];
 
@@ -31,7 +32,9 @@ class DecoratorManager
 			/** @var ServerRequestInterface|null $request */
 			$request = $decorator->decorate($request, $response, $context);
 
-			if ($request === null) return null; // Cannot pass null to next decorator
+			if ($request === null) {
+				throw new InvalidStateException('Request decorator should always return.');
+			}
 		}
 
 		return $request;

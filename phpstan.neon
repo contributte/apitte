@@ -33,8 +33,6 @@ parameters:
 
 		# Maybe later - complicated to fix
 		- '#^.*should be contravariant with parameter.*$#'
-		- message: '#^.* Psr\\Http\\Message\\ServerRequestInterface\|null given\.$#'
-		  path: %currentWorkingDirectory%/src/Dispatcher/DecoratedDispatcher.php
 
 		# Missing strict comparison
 		- message: '#^.*string\|null given\.$#'

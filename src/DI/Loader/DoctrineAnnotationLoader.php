@@ -47,15 +47,21 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 		// Iterate over all controllers
 		foreach ($controllers as $def) {
+			$type = $def->getType();
+
+			if ($type === null) {
+				throw new InvalidStateException('Cannot analyse class with no type defined. Make sure all controllers have defined their class.');
+			}
+
 			// Analyse all parent classes
-			$class = $this->analyseClass($def->getType());
+			$class = $this->analyseClass($type);
 
 			// Check if a controller or his abstract has @Controller annotation,
 			// otherwise, skip this controller
 			if (!$this->acceptController($class)) continue;
 
 			// Create scheme endpoint
-			$schemeController = $builder->addController($def->getType());
+			$schemeController = $builder->addController($type);
 
 			// Parse @Controller, @ControllerPath, @ControllerId
 			$this->parseControllerClassAnnotations($schemeController, $class);

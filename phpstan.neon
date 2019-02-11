@@ -35,8 +35,6 @@ parameters:
 		- '#^.*should be contravariant with parameter.*$#'
 
 		# Missing strict comparison
-		- message: '#^.*string\|null given\.$#'
-		  path: %currentWorkingDirectory%/src/DI/Loader/DoctrineAnnotationLoader.php
 		- message: '#^Construct empty\(\) is not allowed. Use more strict comparison.$#'
 		  path: %currentWorkingDirectory%/src/Annotation
 		- '#^Only booleans are allowed in#'

@@ -25,12 +25,11 @@ parameters:
 		# Phpstan bug
 		- '#^Parameter \#1 \$function of function call_user_func_array expects callable\(\)\: mixed, array\(object, string\) given\.#'
 
-		# Phpstan don't know that variable could be set through catch
+		# Phpstan don't understand complex try-catch constructs
 		- message: '#^Strict comparison using !== between null and null will always evaluate to false\.$#'
 		  path: %currentWorkingDirectory%/src/Router/SimpleRouter.php
-
-		# Maybe will cause application fail - DecoratorManager::decorateResponse could return null, but DecoratedDispatcher is not always able to handle it.
-		- '#^Method Apitte\\Core\\Dispatcher\\DecoratedDispatcher::handle\(\) should return Psr\\Http\\Message\\ResponseInterface but returns Psr\\Http\\Message\\ResponseInterface\|null\.$#'
+		- message: '#^Method Apitte\\Core\\Dispatcher\\DecoratedDispatcher::handle\(\) should return Psr\\Http\\Message\\ResponseInterface but returns Psr\\Http\\Message\\ResponseInterface\|null\.$#'
+		  path: %currentWorkingDirectory%/src/Dispatcher/DecoratedDispatcher.php
 
 		# Maybe later - complicated to fix
 		- '#^.*should be contravariant with parameter.*$#'

@@ -1,14 +1,14 @@
 <?php declare(strict_types = 1);
 
-namespace Apitte\Core\Response\Decorator;
+namespace Apitte\Core\Adjuster;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-class FileResponseDecorator
+class FileResponseAdjuster
 {
 
-	public function decorate(
+	public function adjust(
 		ResponseInterface $response,
 		StreamInterface $stream,
 		string $filename,

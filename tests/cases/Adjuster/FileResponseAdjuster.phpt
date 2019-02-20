@@ -1,20 +1,20 @@
 <?php declare(strict_types = 1);
 
 /**
- * Test: Response\Decorator\FileResponseDecorator
+ * Test: Adjuster\FileResponseAdjuster
  */
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
-use Apitte\Core\Response\Decorator\FileResponseDecorator;
+use Apitte\Core\Adjuster\FileResponseAdjuster;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Tester\Assert;
 
 test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
-	$decorator = new FileResponseDecorator();
+	$decorator = new FileResponseAdjuster();
 
-	$response = $decorator->decorate($response, $response->getBody(), 'filename');
+	$response = $decorator->adjust($response, $response->getBody(), 'filename');
 
 	Assert::same(
 		[

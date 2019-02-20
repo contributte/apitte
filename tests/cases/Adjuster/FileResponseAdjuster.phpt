@@ -12,9 +12,7 @@ use Tester\Assert;
 
 test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
-	$decorator = new FileResponseAdjuster();
-
-	$response = $decorator->adjust($response, $response->getBody(), 'filename');
+	$response = FileResponseAdjuster::adjust($response, $response->getBody(), 'filename');
 
 	Assert::same(
 		[

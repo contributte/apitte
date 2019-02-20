@@ -87,13 +87,15 @@ class SimpleRouter implements IRouter
 
 		// Fill path parameters with matched variables
 		foreach ($endpoint->getParametersByIn(EndpointParameter::IN_PATH) as $param) {
-			$parameters[$param->getName()] = $match[$param->getName()];
+			$name = $param->getName();
+			$parameters[$name] = $match[$name];
 		}
 
 		// Fill query parameters with query params
 		$queryParams = $request->getQueryParams();
 		foreach ($endpoint->getParametersByIn(EndpointParameter::IN_QUERY) as $param) {
-			$parameters[$param->getName()] = $queryParams[$param->getName()] ?? null;
+			$name = $param->getName();
+			$parameters[$name] = $queryParams[$name] ?? null;
 		}
 
 		// Set attributes to request

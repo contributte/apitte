@@ -8,7 +8,7 @@ use Psr\Http\Message\StreamInterface;
 class FileResponseAdjuster
 {
 
-	public function adjust(
+	public static function adjust(
 		ResponseInterface $response,
 		StreamInterface $stream,
 		string $filename,

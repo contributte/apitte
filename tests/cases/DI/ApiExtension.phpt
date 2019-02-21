@@ -4,8 +4,9 @@
  * Test: DI\ApiExtension
  */
 
+use Apitte\Core\Application\Application;
 use Apitte\Core\DI\ApiExtension;
-use Apitte\Core\Dispatcher\IDispatcher;
+use Apitte\Core\Dispatcher\JsonDispatcher;
 use Apitte\Core\Schema\Schema;
 use Nette\DI\Compiler;
 use Nette\DI\Container;
@@ -30,8 +31,9 @@ test(function (): void {
 	/** @var Container $container */
 	$container = new $class();
 
-	Assert::type(IDispatcher::class, $container->getService('api.core.dispatcher'));
+	Assert::type(JsonDispatcher::class, $container->getService('api.core.dispatcher'));
 	Assert::type(Schema::class, $container->getService('api.core.schema'));
+	Assert::type(Application::class, $container->getService('api.core.application'));
 });
 
 // Annotations

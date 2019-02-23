@@ -1,8 +1,6 @@
-# Apitte\Core
+# Apitte Core
 
-:wrench: Core API library for [`Nette Framework`](https://github.com/nette/).
-
------
+Core library of Apitte API framework
 
 [![Build Status](https://img.shields.io/travis/apitte/core.svg?style=flat-square)](https://travis-ci.org/apitte/core)
 [![Code coverage](https://img.shields.io/coveralls/apitte/core.svg?style=flat-square)](https://coveralls.io/r/apitte/core)
@@ -12,39 +10,7 @@
 [![Latest stable](https://img.shields.io/packagist/v/apitte/core.svg?style=flat-square)](https://packagist.org/packages/apitte/core)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
 
-## Discussion / Help
-
-[![Join the chat](https://img.shields.io/gitter/room/apitte/apitte.svg?style=flat-square)](http://bit.ly/apittegitter)
-
-## Install
-
-```
-composer require apitte/core
-```
-
-## Version
-
-| State       | Version      | Branch   | PHP      | Composer                                        |
-|-------------|--------------|----------|----------|-------------------------------------------------|
-| development | `^0.5.0`     | `master` | `>= 7.1` | `minimum-stability: dev`, `prefer-stable: true` |
-| stable      | `^0.4.0`     | `master` | `>= 7.1` |                                                 |
-| stable      | `^0.3.0`     | `master` | `>= 5.6` |                                                 |
-
-## Example
-
-Just define some endpoints, I mean controllers. Place some annotations and that is all.
-
 ```php
-namespace App\Controllers;
-
-use Apitte\Core\Annotation\Controller\Controller;
-use Apitte\Core\Annotation\Controller\ControllerPath;
-use Apitte\Core\Annotation\Controller\Method;
-use Apitte\Core\Annotation\Controller\Path;
-use Apitte\Core\Http\ApiRequest;
-use Apitte\Core\Http\ApiResponse;
-use Apitte\Core\UI\Controller\IController;
-
 /**
  * @Controller
  * @ControllerPath("/hello")
@@ -60,37 +26,40 @@ final class HelloController implements IController
     {
         return $response->writeBody('Hello world!');
     }
+
 }
 ```
 
-And register your controller as service.
+## Discussion / Help
 
-```yaml
-services:
-    - App\Controllers\HelloController
-```
+[![Join the chat](https://img.shields.io/gitter/room/apitte/apitte.svg?style=flat-square)](http://bit.ly/apittegitter)
 
-As you can see, the architecture is ultra simple. `ApiRequest` & `ApiResponse` wrap PSR-7, so you can re-use these declared methods.
+## Version
 
-## Overview
+| State       | Version      | Branch   | PHP      | Composer                                        |
+|-------------|--------------|----------|----------|-------------------------------------------------|
+| development | `^0.5.0`     | `master` | `>= 7.1` | `minimum-stability: dev`, `prefer-stable: true` |
+| stable      | `^0.4.0`     | `master` | `>= 7.1` |                                                 |
+| stable      | `^0.3.0`     | `master` | `>= 5.6` |                                                 |
 
-* [Installation - how to register an extension](https://github.com/apitte/core/tree/master/.docs#installation)
-* [Configuration - all configurable options](https://github.com/apitte/core/tree/master/.docs#configuration)
-* [Usage](https://github.com/apitte/core/tree/master/.docs#usage)
-  + [Controllers](https://github.com/apitte/core/tree/master/.docs#controllers)
-  + [Request & Response](https://github.com/apitte/core/tree/master/.docs#request---response)
-* [Annotations - list of all annotations](https://github.com/apitte/core/tree/master/.docs#annotations)
-* [Decorators](https://github.com/apitte/core/tree/master/.docs#decorators)
-* [Plugins](https://github.com/apitte/core/tree/master/.docs#plugins)
-  + [CoreDecoratorPlugin](https://github.com/apitte/core/tree/master/.docs#coredecoratorplugin)
-    - [Default decorators](https://github.com/apitte/core/tree/master/.docs#default-decorators)
-  + [CoreMappingPlugin](https://github.com/apitte/core/tree/master/.docs#coremappingplugin)
-    - [Types](https://github.com/apitte/core/tree/master/.docs#types)
-    - [Entity](https://github.com/apitte/core/tree/master/.docs#entity)
-* [Bridges](https://github.com/apitte/core/tree/master/.docs#bridges)
-  + [Middlewares](https://github.com/apitte/core/tree/master/.docs#middlewares)
-  + [Resources](https://github.com/apitte/core/tree/master/.docs#resources)
-* [Playground](https://github.com/apitte/core/tree/master/.docs#playground)
+## Docs
+
+Need to start with Apitte
+- [Setup](.docs/setup.md)
+- [Endpoints](.docs/endpoints.md)
+- [Mapping](.docs/mapping.md)
+
+This knowledge could make your life easier
+- [Architecture](.docs/architecture.md)
+- [Decorators](.docs/decorators.md)
+- [Dispatcher](.docs/dispatcher.md)
+- [Errors](.docs/errors.md)
+- [Request and response](.docs/request-and-response.md)
+- [Router](.docs/router.md)
+- [Schema](.docs/schema.md)
+
+Playground with example applications
+- [Examples](https://github.com/apitte/playground)
 
 ## Maintainers
 

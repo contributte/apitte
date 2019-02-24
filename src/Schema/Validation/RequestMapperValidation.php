@@ -3,7 +3,6 @@
 namespace Apitte\Core\Schema\Validation;
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
-use Apitte\Core\Mapping\Request\IRequestEntity;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 
 class RequestMapperValidation implements IValidation
@@ -35,16 +34,6 @@ class RequestMapperValidation implements IValidation
 							$method->getName()
 						)
 					);
-				}
-
-				if (!isset(class_implements($mapper->getEntity())[IRequestEntity::class])) {
-					throw new InvalidSchemaException(sprintf(
-						'Request mapping entity "%s" in "%s::%s()" does not implement "%s"',
-						$mapper->getEntity(),
-						$controller->getClass(),
-						$method->getName(),
-						IRequestEntity::class
-					));
 				}
 			}
 		}

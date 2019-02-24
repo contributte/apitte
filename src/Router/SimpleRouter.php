@@ -42,8 +42,7 @@ class SimpleRouter implements IRouter
 			// with all parsed arguments and data,
 			// also append given Endpoint
 			$matched = $matched
-				->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint)
-				->withAttribute(RequestAttributes::ATTR_SCHEMA, $this->schema);
+				->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
 
 			return $matched;
 		}

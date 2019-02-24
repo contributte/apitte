@@ -27,9 +27,6 @@ use Apitte\Core\Schema\Schema;
 /** @var Endpoint $endpoint Schema of matched endpoint */
 $endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 
-/** @var Schema $schema */
-$schema = $request->getAttribute(RequestAttributes::ATTR_SCHEMA);
-
 /** @var mixed $match All matched parts of url */
 $match = $request->getAttribute(RequestAttributes::ATTR_ROUTER);
 

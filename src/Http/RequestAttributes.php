@@ -5,7 +5,6 @@ namespace Apitte\Core\Http;
 interface RequestAttributes
 {
 
-	public const ATTR_SCHEMA = 'apitte.core.schema';
 	public const ATTR_ENDPOINT = 'apitte.core.endpoint';
 	public const ATTR_ROUTER = 'apitte.core.router';
 	public const ATTR_PARAMETERS = 'apitte.core.parameters';

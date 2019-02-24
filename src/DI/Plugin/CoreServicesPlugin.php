@@ -13,6 +13,7 @@ use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Schema;
+use Apitte\Core\UI\Controller\IController;
 use Psr\Log\LoggerInterface;
 
 class CoreServicesPlugin extends AbstractPlugin
@@ -69,6 +70,10 @@ class CoreServicesPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('schema'))
 			->setFactory(Schema::class);
+
+		foreach ($builder->findByType(IController::class) as $controller) {
+			$controller->setAutowired(false);
+		}
 	}
 
 }

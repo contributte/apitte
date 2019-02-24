@@ -3,7 +3,6 @@
 namespace Apitte\Core\Dispatcher;
 
 use Apitte\Core\Decorator\DecoratorManager;
-use Apitte\Core\Decorator\IDecorator;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
 use Apitte\Core\Exception\Runtime\SnapshotException;
@@ -53,7 +52,7 @@ class DecoratedDispatcher extends CoreDispatcher
 			}
 
 			// Trigger exception decorator
-			$response = $this->decoratorManager->decorateResponse(IDecorator::ON_DISPATCHER_EXCEPTION, $request, $response, ['exception' => $e]);
+			$response = $this->decoratorManager->decorateError($request, $response, $e);
 
 			// Rethrow exception so error could be logged and transformed into response by error handler
 			if ($response === null) {
@@ -75,13 +74,13 @@ class DecoratedDispatcher extends CoreDispatcher
 	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
 	{
 		// Pass endpoint to response
-		if (($endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, null))) {
+		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, null);
+		if ($endpoint !== null) {
 			$response = $response->withEndpoint($endpoint);
 		}
 
 		try {
-			// Trigger ON_HANDLER_BEFORE (decorate request)
-			$request = $this->decoratorManager->decorateRequest(IDecorator::ON_HANDLER_BEFORE, $request, $response);
+			$request = $this->decoratorManager->decorateRequest($request, $response);
 		} catch (EarlyReturnResponseException $exception) {
 			return $exception->getResponse();
 		}
@@ -113,8 +112,7 @@ class DecoratedDispatcher extends CoreDispatcher
 		}
 
 		try {
-			// Trigger ON_HANDLER_AFTER (decorate response)
-			$response = $this->decoratorManager->decorateResponse(IDecorator::ON_HANDLER_AFTER, $request, $response);
+			$response = $this->decoratorManager->decorateResponse($request, $response);
 		} catch (EarlyReturnResponseException $exception) {
 			return $exception->getResponse();
 		}

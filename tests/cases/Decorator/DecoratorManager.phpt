@@ -7,11 +7,9 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Decorator\DecoratorManager;
-use Apitte\Core\Decorator\IDecorator;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Tester\Assert;
-use Tests\Fixtures\Decorator\ReturnNullDecorator;
 use Tests\Fixtures\Decorator\ReturnRequestDecorator;
 use Tests\Fixtures\Decorator\ReturnResponseDecorator;
 
@@ -21,11 +19,10 @@ test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$response = Psr7ResponseFactory::fromGlobal();
 
-	$manager->addDecorator(IDecorator::ON_HANDLER_BEFORE, new ReturnRequestDecorator());
-	$manager->addDecorator(IDecorator::ON_HANDLER_BEFORE, new ReturnRequestDecorator());
-	$manager->addDecorator(IDecorator::ON_HANDLER_BEFORE, new ReturnRequestDecorator());
+	$manager->addRequestDecorator(new ReturnRequestDecorator());
+	$manager->addRequestDecorator(new ReturnRequestDecorator());
 
-	Assert::same($request, $manager->decorateRequest(IDecorator::ON_HANDLER_BEFORE, $request, $response));
+	Assert::same($request, $manager->decorateRequest($request, $response));
 });
 
 // Decorate request - no decorators
@@ -34,7 +31,7 @@ test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$response = Psr7ResponseFactory::fromGlobal();
 
-	Assert::same($request, $manager->decorateRequest(IDecorator::ON_HANDLER_BEFORE, $request, $response));
+	Assert::same($request, $manager->decorateRequest($request, $response));
 });
 
 // Decorate response
@@ -43,24 +40,10 @@ test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$response = Psr7ResponseFactory::fromGlobal();
 
-	$manager->addDecorator(IDecorator::ON_HANDLER_AFTER, new ReturnResponseDecorator());
-	$manager->addDecorator(IDecorator::ON_HANDLER_AFTER, new ReturnResponseDecorator());
-	$manager->addDecorator(IDecorator::ON_HANDLER_AFTER, new ReturnResponseDecorator());
+	$manager->addResponseDecorator(new ReturnResponseDecorator());
+	$manager->addResponseDecorator(new ReturnResponseDecorator());
 
-	Assert::same($response, $manager->decorateResponse(IDecorator::ON_HANDLER_AFTER, $request, $response));
-});
-
-// Decorate response - return null
-test(function (): void {
-	$manager = new DecoratorManager();
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
-
-	$manager->addDecorator(IDecorator::ON_HANDLER_AFTER, new ReturnResponseDecorator());
-	$manager->addDecorator(IDecorator::ON_HANDLER_AFTER, new ReturnNullDecorator());
-	$manager->addDecorator(IDecorator::ON_HANDLER_AFTER, new ReturnResponseDecorator());
-
-	Assert::same(null, $manager->decorateResponse(IDecorator::ON_HANDLER_AFTER, $request, $response));
+	Assert::same($response, $manager->decorateResponse($request, $response));
 });
 
 // Decorate response - no decorators
@@ -69,14 +52,28 @@ test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$response = Psr7ResponseFactory::fromGlobal();
 
-	Assert::same($response, $manager->decorateResponse(IDecorator::ON_HANDLER_AFTER, $request, $response));
+	Assert::same($response, $manager->decorateResponse($request, $response));
 });
 
-// Decorate response - no decorators
+// Decorate error
 test(function (): void {
 	$manager = new DecoratorManager();
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$response = Psr7ResponseFactory::fromGlobal();
+	$error = new Exception('I am a generic exception');
 
-	Assert::same($response, $manager->decorateResponse(IDecorator::ON_HANDLER_AFTER, $request, $response));
+	$manager->addErrorDecorator(new ReturnResponseDecorator());
+	$manager->addErrorDecorator(new ReturnResponseDecorator());
+
+	Assert::same($response, $manager->decorateError($request, $response, $error));
+});
+
+// Decorate error - no decorators
+test(function (): void {
+	$manager = new DecoratorManager();
+	$request = Psr7ServerRequestFactory::fromSuperGlobal();
+	$response = Psr7ResponseFactory::fromGlobal();
+	$error = new Exception('I am a generic exception');
+
+	Assert::same(null, $manager->decorateError($request, $response, $error));
 });

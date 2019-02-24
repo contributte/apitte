@@ -2,7 +2,6 @@
 
 namespace Apitte\Core\DI\Plugin;
 
-use Apitte\Core\Decorator\IDecorator;
 use Apitte\Core\Decorator\RequestEntityDecorator;
 use Apitte\Core\Decorator\RequestParametersDecorator;
 use Apitte\Core\DI\ApiExtension;
@@ -51,11 +50,11 @@ class CoreMappingPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('request.parameters.decorator'))
 			->setFactory(RequestParametersDecorator::class)
-			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 100, 'type' => IDecorator::ON_HANDLER_BEFORE]);
+			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 100]);
 
 		$builder->addDefinition($this->prefix('request.entity.decorator'))
 			->setFactory(RequestEntityDecorator::class)
-			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 101, 'type' => IDecorator::ON_HANDLER_BEFORE]);
+			->addTag(ApiExtension::CORE_DECORATOR_TAG, ['priority' => 101]);
 
 		$parametersMapping = $builder->addDefinition($this->prefix('request.parameters.mapping'))
 			->setFactory(RequestParameterMapping::class);

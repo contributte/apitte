@@ -28,8 +28,6 @@ parameters:
 		# Phpstan don't understand complex try-catch constructs
 		- message: '#^Strict comparison using !== between null and null will always evaluate to false\.$#'
 		  path: %currentWorkingDirectory%/src/Router/SimpleRouter.php
-		- message: '#^Method Apitte\\Core\\Dispatcher\\DecoratedDispatcher::handle\(\) should return Psr\\Http\\Message\\ResponseInterface but returns Psr\\Http\\Message\\ResponseInterface\|null\.$#'
-		  path: %currentWorkingDirectory%/src/Dispatcher/DecoratedDispatcher.php
 
 		# Maybe later - complicated to fix
 		- '#^.*should be contravariant with parameter.*$#'

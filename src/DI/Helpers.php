@@ -2,22 +2,24 @@
 
 namespace Apitte\Core\DI;
 
-use Nette\DI\ContainerBuilder;
 use Nette\DI\ServiceDefinition;
 
 class Helpers
 {
 
 	/**
-	 * @param mixed[] $definitions
-	 * @return mixed[]
+	 * @param ServiceDefinition[] $definitions
+	 * @return ServiceDefinition[]
 	 */
-	public static function sort(array $definitions, int $default = 10): array
+	public static function sortByPriorityInTag(string $tagname, array $definitions, int $default = 10): array
 	{
 		// Sort by priority
-		uasort($definitions, function (array $a, array $b) use ($default) {
-			$p1 = $a['priority'] ?? $default;
-			$p2 = $b['priority'] ?? $default;
+		uasort($definitions, function (ServiceDefinition $a, ServiceDefinition $b) use ($tagname, $default) {
+			$tag1 = $a->getTag($tagname);
+			$p1 = $tag1 !== null && isset($tag1['priority']) ? $tag1['priority'] : $default;
+
+			$tag2 = $b->getTag($tagname);
+			$p2 = $tag2 !== null && isset($tag2['priority']) ? $tag2['priority'] : $default;
 
 			if ($p1 === $p2) {
 				return 0;
@@ -27,17 +29,6 @@ class Helpers
 		});
 
 		return $definitions;
-	}
-
-	/**
-	 * @param mixed[] $definitions
-	 * @return ServiceDefinition[]
-	 */
-	public static function getDefinitions(array $definitions, ContainerBuilder $builder): array
-	{
-		return array_map(function ($name) use ($builder) {
-			return $builder->getDefinition($name);
-		}, array_keys($definitions));
 	}
 
 }

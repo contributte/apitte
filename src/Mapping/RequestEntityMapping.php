@@ -42,7 +42,7 @@ class RequestEntityMapping
 		// Create entity
 		$entity = $this->createEntity($requestMapper, $request);
 
-		if ($entity) {
+		if ($entity !== null) {
 			$request = $request->withAttribute(RequestAttributes::ATTR_REQUEST_ENTITY, $entity);
 		}
 
@@ -51,15 +51,19 @@ class RequestEntityMapping
 
 	/**
 	 * @param ApiRequest $request
+	 * @return IRequestEntity|object|null
 	 */
-	protected function createEntity(EndpointRequestMapper $mapper, ServerRequestInterface $request): ?IRequestEntity
+	protected function createEntity(EndpointRequestMapper $mapper, ServerRequestInterface $request)
 	{
 		$entityClass = $mapper->getEntity();
 		$entity = new $entityClass();
 
 		// Allow modify entity in extended class
 		$entity = $this->modify($entity, $request);
-		if (!$entity) return null;
+
+		if ($entity === null) {
+			return null;
+		}
 
 		// Try to validate entity only if its enabled
 		if ($mapper->isValidation() === true) {
@@ -70,14 +74,24 @@ class RequestEntityMapping
 	}
 
 	/**
+	 * @param IRequestEntity|object $entity
 	 * @param ApiRequest $request
+	 * @return IRequestEntity|object|null
 	 */
-	protected function modify(IRequestEntity $entity, ServerRequestInterface $request): ?IRequestEntity
+	protected function modify($entity, ServerRequestInterface $request)
 	{
-		return $entity->fromRequest($request);
+		if ($entity instanceof IRequestEntity) {
+			return $entity->fromRequest($request);
+		}
+
+		return $entity;
 	}
 
-	protected function validate(IRequestEntity $entity): void
+	/**
+	 * @param object $entity
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+	 */
+	protected function validate($entity): void
 	{
 		if (!$this->validator) return;
 		$this->validator->validate($entity);

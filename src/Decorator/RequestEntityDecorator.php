@@ -7,7 +7,7 @@ use Apitte\Core\Mapping\RequestEntityMapping;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class RequestEntityDecorator implements IDecorator
+class RequestEntityDecorator implements IRequestDecorator
 {
 
 	/** @var RequestEntityMapping */
@@ -20,9 +20,8 @@ class RequestEntityDecorator implements IDecorator
 
 	/**
 	 * @param ApiRequest $request
-	 * @param mixed[] $context
 	 */
-	public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
+	public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
 	{
 		return $this->mapping->map($request, $response);
 	}

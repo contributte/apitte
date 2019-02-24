@@ -3,10 +3,12 @@
 namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\Decorator\DecoratorManager;
+use Apitte\Core\Decorator\IErrorDecorator;
+use Apitte\Core\Decorator\IRequestDecorator;
+use Apitte\Core\Decorator\IResponseDecorator;
 use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\DI\Helpers;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
-use Apitte\Core\Exception\Logical\InvalidStateException;
 
 class CoreDecoratorPlugin extends AbstractPlugin
 {
@@ -39,37 +41,30 @@ class CoreDecoratorPlugin extends AbstractPlugin
 	 */
 	public function beforePluginCompile(): void
 	{
-		$this->compileTaggedDecorators();
+		$this->compileDecorators();
 	}
 
-	protected function compileTaggedDecorators(): void
+	protected function compileDecorators(): void
 	{
 		$builder = $this->getContainerBuilder();
+		$manager = $builder->getDefinition($this->prefix('decorator.manager'));
 
-		// Find all definitions by tag
-		$definitions = $builder->findByTag(ApiExtension::CORE_DECORATOR_TAG);
+		$requestDecorators = $builder->findByType(IRequestDecorator::class);
+		$requestDecorators = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $requestDecorators);
+		foreach ($requestDecorators as $decorator) {
+			$manager->addSetup('addRequestDecorator', [$decorator]);
+		}
 
-		// Ensure we have at least 1 service or early terminate
-		if (!$definitions) return;
+		$responseDecorators = $builder->findByType(IResponseDecorator::class);
+		$responseDecorators = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $responseDecorators);
+		foreach ($responseDecorators as $decorator) {
+			$manager->addSetup('addResponseDecorator', [$decorator]);
+		}
 
-		// Sort by priority
-		$definitions = Helpers::sort($definitions);
-
-		// Find all services by names
-		$decorators = Helpers::getDefinitions($definitions, $builder);
-
-		// Add decorators to dispatcher
-		foreach ($decorators as $decorator) {
-			$tag = $decorator->getTag(ApiExtension::CORE_DECORATOR_TAG);
-
-			if (!isset($tag['type'])) {
-				throw new InvalidStateException(sprintf('Missing "type" attribute in tag "%s" at service "%s"', ApiExtension::CORE_DECORATOR_TAG, $decorator->getType()));
-			}
-
-			foreach ((array) $tag['type'] as $type) {
-				$builder->getDefinition($this->prefix('decorator.manager'))
-					->addSetup('addDecorator', [$type, $decorator]);
-			}
+		$errorDecorators = $builder->findByType(IErrorDecorator::class);
+		$errorDecorators = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $errorDecorators);
+		foreach ($errorDecorators as $decorator) {
+			$manager->addSetup('addErrorDecorator', [$decorator]);
 		}
 	}
 

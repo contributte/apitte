@@ -2,17 +2,14 @@
 
 namespace Tests\Fixtures\Decorator;
 
-use Apitte\Core\Decorator\IDecorator;
+use Apitte\Core\Decorator\IRequestDecorator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ReturnRequestDecorator implements IDecorator
+class ReturnRequestDecorator implements IRequestDecorator
 {
 
-	/**
-	 * @param mixed[] $context
-	 */
-	public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
+	public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
 	{
 		return $request;
 	}

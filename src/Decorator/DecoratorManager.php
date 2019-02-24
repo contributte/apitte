@@ -2,67 +2,79 @@
 
 namespace Apitte\Core\Decorator;
 
-use Apitte\Core\Exception\Logical\InvalidStateException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class DecoratorManager
 {
 
-	/** @var IDecorator[][] */
-	protected $decorators = [];
+	/** @var IRequestDecorator[] */
+	protected $requestDecorators = [];
 
-	public function addDecorator(string $type, IDecorator $decorator): void
-	{
-		if (!isset($this->decorators[$type])) {
-			$this->decorators[$type] = [];
-		}
+	/** @var IResponseDecorator[] */
+	protected $responseDecorators = [];
 
-		$this->decorators[$type][] = $decorator;
-	}
+	/** @var IErrorDecorator[] */
+	protected $errorDecorators = [];
 
 	/**
-	 * @param mixed[] $context
+	 * @return static
 	 */
-	public function decorateRequest(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
+	public function addRequestDecorator(IRequestDecorator $decorator): self
 	{
-		$decorators = $this->decorators[$type] ?? [];
+		$this->requestDecorators[] = $decorator;
+		return $this;
+	}
 
-		foreach ($decorators as $decorator) {
-			/** @var ServerRequestInterface|null $request */
-			$request = $decorator->decorate($request, $response, $context);
-
-			if ($request === null) {
-				throw new InvalidStateException('Request decorator should always return.');
-			}
+	public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
+	{
+		foreach ($this->requestDecorators as $decorator) {
+			$request = $decorator->decorateRequest($request, $response);
 		}
 
 		return $request;
 	}
 
 	/**
-	 * @param mixed[] $context
+	 * @return static
 	 */
-	public function decorateResponse(string $type, ServerRequestInterface $request, ResponseInterface $response, array $context = []): ?ResponseInterface
+	public function addResponseDecorator(IResponseDecorator $decorator): self
 	{
-		$decorators = $this->decorators[$type] ?? [];
+		$this->responseDecorators[] = $decorator;
+		return $this;
+	}
 
-		// If there is no exception handler defined so return null (and exception will be thrown in DecoratedDispatcher)
-		if ($type === IDecorator::ON_DISPATCHER_EXCEPTION && $decorators === []) return null;
-
-		foreach ($decorators as $decorator) {
-			/** @var ResponseInterface|null $response */
-			$response = $decorator->decorate($request, $response, $context);
-
-			if ($response === null) return null; // Cannot pass null to next decorator
+	public function decorateResponse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	{
+		foreach ($this->responseDecorators as $decorator) {
+			$response = $decorator->decorateResponse($request, $response);
 		}
 
 		return $response;
 	}
 
-	public function hasDecorators(string $type): bool
+	/**
+	 * @return static
+	 */
+	public function addErrorDecorator(IErrorDecorator $decorator): self
 	{
-		return isset($this->decorators[$type]);
+		$this->errorDecorators[] = $decorator;
+		return $this;
+	}
+
+	public function decorateError(ServerRequestInterface $request, ResponseInterface $response, Throwable $error): ?ResponseInterface
+	{
+		// If there is no exception handler defined so return null (and exception will be thrown in DecoratedDispatcher)
+		if ($this->errorDecorators === []) {
+			return null;
+		}
+
+		foreach ($this->errorDecorators as $decorator) {
+			$response = $decorator->decorateError($request, $response, $error);
+		}
+
+		return $response;
 	}
 
 }

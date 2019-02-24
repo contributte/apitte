@@ -7,7 +7,6 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Decorator\DecoratorManager;
-use Apitte\Core\Decorator\IDecorator;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
 use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
@@ -20,8 +19,7 @@ use Contributte\Psr7\Psr7ServerRequestFactory;
 use Psr\Http\Message\ResponseInterface;
 use Tester\Assert;
 use Tests\Fixtures\Decorator\EarlyReturnResponseExceptionDecorator;
-use Tests\Fixtures\Decorator\ReturnNullDecorator;
-use Tests\Fixtures\Decorator\ThrowExceptionFromContextResponseDecorator;
+use Tests\Fixtures\Decorator\RethrowErrorDecorator;
 use Tests\Fixtures\Handler\ErroneousHandler;
 use Tests\Fixtures\Handler\FakeNullHandler;
 use Tests\Fixtures\Handler\FakeResponseHandler;
@@ -31,6 +29,7 @@ use Tests\Fixtures\Router\FakeRouter;
 //TODO - EarlyReturnResponseException
 // 		- decorateRequest
 //		- decorateResponse
+//		- decorateError
 
 // Match request, use handler and be happy, everything is ok!
 test(function (): void {
@@ -85,7 +84,7 @@ test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
 
 	$manager = new DecoratorManager();
-	$manager->addDecorator(IDecorator::ON_HANDLER_BEFORE, new EarlyReturnResponseExceptionDecorator());
+	$manager->addRequestDecorator(new EarlyReturnResponseExceptionDecorator());
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), $manager);
 
@@ -98,7 +97,7 @@ test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
 
 	$manager = new DecoratorManager();
-	$manager->addDecorator(IDecorator::ON_HANDLER_AFTER, new EarlyReturnResponseExceptionDecorator());
+	$manager->addResponseDecorator(new EarlyReturnResponseExceptionDecorator());
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), $manager);
 
@@ -111,7 +110,7 @@ test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
 
 	$manager = new DecoratorManager();
-	$manager->addDecorator(IDecorator::ON_DISPATCHER_EXCEPTION, new ThrowExceptionFromContextResponseDecorator());
+	$manager->addErrorDecorator(new RethrowErrorDecorator());
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ErroneousHandler(), $manager);
 
@@ -126,21 +125,6 @@ test(function (): void {
 	$response = Psr7ResponseFactory::fromGlobal();
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ErroneousHandler(), new DecoratorManager());
-	Assert::exception(function () use ($dispatcher, $request, $response): void {
-		$response = $dispatcher->dispatch($request, $response);
-	}, RuntimeException::class, sprintf('I am %s!', ErroneousHandler::class));
-});
-
-// Match request, use handler, throw and catch exception then throw it again because decorator returned null response
-test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
-
-	$manager = new DecoratorManager();
-	$manager->addDecorator(IDecorator::ON_DISPATCHER_EXCEPTION, new ReturnNullDecorator());
-
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ErroneousHandler(), $manager);
-
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$response = $dispatcher->dispatch($request, $response);
 	}, RuntimeException::class, sprintf('I am %s!', ErroneousHandler::class));

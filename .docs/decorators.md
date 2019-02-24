@@ -21,18 +21,13 @@ api:
 services:
     decorator.request.authentication:
         class: App\Api\Decorator\ExampleResponseDecorator
-        tags: [apitte.core.decorator: [priority: 50, type: [handler.after, dispatcher.exception]]]
+        tags: [apitte.core.decorator: [priority: 50]]
 ```
 
-Each decorator **must** have tag `apitte.core.decorator` with at least one type defined. 
+Each decorator could have tag `apitte.core.decorator` with `priority` defined.
 
-Possible types are:
-- `handle.before` - called just before endpoint is triggered
-- `handle.after` - called immediately after endpoint is triggered
-- `dispatcher.exception` - called if an error occurred 
-
-Also you should define a `priority` for better sorting. Default is 10.
-Decorator with lowest `priority` number is called first.
+- Decorator with lowest `priority` number is called first.
+- Default `priority` is 10
 
 ## Request decorators
 
@@ -54,26 +49,25 @@ See [mapping](mapping.md) chapter for more info.
 services:
     decorator.request.metadata:
         class: App\Api\Decorator\RequestMetadataDecorator
-        tags: [apitte.core.decorator: [priority: 50, type: handler.before]]
+        tags: [apitte.core.decorator: [priority: 50]
 ```
 
 
 ```php
 namespace App\Api\Decorator;
 
-use Apitte\Core\Decorator\IDecorator;
+use Apitte\Core\Decorator\IRequestDecorator;
 use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class RequestMetadataDecorator implements IDecorator
+class RequestMetadataDecorator implements IRequestDecorator
 {
 
     /**
-     * @param mixed[] $context
      * @throws EarlyReturnResponseException If other request decorators and also deeper layers (endpoint) should be skipped
      */
-    public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
+    public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
     {
         // Do something with request (e.g. add useful attributes for endpoint)
         $request = $request->withAttribute('attributeName', 'attributeValue');
@@ -96,20 +90,19 @@ services:
 ```php
 namespace App\Api\Decorator;
 
-use Apitte\Core\Decorator\IDecorator;
+use Apitte\Core\Decorator\IRequestDecorator;
 use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use function GuzzleHttp\Psr7\stream_for;
 
-class RequestAuthenticationDecorator implements IDecorator
+class RequestAuthenticationDecorator implements IRequestDecorator
 {
 
     /**
-     * @param mixed[] $context
      * @throws EarlyReturnResponseException If other request decorators and also deeper layers (endpoint) should be skipped
      */
-    public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = []): ServerRequestInterface
+    public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
     {
         if ($userAuthenticationFailed) {
             $body = stream_for(json_encode([
@@ -161,19 +154,20 @@ See [apitte/negotiation](https://github.com/apitte/negotiation) for details.
 ### Implementing response decorator
 
 ```php
-use Apitte\Core\Decorator\IDecorator;
+namespace App\Api\Decorator;
+
+use Apitte\Core\Decorator\IResponseDecorator;
 use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class ExampleResponseDecorator implements IDecorator
+class ExampleResponseDecorator implements IResponseDecorator
 {
 
     /**
-     * @param mixed[] $context
      * @throws EarlyReturnResponseException If other response decorators should be skipped
      */
-    public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = []): ?ResponseInterface
+    public function decorateResponse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         // Do something with response (e.g. transform data)
         return $response;
@@ -197,22 +191,18 @@ See [apitte/negotiation](https://github.com/apitte/negotiation) for details.
 ### Implementing exception decorator
 
 ```php
-use Apitte\Core\Decorator\IDecorator;
-use Psr\Http\Message\ServerRequestInterface;
+namespace App\Api\Decorator;
+
+use Apitte\Core\Decorator\IErrorDecorator;use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-class ExampleExceptionDecorator implements IDecorator
+class ExampleExceptionDecorator implements IErrorDecorator
 {
     
-    /**
-     * @param mixed[] $context
-     */
-    public function decorate(ServerRequestInterface $request, ResponseInterface $response, array $context = []): ?ResponseInterface
+    public function decorateError(ServerRequestInterface $request, ResponseInterface $response, Throwable $error): ResponseInterface
     {
-        /** @var Throwable $error */
-        $error = $context['exception'];
-        $response = $this->errorToResponse($error);
+        $response = $this->errorToResponse($response, $error);
         return $response;
     }
 

@@ -3,6 +3,7 @@
 namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\Application\Application;
+use Apitte\Core\Application\IApplication;
 use Apitte\Core\Dispatcher\JsonDispatcher;
 use Apitte\Core\Dispatcher\WrappedDispatcher;
 use Apitte\Core\ErrorHandler\IErrorHandler;
@@ -42,7 +43,7 @@ class CoreServicesPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('application'))
 			->setFactory(Application::class, [$dispatcher])
-			->setType(Application::class);
+			->setType(IApplication::class);
 
 		// Catch exception only in debug mode if explicitly enabled
 		$catchException = !$globalConfig['debug'] || $globalConfig['catchException'];

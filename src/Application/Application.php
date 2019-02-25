@@ -6,7 +6,7 @@ use Apitte\Core\Dispatcher\IDispatcher;
 use Contributte\Psr7\Psr7Response;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 
-class Application
+class Application implements IApplication
 {
 
 	/** @var IDispatcher */

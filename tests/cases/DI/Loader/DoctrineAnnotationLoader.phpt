@@ -18,7 +18,7 @@ use Tests\Fixtures\Controllers\InvalidGroupAnnotationController;
 use Tests\Fixtures\Controllers\InvalidGroupPathAnnotationController;
 use Tests\Fixtures\Controllers\PrefixedAnnotationController;
 
-// Check if controller is found and add as dependency to DIC
+// Check if controller is found
 test(function (): void {
 	$builder = Mockery::mock(ContainerBuilder::class);
 	$builder->shouldReceive('findByType')
@@ -31,10 +31,6 @@ test(function (): void {
 
 			return $controllers;
 		});
-
-	$builder->shouldReceive('addDependency')
-		->once()
-		->with(FoobarController::class);
 
 	$loader = new DoctrineAnnotationLoader($builder);
 	$schemaBuilder = $loader->load(new SchemaBuilder());

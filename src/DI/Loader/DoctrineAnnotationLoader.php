@@ -42,9 +42,6 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		// Find all controllers by type (interface, annotation)
 		$controllers = $this->findControllers();
 
-		// Add controllers as dependencies to DIC
-		$this->addDependencies($controllers);
-
 		// Iterate over all controllers
 		foreach ($controllers as $def) {
 			$type = $def->getType();

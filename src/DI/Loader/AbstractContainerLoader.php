@@ -27,14 +27,4 @@ abstract class AbstractContainerLoader implements ILoader
 		return $this->builder->findByType(IController::class);
 	}
 
-	/**
-	 * @param ServiceDefinition[] $definitions
-	 */
-	protected function addDependencies(array $definitions): void
-	{
-		foreach ($definitions as $def) {
-			$this->builder->addDependency($def->getType());
-		}
-	}
-
 }

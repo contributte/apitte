@@ -25,6 +25,11 @@ class PsrLogErrorHandler extends SimpleErrorHandler
 			$this->logger->error($error->getMessage(), ['exception' => $error]);
 		}
 
+		// Also log original exception if any
+		if ($error instanceof ApiException && $error->getPrevious() !== null) {
+			$this->logger->error($error->getMessage(), ['exception' => $error->getPrevious()]);
+		}
+
 		return parent::handle($error);
 	}
 

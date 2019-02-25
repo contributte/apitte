@@ -5,6 +5,7 @@ namespace Apitte\Core\Application;
 use Apitte\Core\Dispatcher\IDispatcher;
 use Contributte\Psr7\Psr7Response;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Application implements IApplication
 {
@@ -20,6 +21,11 @@ class Application implements IApplication
 	public function run(): void
 	{
 		$request = Psr7ServerRequestFactory::fromGlobal();
+		$this->runWith($request);
+	}
+
+	public function runWith(ServerRequestInterface $request): void
+	{
 		$response = new Psr7Response();
 
 		$response = $this->dispatcher->dispatch($request, $response);

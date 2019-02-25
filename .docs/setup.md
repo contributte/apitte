@@ -22,14 +22,14 @@ Create entry point
 ```php
 // www/index.php
 
-use Apitte\Core\Application\Application;
+use Apitte\Core\Application\IApplication;
 use Nette\DI\Container;
 
 /** @var Container $container */
 $container = require __DIR__ . '/../app/bootstrap.php';
 
-/** @var Application $application */
-$application = $container->getByType(Application::class)->run();
+/** @var IApplication $application */
+$application = $container->getByType(IApplication::class)->run();
 ```
 
 ## Usage in combination with nette application
@@ -37,7 +37,7 @@ $application = $container->getByType(Application::class)->run();
 ```php
 // www/index.php
 
-use Apitte\Core\Application\Application as ApiApplication;
+use Apitte\Core\Application\IApplication as ApiApplication;
 use Nette\Application\Application as UIApplication;
 use Nette\DI\Container;
 

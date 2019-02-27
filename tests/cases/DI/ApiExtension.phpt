@@ -7,6 +7,7 @@
 use Apitte\Core\Application\Application;
 use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\Dispatcher\JsonDispatcher;
+use Apitte\Core\Http\RequestScopeStorage;
 use Apitte\Core\Schema\Schema;
 use Nette\DI\Compiler;
 use Nette\DI\Container;
@@ -34,6 +35,7 @@ test(function (): void {
 	Assert::type(JsonDispatcher::class, $container->getService('api.core.dispatcher'));
 	Assert::type(Schema::class, $container->getService('api.core.schema'));
 	Assert::type(Application::class, $container->getService('api.core.application'));
+	Assert::type(RequestScopeStorage::class, $container->getService('api.core.requestScopeStorage'));
 });
 
 // Annotations

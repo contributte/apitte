@@ -11,6 +11,7 @@ use Apitte\Core\ErrorHandler\PsrLogErrorHandler;
 use Apitte\Core\ErrorHandler\SimpleErrorHandler;
 use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Handler\ServiceHandler;
+use Apitte\Core\Http\RequestScopeStorage;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Schema;
@@ -70,6 +71,9 @@ class CoreServicesPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('schema'))
 			->setFactory(Schema::class);
+
+		$builder->addDefinition($this->prefix('requestScopeStorage'))
+			->setFactory(RequestScopeStorage::class);
 	}
 
 }

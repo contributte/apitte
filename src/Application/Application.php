@@ -3,8 +3,10 @@
 namespace Apitte\Core\Application;
 
 use Apitte\Core\Dispatcher\IDispatcher;
+use Apitte\Core\Http\RequestScopeStorage;
 use Contributte\Psr7\Psr7Response;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Application implements IApplication
@@ -13,9 +15,13 @@ class Application implements IApplication
 	/** @var IDispatcher */
 	private $dispatcher;
 
-	public function __construct(IDispatcher $dispatcher)
+	/** @var RequestScopeStorage */
+	private $requestScopeStorage;
+
+	public function __construct(IDispatcher $dispatcher, RequestScopeStorage $requestScopeStorage)
 	{
 		$this->dispatcher = $dispatcher;
+		$this->requestScopeStorage = $requestScopeStorage;
 	}
 
 	public function run(): void
@@ -26,10 +32,16 @@ class Application implements IApplication
 
 	public function runWith(ServerRequestInterface $request): void
 	{
-		$response = new Psr7Response();
+		$this->requestScopeStorage->save('uri', $request->getUri());
 
-		$response = $this->dispatcher->dispatch($request, $response);
+		$response = $this->dispatcher->dispatch($request, new Psr7Response());
+		$this->sendResponse($response);
 
+		$this->requestScopeStorage->clear();
+	}
+
+	protected function sendResponse(ResponseInterface $response): void
+	{
 		$httpHeader = sprintf(
 			'HTTP/%s %s %s',
 			$response->getProtocolVersion(),

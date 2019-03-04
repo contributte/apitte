@@ -42,7 +42,7 @@ final class HelloController implements IController
 | stable      | `^0.4.0`     | `master` | `>= 7.1` |                                                 |
 | stable      | `^0.3.0`     | `master` | `>= 5.6` |                                                 |
 
-## Docs
+## Documentation
 
 Need to start with Apitte
 - [Setup](.docs/setup.md)
@@ -84,12 +84,8 @@ Playground with example applications
   </tbody>
 </table>
 
------
+## Sponsoring
 
 <a href="https://github.com/tlapnet"><img  width="200" src="https://cdn.rawgit.com/f3l1x/xsource/2463efb7/assets/tlapdev.png"></a>
 
-The development is sponsored by [Tlapnet](http://www.tlapnet.cz) and a lot of coffees. Thank you guys! :+1:
-
------
-
-Thank you for testing, reporting and contributing.
+The development is sponsored by [Tlapnet](https://www.tlapnet.cz)

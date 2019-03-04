@@ -2,7 +2,7 @@
 
 Install core
 
-```
+```bash
 composer require apitte/core
 ```
 

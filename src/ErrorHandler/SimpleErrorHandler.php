@@ -54,8 +54,8 @@ class SimpleErrorHandler implements IErrorHandler
 			'message' => $error instanceof ApiException ? $error->getMessage() : 'Application encountered an internal error. Please try again later.',
 		];
 
-		if ($error instanceof ApiException && $error->getContext() !== null) {
-			$data['context'] = $error->getContext();
+		if ($error instanceof ApiException && ($context = $error->getContext()) !== null) {
+			$data['context'] = $context;
 		}
 
 		$body = stream_for(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | (defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0)));

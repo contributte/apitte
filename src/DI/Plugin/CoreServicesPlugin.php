@@ -36,13 +36,9 @@ class CoreServicesPlugin extends AbstractPlugin
 		$builder = $this->getContainerBuilder();
 		$globalConfig = $this->compiler->getExtension()->getConfig();
 
-		$dispatcher = $builder->addDefinition($this->prefix('dispatcher'))
+		$builder->addDefinition($this->prefix('dispatcher'))
 			->setFactory(JsonDispatcher::class)
 			->setAutowired(false);
-
-		$builder->addDefinition($this->prefix('application'))
-			->setFactory(Application::class, [$dispatcher])
-			->setType(IApplication::class);
 
 		// Catch exception only in debug mode if explicitly enabled
 		$catchException = !$globalConfig['debug'] || $globalConfig['catchException'];
@@ -59,6 +55,10 @@ class CoreServicesPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('dispatcher.wrapper'))
 			->setFactory(WrappedDispatcher::class, ['@' . $this->prefix('dispatcher')]);
+
+		$builder->addDefinition($this->prefix('application'))
+			->setFactory(Application::class)
+			->setType(IApplication::class);
 
 		$builder->addDefinition($this->prefix('router'))
 			->setType(IRouter::class)

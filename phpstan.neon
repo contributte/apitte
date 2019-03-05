@@ -22,12 +22,12 @@ parameters:
 		- '#^Call to static method from\(\) on an unknown class Apitte\\Negotiation\\Http\\#'
 		- '#^Class Apitte\\Negotiation\\Http\\AbstractEntity not found\.$#'
 
-		# Phpstan bug
+		# Phpstan bugs
 		- '#^Parameter \#1 \$function of function call_user_func_array expects callable\(\)\: mixed, array\(object, string\) given\.#'
-
-		# Phpstan don't understand complex try-catch constructs
 		- message: '#^Strict comparison using !== between null and null will always evaluate to false\.$#'
 		  path: %currentWorkingDirectory%/src/Router/SimpleRouter.php
+		- message: '#^Strict comparison using !== between array and array\(\) will always evaluate to true\.$#'
+		  path: %currentWorkingDirectory%/src/LinkGenerator/StrictLinkGenerator.php
 
 		# Maybe later - complicated to fix
 		- '#^.*should be contravariant with parameter.*$#'
@@ -37,3 +37,17 @@ parameters:
 
 		# Ignore bad php internal functions behavior
 		- '#^Parameter \#1 \$haystack of static method Nette\\Utils\\Strings\:\:contains\(\) expects string, string\|false given\.$#'
+
+		# Should be false error
+		- message: '#^Ternary operator condition is always true\.$#'
+		  path: %currentWorkingDirectory%/src/LinkGenerator/ControllerMapper.php
+		- message: '#^Binary operation "\." between string and array\|string\|null results in an error\.$#'
+		  path: %currentWorkingDirectory%/src/LinkGenerator/ControllerMapper.php
+
+		# Ignore completely until LaxLinkGenerator is implemented
+		- message: '#^.*$#'
+		  path: %currentWorkingDirectory%/src/LinkGenerator/LaxLinkGenerator.php
+
+		# Not implemented branch
+		- message: '#^Elseif condition is always false\.$#'
+		  path: %currentWorkingDirectory%/src/LinkGenerator/StrictLinkGenerator.php

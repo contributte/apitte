@@ -213,7 +213,10 @@ class RequestParameterMapping
 		}
 	}
 
-	protected function getMapper(string $type): ?ITypeMapper
+	/**
+	 * @internal
+	 */
+	public function getMapper(string $type): ?ITypeMapper
 	{
 		if (!isset($this->types[$type])) return null;
 

@@ -23,4 +23,21 @@ class BooleanTypeMapper implements ITypeMapper
 		throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_BOOLEAN);
 	}
 
+	/**
+	 * @param mixed $value
+	 * @throws InvalidArgumentTypeException
+	 */
+	public function denormalize($value): string
+	{
+		if ($value === 'true' || $value === true) {
+			return 'true';
+		}
+
+		if ($value === 'false' || $value === false) {
+			return 'false';
+		}
+
+		throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_BOOLEAN);
+	}
+
 }

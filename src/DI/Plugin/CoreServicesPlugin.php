@@ -12,6 +12,9 @@ use Apitte\Core\ErrorHandler\SimpleErrorHandler;
 use Apitte\Core\Handler\IHandler;
 use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Core\Http\RequestScopeStorage;
+use Apitte\Core\LinkGenerator\ControllerMapper;
+use Apitte\Core\LinkGenerator\LaxLinkGenerator;
+use Apitte\Core\LinkGenerator\LinkGenerator;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Schema;
@@ -74,6 +77,13 @@ class CoreServicesPlugin extends AbstractPlugin
 
 		$builder->addDefinition($this->prefix('requestScopeStorage'))
 			->setFactory(RequestScopeStorage::class);
+
+		$builder->addDefinition($this->prefix('controllerMapper'))
+			->setFactory(ControllerMapper::class);
+
+		$builder->addDefinition($this->prefix('linkGenerator'))
+			->setFactory(LaxLinkGenerator::class)
+			->setType(LinkGenerator::class);
 	}
 
 }

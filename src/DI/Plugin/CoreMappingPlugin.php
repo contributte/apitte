@@ -5,6 +5,7 @@ namespace Apitte\Core\DI\Plugin;
 use Apitte\Core\Decorator\RequestEntityDecorator;
 use Apitte\Core\Decorator\RequestParametersDecorator;
 use Apitte\Core\DI\ApiExtension;
+use Apitte\Core\LinkGenerator\StrictLinkGenerator;
 use Apitte\Core\Mapping\Parameter\BooleanTypeMapper;
 use Apitte\Core\Mapping\Parameter\DateTimeTypeMapper;
 use Apitte\Core\Mapping\Parameter\FloatTypeMapper;
@@ -70,6 +71,9 @@ class CoreMappingPlugin extends AbstractPlugin
 		$builder->addDefinition($this->prefix('request.entity.mapping'))
 			->setFactory(RequestEntityMapping::class)
 			->addSetup('setValidator', ['@' . $this->prefix('request.entity.mapping.validator')]);
+
+		$builder->getDefinition($this->prefix('linkGenerator'))
+			->setFactory(StrictLinkGenerator::class);
 	}
 
 }

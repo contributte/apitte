@@ -14,4 +14,10 @@ interface ITypeMapper
 	 */
 	public function normalize($value);
 
+	/**
+	 * @param mixed $value
+	 * @throws InvalidArgumentTypeException
+	 */
+	public function denormalize($value): string;
+
 }

@@ -19,4 +19,12 @@ class IntegerTypeMapper implements ITypeMapper
 		throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_INTEGER);
 	}
 
+	/**
+	 * @param mixed $value
+	 */
+	public function denormalize($value): string
+	{
+		return (string) $value;
+	}
+
 }

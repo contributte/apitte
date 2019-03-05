@@ -4,6 +4,7 @@ namespace Apitte\Core\Mapping\Parameter;
 
 use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 use DateTimeImmutable;
+use DateTimeInterface;
 use TypeError;
 
 class DateTimeTypeMapper implements ITypeMapper
@@ -24,6 +25,20 @@ class DateTimeTypeMapper implements ITypeMapper
 			return $value;
 		}
 
+		throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_DATETIME);
+	}
+
+	/**
+	 * @param mixed $value
+	 * @throws InvalidArgumentTypeException
+	 */
+	public function denormalize($value): string
+	{
+		if ($value instanceof DateTimeInterface) {
+			return $value->format(DATE_ATOM);
+		}
+
+		//TODO - support different date formats?
 		throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_DATETIME);
 	}
 

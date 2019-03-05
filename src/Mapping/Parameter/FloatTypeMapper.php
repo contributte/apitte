@@ -23,4 +23,12 @@ class FloatTypeMapper implements ITypeMapper
 		throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_FLOAT);
 	}
 
+	/**
+	 * @param mixed $value
+	 */
+	public function denormalize($value): string
+	{
+		return (string) $value;
+	}
+
 }

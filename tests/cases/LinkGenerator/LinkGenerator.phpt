@@ -7,53 +7,26 @@
 use Apitte\Core\Exception\Logical\InvalidLinkException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\RequestScopeStorage;
-use Apitte\Core\LinkGenerator\LinkGenerator;
+use Apitte\Core\LinkGenerator\ControllerMapper;
+use Apitte\Core\LinkGenerator\StrictLinkGenerator;
+use Apitte\Core\Mapping\Parameter\StringTypeMapper;
+use Apitte\Core\Mapping\RequestParameterMapping;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
+use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Schema;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\FoobarController;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-// Controller not found
-test(function (): void {
-	$schema = new Schema();
-	$storage = new RequestScopeStorage();
-	$generator = new LinkGenerator($schema, $storage);
-
-	Assert::exception(function () use ($generator): void {
-		$link = $generator->link('Foo:Bar:Api:V1:Users:index');
-	}, InvalidLinkException::class, 'Cannot load controller "Foo:Bar:Api:V1:Users", class "Foo\Bar\Api\V1\UsersController" was not found.');
-});
-
-// Controller without IController
-test(function (): void {
-	$schema = new Schema();
-	$storage = new RequestScopeStorage();
-	$generator = new LinkGenerator($schema, $storage);
-
-	Assert::exception(function () use ($generator): void {
-		$link = $generator->link('Tests:Fixtures:Controllers:NoInterfaceInvalid:baz1');
-	}, InvalidLinkException::class, 'Cannot load controller "Tests:Fixtures:Controllers:NoInterfaceInvalid", class "Tests\Fixtures\Controllers\NoInterfaceInvalidController" is not "Apitte\Core\UI\Controller\IController" implementor.');
-});
-
-// Abstract controller
-test(function (): void {
-	$schema = new Schema();
-	$storage = new RequestScopeStorage();
-	$generator = new LinkGenerator($schema, $storage);
-
-	Assert::exception(function () use ($generator): void {
-		$link = $generator->link('Tests:Fixtures:Controllers:Abstract:baz1');
-	}, InvalidLinkException::class, 'Cannot load controller "Tests:Fixtures:Controllers:Abstract", class "Tests\Fixtures\Controllers\AbstractController" is abstract.');
-});
-
 // Invalid link destination
 test(function (): void {
 	$schema = new Schema();
 	$storage = new RequestScopeStorage();
-	$generator = new LinkGenerator($schema, $storage);;
+	$controllerMapper = new ControllerMapper();
+	$requestParameterMapping = new RequestParameterMapping();
+	$generator = new StrictLinkGenerator($schema, $storage, $controllerMapper, $requestParameterMapping);
 
 	Assert::exception(function () use ($generator): void {
 		$link = $generator->link('abcd');
@@ -64,7 +37,9 @@ test(function (): void {
 test(function (): void {
 	$schema = new Schema();
 	$storage = new RequestScopeStorage();
-	$generator = new LinkGenerator($schema, $storage);
+	$controllerMapper = new ControllerMapper();
+	$requestParameterMapping = new RequestParameterMapping();
+	$generator = new StrictLinkGenerator($schema, $storage, $controllerMapper, $requestParameterMapping);
 
 	Assert::exception(function () use ($generator): void {
 		$link = $generator->link('Tests:Fixtures:Controllers:Foobar:baz1');
@@ -75,7 +50,9 @@ test(function (): void {
 test(function (): void {
 	$schema = new Schema();
 	$storage = new RequestScopeStorage();
-	$generator = new LinkGenerator($schema, $storage);
+	$controllerMapper = new ControllerMapper();
+	$requestParameterMapping = new RequestParameterMapping();
+	$generator = new StrictLinkGenerator($schema, $storage, $controllerMapper, $requestParameterMapping);
 
 	$endpoint = new Endpoint(new EndpointHandler(FoobarController::class, 'baz2'));
 	$schema->addEndpoint($endpoint);
@@ -89,7 +66,9 @@ test(function (): void {
 test(function (): void {
 	$schema = new Schema();
 	$storage = new RequestScopeStorage();
-	$generator = new LinkGenerator($schema, $storage);
+	$controllerMapper = new ControllerMapper();
+	$requestParameterMapping = new RequestParameterMapping();
+	$generator = new StrictLinkGenerator($schema, $storage, $controllerMapper, $requestParameterMapping);
 
 	$endpoint = new Endpoint(new EndpointHandler(FoobarController::class, 'baz1'));
 	$schema->addEndpoint($endpoint);
@@ -101,7 +80,9 @@ test(function (): void {
 test(function (): void {
 	$schema = new Schema();
 	$storage = new RequestScopeStorage();
-	$generator = new LinkGenerator($schema, $storage);
+	$controllerMapper = new ControllerMapper();
+	$requestParameterMapping = new RequestParameterMapping();
+	$generator = new StrictLinkGenerator($schema, $storage, $controllerMapper, $requestParameterMapping);
 
 	$endpoint = new Endpoint(new EndpointHandler(FoobarController::class, 'baz1'));
 	$endpoint->setMask('/api/v1/foo/bar/baz');
@@ -110,32 +91,26 @@ test(function (): void {
 	Assert::same('/api/v1/foo/bar/baz', $generator->link('Tests:Fixtures:Controllers:Foobar:baz1'));
 });
 
-// Endpoint found - with mask with parameters
+// Endpoint found - with mask with string parameters
 test(function (): void {
 	$schema = new Schema();
 	$storage = new RequestScopeStorage();
-	$generator = new LinkGenerator($schema, $storage);
+	$controllerMapper = new ControllerMapper();
+	$requestParameterMapping = new RequestParameterMapping();
+	$requestParameterMapping->addMapper(EndpointParameter::TYPE_STRING, StringTypeMapper::class);
+	$generator = new StrictLinkGenerator($schema, $storage, $controllerMapper, $requestParameterMapping);
 
 	$endpoint = new Endpoint(new EndpointHandler(FoobarController::class, 'baz1'));
 	$endpoint->setMask('/api/v1/foo/{bar}/{baz}');
+
+	$parameter1 = new EndpointParameter('bar');
+	$endpoint->addParameter($parameter1);
+
+	$parameter2 = new EndpointParameter('baz');
+	$endpoint->addParameter($parameter2);
+
 	$schema->addEndpoint($endpoint);
 
 	Assert::same('/api/v1/foo/lorem/ipsum', $generator->link('Tests:Fixtures:Controllers:Foobar:baz1', ['bar' => 'lorem', 'baz' => 'ipsum']));
-	Assert::same('/api/v1/foo/lorem/ipsum#barbaz', $generator->link('Tests:Fixtures:Controllers:Foobar:baz1#barbaz', ['bar' => 'lorem', 'baz' => 'ipsum']));
-});
-
-// Invalid mapping
-test(function (): void {
-	Assert::exception(
-		function (): void {
-			$schema = new Schema();
-			$storage = new RequestScopeStorage();
-			$generator = new LinkGenerator($schema, $storage);
-			$generator->setMapping([
-				'*' => ['*', '*'],
-			]);
-		},
-		InvalidStateException::class,
-		'Invalid mapping mask for module "*".'
-	);
+	Assert::same('/api/v1/foo/lorem/ipsum#loremipsum', $generator->link('Tests:Fixtures:Controllers:Foobar:baz1#loremipsum', ['bar' => 'lorem', 'baz' => 'ipsum']));
 });

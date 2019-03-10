@@ -27,11 +27,11 @@ class RequestParameterValidation implements IValidation
 
 					if (!in_array($parameter->getIn(), EndpointParameter::IN, true)) {
 						throw new InvalidSchemaException(sprintf(
-							'Invalid request parameter "in=%s" given in "%s::%s()". Choose one of %s::IN_*',
+							'Invalid request parameter "in=%s" given in "%s::%s()". Choose one of %s',
 							$parameter->getIn(),
 							$controller->getClass(),
 							$method->getName(),
-							EndpointParameter::class
+							implode(', ', EndpointParameter::IN)
 						));
 					}
 
@@ -49,11 +49,11 @@ class RequestParameterValidation implements IValidation
 					// Types
 					if (!in_array($parameter->getType(), EndpointParameter::TYPES, true)) {
 						throw new InvalidSchemaException(sprintf(
-							'Invalid request parameter "type=%s" given in "%s::%s()". Choose one of %s::TYPE_*',
+							'Invalid request parameter "type=%s" given in "%s::%s()". Choose one of %s',
 							$parameter->getType(),
 							$controller->getClass(),
 							$method->getName(),
-							EndpointParameter::class
+							implode(', ', EndpointParameter::TYPES)
 						));
 					}
 

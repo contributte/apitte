@@ -62,11 +62,11 @@ test(function (): void {
 		},
 		InvalidSchemaException::class,
 		sprintf(
-			'Invalid request parameter "type=%s" given in "%s::%s()". Choose one of %s::TYPE_*',
+			'Invalid request parameter "type=%s" given in "%s::%s()". Choose one of %s',
 			'bar',
 			'c1',
 			'method',
-			EndpointParameter::class
+			implode(', ', EndpointParameter::TYPES)
 		)
 	);
 });
@@ -90,11 +90,11 @@ test(function (): void {
 		},
 		InvalidSchemaException::class,
 		sprintf(
-			'Invalid request parameter "in=%s" given in "%s::%s()". Choose one of %s::IN_*',
+			'Invalid request parameter "in=%s" given in "%s::%s()". Choose one of %s',
 			'bar',
 			'c1',
 			'method',
-			EndpointParameter::class
+			implode(', ', EndpointParameter::IN)
 		)
 	);
 });

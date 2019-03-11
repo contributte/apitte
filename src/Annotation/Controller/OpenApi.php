@@ -19,6 +19,9 @@ final class OpenApi
 	 */
 	public function __construct(array $data)
 	{
+		$data = preg_replace('#^\s*\*\s?#ms', '', trim($data['value'], '/*'));
+		$data = \Nette\Neon\Neon::decode($data);
+
 		$this->data = $data;
 	}
 

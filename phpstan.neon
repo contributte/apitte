@@ -25,10 +25,6 @@ parameters:
 		# Phpstan bug
 		- '#^Parameter \#1 \$function of function call_user_func_array expects callable\(\)\: mixed, array\(object, string\) given\.#'
 
-		# Phpstan don't understand complex try-catch constructs
-		- message: '#^Strict comparison using !== between null and null will always evaluate to false\.$#'
-		  path: %currentWorkingDirectory%/src/Router/SimpleRouter.php
-
 		# Maybe later - complicated to fix
 		- '#^.*should be contravariant with parameter.*$#'
 

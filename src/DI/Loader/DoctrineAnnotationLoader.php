@@ -24,6 +24,7 @@ use Apitte\Core\Schema\Builder\Controller\MethodRequest;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Nette\Neon\Neon;
 use Nette\Reflection\ClassType;
 
 final class DoctrineAnnotationLoader extends AbstractContainerLoader
@@ -294,7 +295,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				// Parse @OpenApi ================
 				if (get_class($annotation) === OpenApi::class) {
 					/** @var OpenApi $annotation */
-					$schemaMethod->setOpenApi($annotation->getData());
+					$schemaMethod->setOpenApi(Neon::decode($annotation->getData()) ?? []);
 					continue;
 				}
 

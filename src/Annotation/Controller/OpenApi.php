@@ -11,7 +11,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
 final class OpenApi
 {
 
-	/** @var mixed[] */
+	/** @var string */
 	private $data;
 
 	/**
@@ -19,15 +19,18 @@ final class OpenApi
 	 */
 	public function __construct(array $data)
 	{
-		$this->data = $data;
+		$this->data = $this->purifyDocblock($data['value']);
 	}
 
-	/**
-	 * @return mixed[]
-	 */
-	public function getData(): array
+	public function getData(): string
 	{
 		return $this->data;
+	}
+
+	private function purifyDocblock(string $docblock): string
+	{
+		// Removes useless whitespace and * from start of every line
+		return preg_replace('#\s*\*\/$|^\s*\*\s{0,1}|^\/\*{1,2}#m', '', $docblock);
 	}
 
 }

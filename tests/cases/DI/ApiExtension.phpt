@@ -56,7 +56,7 @@ test(function (): void {
 
 	/** @var Schema $schema */
 	$schema = $container->getService('api.core.schema');
-	Assert::count(3, $schema->getEndpoints());
+	Assert::count(4, $schema->getEndpoints());
 	Assert::equal(['GET'], $schema->getEndpoints()[0]->getMethods());
 	Assert::equal('/api/v1/foobar/baz1', $schema->getEndpoints()[0]->getMask());
 	Assert::equal('#/api/v1/foobar/baz1$#', $schema->getEndpoints()[0]->getPattern());

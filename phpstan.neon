@@ -37,3 +37,5 @@ parameters:
 
 		# Ignore bad php internal functions behavior
 		- '#^Parameter \#1 \$haystack of static method Nette\\Utils\\Strings\:\:contains\(\) expects string, string\|false given\.$#'
+		- message: '#^Method Apitte\\Core\\Annotation\\Controller\\OpenApi\:\:purifyDocblock\(\) should return string but returns string\|null\.$#'
+		  path: %currentWorkingDirectory%/src/Annotation/Controller/OpenApi.php

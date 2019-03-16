@@ -4,6 +4,7 @@ namespace Tests\Fixtures\Controllers;
 
 use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
+use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
@@ -35,6 +36,23 @@ final class FoobarController extends ApiV1Controller
 	 * @Method({"PUT"})
 	 */
 	public function baz3(ApiRequest $request, ApiResponse $response): void
+	{
+	}
+
+	/**
+	 * @Path("/openapi")
+	 * @Method({"PUT"})
+	 * @OpenApi("
+	 *  foo:
+	 *	   bar: baz
+	 *  lorem:
+	 *     - ipsum
+	 *     - dolor
+	 *     - sit
+	 *     - amet
+	 * ")
+	 */
+	public function openapi(ApiRequest $request, ApiResponse $response): void
 	{
 	}
 

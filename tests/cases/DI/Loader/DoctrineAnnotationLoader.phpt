@@ -58,7 +58,7 @@ test(function (): void {
 	Assert::equal(FoobarController::class, $controller->getClass());
 	Assert::equal('/foobar', $controller->getPath());
 
-	Assert::count(3, $controller->getMethods());
+	Assert::count(4, $controller->getMethods());
 
 	Assert::equal('baz1', $controller->getMethods()['baz1']->getName());
 	Assert::equal('/baz1', $controller->getMethods()['baz1']->getPath());
@@ -67,6 +67,14 @@ test(function (): void {
 	Assert::equal('baz2', $controller->getMethods()['baz2']->getName());
 	Assert::equal('/baz2', $controller->getMethods()['baz2']->getPath());
 	Assert::equal(['GET', 'POST'], $controller->getMethods()['baz2']->getMethods());
+
+	Assert::equal(
+		[
+			'foo' => ['bar' => 'baz'],
+			'lorem' => ['ipsum', 'dolor', 'sit', 'amet'],
+		],
+		$controller->getMethods()['openapi']->getOpenApi()
+	);
 
 	Assert::equal(['testapi'], $controller->getGroupIds());
 	Assert::equal(['/api', '/v1'], $controller->getGroupPaths());

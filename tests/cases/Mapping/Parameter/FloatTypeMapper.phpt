@@ -20,6 +20,7 @@ final class TestFloatTypeMapper extends TestCase
 
 		Assert::same(0.0, $mapper->normalize(0));
 		Assert::same(13.0, $mapper->normalize('13'));
+		Assert::same(13.0, $mapper->normalize('+13'));
 		Assert::same(1.99, $mapper->normalize('1.99'));
 		Assert::same(-10.0, $mapper->normalize('-10'));
 	}

@@ -20,6 +20,7 @@ final class TestIntegerTypeMapper extends TestCase
 
 		Assert::same(0, $mapper->normalize(0));
 		Assert::same(13, $mapper->normalize('13'));
+		Assert::same(13, $mapper->normalize('+13'));
 		Assert::same(-10, $mapper->normalize('-10'));
 	}
 

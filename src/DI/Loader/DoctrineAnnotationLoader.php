@@ -154,7 +154,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Parse @OpenApi ============================
 			if (get_class($annotation) === OpenApi::class) {
 				/** @var OpenApi $annotation */
-				$controller->setOpenApi($annotation->getData());
+				$controller->setOpenApi(Neon::decode($annotation->getData()) ?? []);
 				continue;
 			}
 

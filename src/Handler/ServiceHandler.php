@@ -2,9 +2,11 @@
 
 namespace Apitte\Core\Handler;
 
+use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
+use Apitte\Core\UI\Controller\IController;
 use Nette\DI\Container;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -55,13 +57,16 @@ class ServiceHandler implements IHandler
 		return $endpoint;
 	}
 
-	/**
-	 * @return object
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-	 */
-	protected function getService(Endpoint $endpoint)
+	protected function getService(Endpoint $endpoint): IController
 	{
-		return $this->container->getByType($endpoint->getHandler()->getClass());
+		$class = $endpoint->getHandler()->getClass();
+		$service = $this->container->getByType($class);
+
+		if (!($service instanceof IController)) {
+			throw new InvalidArgumentException(sprintf('Controller "%s" must implement "%s"', $class, IController::class));
+		}
+
+		return $service;
 	}
 
 }

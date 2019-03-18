@@ -16,7 +16,7 @@ class FloatTypeMapper implements ITypeMapper
 			$value = str_replace(',', '.', $value); // Accept also comma as decimal separator
 		}
 
-		if (is_float($value) || is_int($value) || (is_string($value) && preg_match('#^-?[0-9]*[.]?[0-9]+\z#', $value))) {
+		if (is_float($value) || is_int($value) || (is_string($value) && preg_match('#^[+-]?[0-9]*[.]?[0-9]+\z#', $value))) {
 			return (float) $value;
 		}
 

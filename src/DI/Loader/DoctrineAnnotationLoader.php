@@ -2,7 +2,6 @@
 
 namespace Apitte\Core\DI\Loader;
 
-use Apitte\Core\Annotation\Controller\Controller as ControllerAnnotation;
 use Apitte\Core\Annotation\Controller\ControllerId;
 use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\GroupId;
@@ -22,6 +21,7 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\Controller\MethodRequest;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
+use Apitte\Core\UI\Controller\IController;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Nette\Neon\Neon;
@@ -54,14 +54,14 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Analyse all parent classes
 			$class = $this->analyseClass($type);
 
-			// Check if a controller or his abstract has @Controller annotation,
+			// Check if a controller or his abstract implements IController,
 			// otherwise, skip this controller
 			if (!$this->acceptController($class)) continue;
 
 			// Create scheme endpoint
 			$schemeController = $builder->addController($type);
 
-			// Parse @Controller, @ControllerPath, @ControllerId
+			// Parse @ControllerPath, @ControllerId
 			$this->parseControllerClassAnnotations($schemeController, $class);
 
 			// Parse @Method, @Path
@@ -122,18 +122,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 	protected function acceptController(ClassType $class): bool
 	{
-		// Has class annotation @Controller?
-		if ($this->getReader()->getClassAnnotation($class, ControllerAnnotation::class)) return true;
-
-		// Has any of parent classes annotation @Controller?
-		$parents = $this->meta['services'][$class->getName()]['parents'];
-
-		/** @var ClassType $parentClass */
-		foreach ($parents as $parentClass) {
-			if ($this->getReader()->getClassAnnotation($parentClass, ControllerAnnotation::class)) return true;
-		}
-
-		return false;
+		return is_subclass_of($class->getName(), IController::class);
 	}
 
 	protected function parseControllerClassAnnotations(Controller $controller, ClassType $class): void

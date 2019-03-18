@@ -16,7 +16,6 @@ use Tester\Assert;
 use Tests\Fixtures\Controllers\FoobarController;
 use Tests\Fixtures\Controllers\InvalidGroupAnnotationController;
 use Tests\Fixtures\Controllers\InvalidGroupPathAnnotationController;
-use Tests\Fixtures\Controllers\PrefixedAnnotationController;
 
 // Check if controller is found
 test(function (): void {
@@ -80,7 +79,7 @@ test(function (): void {
 	Assert::equal(['/api', '/v1'], $controller->getGroupPaths());
 });
 
-// Invalid annotation (@Controller + @Group)
+// Invalid annotation (@Group)
 test(function (): void {
 	Assert::exception(function (): void {
 		$builder = new ContainerBuilder();
@@ -92,7 +91,7 @@ test(function (): void {
 	}, InvalidStateException::class, sprintf('Annotation @GroupId cannot be on non-abstract "%s"', InvalidGroupAnnotationController::class));
 });
 
-// Invalid annotation (@Controller + @GroupPath)
+// Invalid annotation (@GroupPath)
 test(function (): void {
 	Assert::exception(function (): void {
 		$builder = new ContainerBuilder();
@@ -102,17 +101,4 @@ test(function (): void {
 		$loader = new DoctrineAnnotationLoader($builder);
 		$loader->load(new SchemaBuilder());
 	}, InvalidStateException::class, sprintf('Annotation @GroupPath cannot be on non-abstract "%s"', InvalidGroupPathAnnotationController::class));
-});
-
-// Test prefixed annotation (@API\Controller)
-test(function (): void {
-	$builder = new ContainerBuilder();
-	$builder->addDefinition('prefixedAnnotation')
-		->setClass(PrefixedAnnotationController::class);
-
-	$loader = new DoctrineAnnotationLoader($builder);
-	$schemaBuilder = $loader->load(new SchemaBuilder());
-
-	Assert::type(SchemaBuilder::class, $schemaBuilder);
-	Assert::count(1, $schemaBuilder->getControllers());
 });

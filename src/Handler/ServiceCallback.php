@@ -14,19 +14,14 @@ class ServiceCallback
 	/** @var string */
 	private $method;
 
-	/** @var mixed[] */
-	private $arguments;
-
 	/**
 	 * @param object $service
-	 * @param mixed[] $args
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function __construct($service, string $method, array $args = [])
+	public function __construct($service, string $method)
 	{
 		$this->service = $service;
 		$this->method = $method;
-		$this->arguments = $args;
 	}
 
 	/**
@@ -44,27 +39,11 @@ class ServiceCallback
 	}
 
 	/**
-	 * @return mixed[]
-	 */
-	public function getArguments(): array
-	{
-		return $this->arguments;
-	}
-
-	/**
-	 * @param mixed[] $args
-	 */
-	public function setArguments(array $args): void
-	{
-		$this->arguments = $args;
-	}
-
-	/**
 	 * @return mixed
 	 */
 	public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		return call_user_func_array([$this->service, $this->method], $this->arguments);
+		return call_user_func([$this->service, $this->method], $request, $response);
 	}
 
 }

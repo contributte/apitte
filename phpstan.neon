@@ -23,7 +23,7 @@ parameters:
 		- '#^Class Apitte\\Negotiation\\Http\\AbstractEntity not found\.$#'
 
 		# Phpstan bug
-		- '#^Parameter \#1 \$function of function call_user_func_array expects callable\(\)\: mixed, array\(object, string\) given\.#'
+		- '#^Parameter \#1 \$function of function call_user_func expects callable\(\)\: mixed, array\(object, string\) given\.$#'
 
 		# Maybe later - complicated to fix
 		- '#^.*should be contravariant with parameter.*$#'

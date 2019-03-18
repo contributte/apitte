@@ -12,7 +12,6 @@ Core library of Apitte API framework
 
 ```php
 /**
- * @Controller
  * @ControllerPath("/hello")
  */
 final class HelloController implements IController

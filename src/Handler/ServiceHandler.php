@@ -26,24 +26,20 @@ class ServiceHandler implements IHandler
 	public function handle(ServerRequestInterface $request, ResponseInterface $response)
 	{
 		// Create and trigger callback
-		$callback = $this->createCallback($request, $response);
+		$endpoint = $this->getEndpoint($request);
+		$callback = $this->createCallback($endpoint);
 		$response = $callback($request, $response);
 		return $response;
 	}
 
-	protected function createCallback(ServerRequestInterface $request, ResponseInterface $response): ServiceCallback
+	protected function createCallback(Endpoint $endpoint): ServiceCallback
 	{
-		$endpoint = $this->getEndpoint($request);
-
 		// Find handler in DI container by class
 		$service = $this->getService($endpoint);
 		$method = $endpoint->getHandler()->getMethod();
 
 		// Create callback
-		$callback = new ServiceCallback($service, $method);
-		$callback->setArguments([$request, $response]);
-
-		return $callback;
+		return new ServiceCallback($service, $method);
 	}
 
 	protected function getEndpoint(ServerRequestInterface $request): Endpoint

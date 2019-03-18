@@ -2,33 +2,26 @@
 
 namespace Apitte\Core\Handler;
 
+use Apitte\Core\UI\Controller\IController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ServiceCallback
 {
 
-	/** @var object */
+	/** @var IController */
 	private $service;
 
 	/** @var string */
 	private $method;
 
-	/**
-	 * @param object $service
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-	 */
-	public function __construct($service, string $method)
+	public function __construct(IController $service, string $method)
 	{
 		$this->service = $service;
 		$this->method = $method;
 	}
 
-	/**
-	 * @return object
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
-	 */
-	public function getService()
+	public function getService(): IController
 	{
 		return $this->service;
 	}

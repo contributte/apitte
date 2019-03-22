@@ -135,7 +135,7 @@ the entity from request attributes. So simple, right?
 /**
  * @Path("/filter")
  * @Method("GET")
- * @RequestMapper(entity="App\Controllers\Entity\Request\UserFilter")
+ * @RequestMapper(entity="App\Api\Entity\Request\UserFilter")
  */
 public function filter(ApiRequest $request)
 {

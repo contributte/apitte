@@ -19,30 +19,32 @@
     },
     {
       "name": "Marek Bartoš",
-      "homepage": "https://marek-bartos.cz"
+      "homepage": "https://bartos.dev"
     }
   ],
   "require": {
-    "php": ">= 7.1",
+    "php": ">=7.1",
     "ext-json": "*",
-    "contributte/psr7-http-message": "^0.5.1",
-    "contributte/phpdoc": "^0.2"
+    "contributte/phpdoc": "^0.2",
+    "contributte/psr7-http-message": "^0.5.1"
   },
   "require-dev": {
-    "ninjify/qa": "^0.8.0",
-    "ninjify/nunjuck": "^0.2.0",
     "mockery/mockery": "^1.1.0",
     "nette/di": "~2.4.13",
-    "psr/log": "^1.1",
-    "symfony/validator": "^4.1.1",
-    "phpstan/phpstan-shim": "^0.11",
+    "ninjify/nunjuck": "^0.2.0",
+    "ninjify/qa": "^0.8.0",
     "phpstan/phpstan-deprecation-rules": "^0.11",
     "phpstan/phpstan-nette": "^0.11",
-    "phpstan/phpstan-strict-rules": "^0.11"
+    "phpstan/phpstan-shim": "^0.11",
+    "phpstan/phpstan-strict-rules": "^0.11",
+    "psr/log": "^1.1",
+    "symfony/validator": "^4.1.1"
   },
   "conflict": {
-    "nette/di": "< 2.4.13",
-    "nette/utils": "< 2.5.2"
+    "nette/di": "<2.4.13",
+    "nette/utils": "<2.5.2",
+    "psr/log": "<1.1.0",
+    "symfony/validator": "<4.1.1"
   },
   "autoload": {
     "psr-4": {
@@ -56,20 +58,8 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "scripts": {
-    "qa": [
-      "linter src tests",
-      "codesniffer src tests"
-    ],
-    "tests": [
-      "tester -s -p php --colors 1 -C tests/cases"
-    ],
-    "coverage": [
-      "tester -s -p phpdbg --colors 1 -C --coverage ./coverage.xml --coverage-src ./src tests/cases"
-    ],
-    "phpstan": [
-      "vendor/bin/phpstan analyse -l max -c phpstan.neon src"
-    ]
+  "config": {
+    "sort-packages": true
   },
   "extra": {
     "branch-alias": {

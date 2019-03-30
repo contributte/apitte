@@ -3,8 +3,8 @@
 namespace Tests\Fixtures\Handler;
 
 use Apitte\Core\Handler\IHandler;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 
 class ReturnFooBarHandler implements IHandler
 {
@@ -12,7 +12,7 @@ class ReturnFooBarHandler implements IHandler
 	/**
 	 * @return mixed[]
 	 */
-	public function handle(ServerRequestInterface $request, ResponseInterface $response): array
+	public function handle(ApiRequest $request, ApiResponse $response): array
 	{
 		return ['foo', 'bar'];
 	}

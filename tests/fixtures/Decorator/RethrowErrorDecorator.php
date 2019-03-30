@@ -3,14 +3,14 @@
 namespace Tests\Fixtures\Decorator;
 
 use Apitte\Core\Decorator\IErrorDecorator;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Throwable;
 
 class RethrowErrorDecorator implements IErrorDecorator
 {
 
-	public function decorateError(ServerRequestInterface $request, ResponseInterface $response, Throwable $error): ResponseInterface
+	public function decorateError(ApiRequest $request, ApiResponse $response, Throwable $error): ApiResponse
 	{
 		throw $error;
 	}

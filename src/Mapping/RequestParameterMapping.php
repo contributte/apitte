@@ -7,12 +7,11 @@ use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Parameter\ITypeMapper;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class RequestParameterMapping
 {
@@ -40,10 +39,7 @@ class RequestParameterMapping
 		$this->types[$type] = $mapper;
 	}
 
-	/**
-	 * @param ServerRequestInterface|ApiRequest $request
-	 */
-	public function map(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
+	public function map(ApiRequest $request, ApiResponse $response): ApiRequest
 	{
 		/** @var Endpoint|null $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);

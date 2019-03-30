@@ -7,6 +7,8 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Decorator\DecoratorManager;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Tester\Assert;
@@ -16,8 +18,8 @@ use Tests\Fixtures\Decorator\ReturnResponseDecorator;
 // Decorate request
 test(function (): void {
 	$manager = new DecoratorManager();
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$manager->addRequestDecorator(new ReturnRequestDecorator());
 	$manager->addRequestDecorator(new ReturnRequestDecorator());
@@ -28,8 +30,8 @@ test(function (): void {
 // Decorate request - no decorators
 test(function (): void {
 	$manager = new DecoratorManager();
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	Assert::same($request, $manager->decorateRequest($request, $response));
 });
@@ -37,8 +39,8 @@ test(function (): void {
 // Decorate response
 test(function (): void {
 	$manager = new DecoratorManager();
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$manager->addResponseDecorator(new ReturnResponseDecorator());
 	$manager->addResponseDecorator(new ReturnResponseDecorator());
@@ -49,8 +51,8 @@ test(function (): void {
 // Decorate response - no decorators
 test(function (): void {
 	$manager = new DecoratorManager();
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	Assert::same($response, $manager->decorateResponse($request, $response));
 });
@@ -58,8 +60,8 @@ test(function (): void {
 // Decorate error
 test(function (): void {
 	$manager = new DecoratorManager();
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$error = new Exception('I am a generic exception');
 
 	$manager->addErrorDecorator(new ReturnResponseDecorator());
@@ -71,8 +73,8 @@ test(function (): void {
 // Decorate error - no decorators
 test(function (): void {
 	$manager = new DecoratorManager();
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$error = new Exception('I am a generic exception');
 
 	Assert::same(null, $manager->decorateError($request, $response, $error));

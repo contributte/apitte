@@ -3,13 +3,13 @@
 namespace Tests\Fixtures\Dispatcher;
 
 use Apitte\Core\Dispatcher\IDispatcher;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 
 class FakeDispatcher implements IDispatcher
 {
 
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	public function dispatch(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		return $response;
 	}

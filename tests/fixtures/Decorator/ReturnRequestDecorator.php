@@ -3,13 +3,13 @@
 namespace Tests\Fixtures\Decorator;
 
 use Apitte\Core\Decorator\IRequestDecorator;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 
 class ReturnRequestDecorator implements IRequestDecorator
 {
 
-	public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
+	public function decorateRequest(ApiRequest $request, ApiResponse $response): ApiRequest
 	{
 		return $request;
 	}

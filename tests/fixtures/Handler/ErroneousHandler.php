@@ -3,14 +3,14 @@
 namespace Tests\Fixtures\Handler;
 
 use Apitte\Core\Handler\IHandler;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use RuntimeException;
 
 class ErroneousHandler implements IHandler
 {
 
-	public function handle(ServerRequestInterface $request, ResponseInterface $response): void
+	public function handle(ApiRequest $request, ApiResponse $response): void
 	{
 		throw new RuntimeException(sprintf('I am %s!', self::class));
 	}

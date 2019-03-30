@@ -2,19 +2,19 @@
 
 namespace Apitte\Core\Adjuster;
 
-use Psr\Http\Message\ResponseInterface;
+use Apitte\Core\Http\ApiResponse;
 use Psr\Http\Message\StreamInterface;
 
 class FileResponseAdjuster
 {
 
 	public static function adjust(
-		ResponseInterface $response,
+		ApiResponse $response,
 		StreamInterface $stream,
 		string $filename,
 		string $contentType = 'application/octet-stream',
 		bool $forceDownload = true
-	): ResponseInterface
+	): ApiResponse
 	{
 		return $response
 			->withHeader('Content-Type', $contentType)

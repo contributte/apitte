@@ -3,21 +3,21 @@
 namespace Apitte\Core\Exception\Runtime;
 
 use Apitte\Core\Exception\RuntimeException;
-use Psr\Http\Message\ResponseInterface;
+use Apitte\Core\Http\ApiResponse;
 
 class EarlyReturnResponseException extends RuntimeException
 {
 
-	/** @var ResponseInterface */
+	/** @var ApiResponse */
 	protected $response;
 
-	public function __construct(ResponseInterface $response)
+	public function __construct(ApiResponse $response)
 	{
 		parent::__construct();
 		$this->response = $response;
 	}
 
-	public function getResponse(): ResponseInterface
+	public function getResponse(): ApiResponse
 	{
 		return $this->response;
 	}

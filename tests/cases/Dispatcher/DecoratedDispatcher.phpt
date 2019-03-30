@@ -10,6 +10,7 @@ use Apitte\Core\Decorator\DecoratorManager;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
 use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
@@ -33,8 +34,8 @@ use Tests\Fixtures\Router\FakeRouter;
 
 // Match request, use handler and be happy, everything is ok!
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), new DecoratorManager());
 	Assert::same($response, $dispatcher->dispatch($request, $response));
@@ -42,7 +43,7 @@ test(function (): void {
 
 // Match request, add endpoint, use handler and be happy, everything is ok!
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$handler = new EndpointHandler('class', 'method');
@@ -56,8 +57,8 @@ test(function (): void {
 
 // Match request, use invalid handler, throw exception
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeNullHandler(), new DecoratorManager());
 
@@ -68,20 +69,20 @@ test(function (): void {
 
 // Match request, use invalid handler, throw exception
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ReturnFooBarHandler(), new DecoratorManager());
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$dispatcher->dispatch($request, $response);
-	}, InvalidStateException::class, sprintf('If you want return anything else than "%s" from your api endpoint then install "apitte/negotiation".', ResponseInterface::class));
+	}, InvalidStateException::class, sprintf('If you want return anything else than "%s" from your api endpoint then install "apitte/negotiation".', ApiResponse::class));
 });
 
 // Match request, decorate request, throw exception, return response from exception
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$manager = new DecoratorManager();
 	$manager->addRequestDecorator(new EarlyReturnResponseExceptionDecorator());
@@ -93,8 +94,8 @@ test(function (): void {
 
 // Match request, use handler, decorate response, throw exception, return response from exception
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$manager = new DecoratorManager();
 	$manager->addResponseDecorator(new EarlyReturnResponseExceptionDecorator());
@@ -106,8 +107,8 @@ test(function (): void {
 
 // Match request, use handler, throw and catch exception, decorate response with exception in context and then (for tests) throw exception again
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$manager = new DecoratorManager();
 	$manager->addErrorDecorator(new RethrowErrorDecorator());
@@ -121,8 +122,8 @@ test(function (): void {
 
 // Match request, use handler, throw and catch exception then trow it again because DecoratorManager doesn't have any decorators so returned null
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ErroneousHandler(), new DecoratorManager());
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
@@ -132,8 +133,8 @@ test(function (): void {
 
 // No match, throw exception
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new DecoratedDispatcher(new FakeRouter(false), new FakeResponseHandler(), new DecoratorManager());
 

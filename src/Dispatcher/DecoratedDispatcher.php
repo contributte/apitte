@@ -17,7 +17,6 @@ use Apitte\Negotiation\Http\ArrayEntity;
 use Apitte\Negotiation\Http\MappingEntity;
 use Apitte\Negotiation\Http\ScalarEntity;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
 class DecoratedDispatcher extends CoreDispatcher
@@ -32,12 +31,7 @@ class DecoratedDispatcher extends CoreDispatcher
 		$this->decoratorManager = $decoratorManager;
 	}
 
-	/**
-	 * @param ApiRequest|ServerRequestInterface $request
-	 * @param ApiResponse|ResponseInterface $response
-	 * @return ApiResponse|ResponseInterface $response
-	 */
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	public function dispatch(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		try {
 			// Route and call handler
@@ -66,12 +60,7 @@ class DecoratedDispatcher extends CoreDispatcher
 		return $response;
 	}
 
-	/**
-	 * @param ApiRequest $request
-	 * @param ApiResponse $response
-	 * @return ApiResponse|ResponseInterface $response
-	 */
-	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	protected function handle(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		// Pass endpoint to response
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, null);
@@ -108,6 +97,10 @@ class DecoratedDispatcher extends CoreDispatcher
 				throw new InvalidStateException(sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
 			}
 
+			if (!($result instanceof ApiResponse)) { //TODO - deprecation warning
+				$result = new ApiResponse($result);
+			}
+
 			$response = $result;
 		}
 
@@ -122,14 +115,13 @@ class DecoratedDispatcher extends CoreDispatcher
 
 	/**
 	 * @param mixed $result
-	 * @param ApiResponse $response
 	 */
-	protected function negotiate($result, ResponseInterface $response): ApiResponse
+	protected function negotiate($result, ApiResponse $response): ApiResponse
 	{
 		if (!class_exists(AbstractEntity::class)) {
 			throw new InvalidStateException(sprintf(
 				'If you want return anything else than "%s" from your api endpoint then install "apitte/negotiation".',
-				ResponseInterface::class
+				ApiResponse::class
 			));
 		}
 

@@ -4,13 +4,12 @@ namespace Apitte\Core\Mapping;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Request\IRequestEntity;
 use Apitte\Core\Mapping\Validator\IEntityValidator;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointRequestMapper;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class RequestEntityMapping
 {
@@ -23,10 +22,7 @@ class RequestEntityMapping
 		$this->validator = $validator;
 	}
 
-	/**
-	 * @param ApiRequest $request
-	 */
-	public function map(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
+	public function map(ApiRequest $request, ApiResponse $response): ApiRequest
 	{
 		/** @var Endpoint|null $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
@@ -50,10 +46,9 @@ class RequestEntityMapping
 	}
 
 	/**
-	 * @param ApiRequest $request
 	 * @return IRequestEntity|object|null
 	 */
-	protected function createEntity(EndpointRequestMapper $mapper, ServerRequestInterface $request)
+	protected function createEntity(EndpointRequestMapper $mapper, ApiRequest $request)
 	{
 		$entityClass = $mapper->getEntity();
 		$entity = new $entityClass();
@@ -75,10 +70,9 @@ class RequestEntityMapping
 
 	/**
 	 * @param IRequestEntity|object $entity
-	 * @param ApiRequest $request
 	 * @return IRequestEntity|object|null
 	 */
-	protected function modify($entity, ServerRequestInterface $request)
+	protected function modify($entity, ApiRequest $request)
 	{
 		if ($entity instanceof IRequestEntity) {
 			return $entity->fromRequest($request);

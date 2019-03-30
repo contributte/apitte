@@ -2,8 +2,8 @@
 
 namespace Apitte\Core\Decorator;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Throwable;
 
 class DecoratorManager
@@ -27,7 +27,7 @@ class DecoratorManager
 		return $this;
 	}
 
-	public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
+	public function decorateRequest(ApiRequest $request, ApiResponse $response): ApiRequest
 	{
 		foreach ($this->requestDecorators as $decorator) {
 			$request = $decorator->decorateRequest($request, $response);
@@ -45,7 +45,7 @@ class DecoratorManager
 		return $this;
 	}
 
-	public function decorateResponse(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	public function decorateResponse(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		foreach ($this->responseDecorators as $decorator) {
 			$response = $decorator->decorateResponse($request, $response);
@@ -63,7 +63,7 @@ class DecoratorManager
 		return $this;
 	}
 
-	public function decorateError(ServerRequestInterface $request, ResponseInterface $response, Throwable $error): ?ResponseInterface
+	public function decorateError(ApiRequest $request, ApiResponse $response, Throwable $error): ?ApiResponse
 	{
 		// If there is no exception handler defined so return null (and exception will be thrown in DecoratedDispatcher)
 		if ($this->errorDecorators === []) {

@@ -3,8 +3,8 @@
 namespace Apitte\Core\Exception\Runtime;
 
 use Apitte\Core\Exception\RuntimeException;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Throwable;
 
 /**
@@ -13,25 +13,25 @@ use Throwable;
 class SnapshotException extends RuntimeException
 {
 
-	/** @var ServerRequestInterface */
+	/** @var ApiRequest */
 	protected $request;
 
-	/** @var ResponseInterface */
+	/** @var ApiResponse */
 	protected $response;
 
-	public function __construct(Throwable $exception, ServerRequestInterface $request, ResponseInterface $response)
+	public function __construct(Throwable $exception, ApiRequest $request, ApiResponse $response)
 	{
 		parent::__construct($exception->getMessage(), $exception->getCode(), $exception);
 		$this->request = $request;
 		$this->response = $response;
 	}
 
-	public function getRequest(): ServerRequestInterface
+	public function getRequest(): ApiRequest
 	{
 		return $this->request;
 	}
 
-	public function getResponse(): ResponseInterface
+	public function getResponse(): ApiResponse
 	{
 		return $this->response;
 	}

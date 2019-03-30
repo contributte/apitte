@@ -7,6 +7,7 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Exception\Api\ClientErrorException;
+use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Endpoint;
@@ -31,6 +32,7 @@ test(function (): void {
 	$schema->addEndpoint($endpoint);
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/users/22/');
+	$request = new ApiRequest($request);
 	$request2 = $request->withNewUri('http://example.com/not-matched/');
 	$router = new SimpleRouter($schema);
 	$matched = $router->match($request);
@@ -60,6 +62,7 @@ test(function (): void {
 	$schema->addEndpoint($endpoint);
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/users/1/baz');
+	$request = new ApiRequest($request);
 	$router = new SimpleRouter($schema);
 	$matched = $router->match($request);
 
@@ -88,6 +91,7 @@ test(function (): void {
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/foo')
 		->withMethod('POST');
+	$request = new ApiRequest($request);
 	$router = new SimpleRouter($schema);
 	$matched = $router->match($request);
 
@@ -108,6 +112,7 @@ test(function (): void {
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('http://example.com/foo')
 		->withMethod('POST');
+	$request = new ApiRequest($request);
 	$router = new SimpleRouter($schema);
 
 	Assert::exception(function () use ($router, $request): void {
@@ -128,6 +133,7 @@ test(function (): void {
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()
 		->withMethod('GET');
+	$request = new ApiRequest($request);
 	$router = new SimpleRouter($schema);
 	$matched = $router->match($request);
 

@@ -3,12 +3,12 @@
 namespace Apitte\Core\Router;
 
 use Apitte\Core\Exception\Api\ClientErrorException;
+use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Schema;
 use Apitte\Core\Utils\Regex;
-use Psr\Http\Message\ServerRequestInterface;
 
 class SimpleRouter implements IRouter
 {
@@ -21,7 +21,7 @@ class SimpleRouter implements IRouter
 		$this->schema = $schema;
 	}
 
-	public function match(ServerRequestInterface $request): ?ServerRequestInterface
+	public function match(ApiRequest $request): ?ApiRequest
 	{
 		$endpoints = $this->schema->getEndpoints();
 
@@ -54,7 +54,7 @@ class SimpleRouter implements IRouter
 		return null;
 	}
 
-	protected function matchEndpoint(Endpoint $endpoint, ServerRequestInterface $request): ?ServerRequestInterface
+	protected function matchEndpoint(Endpoint $endpoint, ApiRequest $request): ?ApiRequest
 	{
 		// Try match given URL (path) by build pattern
 		$request = $this->compareUrl($endpoint, $request);
@@ -67,7 +67,7 @@ class SimpleRouter implements IRouter
 		return $request;
 	}
 
-	protected function compareUrl(Endpoint $endpoint, ServerRequestInterface $request): ?ServerRequestInterface
+	protected function compareUrl(Endpoint $endpoint, ApiRequest $request): ?ApiRequest
 	{
 		// Parse url from request
 		$url = $request->getUri()->getPath();

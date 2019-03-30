@@ -26,9 +26,6 @@ parameters:
 		- '#^Parameter \#1 \$function of function call_user_func expects callable\(\)\: mixed, array\(Apitte\\Core\\UI\\Controller\\IController, string\) given\.$#'
 		- '#^Call to function is_subclass_of\(\) with Apitte\\Core\\Mapping\\Parameter\\ITypeMapper\|string (.*)#'
 
-		# Maybe later - complicated to fix
-		- '#^.*should be contravariant with parameter.*$#'
-
 		# Missing strict comparison
 		- '#^Only booleans are allowed in#'
 

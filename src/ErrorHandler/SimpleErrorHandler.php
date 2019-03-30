@@ -6,7 +6,6 @@ use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiResponse;
 use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\ResponseInterface;
 use Throwable;
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -21,7 +20,7 @@ class SimpleErrorHandler implements IErrorHandler
 		$this->catchException = $catchException;
 	}
 
-	public function handle(Throwable $error): ResponseInterface
+	public function handle(Throwable $error): ApiResponse
 	{
 		// Rethrow error if it should not be catch (debug only)
 		if (!$this->catchException) {
@@ -43,7 +42,7 @@ class SimpleErrorHandler implements IErrorHandler
 		return $this->createResponseFromError($error);
 	}
 
-	protected function createResponseFromError(Throwable $error): ResponseInterface
+	protected function createResponseFromError(Throwable $error): ApiResponse
 	{
 		$code = $error->getCode();
 		$code = $code < 400 || $code > 600 ? 500 : $code;

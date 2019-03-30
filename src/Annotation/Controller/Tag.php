@@ -23,6 +23,10 @@ final class Tag
 	 */
 	public function __construct(array $values)
 	{
+		if (isset($values['value']) && !isset($values['name'])) {
+			$values['name'] = $values['value'];
+		}
+
 		if (!isset($values['name'])) {
 			throw new AnnotationException('No @Tag name given');
 		}

@@ -3,14 +3,15 @@
 namespace Apitte\Core\Dispatcher;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Nette\Utils\Json;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class JsonDispatcher extends CoreDispatcher
 {
 
-	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	protected function handle(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$result = $this->handler->handle($request, $response);
 
@@ -29,10 +30,14 @@ class JsonDispatcher extends CoreDispatcher
 			throw new InvalidStateException(sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
 		}
 
+		if (!($response instanceof ApiResponse)) { //TODO - deprecation warning
+			$response = new ApiResponse($response);
+		}
+
 		return $response;
 	}
 
-	public function fallback(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	public function fallback(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$response = $response->withStatus(404)
 			->withHeader('Content-Type', 'application/json');

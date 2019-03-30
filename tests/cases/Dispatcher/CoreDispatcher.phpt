@@ -9,6 +9,8 @@ require_once __DIR__ . '/../../bootstrap.php';
 use Apitte\Core\Dispatcher\CoreDispatcher;
 use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -19,8 +21,8 @@ use Tests\Fixtures\Router\FakeRouter;
 
 // Request matched, use handler, return response
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new CoreDispatcher(new FakeRouter(true), new FakeResponseHandler());
 	Assert::same($response, $dispatcher->dispatch($request, $response));
@@ -28,8 +30,8 @@ test(function (): void {
 
 // Request matched, use invalid handler, throw exception
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new CoreDispatcher(new FakeRouter(true), new FakeNullHandler());
 
@@ -40,8 +42,8 @@ test(function (): void {
 
 // Request not matched, throw exception
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new CoreDispatcher(new FakeRouter(false), new FakeResponseHandler());
 

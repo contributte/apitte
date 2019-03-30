@@ -5,9 +5,10 @@ namespace Apitte\Core\Dispatcher;
 use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Handler\IHandler;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Router\IRouter;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class CoreDispatcher implements IDispatcher
 {
@@ -24,7 +25,7 @@ class CoreDispatcher implements IDispatcher
 		$this->handler = $handler;
 	}
 
-	public function dispatch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	public function dispatch(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		// Try match request to our routes
 		$matchedRequest = $this->match($request, $response);
@@ -38,12 +39,12 @@ class CoreDispatcher implements IDispatcher
 		return $this->handle($matchedRequest, $response);
 	}
 
-	protected function match(ServerRequestInterface $request, ResponseInterface $response): ?ServerRequestInterface
+	protected function match(ApiRequest $request, ApiResponse $response): ?ApiRequest
 	{
 		return $this->router->match($request);
 	}
 
-	protected function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	protected function handle(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$response = $this->handler->handle($request, $response);
 
@@ -52,10 +53,14 @@ class CoreDispatcher implements IDispatcher
 			throw new InvalidStateException(sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
 		}
 
+		if (!($response instanceof ApiResponse)) { //TODO - deprecation warning
+			$response = new ApiResponse($response);
+		}
+
 		return $response;
 	}
 
-	protected function fallback(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+	protected function fallback(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		throw new ClientErrorException('No matched route by given URL', 404);
 	}

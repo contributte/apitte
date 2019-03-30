@@ -6,6 +6,8 @@
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Handler\ServiceHandler;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
@@ -25,8 +27,8 @@ test(function (): void {
 	$sh = new ServiceHandler($container);
 
 	Assert::exception(function () use ($sh): void {
-		$request = Psr7ServerRequestFactory::fromSuperGlobal();
-		$response = Psr7ResponseFactory::fromGlobal();
+		$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+		$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 		$sh->handle($request, $response);
 	}, InvalidStateException::class, 'Attribute "apitte.core.endpoint" is required');
@@ -60,7 +62,8 @@ test(function (): void {
 
 	$request = Psr7ServerRequestFactory::fromSuperGlobal()
 		->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest($request);
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$res = $sh->handle($request, $response);
 

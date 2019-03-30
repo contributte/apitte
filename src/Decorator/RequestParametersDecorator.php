@@ -2,9 +2,9 @@
 
 namespace Apitte\Core\Decorator;
 
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Mapping\RequestParameterMapping;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class RequestParametersDecorator implements IRequestDecorator
 {
@@ -17,7 +17,7 @@ class RequestParametersDecorator implements IRequestDecorator
 		$this->mapping = $mapping;
 	}
 
-	public function decorateRequest(ServerRequestInterface $request, ResponseInterface $response): ServerRequestInterface
+	public function decorateRequest(ApiRequest $request, ApiResponse $response): ApiRequest
 	{
 		return $this->mapping->map($request, $response);
 	}

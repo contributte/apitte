@@ -8,6 +8,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Schema\Endpoint;
@@ -21,7 +22,7 @@ use Tests\Fixtures\Mapping\Request\FooEntity;
 // Add entity to request
 test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
-	$response = Psr7ResponseFactory::fromGlobal();
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$mapping = new RequestEntityMapping();
 
 	$handler = new EndpointHandler('class', 'method');
@@ -40,7 +41,7 @@ test(function (): void {
 // Don't modify request by entity - method foo is not supported
 test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
-	$response = Psr7ResponseFactory::fromGlobal();
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$mapping = new RequestEntityMapping();
 
 	$handler = new EndpointHandler('class', 'method');
@@ -56,8 +57,8 @@ test(function (): void {
 
 // No request mapper, return request
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$mapping = new RequestEntityMapping();
 
 	$handler = new EndpointHandler('class', 'method');
@@ -68,8 +69,8 @@ test(function (): void {
 
 // Exception - missing attribute
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$mapping = new RequestEntityMapping();
 
 	Assert::exception(function () use ($mapping, $request, $response): void {

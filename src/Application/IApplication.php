@@ -2,13 +2,13 @@
 
 namespace Apitte\Core\Application;
 
-use Psr\Http\Message\ServerRequestInterface;
+use Apitte\Core\Http\ApiRequest;
 
 interface IApplication
 {
 
 	public function run(): void;
 
-	public function runWith(ServerRequestInterface $request): void;
+	public function runWith(ApiRequest $request): void;
 
 }

@@ -4,12 +4,12 @@ namespace Apitte\Core\Handler;
 
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\UI\Controller\IController;
 use Nette\DI\Container;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class ServiceHandler implements IHandler
 {
@@ -25,7 +25,7 @@ class ServiceHandler implements IHandler
 	/**
 	 * @return mixed
 	 */
-	public function handle(ServerRequestInterface $request, ResponseInterface $response)
+	public function handle(ApiRequest $request, ApiResponse $response)
 	{
 		// Create and trigger callback
 		$endpoint = $this->getEndpoint($request);
@@ -44,7 +44,7 @@ class ServiceHandler implements IHandler
 		return new ServiceCallback($service, $method);
 	}
 
-	protected function getEndpoint(ServerRequestInterface $request): Endpoint
+	protected function getEndpoint(ApiRequest $request): Endpoint
 	{
 		/** @var Endpoint|null $endpoint */
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);

@@ -7,11 +7,12 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Adjuster\FileResponseAdjuster;
+use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Tester\Assert;
 
 test(function (): void {
-	$response = Psr7ResponseFactory::fromGlobal();
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$response = FileResponseAdjuster::adjust($response, $response->getBody(), 'filename');
 
 	Assert::same(

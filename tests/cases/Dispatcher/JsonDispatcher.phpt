@@ -8,6 +8,8 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Dispatcher\JsonDispatcher;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Http\ApiRequest;
+use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Nette\Utils\Json;
@@ -20,8 +22,8 @@ use Tests\Fixtures\Router\FakeRouter;
 
 // Matched, use handle
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new JsonDispatcher(new FakeRouter(true), new FakeResponseHandler());
 	Assert::same($response, $dispatcher->dispatch($request, $response));
@@ -29,8 +31,8 @@ test(function (): void {
 
 // Matched, use handle, write to response body result from handle
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new JsonDispatcher(new FakeRouter(true), new ReturnFooBarHandler());
 	$response = $dispatcher->dispatch($request, $response);
@@ -41,8 +43,8 @@ test(function (): void {
 
 // Matched, use invalid handle, throw exception
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new JsonDispatcher(new FakeRouter(true), new FakeNullHandler());
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
@@ -52,8 +54,8 @@ test(function (): void {
 
 // Not matched, use fallback, write error to response body
 test(function (): void {
-	$request = Psr7ServerRequestFactory::fromSuperGlobal();
-	$response = Psr7ResponseFactory::fromGlobal();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
 	$dispatcher = new JsonDispatcher(new FakeRouter(false), new FakeResponseHandler());
 	$response = $dispatcher->dispatch($request, $response);

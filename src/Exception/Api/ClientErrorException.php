@@ -15,7 +15,7 @@ class ClientErrorException extends ApiException
 	/**
 	 * @param mixed $context
 	 */
-	public function __construct(string $message = '', int $code = 400, ?Throwable $previous = null, $context = null)
+	public function __construct(string $message = 'Request contains an unspecified error.', int $code = 400, ?Throwable $previous = null, $context = null)
 	{
 		if ($code < 400 || $code > 499) {
 			throw new InvalidArgumentException(sprintf('%s code could be only in range from 400 to 499', static::class));

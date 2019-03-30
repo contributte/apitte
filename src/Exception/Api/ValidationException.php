@@ -11,7 +11,7 @@ class ValidationException extends ClientErrorException
 	/**
 	 * @param mixed[] $fields
 	 */
-	public function __construct(string $message = '', int $code = 422, ?Throwable $previous = null, array $fields = [])
+	public function __construct(string $message = 'Request body contains an error. See context for details.', int $code = 422, ?Throwable $previous = null, array $fields = [])
 	{
 		parent::__construct($message, $code, $previous, $fields);
 	}

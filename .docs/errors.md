@@ -20,9 +20,6 @@ Other errors are transformed into a generic exception (see [SimpleErrorHandler d
 Error handler is responsible for catching all errors
 and transforming them into response (if none of [exception decorators](decorators.md#exception-decorators) was able to do it)
 
-> Known limitation: 
-> Handler is currently contained in [WrappedDispatcher](dispatcher.md#wrappeddispatcher) so any errors thrown in [middlewares](https://github.com/apitte/middlewares) could not by handled by it.
-
 ### SimpleErrorHandler
 
 Default error handler

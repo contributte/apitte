@@ -23,9 +23,3 @@ Adds possibility to return scalar or array from endpoint - raw data are transfor
 Used by default (but could be overriden by decorator plugin)
 
 > Incompatible with [decorators](decorators.md), alternative solution is available in [apitte/negotiation transformers](https://github.com/apitte/negotiation)
-
-## WrappedDispatcher
-
-Wraps whichever dispatcher is in usage
-- to handle all errors through [error handler](errors.md#error-handler)
-- to ensure that ApiRequest and ApiResponse implementations of PSR7 are passed into deeper layers

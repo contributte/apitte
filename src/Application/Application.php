@@ -3,6 +3,7 @@
 namespace Apitte\Core\Application;
 
 use Apitte\Core\Dispatcher\IDispatcher;
+use Apitte\Core\ErrorHandler\IErrorHandler;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7Response;
@@ -13,8 +14,9 @@ class Application extends BaseApplication
 	/** @var IDispatcher */
 	private $dispatcher;
 
-	public function __construct(IDispatcher $dispatcher)
+	public function __construct(IErrorHandler $errorHandler, IDispatcher $dispatcher)
 	{
+		parent::__construct($errorHandler);
 		$this->dispatcher = $dispatcher;
 	}
 

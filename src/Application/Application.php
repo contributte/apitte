@@ -42,7 +42,13 @@ class Application implements IApplication
 
 		foreach ($response->getHeaders() as $name => $values) {
 			foreach ($values as $value) {
-				header(sprintf('%s: %s', $name, $value), false);
+				// never send multiple content-type headers
+				if (preg_match('/content-type/i', $name)) {
+					header(sprintf('%s: %s', $name, $value));
+				}
+				else {
+					header(sprintf('%s: %s', $name, $value), false);
+				}
 			}
 		}
 

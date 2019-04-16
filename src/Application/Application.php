@@ -11,6 +11,10 @@ use Contributte\Psr7\Psr7ServerRequestFactory;
 class Application implements IApplication
 {
 
+	private const UNIQUE_HEADERS = [
+		'content-type',
+	];
+
 	/** @var IDispatcher */
 	private $dispatcher;
 
@@ -41,8 +45,9 @@ class Application implements IApplication
 		header($httpHeader, true, $response->getStatusCode());
 
 		foreach ($response->getHeaders() as $name => $values) {
+			$replace = in_array(strtolower($name), self::UNIQUE_HEADERS, true) ? true : false;
 			foreach ($values as $value) {
-				header(sprintf('%s: %s', $name, $value), false);
+				header(sprintf('%s: %s', $name, $value), $replace);
 			}
 		}
 

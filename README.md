@@ -58,7 +58,7 @@ This knowledge could make your life easier
 - [Schema](.docs/schema.md)
 
 Playground with example applications
-- [Examples](https://github.com/apitte/playground)
+- [Examples](https://github.com/planette/playground)
 
 ## Maintainers
 

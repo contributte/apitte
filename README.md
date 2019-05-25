@@ -44,7 +44,7 @@ final class HelloController implements IController
 ## Documentation
 
 Need to start with Apitte
-- [Setup](.docs/setup.md)
+- [Setup](.docs/index.md)
 - [Endpoints](.docs/endpoints.md)
 - [Mapping](.docs/mapping.md)
 

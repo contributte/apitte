@@ -42,7 +42,7 @@ use Nette\Application\Application as UIApplication;
 use Nette\DI\Container;
 
 /** @var Container $container */
-$container = require _DIR_ . '/../app/bootstrap.php';
+$container = require __DIR__ . '/../app/bootstrap.php';
 
 $isApi = substr($_SERVER['REQUEST_URI'], 0, 4) === '/api';
 

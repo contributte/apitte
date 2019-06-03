@@ -7,7 +7,7 @@ includes:
 parameters:
 	ignoreErrors:
 		# deprecated with no replacement until 2.0.0
-		- '#^Call to deprecated method registerLoader\(\) of class Doctrine\\Common\\Annotations\\AnnotationRegistry\.$#'
+		- '#^Call to deprecated method registerLoader\(\) of class Doctrine\\Common\\Annotations\\AnnotationRegistry.+#'
 
 		# Intended property access - required for reflection
 		- '#^Variable property access on (\$this|static)\(Apitte\\Core\\Mapping\\(Request|Response)\\BasicEntity\)\.$#'

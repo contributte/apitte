@@ -23,7 +23,7 @@
     }
   ],
   "require": {
-    "php": ">=7.1",
+    "php": "^7.2",
     "ext-json": "*",
     "contributte/phpdoc": "^0.2",
     "contributte/psr7-http-message": "^0.5.1"
@@ -33,6 +33,7 @@
     "nette/di": "~2.4.13",
     "ninjify/nunjuck": "^0.2.0",
     "ninjify/qa": "^0.8.0",
+    "phpstan/extension-installer": "^1.0",
     "phpstan/phpstan-deprecation-rules": "^0.11",
     "phpstan/phpstan-nette": "^0.11",
     "phpstan/phpstan-shim": "^0.11",

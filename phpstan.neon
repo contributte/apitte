@@ -1,9 +1,3 @@
-includes:
-	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
-	- vendor/phpstan/phpstan-nette/extension.neon
-	- vendor/phpstan/phpstan-nette/rules.neon
-	- vendor/phpstan/phpstan-strict-rules/rules.neon
-
 parameters:
 	ignoreErrors:
 		# deprecated with no replacement until 2.0.0

@@ -7,9 +7,15 @@ use Apitte\Core\DI\Plugin\CoreServicesPlugin;
 use Apitte\Core\DI\Plugin\PluginManager;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Helpers;
 use Nette\PhpGenerator\ClassType;
+use Nette\Schema\Expect;
+use Nette\Schema\Schema;
+use stdClass;
 
+/**
+ * @property-read stdClass $config
+ * @method stdClass getConfig()
+ */
 class ApiExtension extends CompilerExtension
 {
 
@@ -18,18 +24,21 @@ class ApiExtension extends CompilerExtension
 	public const NEGOTIATION_NEGOTIATOR_TAG = 'apitte.negotiation.negotiator';
 	public const NEGOTIATION_RESOLVER_TAG = 'apitte.negotiation.resolver';
 
-	/** @var mixed[] */
-	protected $defaults = [
-		'catchException' => true,
-		'debug' => '%debugMode%',
-		'plugins' => [
-			CoreServicesPlugin::class => [],
-			CoreSchemaPlugin::class => [],
-		],
-	];
-
 	/** @var PluginManager */
 	private $pm;
+
+	public function getConfigSchema(): Schema
+	{
+		$parameters = $this->getContainerBuilder()->parameters;
+		return Expect::structure([
+			'catchException' => Expect::bool(true),
+			'debug' => Expect::bool($parameters['debugMode'] ?? false),
+			'plugins' => Expect::array()->default([
+				CoreServicesPlugin::class => [],
+				CoreSchemaPlugin::class => [],
+			]),
+		]);
+	}
 
 	public function __construct()
 	{
@@ -38,11 +47,10 @@ class ApiExtension extends CompilerExtension
 
 	public function loadConfiguration(): void
 	{
-		// Initialize whole config
-		$config = $this->processConfig();
+		$config = $this->config;
 
 		// Register all defined plugins
-		$this->pm->loadPlugins($config['plugins']);
+		$this->pm->loadPlugins($config->plugins);
 
 		// Load services from all plugins
 		$this->pm->loadConfigurations();
@@ -65,15 +73,9 @@ class ApiExtension extends CompilerExtension
 		return $this->compiler;
 	}
 
-	/**
-	 * @return mixed[]
-	 */
-	protected function processConfig(): array
+	public function getName(): string
 	{
-		$config = $this->validateConfig($this->defaults);
-		$this->config = Helpers::expand($config, $this->getContainerBuilder()->parameters);
-
-		return $this->config;
+		return $this->name;
 	}
 
 }

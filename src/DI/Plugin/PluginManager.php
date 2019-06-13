@@ -26,7 +26,7 @@ final class PluginManager
 	public function registerPlugin(AbstractPlugin $plugin, array $config = []): AbstractPlugin
 	{
 		// Register plugin
-		$this->plugins[$plugin->getName()] = [
+		$this->plugins[$plugin::getName()] = [
 			'inst' => $plugin,
 			'config' => $config,
 		];

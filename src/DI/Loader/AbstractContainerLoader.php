@@ -4,7 +4,7 @@ namespace Apitte\Core\DI\Loader;
 
 use Apitte\Core\UI\Controller\IController;
 use Nette\DI\ContainerBuilder;
-use Nette\DI\ServiceDefinition;
+use Nette\DI\Definitions\Definition;
 
 abstract class AbstractContainerLoader implements ILoader
 {
@@ -20,7 +20,7 @@ abstract class AbstractContainerLoader implements ILoader
 	/**
 	 * Find controllers in container definitions
 	 *
-	 * @return ServiceDefinition[]
+	 * @return Definition[]
 	 */
 	protected function findControllers(): array
 	{

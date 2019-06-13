@@ -29,7 +29,7 @@ use stdClass;
 /**
  * @property-read stdClass $config
  */
-class CoreSchemaPlugin extends AbstractPlugin
+class CoreSchemaPlugin extends Plugin
 {
 
 	/** @var IDecorator[] */

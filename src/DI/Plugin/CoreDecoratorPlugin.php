@@ -9,16 +9,14 @@ use Apitte\Core\Decorator\IResponseDecorator;
 use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\DI\Helpers;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
+use Nette\DI\ServiceDefinition;
 
 class CoreDecoratorPlugin extends AbstractPlugin
 {
 
-	public const PLUGIN_NAME = 'decorator';
-
-	public function __construct(PluginCompiler $compiler)
+	public static function getName(): string
 	{
-		parent::__construct($compiler);
-		$this->name = self::PLUGIN_NAME;
+		return 'decorator';
 	}
 
 	/**
@@ -28,9 +26,9 @@ class CoreDecoratorPlugin extends AbstractPlugin
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->getDefinition($this->extensionPrefix('core.dispatcher'))
-			->setType(DecoratedDispatcher::class)
-			->setFactory(DecoratedDispatcher::class);
+		$dispatcherDefinition = $builder->getDefinition($this->extensionPrefix('core.dispatcher'));
+		assert($dispatcherDefinition instanceof ServiceDefinition);
+		$dispatcherDefinition->setFactory(DecoratedDispatcher::class);
 
 		$builder->addDefinition($this->prefix('decorator.manager'))
 			->setFactory(DecoratorManager::class);
@@ -47,24 +45,25 @@ class CoreDecoratorPlugin extends AbstractPlugin
 	protected function compileDecorators(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$manager = $builder->getDefinition($this->prefix('decorator.manager'));
+		$managerDefinition = $builder->getDefinition($this->prefix('decorator.manager'));
+		assert($managerDefinition instanceof ServiceDefinition);
 
-		$requestDecorators = $builder->findByType(IRequestDecorator::class);
-		$requestDecorators = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $requestDecorators);
-		foreach ($requestDecorators as $decorator) {
-			$manager->addSetup('addRequestDecorator', [$decorator]);
+		$requestDecoratorDefinitions = $builder->findByType(IRequestDecorator::class);
+		$requestDecoratorDefinitions = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $requestDecoratorDefinitions);
+		foreach ($requestDecoratorDefinitions as $decoratorDefinition) {
+			$managerDefinition->addSetup('addRequestDecorator', [$decoratorDefinition]);
 		}
 
-		$responseDecorators = $builder->findByType(IResponseDecorator::class);
-		$responseDecorators = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $responseDecorators);
-		foreach ($responseDecorators as $decorator) {
-			$manager->addSetup('addResponseDecorator', [$decorator]);
+		$responseDecoratorDefinitions = $builder->findByType(IResponseDecorator::class);
+		$responseDecoratorDefinitions = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $responseDecoratorDefinitions);
+		foreach ($responseDecoratorDefinitions as $decoratorDefinition) {
+			$managerDefinition->addSetup('addResponseDecorator', [$decoratorDefinition]);
 		}
 
-		$errorDecorators = $builder->findByType(IErrorDecorator::class);
-		$errorDecorators = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $errorDecorators);
-		foreach ($errorDecorators as $decorator) {
-			$manager->addSetup('addErrorDecorator', [$decorator]);
+		$errorDecoratorDefinitions = $builder->findByType(IErrorDecorator::class);
+		$errorDecoratorDefinitions = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $errorDecoratorDefinitions);
+		foreach ($errorDecoratorDefinitions as $decoratorDefinition) {
+			$managerDefinition->addSetup('addErrorDecorator', [$decoratorDefinition]);
 		}
 	}
 

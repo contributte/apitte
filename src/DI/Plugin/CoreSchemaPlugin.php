@@ -20,45 +20,51 @@ use Apitte\Core\Schema\Validation\RequestParameterValidation;
 use Apitte\Core\Schema\Validation\ResponseMapperValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
 use Nette\DI\Config\Adapters\NeonAdapter;
+use Nette\DI\Definitions\ServiceDefinition;
+use Nette\Schema\Expect;
+use Nette\Schema\Schema;
 use Nette\Utils\Arrays;
+use stdClass;
 
+/**
+ * @property-read stdClass $config
+ */
 class CoreSchemaPlugin extends AbstractPlugin
 {
-
-	public const PLUGIN_NAME = 'schema';
 
 	/** @var IDecorator[] */
 	public static $decorators = [];
 
-	/** @var mixed[] */
-	protected $defaults = [
-		'loaders' => [
-			'annotations' => [
-				'enable' => true,
-			],
-			'neon' => [
-				'enable' => false,
-				'files' => [],
-			],
-		],
-		'schema' => [],
-		'validations' => [
-			'controller' => ControllerValidation::class,
-			'controllerPath' => ControllerPathValidation::class,
-			'fullPath' => FullpathValidation::class,
-			'groupPath' => GroupPathValidation::class,
-			'id' => IdValidation::class,
-			'negotiation' => NegotiationValidation::class,
-			'path' => PathValidation::class,
-			'requestMapper' => RequestMapperValidation::class,
-			'responseMapper' => ResponseMapperValidation::class,
-		],
-	];
-
-	public function __construct(PluginCompiler $compiler)
+	public static function getName(): string
 	{
-		parent::__construct($compiler);
-		$this->name = self::PLUGIN_NAME;
+		return 'schema';
+	}
+
+	protected function getConfigSchema(): Schema
+	{
+		return Expect::structure([
+			'loaders' => Expect::structure([
+				'annotations' => Expect::structure([
+					'enable' => Expect::bool(true),
+				]),
+				'neon' => Expect::structure([
+					'enable' => Expect::bool(false),
+					'files' => Expect::arrayOf('string'),
+				]),
+			]),
+			'schema' => Expect::array(),
+			'validations' => Expect::array()->default([
+				'controller' => ControllerValidation::class,
+				'controllerPath' => ControllerPathValidation::class,
+				'fullPath' => FullpathValidation::class,
+				'groupPath' => GroupPathValidation::class,
+				'id' => IdValidation::class,
+				'negotiation' => NegotiationValidation::class,
+				'path' => PathValidation::class,
+				'requestMapper' => RequestMapperValidation::class,
+				'responseMapper' => ResponseMapperValidation::class,
+			]),
+		]);
 	}
 
 	/**
@@ -73,8 +79,9 @@ class CoreSchemaPlugin extends AbstractPlugin
 		$builder->addDefinition($this->extensionPrefix('core.schema.hydrator'))
 			->setFactory(ArrayHydrator::class);
 
-		$builder->getDefinition($this->extensionPrefix('core.schema'))
-			->setFactory('@' . $this->extensionPrefix('core.schema.hydrator') . '::hydrate', [$this->compileSchema()]);
+		$schemaDefinition = $builder->getDefinition($this->extensionPrefix('core.schema'));
+		assert($schemaDefinition instanceof ServiceDefinition);
+		$schemaDefinition->setFactory('@' . $this->extensionPrefix('core.schema.hydrator') . '::hydrate', [$this->compileSchema()]);
 	}
 
 	/**
@@ -103,19 +110,18 @@ class CoreSchemaPlugin extends AbstractPlugin
 
 	protected function loadSchema(SchemaBuilder $builder): SchemaBuilder
 	{
-		$loaders = $this->config['loaders'];
+		$loaders = $this->config->loaders;
 
 		//TODO - resolve limitation - Controller defined by one of loaders cannot be modified by other loaders
 
-		if ($loaders['annotations']['enable'] === true) {
+		if ($loaders->annotations->enable) {
 			$loader = new DoctrineAnnotationLoader($this->getContainerBuilder());
 
 			$builder = $loader->load($builder);
 		}
 
-		if ($loaders['neon']['enable'] === true) {
-			// Expand path to files
-			$files = $this->compiler->getExtension()->validateConfig($loaders['neon']['files']);
+		if ($loaders->neon->enable) {
+			$files = $loaders->neon->files;
 
 			// Load schema from files
 			$adapter = new NeonAdapter();
@@ -133,9 +139,9 @@ class CoreSchemaPlugin extends AbstractPlugin
 
 	protected function validateSchema(SchemaBuilder $builder): SchemaBuilder
 	{
-		$validations = $this->config['validations'];
+		$validations = $this->config->validations;
 
-		$coreMappingPlugin = $this->compiler->getPlugin(CoreMappingPlugin::PLUGIN_NAME);
+		$coreMappingPlugin = $this->compiler->getPlugin(CoreMappingPlugin::getName());
 		if ($coreMappingPlugin !== null) {
 			$validations['requestParameter'] = RequestParameterValidation::class;
 		}

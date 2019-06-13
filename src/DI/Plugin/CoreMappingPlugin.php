@@ -14,30 +14,36 @@ use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Mapping\RequestParameterMapping;
 use Apitte\Core\Mapping\Validator\IEntityValidator;
 use Apitte\Core\Mapping\Validator\NullValidator;
+use Nette\DI\Definitions\Statement;
+use Nette\Schema\Expect;
+use Nette\Schema\Schema;
+use stdClass;
 
+/**
+ * @property-read stdClass $config
+ */
 class CoreMappingPlugin extends AbstractPlugin
 {
 
-	public const PLUGIN_NAME = 'mapping';
-
-	/** @var mixed[] */
-	protected $defaults = [
-		'types' => [
-			'string' => StringTypeMapper::class,
-			'int' => IntegerTypeMapper::class,
-			'float' => FloatTypeMapper::class,
-			'bool' => BooleanTypeMapper::class,
-			'datetime' => DateTimeTypeMapper::class,
-		],
-		'request' => [
-			'validator' => NullValidator::class,
-		],
-	];
-
-	public function __construct(PluginCompiler $compiler)
+	public static function getName(): string
 	{
-		parent::__construct($compiler);
-		$this->name = self::PLUGIN_NAME;
+		return 'mapping';
+	}
+
+	protected function getConfigSchema(): Schema
+	{
+		return Expect::structure([
+			'types' => Expect::arrayOf('string')->default([
+				'string' => StringTypeMapper::class,
+				'int' => IntegerTypeMapper::class,
+				'float' => FloatTypeMapper::class,
+				'bool' => BooleanTypeMapper::class,
+				'datetime' => DateTimeTypeMapper::class,
+			]),
+			'request' => Expect::structure([
+				'validator' => Expect::type('string|array|' . Statement::class)->default(NullValidator::class),
+			]),
+		]);
 	}
 
 	/**
@@ -46,7 +52,7 @@ class CoreMappingPlugin extends AbstractPlugin
 	public function loadPluginConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->setupConfig($this->defaults, $this->getConfig());
+		$config = $this->config;
 
 		$builder->addDefinition($this->prefix('request.parameters.decorator'))
 			->setFactory(RequestParametersDecorator::class)
@@ -59,13 +65,13 @@ class CoreMappingPlugin extends AbstractPlugin
 		$parametersMapping = $builder->addDefinition($this->prefix('request.parameters.mapping'))
 			->setFactory(RequestParameterMapping::class);
 
-		foreach ($config['types'] as $type => $mapper) {
+		foreach ($config->types as $type => $mapper) {
 			$parametersMapping->addSetup('addMapper', [$type, $mapper]);
 		}
 
 		$builder->addDefinition($this->prefix('request.entity.mapping.validator'))
 			->setType(IEntityValidator::class)
-			->setFactory($config['request']['validator']);
+			->setFactory($config->request->validator);
 
 		$builder->addDefinition($this->prefix('request.entity.mapping'))
 			->setFactory(RequestEntityMapping::class)

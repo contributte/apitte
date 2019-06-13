@@ -25,12 +25,13 @@
   "require": {
     "php": "^7.2",
     "ext-json": "*",
-    "contributte/phpdoc": "^0.2",
-    "contributte/psr7-http-message": "^0.5.1"
+    "contributte/phpdoc": "v0.3.0",
+    "contributte/psr7-http-message": "v0.6.0",
+    "nette/reflection": "~2.4"
   },
   "require-dev": {
     "mockery/mockery": "^1.1.0",
-    "nette/di": "~2.4.13",
+    "nette/di": "~3.0.0",
     "ninjify/nunjuck": "^0.2.0",
     "ninjify/qa": "^0.8.0",
     "phpstan/extension-installer": "^1.0",
@@ -42,10 +43,7 @@
     "symfony/validator": "^4.1.1"
   },
   "conflict": {
-    "nette/di": "<2.4.13",
-    "nette/utils": "<2.5.2",
-    "psr/log": "<1.1.0",
-    "symfony/validator": "<4.1.1"
+    "nette/di": "<=3.0.0-RC"
   },
   "autoload": {
     "psr-4": {
@@ -64,7 +62,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "0.6.x-dev"
+      "dev-master": "0.7.x-dev"
     }
   }
 }

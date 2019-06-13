@@ -126,10 +126,15 @@ api:
 ```php
 namespace App\Api\Plugin;
 
-use Apitte\Core\DI\Plugin\AbstractPlugin;
+use Apitte\Core\DI\Plugin\Plugin;
 
-class YourAmazingPlugin extends AbstractPlugin
+class YourAmazingPlugin extends Plugin
 {
+	
+	public static function getName() : string
+	{
+		return 'pluginName';
+    }
 
     // Add new services, override existing or whatever you want
     // Take a look at existing plugins for inspiration

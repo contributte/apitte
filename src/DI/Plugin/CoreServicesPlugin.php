@@ -17,7 +17,7 @@ use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Schema;
 use Psr\Log\LoggerInterface;
 
-class CoreServicesPlugin extends AbstractPlugin
+class CoreServicesPlugin extends Plugin
 {
 
 	public static function getName(): string

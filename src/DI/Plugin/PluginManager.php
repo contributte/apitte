@@ -23,7 +23,7 @@ final class PluginManager
 	/**
 	 * @param mixed[] $config
 	 */
-	public function registerPlugin(AbstractPlugin $plugin, array $config = []): AbstractPlugin
+	public function registerPlugin(Plugin $plugin, array $config = []): Plugin
 	{
 		// Register plugin
 		$this->plugins[$plugin::getName()] = [
@@ -49,11 +49,11 @@ final class PluginManager
 	 */
 	public function loadPlugin(string $class, array $config = []): void
 	{
-		if (!is_subclass_of($class, AbstractPlugin::class)) {
-			throw new InvalidStateException(sprintf('Plugin class "%s" is not subclass of "%s"', $class, AbstractPlugin::class));
+		if (!is_subclass_of($class, Plugin::class)) {
+			throw new InvalidStateException(sprintf('Plugin class "%s" is not subclass of "%s"', $class, Plugin::class));
 		}
 
-		/** @var AbstractPlugin $plugin */
+		/** @var Plugin $plugin */
 		$plugin = new $class($this->compiler);
 
 		// Register plugin

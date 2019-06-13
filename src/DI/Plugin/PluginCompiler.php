@@ -24,14 +24,14 @@ class PluginCompiler
 		return $this->extension;
 	}
 
-	public function getPlugin(string $name): ?AbstractPlugin
+	public function getPlugin(string $name): ?Plugin
 	{
 		$plugins = $this->manager->getPlugins();
 
 		return $plugins[$name]['inst'] ?? null;
 	}
 
-	public function getPluginByType(string $class): ?AbstractPlugin
+	public function getPluginByType(string $class): ?Plugin
 	{
 		foreach ($this->manager->getPlugins() as $plugin) {
 			if (get_class($plugin['inst']) === $class) return $plugin['inst'];

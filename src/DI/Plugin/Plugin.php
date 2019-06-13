@@ -12,7 +12,7 @@ use Nette\Schema\Schema;
 use Nette\Schema\ValidationException;
 use stdClass;
 
-abstract class AbstractPlugin
+abstract class Plugin
 {
 
 	/** @var PluginCompiler */

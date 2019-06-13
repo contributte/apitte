@@ -11,7 +11,7 @@ use Apitte\Core\DI\Helpers;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
 use Nette\DI\ServiceDefinition;
 
-class CoreDecoratorPlugin extends AbstractPlugin
+class CoreDecoratorPlugin extends Plugin
 {
 
 	public static function getName(): string

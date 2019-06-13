@@ -22,7 +22,7 @@ use stdClass;
 /**
  * @property-read stdClass $config
  */
-class CoreMappingPlugin extends AbstractPlugin
+class CoreMappingPlugin extends Plugin
 {
 
 	public static function getName(): string

@@ -23,13 +23,14 @@ Create entry point
 // www/index.php
 
 use Apitte\Core\Application\IApplication;
-use Nette\DI\Container;
+use App\Bootstrap;
 
-/** @var Container $container */
-$container = require __DIR__ . '/../app/bootstrap.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-/** @var IApplication $application */
-$application = $container->getByType(IApplication::class)->run();
+Bootstrap::boot()
+	->createContainer()
+	->getByType(IApplication::class)
+	->run();
 ```
 
 ## Usage in combination with nette application
@@ -38,13 +39,13 @@ $application = $container->getByType(IApplication::class)->run();
 // www/index.php
 
 use Apitte\Core\Application\IApplication as ApiApplication;
+use App\Bootstrap;
 use Nette\Application\Application as UIApplication;
-use Nette\DI\Container;
 
-/** @var Container $container */
-$container = require __DIR__ . '/../app/bootstrap.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $isApi = substr($_SERVER['REQUEST_URI'], 0, 4) === '/api';
+$container = Bootstrap::boot()->createContainer();
 
 if ($isApi) {
     $container->getByType(ApiApplication::class)->run();

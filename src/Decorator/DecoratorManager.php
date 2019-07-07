@@ -2,9 +2,9 @@
 
 namespace Apitte\Core\Decorator;
 
+use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
-use Throwable;
 
 class DecoratorManager
 {
@@ -63,7 +63,7 @@ class DecoratorManager
 		return $this;
 	}
 
-	public function decorateError(ApiRequest $request, ApiResponse $response, Throwable $error): ?ApiResponse
+	public function decorateError(ApiRequest $request, ApiResponse $response, ApiException $error): ?ApiResponse
 	{
 		// If there is no exception handler defined so return null (and exception will be thrown in DecoratedDispatcher)
 		if ($this->errorDecorators === []) {

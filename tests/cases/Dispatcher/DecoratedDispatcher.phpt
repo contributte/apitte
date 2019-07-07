@@ -118,7 +118,7 @@ test(function (): void {
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$response = $dispatcher->dispatch($request, $response);
-	}, ServerErrorException::class, 'Application encountered an internal error. Please try again later.');
+	}, ServerErrorException::class, ServerErrorException::$defaultMessage);
 });
 
 // Match request, use handler, throw and catch exception then trow it again because DecoratorManager doesn't have any decorators so returned null

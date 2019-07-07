@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\ErrorHandler;
 
+use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiResponse;
@@ -50,7 +51,7 @@ class SimpleErrorHandler implements IErrorHandler
 		$data = [
 			'status' => 'error',
 			'code' => $code,
-			'message' => $error instanceof ApiException ? $error->getMessage() : 'Application encountered an internal error. Please try again later.',
+			'message' => $error instanceof ApiException ? $error->getMessage() : ServerErrorException::$defaultMessage,
 		];
 
 		if ($error instanceof ApiException && ($context = $error->getContext()) !== null) {

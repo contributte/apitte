@@ -52,8 +52,7 @@ class DecoratedDispatcher extends CoreDispatcher
 				$decoratedError = $e;
 			} else {
 				$decoratedError = ServerErrorException::create()
-					->withPrevious($e)
-					->withMessage('Application encountered an internal error. Please try again later.');
+					->withPrevious($e);
 			}
 
 			// Trigger error decorator

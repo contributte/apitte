@@ -8,9 +8,11 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Decorator\DecoratorManager;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
+use Apitte\Core\ErrorHandler\JsonErrorConverter;
 use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
@@ -21,7 +23,7 @@ use Contributte\Psr7\Psr7ServerRequestFactory;
 use Psr\Http\Message\ResponseInterface;
 use Tester\Assert;
 use Tests\Fixtures\Decorator\EarlyReturnResponseExceptionDecorator;
-use Tests\Fixtures\Decorator\RethrowErrorDecorator;
+use Tests\Fixtures\ErrorHandler\RethrowErrorConverter;
 use Tests\Fixtures\Handler\ErroneousHandler;
 use Tests\Fixtures\Handler\FakeNullHandler;
 use Tests\Fixtures\Handler\FakeResponseHandler;
@@ -38,7 +40,7 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), new DecoratorManager());
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), new DecoratorManager(), new JsonErrorConverter());
 	Assert::same($response, $dispatcher->dispatch($request, $response));
 });
 
@@ -51,7 +53,7 @@ test(function (): void {
 	$endpoint = new Endpoint($handler);
 	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
 
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), new DecoratorManager());
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), new DecoratorManager(), new JsonErrorConverter());
 	$response = $dispatcher->dispatch($request, $response);
 	Assert::same($response->getAttribute(RequestAttributes::ATTR_ENDPOINT), $endpoint);
 });
@@ -61,10 +63,16 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeNullHandler(), new DecoratorManager());
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeNullHandler(), new DecoratorManager(), new JsonErrorConverter());
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
-		$dispatcher->dispatch($request, $response);
+		try {
+			$dispatcher->dispatch($request, $response);
+		} catch (SnapshotException $exception) {
+			throw $exception->getPrevious();
+		} catch (Throwable $exception) {
+			throw new InvalidArgumentException('This should never happen, try-catch is used just to get previous exception');
+		}
 	}, InvalidStateException::class, sprintf('Endpoint returned response must implement "%s"', ResponseInterface::class));
 });
 
@@ -73,10 +81,16 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ReturnFooBarHandler(), new DecoratorManager());
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ReturnFooBarHandler(), new DecoratorManager(), new JsonErrorConverter());
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
-		$dispatcher->dispatch($request, $response);
+		try {
+			$dispatcher->dispatch($request, $response);
+		} catch (SnapshotException $exception) {
+			throw $exception->getPrevious();
+		} catch (Throwable $exception) {
+			throw new InvalidArgumentException('This should never happen, try-catch is used just to get previous exception');
+		}
 	}, InvalidStateException::class, sprintf('If you want return anything else than "%s" from your api endpoint then install "apitte/negotiation".', ApiResponse::class));
 });
 
@@ -88,7 +102,7 @@ test(function (): void {
 	$manager = new DecoratorManager();
 	$manager->addRequestDecorator(new EarlyReturnResponseExceptionDecorator());
 
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), $manager);
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), $manager, new JsonErrorConverter());
 
 	Assert::same($response, $dispatcher->dispatch($request, $response));
 });
@@ -101,7 +115,7 @@ test(function (): void {
 	$manager = new DecoratorManager();
 	$manager->addResponseDecorator(new EarlyReturnResponseExceptionDecorator());
 
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), $manager);
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new FakeResponseHandler(), $manager, new JsonErrorConverter());
 
 	Assert::same($response, $dispatcher->dispatch($request, $response));
 });
@@ -111,10 +125,7 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
-	$manager = new DecoratorManager();
-	$manager->addErrorDecorator(new RethrowErrorDecorator());
-
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ErroneousHandler(), $manager);
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ErroneousHandler(), new DecoratorManager(), new RethrowErrorConverter());
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$response = $dispatcher->dispatch($request, $response);
@@ -126,7 +137,7 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ErroneousHandler(), new DecoratorManager());
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(true), new ErroneousHandler(), new DecoratorManager(), new JsonErrorConverter());
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$response = $dispatcher->dispatch($request, $response);
 	}, RuntimeException::class, sprintf('I am %s!', ErroneousHandler::class));
@@ -137,9 +148,15 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
-	$dispatcher = new DecoratedDispatcher(new FakeRouter(false), new FakeResponseHandler(), new DecoratorManager());
+	$dispatcher = new DecoratedDispatcher(new FakeRouter(false), new FakeResponseHandler(), new DecoratorManager(), new JsonErrorConverter());
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
-		$response = $dispatcher->dispatch($request, $response);
+		try {
+			$dispatcher->dispatch($request, $response);
+		} catch (SnapshotException $exception) {
+			throw $exception->getPrevious();
+		} catch (Throwable $exception) {
+			throw new InvalidArgumentException('This should never happen, try-catch is used just to get previous exception');
+		}
 	}, ClientErrorException::class, 'No matched route by given URL');
 });

@@ -175,38 +175,3 @@ class ExampleResponseDecorator implements IResponseDecorator
 
 }
 ```
-
-## Exception decorators
-
-Transforms error into response.
-
-If an exception decorator return null instead of response then error is handled by internal [error handler](errors.md#error-handler)
-
-### ResponseEntityDecorator
-
-Transforms error into format requested in `Accept` header and in url suffix (`/api/v1/users.xml`)
-
-See [apitte/negotiation](https://github.com/apitte/negotiation) for details.
-
-### Implementing exception decorator
-
-```php
-namespace App\Api\Decorator;
-
-use Apitte\Core\Decorator\IErrorDecorator;
-use Apitte\Core\Http\ApiRequest;
-use Apitte\Core\Http\ApiResponse;
-use Throwable;
-
-class ExampleExceptionDecorator implements IErrorDecorator
-{
-    
-    public function decorateError(ApiRequest $request, ApiResponse $response, Throwable $error): ApiResponse
-    {
-        $response = $this->errorToResponse($response, $error);
-        return $response;
-    }
-
-}
-
-```

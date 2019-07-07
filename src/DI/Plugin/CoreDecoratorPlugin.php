@@ -3,7 +3,6 @@
 namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\Decorator\DecoratorManager;
-use Apitte\Core\Decorator\IErrorDecorator;
 use Apitte\Core\Decorator\IRequestDecorator;
 use Apitte\Core\Decorator\IResponseDecorator;
 use Apitte\Core\DI\ApiExtension;
@@ -58,12 +57,6 @@ class CoreDecoratorPlugin extends Plugin
 		$responseDecoratorDefinitions = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $responseDecoratorDefinitions);
 		foreach ($responseDecoratorDefinitions as $decoratorDefinition) {
 			$managerDefinition->addSetup('addResponseDecorator', [$decoratorDefinition]);
-		}
-
-		$errorDecoratorDefinitions = $builder->findByType(IErrorDecorator::class);
-		$errorDecoratorDefinitions = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $errorDecoratorDefinitions);
-		foreach ($errorDecoratorDefinitions as $decoratorDefinition) {
-			$managerDefinition->addSetup('addErrorDecorator', [$decoratorDefinition]);
 		}
 	}
 

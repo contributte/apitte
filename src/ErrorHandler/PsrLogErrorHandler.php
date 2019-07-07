@@ -13,8 +13,9 @@ class PsrLogErrorHandler extends SimpleErrorHandler
 	/** @var LoggerInterface */
 	private $logger;
 
-	public function __construct(LoggerInterface $logger)
+	public function __construct(ErrorConverter $errorConverter, LoggerInterface $logger)
 	{
+		parent::__construct($errorConverter);
 		$this->logger = $logger;
 	}
 

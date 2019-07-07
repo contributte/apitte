@@ -7,6 +7,7 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Dispatcher\WrappedDispatcher;
+use Apitte\Core\ErrorHandler\JsonErrorConverter;
 use Apitte\Core\ErrorHandler\SimpleErrorHandler;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
@@ -19,7 +20,7 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
-	$dispatcher = new WrappedDispatcher(new FakeDispatcher(), new SimpleErrorHandler());
+	$dispatcher = new WrappedDispatcher(new FakeDispatcher(), new SimpleErrorHandler(new JsonErrorConverter()));
 
 	Assert::same($response, $dispatcher->dispatch($request, $response));
 });

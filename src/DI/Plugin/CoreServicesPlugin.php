@@ -7,7 +7,9 @@ use Apitte\Core\Application\IApplication;
 use Apitte\Core\Dispatcher\IDispatcher;
 use Apitte\Core\Dispatcher\JsonDispatcher;
 use Apitte\Core\Dispatcher\WrappedDispatcher;
+use Apitte\Core\ErrorHandler\ErrorConverter;
 use Apitte\Core\ErrorHandler\IErrorHandler;
+use Apitte\Core\ErrorHandler\JsonErrorConverter;
 use Apitte\Core\ErrorHandler\PsrLogErrorHandler;
 use Apitte\Core\ErrorHandler\SimpleErrorHandler;
 use Apitte\Core\Handler\IHandler;
@@ -38,6 +40,10 @@ class CoreServicesPlugin extends Plugin
 			->setFactory(JsonDispatcher::class)
 			->setType(IDispatcher::class)
 			->setAutowired(false);
+
+		$builder->addDefinition($this->prefix('errorConverter'))
+			->setFactory(JsonErrorConverter::class)
+			->setType(ErrorConverter::class);
 
 		// Catch exception only in debug mode if explicitly enabled
 		$catchException = !$globalConfig->debug || $globalConfig->catchException;

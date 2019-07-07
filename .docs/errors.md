@@ -18,7 +18,7 @@ Other errors are transformed into a generic exception (see [SimpleErrorHandler d
 ## Error handler
 
 Error handler is responsible for catching all errors
-and transforming them into response (if none of [exception decorators](decorators.md#exception-decorators) was able to do it)
+and transforming them into response through [error converter](#error-converter)
 
 > Known limitation: 
 > Handler is currently contained in [WrappedDispatcher](dispatcher.md#wrappeddispatcher) so any errors thrown in [middlewares](https://github.com/apitte/middlewares) could not by handled by it.
@@ -29,16 +29,8 @@ Default error handler
 
 - Transforms error into json response
   - ApiException (and inherited errors like ClientErrorException) message, context and code are used directly in response
-  - For other (non-api) errors is used generic message described bellow
+  - For other (non-api) errors is used generic message
   - Context is send only if is not empty
-    ```json
-    {
-      "status": "error",
-      "code": 500,
-      "message": "Application encountered an internal error. Please try again later.",
-      "context": []
-    }
-    ```
 - Allows rethrow error in debug mode (see catchException option in [setup](setup.md))
 
 ### PsrLogErrorHandler
@@ -46,3 +38,24 @@ Default error handler
 Extends SimpleErrorHandler for logging of errors.
 
 It is activated automatically if you have an autowired Psr\Log\LoggerInterface implementation in DI container (like [contributte/monolog](https://github.com/contributte/monolog) or PSR adapter of [tracy](https://github.com/nette/tracy/))
+
+## Error converter
+
+Error converter converts all errors into response.
+
+### JsonErrorConverter
+
+Default error converter which transforms all errors into json response
+
+```json
+{
+  "status": "error",
+  "code": 500,
+  "message": "Application encountered an internal error. Please try again later.",
+  "context": []
+}
+```
+
+### Negotiation
+
+[negotiation](https://github.com/apitte/negotiation) package uses own error converter to support multiple content types

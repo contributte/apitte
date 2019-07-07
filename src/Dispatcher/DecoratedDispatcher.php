@@ -3,6 +3,7 @@
 namespace Apitte\Core\Dispatcher;
 
 use Apitte\Core\Decorator\DecoratorManager;
+use Apitte\Core\ErrorHandler\ErrorConverter;
 use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
@@ -27,10 +28,14 @@ class DecoratedDispatcher extends CoreDispatcher
 	/** @var DecoratorManager */
 	protected $decoratorManager;
 
-	public function __construct(IRouter $router, IHandler $handler, DecoratorManager $decoratorManager)
+	/** @var ErrorConverter */
+	private $errorConverter;
+
+	public function __construct(IRouter $router, IHandler $handler, DecoratorManager $decoratorManager, ErrorConverter $errorConverter)
 	{
 		parent::__construct($router, $handler);
 		$this->decoratorManager = $decoratorManager;
+		$this->errorConverter = $errorConverter;
 	}
 
 	public function dispatch(ApiRequest $request, ApiResponse $response): ApiResponse
@@ -48,22 +53,15 @@ class DecoratedDispatcher extends CoreDispatcher
 			}
 
 			// Pass only ApiException to error decorator
-			if ($e instanceof ApiException) {
-				$decoratedError = $e;
-			} else {
-				$decoratedError = ServerErrorException::create()
-					->withPrevious($e);
-			}
+			$decoratedError = $e instanceof ApiException ? $e : ServerErrorException::create()->withPrevious($e);
 
-			// Trigger error decorator
-			$response = $this->decoratorManager->decorateError($request, $response, $decoratedError);
+			// Create response from error
+			$response = $this->errorConverter->createResponseFromError($decoratedError, $request, $response);
 
-			// Rethrow exception so error could be logged and transformed into response by error handler
-			if ($response === null) {
-				throw $e;
-			}
+			// Decorate response
+			$response = $this->decoratorManager->decorateResponse($request, $response);
 
-			// Rethrow error with response from decorator so error could be logged and response returned
+			// Rethrow error with decorated response so it could be logged and response returned
 			throw new SnapshotException($e, $request, $response);
 		}
 

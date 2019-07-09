@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Apitte\Core\ErrorHandler;
+namespace Apitte\Core\ErrorHandling;
 
 use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Http\ApiRequest;

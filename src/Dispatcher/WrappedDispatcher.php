@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Dispatcher;
 
-use Apitte\Core\ErrorHandler\IErrorHandler;
+use Apitte\Core\ErrorHandling\IErrorHandler;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Throwable;

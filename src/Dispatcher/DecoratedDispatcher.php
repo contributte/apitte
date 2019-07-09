@@ -3,7 +3,7 @@
 namespace Apitte\Core\Dispatcher;
 
 use Apitte\Core\Decorator\DecoratorManager;
-use Apitte\Core\ErrorHandler\ErrorConverter;
+use Apitte\Core\ErrorHandling\ErrorConverter;
 use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Exception\Logical\InvalidStateException;

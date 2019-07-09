@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Decorator\DecoratorManager;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
-use Apitte\Core\ErrorHandler\JsonErrorConverter;
+use Apitte\Core\ErrorHandling\JsonErrorConverter;
 use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
@@ -23,7 +23,7 @@ use Contributte\Psr7\Psr7ServerRequestFactory;
 use Psr\Http\Message\ResponseInterface;
 use Tester\Assert;
 use Tests\Fixtures\Decorator\EarlyReturnResponseExceptionDecorator;
-use Tests\Fixtures\ErrorHandler\RethrowErrorConverter;
+use Tests\Fixtures\ErrorHandling\RethrowErrorConverter;
 use Tests\Fixtures\Handler\ErroneousHandler;
 use Tests\Fixtures\Handler\FakeNullHandler;
 use Tests\Fixtures\Handler\FakeResponseHandler;

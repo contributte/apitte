@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace Tests\Fixtures\ErrorHandler;
+namespace Tests\Fixtures\ErrorHandling;
 
-use Apitte\Core\ErrorHandler\ErrorConverter;
+use Apitte\Core\ErrorHandling\ErrorConverter;
 use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;

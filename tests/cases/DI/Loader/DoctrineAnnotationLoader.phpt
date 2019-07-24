@@ -61,11 +61,11 @@ test(function (): void {
 
 	Assert::equal('baz1', $controller->getMethods()['baz1']->getName());
 	Assert::equal('/baz1', $controller->getMethods()['baz1']->getPath());
-	Assert::equal(['GET'], $controller->getMethods()['baz1']->getMethods());
+	Assert::equal(['GET'], $controller->getMethods()['baz1']->getHttpMethods());
 
 	Assert::equal('baz2', $controller->getMethods()['baz2']->getName());
 	Assert::equal('/baz2', $controller->getMethods()['baz2']->getPath());
-	Assert::equal(['GET', 'POST'], $controller->getMethods()['baz2']->getMethods());
+	Assert::equal(['GET', 'POST'], $controller->getMethods()['baz2']->getHttpMethods());
 
 	Assert::equal(
 		[

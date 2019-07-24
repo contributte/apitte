@@ -47,7 +47,7 @@ class NeonLoader implements ILoader
 			$method->setId($settings['id'] ?? null);
 			$method->setPath($settings['path'] ?? '');
 			$method->setDescription($settings['description'] ?? '');
-			$method->addMethods($settings['methods'] ?? []);
+			$method->addHttpMethods($settings['methods'] ?? []);
 			$method->addTags($settings['tags'] ?? []);
 			$method->setOpenApi($settings['openapi'] ?? []);
 			$this->setMethodParameters($method, $settings['parameters'] ?? []);

@@ -229,7 +229,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				// Parse @Method ===========================
 				if (get_class($annotation) === Method::class) {
 					/** @var Method $annotation */
-					$schemaMethod->addMethods($annotation->getMethods());
+					$schemaMethod->addHttpMethods($annotation->getMethods());
 					continue;
 				}
 

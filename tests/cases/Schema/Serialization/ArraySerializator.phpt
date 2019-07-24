@@ -31,17 +31,17 @@ test(function (): void {
 	$c1->addMethod('m1'); // Skipped, missing path
 
 	$m2 = $c1->addMethod('m2');
-	$m2->addMethod(Endpoint::METHOD_GET);
-	$m2->addMethod(Endpoint::METHOD_POST);
-	$m2->addMethod(Endpoint::METHOD_PUT);
+	$m2->addHttpMethod(Endpoint::METHOD_GET);
+	$m2->addHttpMethod(Endpoint::METHOD_POST);
+	$m2->addHttpMethod(Endpoint::METHOD_PUT);
 	$m2->setPath('m2-path');
 	$m2->setRequestMapper('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity', true);
 	$m2->setResponseMapper('A\Class\Which\Implements\Apitte\Core\Mapping\Response\IResponseEntity');
 
 	$m3 = $c1->addMethod('m3');
 	$m3->setId('m3-id');
-	$m3->addMethod(Endpoint::METHOD_GET);
-	$m3->addMethod(Endpoint::METHOD_POST);
+	$m3->addHttpMethod(Endpoint::METHOD_GET);
+	$m3->addHttpMethod(Endpoint::METHOD_POST);
 	$m3->setPath('m3-path/{m3-p1}');
 	$m3->addTag('m3-t1');
 	$m3->addTag('m3-t2', 'm3-t2-value');

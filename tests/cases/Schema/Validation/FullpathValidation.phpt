@@ -22,18 +22,18 @@ test(function (): void {
 	$c1->setPath('foo2');
 	$c1m1 = $c1->addMethod('method');
 	$c1m1->setPath('foo3');
-	$c1m1->addMethod(Endpoint::METHOD_GET);
-	$c1m1->addMethod(Endpoint::METHOD_POST);
-	$c1m1->addMethod(Endpoint::METHOD_PUT);
+	$c1m1->addHttpMethod(Endpoint::METHOD_GET);
+	$c1m1->addHttpMethod(Endpoint::METHOD_POST);
+	$c1m1->addHttpMethod(Endpoint::METHOD_PUT);
 
 	$c2 = $builder->addController('c2');
 	$c2->addGroupPath('bar1');
 	$c2->setPath('bar2');
 	$c2m2 = $c2->addMethod('method');
 	$c2m2->setPath('bar3');
-	$c2m2->addMethod(Endpoint::METHOD_GET);
-	$c2m2->addMethod(Endpoint::METHOD_POST);
-	$c2m2->addMethod(Endpoint::METHOD_PUT);
+	$c2m2->addHttpMethod(Endpoint::METHOD_GET);
+	$c2m2->addHttpMethod(Endpoint::METHOD_POST);
+	$c2m2->addHttpMethod(Endpoint::METHOD_PUT);
 
 	Assert::noError(function () use ($validation, $builder): void {
 		$validation->validate($builder);
@@ -50,18 +50,18 @@ test(function (): void {
 	$c1->setPath('foo2');
 	$c1m1 = $c1->addMethod('method');
 	$c1m1->setPath('foo3');
-	$c1m1->addMethod(Endpoint::METHOD_GET);
-	$c1m1->addMethod(Endpoint::METHOD_POST);
-	$c1m1->addMethod(Endpoint::METHOD_PUT);
+	$c1m1->addHttpMethod(Endpoint::METHOD_GET);
+	$c1m1->addHttpMethod(Endpoint::METHOD_POST);
+	$c1m1->addHttpMethod(Endpoint::METHOD_PUT);
 
 	$c2 = $builder->addController('c2');
 	$c2->addGroupPath('foo1');
 	$c2->setPath('foo2');
 	$c2m2 = $c2->addMethod('method');
 	$c2m2->setPath('foo3');
-	$c2m2->addMethod(Endpoint::METHOD_GET);
-	$c2m2->addMethod(Endpoint::METHOD_POST);
-	$c2m2->addMethod(Endpoint::METHOD_PUT);
+	$c2m2->addHttpMethod(Endpoint::METHOD_GET);
+	$c2m2->addHttpMethod(Endpoint::METHOD_POST);
+	$c2m2->addHttpMethod(Endpoint::METHOD_PUT);
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);

@@ -46,7 +46,7 @@ test(function (): void {
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo1');
 	$c1m1->setPath('/{foo$}');
-	$c1m1->addMethod('GET');
+	$c1m1->addHttpMethod('GET');
 
 	Assert::exception(function () use ($builder): void {
 		$validator = new PathValidation();
@@ -61,7 +61,7 @@ test(function (): void {
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo1');
 	$c1m1->setPath('/{%foo}');
-	$c1m1->addMethod('GET');
+	$c1m1->addHttpMethod('GET');
 
 	Assert::exception(function () use ($builder): void {
 		$validator = new PathValidation();
@@ -76,7 +76,7 @@ test(function (): void {
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo1');
 	$c1m1->setPath('/{foo&&&bar}');
-	$c1m1->addMethod('GET');
+	$c1m1->addHttpMethod('GET');
 
 	Assert::exception(function () use ($builder): void {
 		$validator = new PathValidation();
@@ -91,7 +91,7 @@ test(function (): void {
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo1');
 	$c1m1->setPath('/{foo}/{bar}');
-	$c1m1->addMethod('GET');
+	$c1m1->addHttpMethod('GET');
 	try {
 		$validator = new PathValidation();
 		$validator->validate($builder);

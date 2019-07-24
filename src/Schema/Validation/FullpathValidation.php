@@ -31,7 +31,7 @@ class FullpathValidation implements IValidation
 
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
-				foreach ($method->getMethods() as $httpMethod) {
+				foreach ($method->getHttpMethods() as $httpMethod) {
 
 					$maskp = array_merge(
 						$controller->getGroupPaths(),

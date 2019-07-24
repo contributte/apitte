@@ -20,7 +20,7 @@ final class Method
 	private $description;
 
 	/** @var string[] */
-	private $methods = [];
+	private $httpMethods = [];
 
 	/** @var mixed[] */
 	private $tags = [];
@@ -89,31 +89,31 @@ final class Method
 	/**
 	 * @return string[]
 	 */
-	public function getMethods(): array
+	public function getHttpMethods(): array
 	{
-		return $this->methods;
+		return $this->httpMethods;
 	}
 
 	/**
-	 * @param string[] $methods
+	 * @param string[] $httpMethods
 	 */
-	public function setMethods(array $methods): void
+	public function setHttpMethods(array $httpMethods): void
 	{
-		$this->methods = $methods;
+		$this->httpMethods = $httpMethods;
 	}
 
-	public function addMethod(string $method): void
+	public function addHttpMethod(string $method): void
 	{
-		$this->methods[] = strtoupper($method);
+		$this->httpMethods[] = strtoupper($method);
 	}
 
 	/**
-	 * @param string[] $methods
+	 * @param string[] $httpMethods
 	 */
-	public function addMethods(array $methods): void
+	public function addHttpMethods(array $httpMethods): void
 	{
-		foreach ($methods as $method) {
-			$this->addMethod($method);
+		foreach ($httpMethods as $httpMethod) {
+			$this->addHttpMethod($httpMethod);
 		}
 	}
 

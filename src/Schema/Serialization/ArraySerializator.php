@@ -8,6 +8,7 @@ use Apitte\Core\Schema\Builder\Controller\Method;
 use Apitte\Core\Schema\Builder\Controller\MethodParameter;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\EndpointParameter;
+use Apitte\Core\Schema\Hierarchy\HierarchyBuilder;
 use Apitte\Core\Utils\Helpers;
 use Apitte\Core\Utils\Regex;
 
@@ -19,21 +20,21 @@ final class ArraySerializator implements ISerializator
 	 */
 	public function serialize(SchemaBuilder $builder): array
 	{
-		$controllers = $builder->getControllers();
+		$hierarchyBuilder = new HierarchyBuilder($builder->getControllers());
+		$endpoints = $hierarchyBuilder->getSortedEndpoints();
 		$schema = [];
 
-		// Iterate over all controllers
-		foreach ($controllers as $controller) {
+		foreach ($endpoints as $endpoint) {
+			$controller = $endpoint->getController();
+			$method = $endpoint->getMethod();
 
-			// Iterate over all controller api methods
-			foreach ($controller->getMethods() as $method) {
-
-				// Skip invalid methods
-				if ($method->getPath() === '') continue;
-
-				$endpoint = $this->serializeEndpoint($controller, $method);
-				$schema[] = $endpoint;
+			// Skip invalid methods
+			if ($method->getPath() === '') {
+				continue;
 			}
+
+			$endpoint = $this->serializeEndpoint($controller, $method);
+			$schema[] = $endpoint;
 		}
 
 		return $schema;

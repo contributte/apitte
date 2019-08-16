@@ -15,6 +15,8 @@ use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Core\Router\IRouter;
 use Apitte\Core\Router\SimpleRouter;
 use Apitte\Core\Schema\Schema;
+use Nette\DI\Definitions\ServiceDefinition;
+use Nette\DI\MissingServiceException;
 use Psr\Log\LoggerInterface;
 
 class CoreServicesPlugin extends Plugin
@@ -42,15 +44,10 @@ class CoreServicesPlugin extends Plugin
 		// Catch exception only in debug mode if explicitly enabled
 		$catchException = !$globalConfig->debug || $globalConfig->catchException;
 
-		$errorHandler = $builder->addDefinition($this->prefix('errorHandler'))
+		$builder->addDefinition($this->prefix('errorHandler'))
 			->setFactory(SimpleErrorHandler::class)
 			->setType(IErrorHandler::class)
 			->addSetup('setCatchException', [$catchException]);
-
-		// Set handler with logging, if logger available
-		if ($builder->findByType(LoggerInterface::class) !== []) {
-			$errorHandler->setFactory(PsrLogErrorHandler::class);
-		}
 
 		$builder->addDefinition($this->prefix('dispatcher.wrapper'))
 			->setFactory(WrappedDispatcher::class, ['@' . $this->prefix('dispatcher')]);
@@ -69,6 +66,24 @@ class CoreServicesPlugin extends Plugin
 
 		$builder->addDefinition($this->prefix('schema'))
 			->setFactory(Schema::class);
+	}
+
+	public function beforePluginCompile(): void
+	{
+		$builder = $this->getContainerBuilder();
+
+		$errorHandlerDefinition = $builder->getDefinition($this->prefix('errorHandler'));
+		assert($errorHandlerDefinition instanceof ServiceDefinition);
+
+		// Set error handler to PsrErrorHandler if logger is available and user didn't change logger himself
+		if ($errorHandlerDefinition->getFactory()->getEntity() === SimpleErrorHandler::class) {
+			try {
+				$loggerDefinition = $builder->getDefinitionByType(LoggerInterface::class);
+				$errorHandlerDefinition->setFactory(PsrLogErrorHandler::class, [$loggerDefinition]);
+			} catch (MissingServiceException $exception) {
+				// No need to handle
+			}
+		}
 	}
 
 }

@@ -5,7 +5,7 @@ namespace Apitte\Core\Schema\Validation;
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 
-class RequestMapperValidation implements IValidation
+class RequestValidation implements IValidation
 {
 
 	public function validate(SchemaBuilder $builder): void
@@ -20,16 +20,23 @@ class RequestMapperValidation implements IValidation
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
 
-				$mapper = $method->getRequestMapper();
+				$request = $method->getRequest();
 
-				// Skip if @RequestMapper is not set
-				if ($mapper === null) continue;
+				if ($request === null) {
+					continue;
+				}
 
-				if (!class_exists($mapper->getEntity(), true)) {
+				$entity = $request->getEntity();
+
+				if ($entity === null) {
+					continue;
+				}
+
+				if (!class_exists($entity, true)) {
 					throw new InvalidSchemaException(
 						sprintf(
-							'Request mapping entity "%s" in "%s::%s()" does not exist"',
-							$mapper->getEntity(),
+							'Request entity "%s" in "%s::%s()" does not exist"',
+							$request->getEntity(),
 							$controller->getClass(),
 							$method->getName()
 						)

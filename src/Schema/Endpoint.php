@@ -56,9 +56,6 @@ final class Endpoint
 	/** @var EndpointNegotiation[] */
 	private $negotiations = [];
 
-	/** @var EndpointRequestMapper|null */
-	private $requestMapper;
-
 	/** @var mixed[] */
 	private $tags = [];
 
@@ -336,16 +333,6 @@ final class Endpoint
 			'#%s$#', // Exactly match raw pattern
 			$rawPattern
 		);
-	}
-
-	public function getRequestMapper(): ?EndpointRequestMapper
-	{
-		return $this->requestMapper;
-	}
-
-	public function setRequestMapper(?EndpointRequestMapper $requestMapper): void
-	{
-		$this->requestMapper = $requestMapper;
 	}
 
 }

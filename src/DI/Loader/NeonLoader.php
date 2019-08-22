@@ -53,7 +53,6 @@ class NeonLoader implements ILoader
 			$this->setMethodParameters($method, $settings['parameters'] ?? []);
 			$this->setNegotiations($method, $settings['negotiations'] ?? []);
 			$this->setRequest($method, $settings['request'] ?? null);
-			$this->setRequestMapper($method, $settings['requestMapper'] ?? null);
 			$this->setResponses($method, $settings['responses'] ?? null);
 		}
 	}
@@ -99,19 +98,9 @@ class NeonLoader implements ILoader
 		$request->setRequired($requestSettings['required'] ?? false);
 		$request->setDescription($requestSettings['description'] ?? null);
 		$request->setEntity($requestSettings['entity'] ?? null);
+		$request->setValidation($requestSettings['validation'] ?? true);
 
 		$method->setRequest($request);
-	}
-
-	/**
-	 * @param mixed[]|null $requestMapperSettings
-	 */
-	private function setRequestMapper(Method $method, ?array $requestMapperSettings): void
-	{
-		if ($requestMapperSettings === null) {
-			return;
-		}
-		$method->setRequestMapper($requestMapperSettings['entity'], $requestMapperSettings['validation'] ?? true);
 	}
 
 	/**

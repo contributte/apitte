@@ -9,7 +9,7 @@ use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Request\IRequestEntity;
 use Apitte\Core\Mapping\Validator\IEntityValidator;
 use Apitte\Core\Schema\Endpoint;
-use Apitte\Core\Schema\EndpointRequestMapper;
+use Apitte\Core\Schema\EndpointRequest;
 
 class RequestEntityMapping
 {
@@ -33,10 +33,10 @@ class RequestEntityMapping
 		}
 
 		// If there's no request mapper, then skip it
-		if (!($requestMapper = $endpoint->getRequestMapper())) return $request;
+		if (!($requestBody = $endpoint->getRequest())) return $request;
 
 		// Create entity
-		$entity = $this->createEntity($requestMapper, $request);
+		$entity = $this->createEntity($requestBody, $request);
 
 		if ($entity !== null) {
 			$request = $request->withAttribute(RequestAttributes::ATTR_REQUEST_ENTITY, $entity);
@@ -48,9 +48,14 @@ class RequestEntityMapping
 	/**
 	 * @return IRequestEntity|object|null
 	 */
-	protected function createEntity(EndpointRequestMapper $mapper, ApiRequest $request)
+	protected function createEntity(EndpointRequest $requestBody, ApiRequest $request)
 	{
-		$entityClass = $mapper->getEntity();
+		$entityClass = $requestBody->getEntity();
+
+		if ($entityClass === null) {
+			return null;
+		}
+
 		$entity = new $entityClass();
 
 		// Allow modify entity in extended class
@@ -61,7 +66,7 @@ class RequestEntityMapping
 		}
 
 		// Try to validate entity only if its enabled
-		if ($mapper->isValidation() === true) {
+		if ($requestBody->isValidation() === true) {
 			$this->validate($entity);
 		}
 

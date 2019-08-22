@@ -37,9 +37,6 @@ final class Method
 	/** @var MethodNegotiation[] */
 	private $negotiations = [];
 
-	/** @var RequestMapper|null */
-	private $requestMapper;
-
 	/** @var mixed[] */
 	private $openApi = [];
 
@@ -221,16 +218,6 @@ final class Method
 	public function getNegotiations(): array
 	{
 		return $this->negotiations;
-	}
-
-	public function getRequestMapper(): ?RequestMapper
-	{
-		return $this->requestMapper;
-	}
-
-	public function setRequestMapper(string $entity, bool $validation = true): void
-	{
-		$this->requestMapper = new RequestMapper($entity, $validation);
 	}
 
 }

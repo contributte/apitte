@@ -9,7 +9,6 @@ use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\EndpointRequest;
-use Apitte\Core\Schema\EndpointRequestMapper;
 use Apitte\Core\Schema\EndpointResponse;
 use Apitte\Core\Schema\Schema;
 
@@ -88,16 +87,14 @@ final class ArrayHydrator implements IHydrator
 		}
 
 		if (isset($data['request'])) {
+			$requestData = $data['request'];
+
 			$request = new EndpointRequest();
-			if (isset($data['request']['description'])) {
-				$request->setDescription($data['request']['description']);
-			}
-			if (isset($data['request']['entity'])) {
-				$request->setEntity($data['request']['entity']);
-			}
-			if (isset($data['request']['required'])) {
-				$request->setRequired($data['request']['required']);
-			}
+			$request->setDescription($requestData['description']);
+			$request->setEntity($requestData['entity']);
+			$request->setRequired($requestData['required']);
+			$request->setValidation($requestData['validation']);
+
 			$endpoint->setRequest($request);
 		}
 
@@ -126,14 +123,6 @@ final class ArrayHydrator implements IHydrator
 
 				$endpoint->addNegotiation($negotiation);
 			}
-		}
-
-		if (isset($data['requestMapper'])) {
-			$requestMapper = new EndpointRequestMapper(
-				$data['requestMapper']['entity'],
-				$data['requestMapper']['validation']
-			);
-			$endpoint->setRequestMapper($requestMapper);
 		}
 
 		return $endpoint;

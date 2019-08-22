@@ -50,7 +50,6 @@ final class ArraySerializator implements ISerializator
 		$this->serializePattern($endpoint, $controller, $method);
 		$this->serializeEndpointRequest($endpoint, $method);
 		$this->serializeEndpointResponses($endpoint, $method);
-		$this->serializeMappers($endpoint, $method);
 
 		return $endpoint;
 	}
@@ -195,21 +194,6 @@ final class ArraySerializator implements ISerializator
 
 	/**
 	 * @param mixed[] $endpoint
-	 */
-	private function serializeMappers(array &$endpoint, Method $method): void
-	{
-		// Add request & response mappers
-		$requestMapper = $method->getRequestMapper();
-		if ($requestMapper !== null) {
-			$endpoint['requestMapper'] = [
-				'entity' => $requestMapper->getEntity(),
-				'validation' => $requestMapper->isValidation(),
-			];
-		}
-	}
-
-	/**
-	 * @param mixed[] $endpoint
 	 * @param mixed[] $parameter
 	 */
 	private function serializeEndpointParameter(array &$endpoint, array $parameter, Method $method): void
@@ -246,17 +230,17 @@ final class ArraySerializator implements ISerializator
 	private function serializeEndpointRequest(array &$endpoint, Method $method): void
 	{
 		$request = $method->getRequest();
+
 		if ($request === null) {
 			return;
 		}
-		$requestData = ['required' => $request->isRequired()];
-		if ($request->getDescription() !== null) {
-			$requestData['description'] = $request->getDescription();
-		}
-		if ($request->getEntity() !== null) {
-			$requestData['entity'] = $request->getEntity();
-		}
-		$endpoint['request'] = $requestData;
+
+		$endpoint['request'] = [
+			'description' => $request->getDescription(),
+			'required' => $request->isRequired(),
+			'validation' => $request->isValidation(),
+			'entity' => $request->getEntity(),
+		];
 	}
 
 	/**

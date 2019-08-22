@@ -14,6 +14,9 @@ final class EndpointRequest
 	/** @var bool */
 	private $required = false;
 
+	/** @var bool */
+	private $validation = true;
+
 	public function getDescription(): ?string
 	{
 		return $this->description;
@@ -42,6 +45,16 @@ final class EndpointRequest
 	public function setRequired(bool $required): void
 	{
 		$this->required = $required;
+	}
+
+	public function isValidation(): bool
+	{
+		return $this->validation;
+	}
+
+	public function setValidation(bool $validation): void
+	{
+		$this->validation = $validation;
 	}
 
 }

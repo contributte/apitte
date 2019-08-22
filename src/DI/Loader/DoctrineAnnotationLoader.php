@@ -12,7 +12,6 @@ use Apitte\Core\Annotation\Controller\Negotiations;
 use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\Request;
-use Apitte\Core\Annotation\Controller\RequestMapper;
 use Apitte\Core\Annotation\Controller\RequestParameters;
 use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Tag;
@@ -277,6 +276,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 					$request->setDescription($annotation->getDescription());
 					$request->setEntity($annotation->getEntity());
 					$request->setRequired($annotation->isRequired());
+					$request->setValidation($annotation->isValidation());
 					$schemaMethod->setRequest($request);
 					continue;
 				}
@@ -296,13 +296,6 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$negotiation->setDefault($n->isDefault());
 						$negotiation->setRenderer($n->getRenderer());
 					}
-					continue;
-				}
-
-				// Parse @RequestMapper ====================
-				if (get_class($annotation) === RequestMapper::class) {
-					/** @var RequestMapper $annotation */
-					$schemaMethod->setRequestMapper($annotation->getEntity(), $annotation->isValidation());
 					continue;
 				}
 			}

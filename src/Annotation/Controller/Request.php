@@ -20,6 +20,9 @@ final class Request
 	/** @var bool */
 	private $required;
 
+	/** @var bool */
+	private $validation;
+
 	/**
 	 * @param mixed[] $values
 	 */
@@ -28,6 +31,7 @@ final class Request
 		$this->description = $values['description'] ?? null;
 		$this->entity = $values['entity'] ?? null;
 		$this->required = $values['required'] ?? false;
+		$this->validation = $values['validation'] ?? true;
 	}
 
 	public function getEntity(): ?string
@@ -43,6 +47,11 @@ final class Request
 	public function isRequired(): bool
 	{
 		return $this->required;
+	}
+
+	public function isValidation(): bool
+	{
+		return $this->validation;
 	}
 
 }

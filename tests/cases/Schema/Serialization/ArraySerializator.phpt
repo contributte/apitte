@@ -35,7 +35,6 @@ test(function (): void {
 	$m2->addHttpMethod(Endpoint::METHOD_POST);
 	$m2->addHttpMethod(Endpoint::METHOD_PUT);
 	$m2->setPath('m2-path');
-	$m2->setRequestMapper('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity', true);
 
 	$m3 = $c1->addMethod('m3');
 	$m3->setId('m3-id');
@@ -48,7 +47,9 @@ test(function (): void {
 
 	$m3r = new MethodRequest();
 	$m3r->setRequired(true);
-	$m3r->setEntity('SomeClass');
+	$m3r->setEntity('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity');
+	$m3r->setValidation(false);
+	$m3r->setDescription('description');
 	$m3->setRequest($m3r);
 
 	$m3->addResponse('200', 'Success')
@@ -87,10 +88,6 @@ test(function (): void {
 			'negotiations' => [],
 			'attributes' => ['pattern' => '/group1-path/group2-path/c1-path/m2-path'],
 			'openApi' => ['controller' => [], 'method' => []],
-			'requestMapper' => [
-				'entity' => 'A\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Request\\IRequestEntity',
-				'validation' => true,
-			],
 		],
 		[
 			'handler' => [
@@ -146,7 +143,12 @@ test(function (): void {
 				'pattern' => '/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)',
 			],
 			'openApi' => ['controller' => [], 'method' => ['openapi' => '3.0.2']],
-			'request' => ['required' => true, 'entity' => 'SomeClass'],
+			'request' => [
+				'description' => 'description',
+				'required' => true,
+				'validation' => false,
+				'entity' => 'A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity',
+			],
 		],
 	];
 

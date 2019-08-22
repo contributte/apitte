@@ -59,9 +59,6 @@ final class Endpoint
 	/** @var EndpointRequestMapper|null */
 	private $requestMapper;
 
-	/** @var EndpointResponseMapper|null */
-	private $responseMapper;
-
 	/** @var mixed[] */
 	private $tags = [];
 
@@ -349,16 +346,6 @@ final class Endpoint
 	public function setRequestMapper(?EndpointRequestMapper $requestMapper): void
 	{
 		$this->requestMapper = $requestMapper;
-	}
-
-	public function getResponseMapper(): ?EndpointResponseMapper
-	{
-		return $this->responseMapper;
-	}
-
-	public function setResponseMapper(?EndpointResponseMapper $responseMapper): void
-	{
-		$this->responseMapper = $responseMapper;
 	}
 
 }

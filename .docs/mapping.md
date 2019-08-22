@@ -199,9 +199,3 @@ final class UserFilter extends BasicEntity
 
 }
 ```
-
-## ResponseMapper
-
-Map data to response.
-
-Implemented by negotiations, see [apitte/negotiation](https://github.com/apitte/negotiation) docs for more info.

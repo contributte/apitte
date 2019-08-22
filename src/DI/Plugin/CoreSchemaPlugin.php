@@ -17,7 +17,6 @@ use Apitte\Core\Schema\Validation\NegotiationValidation;
 use Apitte\Core\Schema\Validation\PathValidation;
 use Apitte\Core\Schema\Validation\RequestMapperValidation;
 use Apitte\Core\Schema\Validation\RequestParameterValidation;
-use Apitte\Core\Schema\Validation\ResponseMapperValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
 use Nette\DI\Config\Adapters\NeonAdapter;
 use Nette\DI\Definitions\ServiceDefinition;
@@ -62,7 +61,6 @@ class CoreSchemaPlugin extends Plugin
 				'negotiation' => NegotiationValidation::class,
 				'path' => PathValidation::class,
 				'requestMapper' => RequestMapperValidation::class,
-				'responseMapper' => ResponseMapperValidation::class,
 			]),
 		]);
 	}

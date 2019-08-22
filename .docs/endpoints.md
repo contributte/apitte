@@ -123,7 +123,7 @@ Path
 Mapping
   - Validate and map data from request and map data to response
   - `@RequestParameter`, `@RequestParameters`
-  - `@RequestMapper`, `@ResponseMapper`
+  - `@RequestMapper`
   - See [mapping](mapping.md) chapter for more info.
 
 Negotiations

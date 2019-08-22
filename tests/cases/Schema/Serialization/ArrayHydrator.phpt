@@ -30,9 +30,6 @@ test(function (): void {
 				'entity' => 'A\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Request\\IRequestEntity',
 				'validation' => true,
 			],
-			'responseMapper' => [
-				'entity' => 'A\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Response\\IResponseEntity',
-			],
 		],
 		[
 			'handler' => [
@@ -103,9 +100,6 @@ test(function (): void {
 	Assert::same('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity', $requestMapper1->getEntity());
 	Assert::same(true, $requestMapper1->isValidation());
 
-	$responseMapper1 = $endpoint1->getResponseMapper();
-	Assert::same('A\\Class\\Which\\Implements\\Apitte\\Core\\Mapping\\Response\\IResponseEntity', $responseMapper1->getEntity());
-
 	Assert::same(['c1-t1' => 'c1-t1-value'], $endpoint1->getTags());
 	Assert::same('c1-t1-value', $endpoint1->getTag('c1-t1'));
 
@@ -123,7 +117,6 @@ test(function (): void {
 	Assert::same('m3-description', $endpoint2->getDescription());
 
 	Assert::same(null, $endpoint2->getRequestMapper());
-	Assert::same(null, $endpoint2->getResponseMapper());
 
 	Assert::same(['c1-t1' => 'c1-t1-value', 'm3-t1' => null, 'm3-t2' => 'm3-t2-value', 'id' => 'c1-group-id.c1-id.m3-id'], $endpoint2->getTags());
 	Assert::same('c1-t1-value', $endpoint2->getTag('c1-t1'));

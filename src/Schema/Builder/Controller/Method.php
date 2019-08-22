@@ -40,9 +40,6 @@ final class Method
 	/** @var RequestMapper|null */
 	private $requestMapper;
 
-	/** @var ResponseMapper|null */
-	private $responseMapper;
-
 	/** @var mixed[] */
 	private $openApi = [];
 
@@ -234,16 +231,6 @@ final class Method
 	public function setRequestMapper(string $entity, bool $validation = true): void
 	{
 		$this->requestMapper = new RequestMapper($entity, $validation);
-	}
-
-	public function getResponseMapper(): ?ResponseMapper
-	{
-		return $this->responseMapper;
-	}
-
-	public function setResponseMapper(string $entity): void
-	{
-		$this->responseMapper = new ResponseMapper($entity);
 	}
 
 }

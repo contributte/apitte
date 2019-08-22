@@ -55,7 +55,6 @@ class NeonLoader implements ILoader
 			$this->setRequest($method, $settings['request'] ?? null);
 			$this->setRequestMapper($method, $settings['requestMapper'] ?? null);
 			$this->setResponses($method, $settings['responses'] ?? null);
-			$this->setResponseMapper($method, $settings['responseMapper'] ?? null);
 		}
 	}
 
@@ -127,17 +126,6 @@ class NeonLoader implements ILoader
 		foreach ($responses as $response) {
 			$method->addResponse($response['code'], $response['description'] ?? '');
 		}
-	}
-
-	/**
-	 * @param mixed[]|null $responseMapperSettings
-	 */
-	private function setResponseMapper(Method $method, ?array $responseMapperSettings): void
-	{
-		if ($responseMapperSettings === null) {
-			return;
-		}
-		$method->setResponseMapper($responseMapperSettings['entity']);
 	}
 
 }

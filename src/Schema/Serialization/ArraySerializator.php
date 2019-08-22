@@ -206,13 +206,6 @@ final class ArraySerializator implements ISerializator
 				'validation' => $requestMapper->isValidation(),
 			];
 		}
-
-		$responseMapper = $method->getResponseMapper();
-		if ($responseMapper !== null) {
-			$endpoint['responseMapper'] = [
-				'entity' => $responseMapper->getEntity(),
-			];
-		}
 	}
 
 	/**

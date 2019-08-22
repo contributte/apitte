@@ -11,7 +11,6 @@ use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\EndpointRequest;
 use Apitte\Core\Schema\EndpointRequestMapper;
 use Apitte\Core\Schema\EndpointResponse;
-use Apitte\Core\Schema\EndpointResponseMapper;
 use Apitte\Core\Schema\Schema;
 
 final class ArrayHydrator implements IHydrator
@@ -135,13 +134,6 @@ final class ArrayHydrator implements IHydrator
 				$data['requestMapper']['validation']
 			);
 			$endpoint->setRequestMapper($requestMapper);
-		}
-
-		if (isset($data['responseMapper'])) {
-			$responseMapper = new EndpointResponseMapper(
-				$data['responseMapper']['entity']
-			);
-			$endpoint->setResponseMapper($responseMapper);
 		}
 
 		return $endpoint;

@@ -11,13 +11,13 @@ use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Negotiations;
 use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
-use Apitte\Core\Annotation\Controller\Request;
+use Apitte\Core\Annotation\Controller\RequestBody;
 use Apitte\Core\Annotation\Controller\RequestParameters;
 use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
-use Apitte\Core\Schema\Builder\Controller\MethodRequest;
+use Apitte\Core\Schema\Builder\Controller\MethodRequestBody;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\UI\Controller\IController;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -270,14 +270,14 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				}
 
 				// Parse @Request ================
-				if (get_class($annotation) === Request::class) {
-					/** @var Request $annotation */
-					$request = new MethodRequest();
-					$request->setDescription($annotation->getDescription());
-					$request->setEntity($annotation->getEntity());
-					$request->setRequired($annotation->isRequired());
-					$request->setValidation($annotation->isValidation());
-					$schemaMethod->setRequest($request);
+				if (get_class($annotation) === RequestBody::class) {
+					/** @var RequestBody $annotation */
+					$requestBody = new MethodRequestBody();
+					$requestBody->setDescription($annotation->getDescription());
+					$requestBody->setEntity($annotation->getEntity());
+					$requestBody->setRequired($annotation->isRequired());
+					$requestBody->setValidation($annotation->isValidation());
+					$schemaMethod->setRequestBody($requestBody);
 					continue;
 				}
 

@@ -8,7 +8,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @Annotation
  * @Target("METHOD")
  */
-final class Request
+final class RequestBody
 {
 
 	/** @var string|null */

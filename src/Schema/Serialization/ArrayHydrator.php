@@ -8,7 +8,7 @@ use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
-use Apitte\Core\Schema\EndpointRequest;
+use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\EndpointResponse;
 use Apitte\Core\Schema\Schema;
 
@@ -86,16 +86,16 @@ final class ArrayHydrator implements IHydrator
 			}
 		}
 
-		if (isset($data['request'])) {
-			$requestData = $data['request'];
+		if (isset($data['requestBody'])) {
+			$requestData = $data['requestBody'];
 
-			$request = new EndpointRequest();
+			$request = new EndpointRequestBody();
 			$request->setDescription($requestData['description']);
 			$request->setEntity($requestData['entity']);
 			$request->setRequired($requestData['required']);
 			$request->setValidation($requestData['validation']);
 
-			$endpoint->setRequest($request);
+			$endpoint->setRequestBody($request);
 		}
 
 		if (isset($data['responses'])) {

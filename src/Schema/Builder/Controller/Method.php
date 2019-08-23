@@ -25,8 +25,8 @@ final class Method
 	/** @var mixed[] */
 	private $tags = [];
 
-	/** @var MethodRequest|null */
-	private $request;
+	/** @var MethodRequestBody|null */
+	private $requestBody;
 
 	/** @var MethodParameter[] */
 	private $parameters = [];
@@ -145,14 +145,14 @@ final class Method
 		return $parameter;
 	}
 
-	public function getRequest(): ?MethodRequest
+	public function getRequestBody(): ?MethodRequestBody
 	{
-		return $this->request;
+		return $this->requestBody;
 	}
 
-	public function setRequest(?MethodRequest $request): void
+	public function setRequestBody(?MethodRequestBody $requestBody): void
 	{
-		$this->request = $request;
+		$this->requestBody = $requestBody;
 	}
 
 	public function addResponse(string $code, string $description): MethodResponse

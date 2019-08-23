@@ -13,7 +13,7 @@ use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
-use Apitte\Core\Schema\EndpointRequest;
+use Apitte\Core\Schema\EndpointRequestBody;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Tester\Assert;
@@ -27,9 +27,9 @@ test(function (): void {
 
 	$handler = new EndpointHandler('class', 'method');
 	$endpoint = new Endpoint($handler);
-	$requestBody = new EndpointRequest();
+	$requestBody = new EndpointRequestBody();
 	$requestBody->setEntity(FooEntity::class);
-	$endpoint->setRequest($requestBody);
+	$endpoint->setRequestBody($requestBody);
 
 	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
 
@@ -47,9 +47,9 @@ test(function (): void {
 
 	$handler = new EndpointHandler('class', 'method');
 	$endpoint = new Endpoint($handler);
-	$requestBody = new EndpointRequest();
+	$requestBody = new EndpointRequestBody();
 	$requestBody->setEntity(FooEntity::class);
-	$endpoint->setRequest($requestBody);
+	$endpoint->setRequestBody($requestBody);
 
 	$request = $request->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
 	$request = $request->withMethod('foo');

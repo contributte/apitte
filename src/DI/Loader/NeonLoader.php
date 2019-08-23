@@ -4,7 +4,7 @@ namespace Apitte\Core\DI\Loader;
 
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\Controller\Method;
-use Apitte\Core\Schema\Builder\Controller\MethodRequest;
+use Apitte\Core\Schema\Builder\Controller\MethodRequestBody;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\EndpointParameter;
 
@@ -52,7 +52,7 @@ class NeonLoader implements ILoader
 			$method->setOpenApi($settings['openapi'] ?? []);
 			$this->setMethodParameters($method, $settings['parameters'] ?? []);
 			$this->setNegotiations($method, $settings['negotiations'] ?? []);
-			$this->setRequest($method, $settings['request'] ?? null);
+			$this->setRequestBody($method, $settings['requestBody'] ?? null);
 			$this->setResponses($method, $settings['responses'] ?? null);
 		}
 	}
@@ -85,22 +85,22 @@ class NeonLoader implements ILoader
 	}
 
 	/**
-	 * @param mixed[]|null $requestSettings
+	 * @param mixed[]|null $requestBodySettings
 	 */
-	private function setRequest(Method $method, ?array $requestSettings): void
+	private function setRequestBody(Method $method, ?array $requestBodySettings): void
 	{
-		if ($requestSettings === null) {
+		if ($requestBodySettings === null) {
 			return;
 		}
 
-		$request = new MethodRequest();
+		$requestBody = new MethodRequestBody();
 
-		$request->setRequired($requestSettings['required'] ?? false);
-		$request->setDescription($requestSettings['description'] ?? null);
-		$request->setEntity($requestSettings['entity'] ?? null);
-		$request->setValidation($requestSettings['validation'] ?? true);
+		$requestBody->setRequired($requestBodySettings['required'] ?? false);
+		$requestBody->setDescription($requestBodySettings['description'] ?? null);
+		$requestBody->setEntity($requestBodySettings['entity'] ?? null);
+		$requestBody->setValidation($requestBodySettings['validation'] ?? true);
 
-		$method->setRequest($request);
+		$method->setRequestBody($requestBody);
 	}
 
 	/**

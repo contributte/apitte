@@ -1,15 +1,15 @@
 <?php declare(strict_types = 1);
 
 /**
- * Test: Schema\Validation\RequestMapperValidation
+ * Test: Schema\Validation\RequestBodyValidation
  */
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
-use Apitte\Core\Schema\Builder\Controller\MethodRequest;
+use Apitte\Core\Schema\Builder\Controller\MethodRequestBody;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
-use Apitte\Core\Schema\Validation\RequestValidation;
+use Apitte\Core\Schema\Validation\RequestBodyValidation;
 use Tester\Assert;
 use Tests\Fixtures\Mapping\Request\FooEntity;
 
@@ -21,7 +21,7 @@ test(function (): void {
 	$c1->addMethod('foo');
 
 	Assert::noError(function () use ($builder): void {
-		$validator = new RequestValidation();
+		$validator = new RequestBodyValidation();
 		$validator->validate($builder);
 	});
 });
@@ -32,10 +32,10 @@ test(function (): void {
 
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo');
-	$c1m1->setRequest(new MethodRequest());
+	$c1m1->setRequestBody(new MethodRequestBody());
 
 	Assert::noError(function () use ($builder): void {
-		$validator = new RequestValidation();
+		$validator = new RequestBodyValidation();
 		$validator->validate($builder);
 	});
 });
@@ -46,12 +46,12 @@ test(function (): void {
 
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo');
-	$r1 = new MethodRequest();
-	$r1->setEntity(FooEntity::class);
-	$c1m1->setRequest($r1);
+	$rb1 = new MethodRequestBody();
+	$rb1->setEntity(FooEntity::class);
+	$c1m1->setRequestBody($rb1);
 
 	Assert::noError(function () use ($builder): void {
-		$validator = new RequestValidation();
+		$validator = new RequestBodyValidation();
 		$validator->validate($builder);
 	});
 });
@@ -62,12 +62,12 @@ test(function (): void {
 
 	$c1 = $builder->addController('c1');
 	$c1m1 = $c1->addMethod('foo');
-	$r1 = new MethodRequest();
-	$r1->setEntity('bar');
-	$c1m1->setRequest($r1);
+	$rb1 = new MethodRequestBody();
+	$rb1->setEntity('bar');
+	$c1m1->setRequestBody($rb1);
 
 	Assert::exception(function () use ($builder): void {
-		$validator = new RequestValidation();
+		$validator = new RequestBodyValidation();
 		$validator->validate($builder);
 	}, InvalidSchemaException::class, 'Request entity "bar" in "c1::foo()" does not exist"');
 });

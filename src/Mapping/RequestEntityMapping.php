@@ -9,7 +9,7 @@ use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Request\IRequestEntity;
 use Apitte\Core\Mapping\Validator\IEntityValidator;
 use Apitte\Core\Schema\Endpoint;
-use Apitte\Core\Schema\EndpointRequest;
+use Apitte\Core\Schema\EndpointRequestBody;
 
 class RequestEntityMapping
 {
@@ -33,7 +33,7 @@ class RequestEntityMapping
 		}
 
 		// If there's no request mapper, then skip it
-		if (!($requestBody = $endpoint->getRequest())) return $request;
+		if (!($requestBody = $endpoint->getRequestBody())) return $request;
 
 		// Create entity
 		$entity = $this->createEntity($requestBody, $request);
@@ -48,7 +48,7 @@ class RequestEntityMapping
 	/**
 	 * @return IRequestEntity|object|null
 	 */
-	protected function createEntity(EndpointRequest $requestBody, ApiRequest $request)
+	protected function createEntity(EndpointRequestBody $requestBody, ApiRequest $request)
 	{
 		$entityClass = $requestBody->getEntity();
 

@@ -15,8 +15,8 @@ use Apitte\Core\Schema\Validation\GroupPathValidation;
 use Apitte\Core\Schema\Validation\IdValidation;
 use Apitte\Core\Schema\Validation\NegotiationValidation;
 use Apitte\Core\Schema\Validation\PathValidation;
+use Apitte\Core\Schema\Validation\RequestBodyValidation;
 use Apitte\Core\Schema\Validation\RequestParameterValidation;
-use Apitte\Core\Schema\Validation\RequestValidation;
 use Apitte\Core\Schema\Validator\SchemaBuilderValidator;
 use Nette\DI\Config\Adapters\NeonAdapter;
 use Nette\DI\Definitions\ServiceDefinition;
@@ -60,7 +60,7 @@ class CoreSchemaPlugin extends Plugin
 				'id' => IdValidation::class,
 				'negotiation' => NegotiationValidation::class,
 				'path' => PathValidation::class,
-				'requestBody' => RequestValidation::class,
+				'requestBody' => RequestBodyValidation::class,
 			]),
 		]);
 	}

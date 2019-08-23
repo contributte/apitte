@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema;
 
-final class EndpointRequest
+final class EndpointRequestBody
 {
 
 	/** @var string|null */

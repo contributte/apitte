@@ -26,7 +26,7 @@ test(function (): void {
 			'parameters' => [],
 			'negotiations' => [],
 			'attributes' => ['pattern' => '/group1-path/group2-path/c1-path/m2-path'],
-			'request' => [
+			'requestBody' => [
 				'description' => 'description',
 				'required' => true,
 				'validation' => false,
@@ -98,11 +98,11 @@ test(function (): void {
 	Assert::same([], $endpoint1->getParameters());
 	Assert::same([], $endpoint1->getNegotiations());
 
-	$request1 = $endpoint1->getRequest();
-	Assert::same('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity', $request1->getEntity());
-	Assert::same(false, $request1->isValidation());
-	Assert::same(true, $request1->isRequired());
-	Assert::same('description', $request1->getDescription());
+	$requestBody1 = $endpoint1->getRequestBody();
+	Assert::same('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity', $requestBody1->getEntity());
+	Assert::same(false, $requestBody1->isValidation());
+	Assert::same(true, $requestBody1->isRequired());
+	Assert::same('description', $requestBody1->getDescription());
 
 	Assert::same(['c1-t1' => 'c1-t1-value'], $endpoint1->getTags());
 	Assert::same('c1-t1-value', $endpoint1->getTag('c1-t1'));
@@ -120,7 +120,7 @@ test(function (): void {
 	Assert::same('#/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)(json|xml)?$#U', $endpoint2->getPattern());
 	Assert::same('m3-description', $endpoint2->getDescription());
 
-	Assert::same(null, $endpoint2->getRequest());
+	Assert::same(null, $endpoint2->getRequestBody());
 
 	Assert::same(['c1-t1' => 'c1-t1-value', 'm3-t1' => null, 'm3-t2' => 'm3-t2-value', 'id' => 'c1-group-id.c1-id.m3-id'], $endpoint2->getTags());
 	Assert::same('c1-t1-value', $endpoint2->getTag('c1-t1'));

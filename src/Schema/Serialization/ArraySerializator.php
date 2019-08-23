@@ -229,17 +229,17 @@ final class ArraySerializator implements ISerializator
 	 */
 	private function serializeEndpointRequest(array &$endpoint, Method $method): void
 	{
-		$request = $method->getRequest();
+		$requestBody = $method->getRequestBody();
 
-		if ($request === null) {
+		if ($requestBody === null) {
 			return;
 		}
 
-		$endpoint['request'] = [
-			'description' => $request->getDescription(),
-			'required' => $request->isRequired(),
-			'validation' => $request->isValidation(),
-			'entity' => $request->getEntity(),
+		$endpoint['requestBody'] = [
+			'description' => $requestBody->getDescription(),
+			'required' => $requestBody->isRequired(),
+			'validation' => $requestBody->isValidation(),
+			'entity' => $requestBody->getEntity(),
 		];
 	}
 

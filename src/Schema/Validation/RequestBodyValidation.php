@@ -5,7 +5,7 @@ namespace Apitte\Core\Schema\Validation;
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 
-class RequestValidation implements IValidation
+class RequestBodyValidation implements IValidation
 {
 
 	public function validate(SchemaBuilder $builder): void
@@ -20,13 +20,13 @@ class RequestValidation implements IValidation
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
 
-				$request = $method->getRequest();
+				$requestBody = $method->getRequestBody();
 
-				if ($request === null) {
+				if ($requestBody === null) {
 					continue;
 				}
 
-				$entity = $request->getEntity();
+				$entity = $requestBody->getEntity();
 
 				if ($entity === null) {
 					continue;
@@ -36,7 +36,7 @@ class RequestValidation implements IValidation
 					throw new InvalidSchemaException(
 						sprintf(
 							'Request entity "%s" in "%s::%s()" does not exist"',
-							$request->getEntity(),
+							$requestBody->getEntity(),
 							$controller->getClass(),
 							$method->getName()
 						)

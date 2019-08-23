@@ -104,10 +104,10 @@ api:
                 datetime: Apitte\Core\Mapping\Parameter\DateTimeTypeMapper
 ```
 
-## Request
+## RequestBody
 
 Imagine you have a data grid with many filter options. You can describe all options manually or
-use value object, entity, for it. And it leads us to `@Request`.
+use value object, entity, for it. And it leads us to `@RequestBody`.
 
 We have an entity with described fields.
 
@@ -128,14 +128,14 @@ final class UserFilter extends BasicEntity
 }
 ```
 
-And some endpoint with `@Request` annotation. There's a method `ApiRequest::getEntity()`, it gets
+And some endpoint with `@RequestBody` annotation. There's a method `ApiRequest::getEntity()`, it gets
 the entity from request attributes. So simple, right?
 
 ```php
 /**
  * @Path("/filter")
  * @Method("GET")
- * @Request(entity="App\Api\Entity\Request\UserFilter")
+ * @RequestBody(entity="App\Api\Entity\Request\UserFilter")
  */
 public function filter(ApiRequest $request)
 {

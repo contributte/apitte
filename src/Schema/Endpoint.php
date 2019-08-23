@@ -47,8 +47,8 @@ final class Endpoint
 	/** @var EndpointParameter[] */
 	private $parameters = [];
 
-	/** @var EndpointRequest|null */
-	private $request;
+	/** @var EndpointRequestBody|null */
+	private $requestBody;
 
 	/** @var EndpointResponse[] */
 	private $responses = [];
@@ -209,14 +209,14 @@ final class Endpoint
 		}
 	}
 
-	public function setRequest(?EndpointRequest $request): void
+	public function setRequestBody(?EndpointRequestBody $requestBody): void
 	{
-		$this->request = $request;
+		$this->requestBody = $requestBody;
 	}
 
-	public function getRequest(): ?EndpointRequest
+	public function getRequestBody(): ?EndpointRequestBody
 	{
-		return $this->request;
+		return $this->requestBody;
 	}
 
 	/**

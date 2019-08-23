@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema\Builder\Controller;
 
-final class MethodRequest
+final class MethodRequestBody
 {
 
 	/** @var string|null */

@@ -7,7 +7,7 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
-use Apitte\Core\Schema\Builder\Controller\MethodRequest;
+use Apitte\Core\Schema\Builder\Controller\MethodRequestBody;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
@@ -45,12 +45,12 @@ test(function (): void {
 	$m3->addTag('m3-t2', 'm3-t2-value');
 	$m3->setDescription('m3-description');
 
-	$m3r = new MethodRequest();
-	$m3r->setRequired(true);
-	$m3r->setEntity('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity');
-	$m3r->setValidation(false);
-	$m3r->setDescription('description');
-	$m3->setRequest($m3r);
+	$m3rb = new MethodRequestBody();
+	$m3rb->setRequired(true);
+	$m3rb->setEntity('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity');
+	$m3rb->setValidation(false);
+	$m3rb->setDescription('description');
+	$m3->setRequestBody($m3rb);
 
 	$m3->addResponse('200', 'Success')
 		->setEntity('SomeClass[]');
@@ -143,7 +143,7 @@ test(function (): void {
 				'pattern' => '/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)',
 			],
 			'openApi' => ['controller' => [], 'method' => ['openapi' => '3.0.2']],
-			'request' => [
+			'requestBody' => [
 				'description' => 'description',
 				'required' => true,
 				'validation' => false,

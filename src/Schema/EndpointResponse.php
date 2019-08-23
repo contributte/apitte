@@ -6,7 +6,7 @@ final class EndpointResponse
 {
 
 	/** @var string */
-	private $code = 'default';
+	private $code;
 
 	/** @var string */
 	private $description;

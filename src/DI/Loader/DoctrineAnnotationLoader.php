@@ -4,7 +4,6 @@ namespace Apitte\Core\DI\Loader;
 
 use Apitte\Core\Annotation\Controller\ControllerId;
 use Apitte\Core\Annotation\Controller\GroupId;
-use Apitte\Core\Annotation\Controller\GroupPath;
 use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Negotiations;
@@ -159,11 +158,6 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			if (get_class($annotation) === GroupId::class) {
 				throw new InvalidStateException(sprintf('Annotation @GroupId cannot be on non-abstract "%s"', $class->getName()));
 			}
-
-			// Parse @GroupPath ============================
-			if (get_class($annotation) === GroupPath::class) {
-				throw new InvalidStateException(sprintf('Annotation @GroupPath cannot be on non-abstract "%s"', $class->getName()));
-			}
 		}
 
 		// Reverse order
@@ -182,9 +176,9 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 					$controller->addGroupId($annotation->getName());
 				}
 
-				// Parse @GroupPath ========================
-				if (get_class($annotation) === GroupPath::class) {
-					/** @var GroupPath $annotation */
+				// Parse @Path ========================
+				if (get_class($annotation) === Path::class) {
+					/** @var Path $annotation */
 					$controller->addGroupPath($annotation->getPath());
 				}
 

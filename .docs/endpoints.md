@@ -13,11 +13,10 @@ Create base controller with root path to your api
 ```php
 namespace App\Api\V1\Controllers;
 
-use Apitte\Core\Annotation\Controller\GroupPath;
 use Apitte\Core\UI\Controller\IController;
 
 /**
- * @GroupPath("/api/v1")
+ * @Path("/api/v1")
  */
 abstract class BaseV1Controller implements IController
 {
@@ -81,7 +80,7 @@ class UsersController extends BaseV1Controller
 }
 ```
 
-**Tip** Combination of `GroupPath("/")`, `@Path("/")` on a Controller and `@Path("/")` on a method targets homepage, e.q. `example.com/`.
+**Tip** Use the `@Path("/")` annotation on a Controller and its method to target the homepage, e.q. `example.com/`.
 
 ### List of annotations
 
@@ -95,17 +94,15 @@ ID
   - `@Id`
     - Defined on method
 
-Path
+`@Path`
   - See example controllers above
   - Must consist only of following characters: `a-z`, `A-Z`, `0-9`, `-_/`
-  - `@GroupPath`
-    - Abstract classes only
-    - Defined on controller
-  - `@Path`
-    - Defined on controller
-  - `@Path`
-    - Defined on method
-  
+  - The `@Path` annotation can be used on:
+    - abstract controller to define a group path for multiple controllers (e.g. `example.com/v1/...`)
+    - final controller to define a path for that particular controller (e.g. `example.com/v1/users`)
+    - method to define a path for a specific endpoint
+  - This hierarchy is then used to build the schema and make routing possible.
+
 `@Method`
   - Allowed HTTP method for endpoint
   - GET, POST, PUT, OPTION, DELETE, HEAD

@@ -15,7 +15,6 @@ use Nette\DI\ServiceDefinition;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\FoobarController;
 use Tests\Fixtures\Controllers\InvalidGroupAnnotationController;
-use Tests\Fixtures\Controllers\InvalidGroupPathAnnotationController;
 
 // Check if controller is found
 test(function (): void {
@@ -89,16 +88,4 @@ test(function (): void {
 		$loader = new DoctrineAnnotationLoader($builder);
 		$loader->load(new SchemaBuilder());
 	}, InvalidStateException::class, sprintf('Annotation @GroupId cannot be on non-abstract "%s"', InvalidGroupAnnotationController::class));
-});
-
-// Invalid annotation (@GroupPath)
-test(function (): void {
-	Assert::exception(function (): void {
-		$builder = new ContainerBuilder();
-		$builder->addDefinition('invalid')
-			->setClass(InvalidGroupPathAnnotationController::class);
-
-		$loader = new DoctrineAnnotationLoader($builder);
-		$loader->load(new SchemaBuilder());
-	}, InvalidStateException::class, sprintf('Annotation @GroupPath cannot be on non-abstract "%s"', InvalidGroupPathAnnotationController::class));
 });

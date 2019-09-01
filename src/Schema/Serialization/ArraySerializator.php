@@ -59,7 +59,7 @@ final class ArraySerializator implements ISerializator
 	 */
 	private function serializeInit(Controller $controller, Method $method): array
 	{
-		// Build full mask (@GroupPath(s) + Controller @Path + Endpoint @Path)
+		// Build full mask (Group @Path(s) + Controller @Path + Endpoint @Path)
 		// without duplicated slashes (//)
 		// and without trailing slash at the end
 		// but with slash at the beginning
@@ -156,7 +156,7 @@ final class ArraySerializator implements ISerializator
 					continue 2;
 				}
 			}
-			throw new InvalidStateException(sprintf('@RequestParameter(name="%s", in=path) is not defined in mask (in @GroupPath or @Path)', $parameter->getName()));
+			throw new InvalidStateException(sprintf('@RequestParameter(name="%s", in=path) is not defined in mask (@Path annotations)', $parameter->getName()));
 		}
 
 		// Fulfill endpoint parameters (in path)

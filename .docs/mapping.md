@@ -24,7 +24,6 @@ That is what request parameters are used for.
 ```php
 namespace App\Api\V1\Controllers;
 
-use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestParameters;
@@ -33,7 +32,7 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 
 /**
- * @ControllerPath("/users")
+ * @Path("/users")
  */
 class UsersController extends BaseV1Controller
 {

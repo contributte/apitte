@@ -210,5 +210,5 @@ test(function (): void {
 
 	Assert::exception(function () use ($serializator, $builder): void {
 		$serializator->serialize($builder);
-	}, InvalidStateException::class, '@RequestParameter(name="m1-p1", in=path) is not defined in mask (in @GroupPath, @ControllerPath or @Path)');
+	}, InvalidStateException::class, '@RequestParameter(name="m1-p1", in=path) is not defined in mask (in @GroupPath or @Path)');
 });

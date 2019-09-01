@@ -129,33 +129,29 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		// Iterate over all class annotations in controller
 		foreach ($annotations as $annotation) {
 			// Parse @Path =======================
-			if (get_class($annotation) === Path::class) {
-				/** @var Path $annotation */
+			if ($annotation instanceof Path) {
 				$controller->setPath($annotation->getPath());
 				continue;
 			}
 
 			// Parse @ControllerId =========================
-			if (get_class($annotation) === ControllerId::class) {
-				/** @var ControllerId $annotation */
+			if ($annotation instanceof ControllerId) {
 				$controller->setId($annotation->getName());
 			}
 
 			// Parse @Tag ==================================
-			if (get_class($annotation) === Tag::class) {
-				/** @var Tag $annotation */
+			if ($annotation instanceof Tag) {
 				$controller->addTag($annotation->getName(), $annotation->getValue());
 			}
 
 			// Parse @OpenApi ============================
-			if (get_class($annotation) === OpenApi::class) {
-				/** @var OpenApi $annotation */
+			if ($annotation instanceof OpenApi) {
 				$controller->setOpenApi(Neon::decode($annotation->getData()) ?? []);
 				continue;
 			}
 
 			// Parse @GroupId ==============================
-			if (get_class($annotation) === GroupId::class) {
+			if ($annotation instanceof GroupId) {
 				throw new InvalidStateException(sprintf('Annotation @GroupId cannot be on non-abstract "%s"', $class->getName()));
 			}
 		}
@@ -171,20 +167,17 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Iterate over all parent class annotations
 			foreach ($parentAnnotations as $annotation) {
 				// Parse @GroupId ==========================
-				if (get_class($annotation) === GroupId::class) {
-					/** @var GroupId $annotation */
+				if ($annotation instanceof GroupId) {
 					$controller->addGroupId($annotation->getName());
 				}
 
 				// Parse @Path ========================
-				if (get_class($annotation) === Path::class) {
-					/** @var Path $annotation */
+				if ($annotation instanceof Path) {
 					$controller->addGroupPath($annotation->getPath());
 				}
 
 				// Parse @Tag ==============================
-				if (get_class($annotation) === Tag::class) {
-					/** @var Tag $annotation */
+				if ($annotation instanceof Tag) {
 					$controller->addTag($annotation->getName(), $annotation->getValue());
 				}
 			}
@@ -211,36 +204,31 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Iterate over all method annotations
 			foreach ($annotations as $annotation) {
 				// Parse @Path =============================
-				if (get_class($annotation) === Path::class) {
-					/** @var Path $annotation */
+				if ($annotation instanceof Path) {
 					$schemaMethod->setPath($annotation->getPath());
 					continue;
 				}
 
 				// Parse @Method ===========================
-				if (get_class($annotation) === Method::class) {
-					/** @var Method $annotation */
+				if ($annotation instanceof Method) {
 					$schemaMethod->addHttpMethods($annotation->getMethods());
 					continue;
 				}
 
 				// Parse @Tag ==============================
-				if (get_class($annotation) === Tag::class) {
-					/** @var Tag $annotation */
+				if ($annotation instanceof Tag) {
 					$schemaMethod->addTag($annotation->getName(), $annotation->getValue());
 					continue;
 				}
 
 				// Parse @Id ===============================
-				if (get_class($annotation) === Id::class) {
-					/** @var Id $annotation */
+				if ($annotation instanceof Id) {
 					$schemaMethod->setId($annotation->getName());
 					continue;
 				}
 
 				// Parse @RequestParameters ================
-				if (get_class($annotation) === RequestParameters::class) {
-					/** @var RequestParameters $annotation */
+				if ($annotation instanceof RequestParameters) {
 					foreach ($annotation->getParameters() as $p) {
 						$parameter = $schemaMethod->addParameter($p->getName(), $p->getType());
 						$parameter->setDescription($p->getDescription());
@@ -253,8 +241,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				}
 
 				// Parse @Response ================
-				if (get_class($annotation) === Responses::class) {
-					/** @var Responses $annotation */
+				if ($annotation instanceof Responses) {
 					foreach ($annotation->getResponses() as $r) {
 						$response = $schemaMethod->addResponse($r->getCode(), $r->getDescription());
 						$response->setEntity($r->getEntity());
@@ -263,8 +250,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				}
 
 				// Parse @Request ================
-				if (get_class($annotation) === RequestBody::class) {
-					/** @var RequestBody $annotation */
+				if ($annotation instanceof RequestBody) {
 					$requestBody = new MethodRequestBody();
 					$requestBody->setDescription($annotation->getDescription());
 					$requestBody->setEntity($annotation->getEntity());
@@ -275,15 +261,13 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				}
 
 				// Parse @OpenApi ================
-				if (get_class($annotation) === OpenApi::class) {
-					/** @var OpenApi $annotation */
+				if ($annotation instanceof OpenApi) {
 					$schemaMethod->setOpenApi(Neon::decode($annotation->getData()) ?? []);
 					continue;
 				}
 
 				// Parse @Negotiations =====================
-				if (get_class($annotation) === Negotiations::class) {
-					/** @var Negotiations $annotation */
+				if ($annotation instanceof Negotiations) {
 					foreach ($annotation->getNegotiations() as $n) {
 						$negotiation = $schemaMethod->addNegotiation($n->getSuffix());
 						$negotiation->setDefault($n->isDefault());

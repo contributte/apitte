@@ -2,7 +2,6 @@
 
 namespace Tests\Fixtures\Controllers;
 
-use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
@@ -10,7 +9,7 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 
 /**
- * @ControllerPath("/foobar")
+ * @Path("/foobar")
  */
 final class FoobarController extends ApiV1Controller
 {

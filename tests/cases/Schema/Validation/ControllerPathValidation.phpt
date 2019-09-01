@@ -33,7 +33,7 @@ test(function (): void {
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);
-	}, InvalidSchemaException::class, '@ControllerPath in "c1" must be set.');
+	}, InvalidSchemaException::class, '@Path in "c1" must be set.');
 });
 
 // Validate: start with /
@@ -46,7 +46,7 @@ test(function (): void {
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);
-	}, InvalidSchemaException::class, '@ControllerPath "foo" in "c1" must starts with "/" (slash).');
+	}, InvalidSchemaException::class, '@Path "foo" in "c1" must starts with "/" (slash).');
 });
 
 // Validate: end with /
@@ -59,7 +59,7 @@ test(function (): void {
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);
-	}, InvalidSchemaException::class, '@ControllerPath "/foo/" in "c1" must not ends with "/" (slash).');
+	}, InvalidSchemaException::class, '@Path "/foo/" in "c1" must not ends with "/" (slash).');
 });
 
 // Validate: invalid characters
@@ -72,5 +72,5 @@ test(function (): void {
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);
-	}, InvalidSchemaException::class, '@ControllerPath "/{foo$}" in "c1" contains illegal characters "{". Allowed characters are only [a-zA-Z0-9-_/].');
+	}, InvalidSchemaException::class, '@Path "/{foo$}" in "c1" contains illegal characters "{". Allowed characters are only [a-zA-Z0-9-_/].');
 });

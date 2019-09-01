@@ -3,7 +3,6 @@
 namespace Apitte\Core\DI\Loader;
 
 use Apitte\Core\Annotation\Controller\ControllerId;
-use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\GroupId;
 use Apitte\Core\Annotation\Controller\GroupPath;
 use Apitte\Core\Annotation\Controller\Id;
@@ -59,7 +58,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Create scheme endpoint
 			$schemeController = $builder->addController($type);
 
-			// Parse @ControllerPath, @ControllerId
+			// Parse @Path, @ControllerId
 			$this->parseControllerClassAnnotations($schemeController, $class);
 
 			// Parse @Method, @Path
@@ -130,9 +129,9 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 		// Iterate over all class annotations in controller
 		foreach ($annotations as $annotation) {
-			// Parse @ControllerPath =======================
-			if (get_class($annotation) === ControllerPath::class) {
-				/** @var ControllerPath $annotation */
+			// Parse @Path =======================
+			if (get_class($annotation) === Path::class) {
+				/** @var Path $annotation */
 				$controller->setPath($annotation->getPath());
 				continue;
 			}

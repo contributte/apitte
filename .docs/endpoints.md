@@ -26,7 +26,7 @@ abstract class BaseV1Controller implements IController
 
 Create an endpoint
 
-- Controller must have annotation `@ControllerPath()` and be registered as service
+- Controller must have annotation `@Path()` and be registered as service
 - Method must have annotations `@Path()` and `@Method()`
 
 ```yaml
@@ -37,7 +37,7 @@ services:
 ```php
 namespace App\Api\V1\Controllers;
 
-use Apitte\Core\Annotation\Controller\ControllerPath;
+use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Http\ApiRequest;
@@ -45,7 +45,7 @@ use Apitte\Core\Http\ApiResponse;
 use Nette\Utils\Json;
 
 /**
- * @ControllerPath("/users")
+ * @Path("/users")
  */
 class UsersController extends BaseV1Controller
 {
@@ -81,7 +81,7 @@ class UsersController extends BaseV1Controller
 }
 ```
 
-**Tip** Combination of `GroupPath("/")`, `@ControllerPath("/")` and `@Path("/")` targets homepage, e.q. `example.com/`.
+**Tip** Combination of `GroupPath("/")`, `@Path("/")` on a Controller and `@Path("/")` on a method targets homepage, e.q. `example.com/`.
 
 ### List of annotations
 
@@ -101,7 +101,7 @@ Path
   - `@GroupPath`
     - Abstract classes only
     - Defined on controller
-  - `@ControllerPath`
+  - `@Path`
     - Defined on controller
   - `@Path`
     - Defined on method

@@ -7,7 +7,7 @@ use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
- * @Target("METHOD")
+ * @Target({"CLASS","METHOD"})
  */
 final class Path
 {

@@ -2,12 +2,12 @@
 
 namespace Tests\Fixtures\Controllers;
 
-use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\GroupId;
+use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\UI\Controller\IController;
 
 /**
- * @ControllerPath("/foobar")
+ * @Path("/foobar")
  * @GroupId("/foobar")
  */
 final class InvalidGroupAnnotationController implements IController

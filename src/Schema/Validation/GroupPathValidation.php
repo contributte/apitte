@@ -24,21 +24,21 @@ class GroupPathValidation implements IValidation
 				if ($groupPath === '/') {
 					// INVALID: nonsense
 					throw new InvalidSchemaException(
-						sprintf('@GroupPath "%s" in "%s" cannot be only "/", it is nonsense.', $groupPath, $controller->getClass())
+						sprintf('@Path "%s" in "%s" cannot be only "/", it is nonsense.', $groupPath, $controller->getClass())
 					);
 				}
 
 				// MUST: Starts with slash (/)
 				if (substr($groupPath, 0, 1) !== '/') {
 					throw new InvalidSchemaException(
-						sprintf('@GroupPath "%s" in "%s" must starts with "/" (slash).', $groupPath, $controller->getClass())
+						sprintf('@Path "%s" in "%s" must starts with "/" (slash).', $groupPath, $controller->getClass())
 					);
 				}
 
 				// MUST NOT: Ends with slash (/)
 				if (substr($groupPath, -1, 1) === '/') {
 					throw new InvalidSchemaException(
-						sprintf('@GroupPath "%s" in "%s" must not ends with "/" (slash).', $groupPath, $controller->getClass())
+						sprintf('@Path "%s" in "%s" must not ends with "/" (slash).', $groupPath, $controller->getClass())
 					);
 				}
 			}
@@ -63,7 +63,7 @@ class GroupPathValidation implements IValidation
 				if ($match !== null) {
 					throw new InvalidSchemaException(
 						sprintf(
-							'@GroupPath "%s" in "%s" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9-_/].',
+							'@Path "%s" in "%s" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9-_/].',
 							$path,
 							$controller->getClass(),
 							$match[1]

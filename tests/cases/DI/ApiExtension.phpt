@@ -13,9 +13,9 @@ use Apitte\Core\Schema\Schema;
 use Nette\DI\Compiler;
 use Nette\DI\Container;
 use Nette\DI\ContainerLoader;
+use Psr\Log\Test\TestLogger;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\FoobarController;
-use Tests\Fixtures\Utils\FakeLogger;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -78,7 +78,7 @@ test(function (): void {
 				'debugMode' => true,
 			],
 			'services' => [
-				FakeLogger::class,
+				TestLogger::class,
 			],
 		]);
 	}, 3);

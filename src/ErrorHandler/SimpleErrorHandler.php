@@ -44,8 +44,7 @@ class SimpleErrorHandler implements IErrorHandler
 
 	protected function createResponseFromError(Throwable $error): ApiResponse
 	{
-		$code = $error->getCode();
-		$code = $code < 400 || $code > 600 ? 500 : $code;
+		$code = $error instanceof ApiException ? $error->getCode() : 500;
 
 		$data = [
 			'status' => 'error',

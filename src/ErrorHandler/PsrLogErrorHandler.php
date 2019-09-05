@@ -3,6 +3,7 @@
 namespace Apitte\Core\ErrorHandler;
 
 use Apitte\Core\Exception\ApiException;
+use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiResponse;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -20,8 +21,8 @@ class PsrLogErrorHandler extends SimpleErrorHandler
 
 	public function handle(Throwable $error): ApiResponse
 	{
-		// Log exception only if it's not designed to be displayed
-		if (!($error instanceof ApiException)) {
+		// Log exception only if it's not designed to be displayed or as a state snapshot
+		if (!$error instanceof ApiException && !$error instanceof SnapshotException) {
 			$this->logger->error($error->getMessage(), ['exception' => $error]);
 		}
 

@@ -13,7 +13,7 @@ class SimpleErrorHandler implements IErrorHandler
 {
 
 	/** @var bool */
-	private $catchException = false;
+	private $catchException = true;
 
 	public function setCatchException(bool $catchException): void
 	{

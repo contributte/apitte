@@ -84,15 +84,9 @@ class UsersController extends BaseV1Controller
 
 ### List of annotations
 
-ID
+`@Id`
   - Must consist only of following characters: `a-z`, `A-Z`, `0-9`, `_`
-  - `@GroupId`
-    - Abstract classes only
-    - Defined on controller
-  - `@ControllerId`
-    - Defined on controller
-  - `@Id`
-    - Defined on method
+  - Not used by Apitte for anything, it may just help you identify, group, etc. your endpoints
 
 `@Path`
   - See example controllers above

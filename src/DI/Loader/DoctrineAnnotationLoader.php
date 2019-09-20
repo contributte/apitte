@@ -2,8 +2,6 @@
 
 namespace Apitte\Core\DI\Loader;
 
-use Apitte\Core\Annotation\Controller\ControllerId;
-use Apitte\Core\Annotation\Controller\GroupId;
 use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Negotiations;
@@ -135,7 +133,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			}
 
 			// Parse @ControllerId =========================
-			if ($annotation instanceof ControllerId) {
+			if ($annotation instanceof Id) {
 				$controller->setId($annotation->getName());
 			}
 
@@ -148,11 +146,6 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			if ($annotation instanceof OpenApi) {
 				$controller->setOpenApi(Neon::decode($annotation->getData()) ?? []);
 				continue;
-			}
-
-			// Parse @GroupId ==============================
-			if ($annotation instanceof GroupId) {
-				throw new InvalidStateException(sprintf('Annotation @GroupId cannot be on non-abstract "%s"', $class->getName()));
 			}
 		}
 
@@ -167,7 +160,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Iterate over all parent class annotations
 			foreach ($parentAnnotations as $annotation) {
 				// Parse @GroupId ==========================
-				if ($annotation instanceof GroupId) {
+				if ($annotation instanceof Id) {
 					$controller->addGroupId($annotation->getName());
 				}
 

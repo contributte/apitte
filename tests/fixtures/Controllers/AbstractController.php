@@ -2,12 +2,12 @@
 
 namespace Tests\Fixtures\Controllers;
 
-use Apitte\Core\Annotation\Controller\GroupId;
+use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\UI\Controller\IController;
 
 /**
- * @GroupId("testapi")
+ * @Id("testapi")
  * @Path("/api")
  */
 abstract class AbstractController implements IController

@@ -59,14 +59,14 @@ test(function (): void {
 		[
 			[
 				'level' => 'debug',
-				'message' => 'client',
+				'message' => 'test',
 				'context' => [
 					'exception' => $previousError,
 				],
 			],
 			[
 				'level' => 'error',
-				'message' => 'server',
+				'message' => 'test',
 				'context' => [
 					'exception' => $previousError,
 				],

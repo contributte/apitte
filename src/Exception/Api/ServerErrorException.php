@@ -12,13 +12,16 @@ use Throwable;
 class ServerErrorException extends ApiException
 {
 
-	public function __construct(string $message = 'Application encountered an internal error. Please try again later.', int $code = 500, ?Throwable $previous = null)
+	/** @var string */
+	public static $defaultMessage = 'Application encountered an internal error. Please try again later.';
+
+	public function __construct(string $message = '', int $code = 500, ?Throwable $previous = null)
 	{
 		if ($code < 500 || $code > 599) {
 			throw new InvalidArgumentException(sprintf('%s code could be only in range from 500 to 599', static::class));
 		}
 
-		parent::__construct($message, $code, $previous);
+		parent::__construct($message !== '' ? $message : static::$defaultMessage, $code, $previous);
 	}
 
 }

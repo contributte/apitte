@@ -2,6 +2,7 @@
 
 use Apitte\Core\ErrorHandler\SimpleErrorHandler;
 use Apitte\Core\Exception\Api\ClientErrorException;
+use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
@@ -36,7 +37,7 @@ test(function (): void {
 		[
 			'status' => 'error',
 			'code' => 500,
-			'message' => 'Application encountered an internal error. Please try again later.',
+			'message' => ServerErrorException::$defaultMessage,
 		],
 		$response->getJsonBody()
 	);

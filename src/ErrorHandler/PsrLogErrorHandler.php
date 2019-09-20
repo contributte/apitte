@@ -32,7 +32,7 @@ class PsrLogErrorHandler extends SimpleErrorHandler
 		if ($error instanceof ApiException && ($previous = $error->getPrevious()) !== null) {
 			// Server error is expected to contain a real error while client error can contain just information, why client request failed
 			$level = $error instanceof ServerErrorException ? LogLevel::ERROR : LogLevel::DEBUG;
-			$this->logger->log($level, $error->getMessage(), ['exception' => $previous]);
+			$this->logger->log($level, $previous->getMessage(), ['exception' => $previous]);
 		}
 
 		return parent::handle($error);

@@ -23,8 +23,15 @@ class PsrLogErrorHandler extends SimpleErrorHandler
 
 	public function handle(Throwable $error): ApiResponse
 	{
-		// Log exception only if it's not designed to be displayed or as a state snapshot
-		if (!$error instanceof ApiException && !$error instanceof SnapshotException) {
+		// Unwrap error from snapshot for logging
+		$originalError = $error;
+
+		if ($error instanceof SnapshotException) {
+			$error = $error->getPrevious();
+		}
+
+		// Log exception only if it's not designed to be displayed
+		if (!$error instanceof ApiException) {
 			$this->logger->error($error->getMessage(), ['exception' => $error]);
 		}
 
@@ -35,7 +42,7 @@ class PsrLogErrorHandler extends SimpleErrorHandler
 			$this->logger->log($level, $previous->getMessage(), ['exception' => $previous]);
 		}
 
-		return parent::handle($error);
+		return parent::handle($originalError);
 	}
 
 }

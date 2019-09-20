@@ -80,11 +80,47 @@ test(function (): void {
 test(function (): void {
 	$logger = new TestLogger();
 	$handler = new PsrLogErrorHandler($logger);
+
+	// Api exception, without previous, not loggable
 	$handler->handle(new SnapshotException(
-		new ClientErrorException('test'),
+		new ClientErrorException('client'),
 		new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal()),
 		new ApiResponse(Psr7ResponseFactory::fromGlobal())
 	));
 
-	Assert::same([], $logger->records);
+	$genericException = new Exception('generic');
+
+	// Api exception, with previous, loggable
+	$handler->handle(new SnapshotException(
+		new ClientErrorException('client', 400, $genericException),
+		new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal()),
+		new ApiResponse(Psr7ResponseFactory::fromGlobal())
+	));
+
+	// Generic exception, loggable
+	$handler->handle(new SnapshotException(
+		$genericException,
+		new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal()),
+		new ApiResponse(Psr7ResponseFactory::fromGlobal())
+	));
+
+	Assert::same(
+		[
+			[
+				'level' => 'debug',
+				'message' => 'generic',
+				'context' => [
+					'exception' => $genericException,
+				],
+			],
+			[
+				'level' => 'error',
+				'message' => 'generic',
+				'context' => [
+					'exception' => $genericException,
+				],
+			],
+		],
+		$logger->records
+	);
 });

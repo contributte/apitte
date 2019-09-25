@@ -192,7 +192,6 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 			// Append method to scheme
 			$schemaMethod = $controller->addMethod($method->getName());
-			$schemaMethod->setDescription($method->getDescription());
 
 			// Iterate over all method annotations
 			foreach ($annotations as $annotation) {

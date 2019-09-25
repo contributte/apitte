@@ -16,9 +16,6 @@ final class Method
 	/** @var string|null */
 	private $id;
 
-	/** @var string|null */
-	private $description;
-
 	/** @var string[] */
 	private $httpMethods = [];
 
@@ -68,16 +65,6 @@ final class Method
 	public function setId(?string $id): void
 	{
 		$this->id = $id;
-	}
-
-	public function getDescription(): ?string
-	{
-		return $this->description;
-	}
-
-	public function setDescription(?string $description): void
-	{
-		$this->description = $description;
 	}
 
 	/**

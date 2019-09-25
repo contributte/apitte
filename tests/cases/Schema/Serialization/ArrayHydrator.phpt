@@ -22,7 +22,6 @@ test(function (): void {
 			'tags' => ['c1-t1' => 'c1-t1-value'],
 			'methods' => ['GET', 'POST', 'PUT'],
 			'mask' => '/group1-path/group2-path/c1-path/m2-path',
-			'description' => null,
 			'parameters' => [],
 			'negotiations' => [],
 			'attributes' => ['pattern' => '/group1-path/group2-path/c1-path/m2-path'],
@@ -43,7 +42,6 @@ test(function (): void {
 			'tags' => ['c1-t1' => 'c1-t1-value', 'm3-t1' => null, 'm3-t2' => 'm3-t2-value'],
 			'methods' => ['GET', 'POST'],
 			'mask' => '/group1-path/group2-path/c1-path/m3-path/{m3-p1}',
-			'description' => 'm3-description',
 			'parameters' => [
 				'm3-p1' => [
 					'name' => 'm3-p1',
@@ -94,7 +92,6 @@ test(function (): void {
 	Assert::same('/group1-path/group2-path/c1-path/m2-path', $endpoint1->getAttribute('pattern'));
 	Assert::same(null, $endpoint1->getAttribute('missing'));
 	Assert::same('#/group1-path/group2-path/c1-path/m2-path$#', $endpoint1->getPattern());
-	Assert::same(null, $endpoint1->getDescription());
 	Assert::same([], $endpoint1->getParameters());
 	Assert::same([], $endpoint1->getNegotiations());
 
@@ -118,7 +115,6 @@ test(function (): void {
 	Assert::same('/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)', $endpoint2->getAttribute('pattern'));
 	Assert::same(null, $endpoint2->getAttribute('missing'));
 	Assert::same('#/group1-path/group2-path/c1-path/m3-path/(?P<m3-p1>[^/]+)(json|xml)?$#U', $endpoint2->getPattern());
-	Assert::same('m3-description', $endpoint2->getDescription());
 
 	Assert::same(null, $endpoint2->getRequestBody());
 

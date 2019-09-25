@@ -41,9 +41,6 @@ final class Endpoint
 	/** @var EndpointHandler */
 	private $handler;
 
-	/** @var string|null */
-	private $description;
-
 	/** @var EndpointParameter[] */
 	private $parameters = [];
 
@@ -131,16 +128,6 @@ final class Endpoint
 	public function getHandler(): EndpointHandler
 	{
 		return $this->handler;
-	}
-
-	public function getDescription(): ?string
-	{
-		return $this->description;
-	}
-
-	public function setDescription(?string $description): void
-	{
-		$this->description = $description;
 	}
 
 	/**

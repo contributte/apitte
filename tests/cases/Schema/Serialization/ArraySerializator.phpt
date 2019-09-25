@@ -43,7 +43,6 @@ test(function (): void {
 	$m3->setPath('m3-path/{m3-p1}');
 	$m3->addTag('m3-t1');
 	$m3->addTag('m3-t2', 'm3-t2-value');
-	$m3->setDescription('m3-description');
 
 	$m3rb = new MethodRequestBody();
 	$m3rb->setRequired(true);
@@ -82,7 +81,6 @@ test(function (): void {
 			'tags' => ['c1-t1' => 'c1-t1-value'],
 			'methods' => ['GET', 'POST', 'PUT'],
 			'mask' => '/group1-path/group2-path/c1-path/m2-path',
-			'description' => null,
 			'parameters' => [],
 			'responses' => [],
 			'negotiations' => [],
@@ -98,7 +96,6 @@ test(function (): void {
 			'tags' => ['c1-t1' => 'c1-t1-value', 'm3-t1' => null, 'm3-t2' => 'm3-t2-value'],
 			'methods' => ['GET', 'POST'],
 			'mask' => '/group1-path/group2-path/c1-path/m3-path/{m3-p1}',
-			'description' => 'm3-description',
 			'parameters' => [
 				'm3-p1' => [
 					'name' => 'm3-p1',

@@ -52,10 +52,6 @@ final class ArrayHydrator implements IHydrator
 		$endpoint->setMethods($data['methods']);
 		$endpoint->setMask($data['mask']);
 
-		if (isset($data['description'])) {
-			$endpoint->setDescription($data['description']);
-		}
-
 		if (isset($data['tags'])) {
 			foreach ($data['tags'] as $name => $value) {
 				$endpoint->addTag($name, $value);

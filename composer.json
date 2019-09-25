@@ -26,8 +26,7 @@
     "php": "^7.2",
     "ext-json": "*",
     "contributte/phpdoc": "v0.3.0",
-    "contributte/psr7-http-message": "v0.6.0",
-    "nette/reflection": "~2.4"
+    "contributte/psr7-http-message": "v0.6.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.1.0",

@@ -19,7 +19,8 @@ use Apitte\Core\UI\Controller\IController;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Nette\Neon\Neon;
-use Nette\Reflection\ClassType;
+use ReflectionClass;
+use ReflectionMethod;
 
 final class DoctrineAnnotationLoader extends AbstractContainerLoader
 {
@@ -65,7 +66,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		return $builder;
 	}
 
-	protected function analyseClass(string $class): ClassType
+	protected function analyseClass(string $class): ReflectionClass
 	{
 		// Analyse only new-ones
 		if (isset($this->meta['services'][$class])) {
@@ -73,7 +74,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		}
 
 		// Create reflection
-		$classRef = ClassType::from($class);
+		$classRef = new ReflectionClass($class);
 
 		// Index controller as service
 		$this->meta['services'][$class] = [
@@ -95,7 +96,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			}
 
 			// Create reflection for parent class
-			$parentClassRf = ClassType::from($parentClass);
+			$parentClassRf = new ReflectionClass($parentClass);
 			$reflections[$parentClass] = $parentClassRf;
 
 			// Index service
@@ -114,12 +115,12 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		return $classRef;
 	}
 
-	protected function acceptController(ClassType $class): bool
+	protected function acceptController(ReflectionClass $class): bool
 	{
 		return is_subclass_of($class->getName(), IController::class);
 	}
 
-	protected function parseControllerClassAnnotations(Controller $controller, ClassType $class): void
+	protected function parseControllerClassAnnotations(Controller $controller, ReflectionClass $class): void
 	{
 		// Read class annotations
 		$annotations = $this->getReader()->getClassAnnotations($class);
@@ -177,13 +178,10 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		}
 	}
 
-	protected function parseControllerMethodsAnnotations(Controller $controller, ClassType $class): void
+	protected function parseControllerMethodsAnnotations(Controller $controller, ReflectionClass $class): void
 	{
 		// Iterate over all methods in class
-		foreach ($class->getMethods() as $method) {
-			// Skip protected/private methods
-			if (!$method->isPublic()) continue;
-
+		foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
 			// Read method annotations
 			$annotations = $this->getReader()->getMethodAnnotations($method);
 

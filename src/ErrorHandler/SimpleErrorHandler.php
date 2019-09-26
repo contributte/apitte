@@ -7,6 +7,7 @@ use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiResponse;
 use GuzzleHttp\Psr7\Response;
+use Nette\Utils\Json;
 use Throwable;
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -57,7 +58,7 @@ class SimpleErrorHandler implements IErrorHandler
 			$data['context'] = $context;
 		}
 
-		$body = stream_for(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | (defined('JSON_PRESERVE_ZERO_FRACTION') ? JSON_PRESERVE_ZERO_FRACTION : 0)));
+		$body = stream_for(Json::encode($data));
 
 		$response = new ApiResponse(new Response());
 		return $response

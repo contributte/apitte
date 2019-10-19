@@ -33,7 +33,9 @@ class RequestEntityMapping
 		}
 
 		// If there's no request mapper, then skip it
-		if (!($requestBody = $endpoint->getRequestBody())) return $request;
+		if (!($requestBody = $endpoint->getRequestBody())) {
+			return $request;
+		}
 
 		// Create entity
 		$entity = $this->createEntity($requestBody, $request);
@@ -92,7 +94,10 @@ class RequestEntityMapping
 	 */
 	protected function validate($entity): void
 	{
-		if (!$this->validator) return;
+		if (!$this->validator) {
+			return;
+		}
+
 		$this->validator->validate($entity);
 	}
 

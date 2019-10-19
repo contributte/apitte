@@ -24,7 +24,6 @@ class RequestParameterValidation implements IValidation
 		foreach ($builder->getControllers() as $controller) {
 			foreach ($controller->getMethods() as $method) {
 				foreach ($method->getParameters() as $parameter) {
-
 					if (!in_array($parameter->getIn(), EndpointParameter::IN, true)) {
 						throw new InvalidSchemaException(sprintf(
 							'Invalid request parameter "in=%s" given in "%s::%s()". Choose one of %s',
@@ -34,7 +33,6 @@ class RequestParameterValidation implements IValidation
 							implode(', ', EndpointParameter::IN)
 						));
 					}
-
 				}
 			}
 		}
@@ -45,7 +43,6 @@ class RequestParameterValidation implements IValidation
 		foreach ($builder->getControllers() as $controller) {
 			foreach ($controller->getMethods() as $method) {
 				foreach ($method->getParameters() as $parameter) {
-
 					// Types
 					if (!in_array($parameter->getType(), EndpointParameter::TYPES, true)) {
 						throw new InvalidSchemaException(sprintf(
@@ -56,7 +53,6 @@ class RequestParameterValidation implements IValidation
 							implode(', ', EndpointParameter::TYPES)
 						));
 					}
-
 				}
 			}
 		}
@@ -104,6 +100,7 @@ class RequestParameterValidation implements IValidation
 							continue 2;
 						}
 					}
+
 					throw new InvalidSchemaException(sprintf(
 						'Mask parameter "%s" is not defined as @RequestParameter(in=path)',
 						$maskParameter['name']

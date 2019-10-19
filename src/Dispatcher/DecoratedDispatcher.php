@@ -37,7 +37,6 @@ class DecoratedDispatcher extends CoreDispatcher
 			// Route and call handler
 			$response = parent::dispatch($request, $response);
 		} catch (Throwable $e) {
-
 			// Get response from snapshot
 			if ($e instanceof SnapshotException) {
 				$request = $e->getRequest();

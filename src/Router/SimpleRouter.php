@@ -36,7 +36,9 @@ class SimpleRouter implements IRouter
 			}
 
 			// Skip if endpoint is not matched
-			if ($matched === null) continue;
+			if ($matched === null) {
+				continue;
+			}
 
 			// If matched is not null, returns given ServerRequestInterface
 			// with all parsed arguments and data,
@@ -80,7 +82,9 @@ class SimpleRouter implements IRouter
 		$match = Regex::match($url, $endpoint->getPattern());
 
 		// Skip if there's no match
-		if ($match === null) return null;
+		if ($match === null) {
+			return null;
+		}
 
 		$parameters = [];
 

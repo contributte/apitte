@@ -21,7 +21,7 @@ final class ArrayHydrator implements IHydrator
 	public function hydrate($data): Schema
 	{
 		if (!is_array($data)) {
-			throw new InvalidArgumentException(sprintf('%s support only arrays hydration.', static::class));
+			throw new InvalidArgumentException(sprintf('%s support only arrays hydration.', self::class));
 		}
 
 		$schema = new Schema();
@@ -103,6 +103,7 @@ final class ArrayHydrator implements IHydrator
 				if (isset($res['entity'])) {
 					$response->setEntity($res['entity']);
 				}
+
 				$endpoint->addResponse($response);
 			}
 		}

@@ -46,7 +46,9 @@ abstract class BasicEntity extends AbstractEntity
 		// Fill properties with real data
 		$properties = $inst->getRequestProperties();
 		foreach ($properties as $property) {
-			if (!array_key_exists($property['name'], $data)) continue;
+			if (!array_key_exists($property['name'], $data)) {
+				continue;
+			}
 
 			$value = $data[$property['name']];
 

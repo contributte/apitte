@@ -34,7 +34,9 @@ class PluginCompiler
 	public function getPluginByType(string $class): ?Plugin
 	{
 		foreach ($this->manager->getPlugins() as $plugin) {
-			if (get_class($plugin['inst']) === $class) return $plugin['inst'];
+			if (get_class($plugin['inst']) === $class) {
+				return $plugin['inst'];
+			}
 		}
 
 		return null;

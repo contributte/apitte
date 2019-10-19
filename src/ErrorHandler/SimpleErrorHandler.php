@@ -26,7 +26,6 @@ class SimpleErrorHandler implements IErrorHandler
 	{
 		// Rethrow error if it should not be catch (debug only)
 		if (!$this->catchException) {
-
 			// Unwrap exception from snapshot
 			if ($error instanceof SnapshotException) {
 				throw $error->getPrevious();

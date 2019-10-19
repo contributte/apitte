@@ -32,8 +32,13 @@ class ValidationException extends ClientErrorException
 	public function withFormFields(array $fields)
 	{
 		foreach ($fields as $key => $value) {
-			if (is_numeric($key)) throw new InvalidArgumentException(sprintf('Field key must be string "%s" give.', $key));
-			if (!is_array($value)) throw new InvalidArgumentException(sprintf('Field values must be array "%s" give.', $value));
+			if (is_numeric($key)) {
+				throw new InvalidArgumentException(sprintf('Field key must be string "%s" give.', $key));
+			}
+
+			if (!is_array($value)) {
+				throw new InvalidArgumentException(sprintf('Field values must be array "%s" give.', $value));
+			}
 		}
 
 		return $this->withTypedContext('validation', $fields);

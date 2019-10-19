@@ -53,7 +53,9 @@ class RequestParameterMapping
 		$parameters = $endpoint->getParameters();
 
 		// Skip, if there are no parameters
-		if (!$parameters) return $request;
+		if (!$parameters) {
+			return $request;
+		}
 
 		$headerParameters = $request->getHeaders();
 		$cookieParams = $request->getCookieParams();
@@ -65,7 +67,9 @@ class RequestParameterMapping
 			$mapper = $this->getMapper($parameter->getType());
 
 			// If it's unsupported type, skip it
-			if (!$mapper) continue;
+			if (!$mapper) {
+				continue;
+			}
 
 			switch ($parameter->getIn()) {
 				case $parameter::IN_PATH:
@@ -196,7 +200,9 @@ class RequestParameterMapping
 	 */
 	protected function normalize($value, EndpointParameter $parameter, ITypeMapper $mapper)
 	{
-		if ($value === '' || $value === null) return null;
+		if ($value === '' || $value === null) {
+			return null;
+		}
 
 		try {
 			return $mapper->normalize($value);
@@ -211,7 +217,9 @@ class RequestParameterMapping
 
 	protected function getMapper(string $type): ?ITypeMapper
 	{
-		if (!isset($this->types[$type])) return null;
+		if (!isset($this->types[$type])) {
+			return null;
+		}
 
 		$mapper = $this->types[$type];
 

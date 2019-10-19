@@ -51,7 +51,9 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 			// Check if a controller or his abstract implements IController,
 			// otherwise, skip this controller
-			if (!$this->acceptController($class)) continue;
+			if (!$this->acceptController($class)) {
+				continue;
+			}
 
 			// Create scheme endpoint
 			$schemeController = $builder->addController($type);
@@ -186,7 +188,9 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			$annotations = $this->getReader()->getMethodAnnotations($method);
 
 			// Skip if method has no @Path/@Method annotations
-			if (count($annotations) <= 0) continue;
+			if (count($annotations) <= 0) {
+				continue;
+			}
 
 			// Append method to scheme
 			$schemaMethod = $controller->addMethod($method->getName());
@@ -227,6 +231,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$parameter->setDeprecated($p->isDeprecated());
 						$parameter->setAllowEmpty($p->isAllowEmpty());
 					}
+
 					continue;
 				}
 
@@ -236,6 +241,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$response = $schemaMethod->addResponse($r->getCode(), $r->getDescription());
 						$response->setEntity($r->getEntity());
 					}
+
 					continue;
 				}
 
@@ -263,6 +269,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$negotiation->setDefault($n->isDefault());
 						$negotiation->setRenderer($n->getRenderer());
 					}
+
 					continue;
 				}
 			}

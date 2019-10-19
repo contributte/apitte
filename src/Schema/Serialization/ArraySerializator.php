@@ -155,6 +155,7 @@ final class ArraySerializator implements ISerializator
 					continue 2;
 				}
 			}
+
 			throw new InvalidStateException(sprintf('@RequestParameter(name="%s", in=path) is not defined in mask (@Path annotations)', $parameter->getName()));
 		}
 
@@ -255,6 +256,7 @@ final class ArraySerializator implements ISerializator
 			if ($response->getEntity() !== null) {
 				$responseData['entity'] = $response->getEntity();
 			}
+
 			$endpoint['responses'][$response->getCode()] = $responseData;
 		}
 	}

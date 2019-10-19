@@ -21,6 +21,7 @@ class FakeRouter implements IRouter
 		if ($this->match) {
 			return $request;
 		}
+
 		return null;
 	}
 

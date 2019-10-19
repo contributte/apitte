@@ -28,7 +28,9 @@ class SchemaInspector
 			$items = [];
 			foreach ($endpoints as $endpoint) {
 				// Skip if endpoint does not have a tag
-				if (!$endpoint->hasTag($name)) continue;
+				if (!$endpoint->hasTag($name)) {
+					continue;
+				}
 
 				// Early skip (cause value is null => optional)
 				if ($value === null) {

@@ -19,7 +19,9 @@ class BasicValidator implements IEntityValidator
 	{
 		// Only BasicEntity implements required method for
 		// handling properties, etc...
-		if (!($entity instanceof BasicEntity)) return;
+		if (!($entity instanceof BasicEntity)) {
+			return;
+		}
 
 		$violations = $this->validateProperties($entity);
 

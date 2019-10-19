@@ -25,6 +25,7 @@ class NegotiationValidation implements IValidation
 								$method->getName()
 							));
 						}
+
 						$haveDefault = $negotiation;
 					}
 
@@ -61,7 +62,6 @@ class NegotiationValidation implements IValidation
 						}
 					}
 				}
-
 			}
 		}
 	}

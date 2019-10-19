@@ -23,10 +23,14 @@ trait TReflectionProperties
 			$defaultProperties = $rf->getDefaultProperties();
 			foreach ($rf->getProperties() as $property) {
 				// If property is not from the latest child, then skip it.
-				if ($property->getDeclaringClass()->getName() !== $class) continue;
+				if ($property->getDeclaringClass()->getName() !== $class) {
+					continue;
+				}
 
 				// If property is not public, then skip it.
-				if (!$property->isPublic()) continue;
+				if (!$property->isPublic()) {
+					continue;
+				}
 
 				$name = $property->getName();
 				$properties[$name] = [
@@ -51,7 +55,9 @@ trait TReflectionProperties
 		$properties = $this->getProperties();
 
 		foreach ($properties as $property) {
-			if (!isset($this->{$property['name']})) continue;
+			if (!isset($this->{$property['name']})) {
+				continue;
+			}
 
 			$data[$property['name']] = $this->{$property['name']};
 		}

@@ -54,7 +54,7 @@ abstract class BaseApplication implements IApplication
 		header($httpHeader, true, $response->getStatusCode());
 
 		foreach ($response->getHeaders() as $name => $values) {
-			$replace = in_array(strtolower($name), self::UNIQUE_HEADERS, true) ? true : false;
+			$replace = in_array(strtolower($name), self::UNIQUE_HEADERS, true);
 			foreach ($values as $value) {
 				header(sprintf('%s: %s', $name, $value), $replace);
 			}

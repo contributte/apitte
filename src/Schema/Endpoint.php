@@ -302,7 +302,9 @@ final class Endpoint
 			$suffix = $negotiation->getSuffix();
 
 			// Skip if suffix is not provided
-			if (!$suffix) continue;
+			if (!$suffix) {
+				continue;
+			}
 
 			$suffixes[] = $suffix;
 		}

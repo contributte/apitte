@@ -3,7 +3,6 @@
 namespace Apitte\Core\Schema\Validation;
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
-use Apitte\Core\Schema\Builder\Controller\MethodParameter;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Utils\Helpers;
@@ -64,8 +63,8 @@ class RequestParameterValidation implements IValidation
 			foreach ($controller->getMethods() as $method) {
 
 				// Check if parameters in mask are in path
-				/** @var MethodParameter[] $pathParameters */
-				$pathParameters = array_filter($method->getParameters(), function (MethodParameter $parameter) {
+				/** @var EndpointParameter[] $pathParameters */
+				$pathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter) {
 					return $parameter->getIn() === EndpointParameter::IN_PATH;
 				});
 				$maskParameters = [];

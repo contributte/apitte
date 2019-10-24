@@ -28,7 +28,7 @@ final class Method
 	/** @var EndpointRequestBody|null */
 	private $requestBody;
 
-	/** @var MethodParameter[] */
+	/** @var EndpointParameter[] */
 	private $parameters = [];
 
 	/** @var EndpointResponse[] */
@@ -127,9 +127,9 @@ final class Method
 		}
 	}
 
-	public function addParameter(string $name, string $type = EndpointParameter::TYPE_STRING): MethodParameter
+	public function addParameter(string $name, string $type = EndpointParameter::TYPE_STRING): EndpointParameter
 	{
-		$parameter = new MethodParameter($name, $type);
+		$parameter = new EndpointParameter($name, $type);
 		$this->parameters[$name] = $parameter;
 
 		return $parameter;
@@ -163,7 +163,7 @@ final class Method
 	}
 
 	/**
-	 * @return MethodParameter[]
+	 * @return EndpointParameter[]
 	 */
 	public function getParameters(): array
 	{

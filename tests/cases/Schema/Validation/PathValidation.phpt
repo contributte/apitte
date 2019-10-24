@@ -7,7 +7,7 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
-use Apitte\Core\Schema\Builder\SchemaBuilder;
+use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\PathValidation;
 use Tester\Assert;
 

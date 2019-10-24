@@ -3,7 +3,7 @@
 namespace Apitte\Core\Schema\Validation;
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
-use Apitte\Core\Schema\Builder\SchemaBuilder;
+use Apitte\Core\Schema\SchemaBuilder;
 
 class RequestBodyValidation implements IValidation
 {

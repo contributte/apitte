@@ -4,9 +4,9 @@ namespace Apitte\Core\DI\Loader;
 
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\Controller\Method;
-use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\EndpointRequestBody;
+use Apitte\Core\Schema\SchemaBuilder;
 
 class NeonLoader implements ILoader
 {

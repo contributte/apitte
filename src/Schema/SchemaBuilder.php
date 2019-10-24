@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Apitte\Core\Schema\Builder;
+namespace Apitte\Core\Schema;
 
 use Apitte\Core\Schema\Builder\Controller\Controller;
 

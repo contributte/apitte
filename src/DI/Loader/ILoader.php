@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\DI\Loader;
 
-use Apitte\Core\Schema\Builder\SchemaBuilder;
+use Apitte\Core\Schema\SchemaBuilder;
 
 interface ILoader
 {

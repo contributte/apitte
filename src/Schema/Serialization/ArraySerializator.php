@@ -5,9 +5,9 @@ namespace Apitte\Core\Schema\Serialization;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\Controller\Method;
-use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Hierarchy\HierarchyBuilder;
+use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Utils\Helpers;
 use Apitte\Core\Utils\Regex;
 

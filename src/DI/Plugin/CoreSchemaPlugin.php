@@ -4,7 +4,7 @@ namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
 use Apitte\Core\DI\Loader\NeonLoader;
-use Apitte\Core\Schema\Builder\SchemaBuilder;
+use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
 use Apitte\Core\Schema\Serialization\IDecorator;

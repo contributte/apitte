@@ -2,10 +2,10 @@
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\Hierarchy\ControllerMethodPair;
 use Apitte\Core\Schema\Hierarchy\HierarchyBuilder;
+use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Utils\Helpers;
 use Tester\Assert;
 use Tester\TestCase;

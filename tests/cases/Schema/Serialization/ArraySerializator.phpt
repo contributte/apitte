@@ -7,10 +7,10 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
-use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\EndpointRequestBody;
+use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
 use Tester\Assert;
 

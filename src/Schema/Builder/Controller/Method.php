@@ -4,6 +4,7 @@ namespace Apitte\Core\Schema\Builder\Controller;
 
 use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
+use Apitte\Core\Schema\EndpointRequestBody;
 
 final class Method
 {
@@ -23,7 +24,7 @@ final class Method
 	/** @var mixed[] */
 	private $tags = [];
 
-	/** @var MethodRequestBody|null */
+	/** @var EndpointRequestBody|null */
 	private $requestBody;
 
 	/** @var MethodParameter[] */
@@ -133,12 +134,12 @@ final class Method
 		return $parameter;
 	}
 
-	public function getRequestBody(): ?MethodRequestBody
+	public function getRequestBody(): ?EndpointRequestBody
 	{
 		return $this->requestBody;
 	}
 
-	public function setRequestBody(?MethodRequestBody $requestBody): void
+	public function setRequestBody(?EndpointRequestBody $requestBody): void
 	{
 		$this->requestBody = $requestBody;
 	}

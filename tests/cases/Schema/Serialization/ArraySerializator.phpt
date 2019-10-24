@@ -7,10 +7,10 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
-use Apitte\Core\Schema\Builder\Controller\MethodRequestBody;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
+use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\Serialization\ArraySerializator;
 use Tester\Assert;
 
@@ -44,7 +44,7 @@ test(function (): void {
 	$m3->addTag('m3-t1');
 	$m3->addTag('m3-t2', 'm3-t2-value');
 
-	$m3rb = new MethodRequestBody();
+	$m3rb = new EndpointRequestBody();
 	$m3rb->setRequired(true);
 	$m3rb->setEntity('A\Class\Which\Implements\Apitte\Core\Mapping\Request\IRequestEntity');
 	$m3rb->setValidation(false);

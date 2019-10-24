@@ -13,8 +13,8 @@ use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
-use Apitte\Core\Schema\Builder\Controller\MethodRequestBody;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
+use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\UI\Controller\IController;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -247,7 +247,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse @Request ================
 				if ($annotation instanceof RequestBody) {
-					$requestBody = new MethodRequestBody();
+					$requestBody = new EndpointRequestBody();
 					$requestBody->setDescription($annotation->getDescription());
 					$requestBody->setEntity($annotation->getEntity());
 					$requestBody->setRequired($annotation->isRequired());

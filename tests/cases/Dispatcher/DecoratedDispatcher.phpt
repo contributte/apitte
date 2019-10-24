@@ -9,6 +9,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 use Apitte\Core\Decorator\DecoratorManager;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
 use Apitte\Core\Exception\Api\ClientErrorException;
+use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
@@ -117,7 +118,7 @@ test(function (): void {
 
 	Assert::exception(function () use ($dispatcher, $request, $response): void {
 		$response = $dispatcher->dispatch($request, $response);
-	}, RuntimeException::class, sprintf('I am %s!', ErroneousHandler::class));
+	}, ServerErrorException::class, ServerErrorException::$defaultMessage);
 });
 
 // Match request, use handler, throw and catch exception then trow it again because DecoratorManager doesn't have any decorators so returned null

@@ -4,9 +4,9 @@ namespace Apitte\Core\DI\Loader;
 
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\Controller\Method;
-use Apitte\Core\Schema\Builder\Controller\MethodRequestBody;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\EndpointParameter;
+use Apitte\Core\Schema\EndpointRequestBody;
 
 class NeonLoader implements ILoader
 {
@@ -93,7 +93,7 @@ class NeonLoader implements ILoader
 			return;
 		}
 
-		$requestBody = new MethodRequestBody();
+		$requestBody = new EndpointRequestBody();
 
 		$requestBody->setRequired($requestBodySettings['required'] ?? false);
 		$requestBody->setDescription($requestBodySettings['description'] ?? null);

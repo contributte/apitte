@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Schema\Builder\Controller;
 
+use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
 
 final class Method
@@ -31,7 +32,7 @@ final class Method
 	/** @var MethodResponse[] */
 	private $responses = [];
 
-	/** @var MethodNegotiation[] */
+	/** @var EndpointNegotiation[] */
 	private $negotiations = [];
 
 	/** @var mixed[] */
@@ -191,16 +192,16 @@ final class Method
 		return $this->openApi;
 	}
 
-	public function addNegotiation(string $suffix): MethodNegotiation
+	public function addNegotiation(string $suffix): EndpointNegotiation
 	{
-		$negotiation = new MethodNegotiation($suffix);
+		$negotiation = new EndpointNegotiation($suffix);
 		$this->negotiations[] = $negotiation;
 
 		return $negotiation;
 	}
 
 	/**
-	 * @return MethodNegotiation[]
+	 * @return EndpointNegotiation[]
 	 */
 	public function getNegotiations(): array
 	{

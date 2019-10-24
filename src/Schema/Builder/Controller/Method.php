@@ -5,6 +5,7 @@ namespace Apitte\Core\Schema\Builder\Controller;
 use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\EndpointRequestBody;
+use Apitte\Core\Schema\EndpointResponse;
 
 final class Method
 {
@@ -30,7 +31,7 @@ final class Method
 	/** @var MethodParameter[] */
 	private $parameters = [];
 
-	/** @var MethodResponse[] */
+	/** @var EndpointResponse[] */
 	private $responses = [];
 
 	/** @var EndpointNegotiation[] */
@@ -144,9 +145,9 @@ final class Method
 		$this->requestBody = $requestBody;
 	}
 
-	public function addResponse(string $code, string $description): MethodResponse
+	public function addResponse(string $code, string $description): EndpointResponse
 	{
-		$response = new MethodResponse($code, $description);
+		$response = new EndpointResponse($code, $description);
 		$this->responses[$code] = $response;
 		return $response;
 	}
@@ -170,7 +171,7 @@ final class Method
 	}
 
 	/**
-	 * @return MethodResponse[]
+	 * @return EndpointResponse[]
 	 */
 	public function getResponses(): array
 	{

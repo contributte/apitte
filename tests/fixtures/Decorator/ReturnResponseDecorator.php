@@ -4,9 +4,9 @@ namespace Tests\Fixtures\Decorator;
 
 use Apitte\Core\Decorator\IErrorDecorator;
 use Apitte\Core\Decorator\IResponseDecorator;
+use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
-use Throwable;
 
 class ReturnResponseDecorator implements IResponseDecorator, IErrorDecorator
 {
@@ -16,7 +16,7 @@ class ReturnResponseDecorator implements IResponseDecorator, IErrorDecorator
 		return $response;
 	}
 
-	public function decorateError(ApiRequest $request, ApiResponse $response, Throwable $error): ApiResponse
+	public function decorateError(ApiRequest $request, ApiResponse $response, ApiException $error): ApiResponse
 	{
 		return $response;
 	}

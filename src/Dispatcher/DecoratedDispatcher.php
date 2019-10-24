@@ -3,6 +3,8 @@
 namespace Apitte\Core\Dispatcher;
 
 use Apitte\Core\Decorator\DecoratorManager;
+use Apitte\Core\Exception\Api\ServerErrorException;
+use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
 use Apitte\Core\Exception\Runtime\SnapshotException;
@@ -44,8 +46,11 @@ class DecoratedDispatcher extends CoreDispatcher
 				$e = $e->getPrevious();
 			}
 
+			// Send always ApiException to ErrorDecorator
+			$decoratedError = $e instanceof ApiException ? $e : ServerErrorException::create()->withPrevious($e);
+
 			// Trigger exception decorator
-			$response = $this->decoratorManager->decorateError($request, $response, $e);
+			$response = $this->decoratorManager->decorateError($request, $response, $decoratedError);
 
 			// Rethrow exception so error could be logged and transformed into response by error handler
 			if ($response === null) {

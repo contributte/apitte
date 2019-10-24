@@ -7,6 +7,7 @@
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Decorator\DecoratorManager;
+use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
@@ -63,6 +64,7 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$error = new Exception('I am a generic exception');
+	$error = ServerErrorException::create()->withPrevious($error);
 
 	$manager->addErrorDecorator(new ReturnResponseDecorator());
 	$manager->addErrorDecorator(new ReturnResponseDecorator());
@@ -76,6 +78,7 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$error = new Exception('I am a generic exception');
+	$error = ServerErrorException::create()->withPrevious($error);
 
 	Assert::same(null, $manager->decorateError($request, $response, $error));
 });

@@ -50,7 +50,7 @@ class NeonLoader implements ILoader
 			$method->addHttpMethods($settings['methods'] ?? []);
 			$method->addTags($settings['tags'] ?? []);
 			$method->setOpenApi($settings['openapi'] ?? []);
-			$this->setMethodParameters($method, $settings['parameters'] ?? []);
+			$this->setEndpointParameters($method, $settings['parameters'] ?? []);
 			$this->setNegotiations($method, $settings['negotiations'] ?? []);
 			$this->setRequestBody($method, $settings['requestBody'] ?? null);
 			$this->setResponses($method, $settings['responses'] ?? null);
@@ -60,7 +60,7 @@ class NeonLoader implements ILoader
 	/**
 	 * @param mixed[] $parametersSettings
 	 */
-	private function setMethodParameters(Method $method, array $parametersSettings): void
+	private function setEndpointParameters(Method $method, array $parametersSettings): void
 	{
 		foreach ($parametersSettings as $name => $settings) {
 			$parameter = $method->addParameter($name, $settings['type'] ?? EndpointParameter::TYPE_STRING);

@@ -5,7 +5,6 @@ namespace Apitte\Core\Schema\Serialization;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\Controller\Method;
-use Apitte\Core\Schema\Builder\Controller\MethodParameter;
 use Apitte\Core\Schema\Builder\SchemaBuilder;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Hierarchy\HierarchyBuilder;
@@ -116,13 +115,13 @@ final class ArraySerializator implements ISerializator
 		$mask = $endpoint['mask'];
 		$maskParameters = [];
 
-		/** @var MethodParameter[] $pathParameters */
-		$pathParameters = array_filter($method->getParameters(), function (MethodParameter $parameter) {
+		/** @var EndpointParameter[] $pathParameters */
+		$pathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter) {
 			return $parameter->getIn() === EndpointParameter::IN_PATH;
 		});
 
-		/** @var MethodParameter[] $notPathParameters */
-		$notPathParameters = array_filter($method->getParameters(), function (MethodParameter $parameter) {
+		/** @var EndpointParameter[] $notPathParameters */
+		$notPathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter) {
 			return $parameter->getIn() !== EndpointParameter::IN_PATH;
 		});
 

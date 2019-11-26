@@ -25,13 +25,14 @@
   "require": {
     "php": "^7.2",
     "ext-json": "*",
-    "contributte/phpdoc": "~0.3.0",
     "contributte/psr7-http-message": "~0.6.0",
+    "doctrine/annotations": "^1.8.0",
     "nette/utils": "~3.0.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.1.0",
     "nette/di": "~3.0.0",
+    "nettrine/annotations": "^0.6.0",
     "ninjify/nunjuck": "^0.3",
     "ninjify/qa": "^0.10",
     "phpstan/extension-installer": "^1.0",

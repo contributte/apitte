@@ -163,19 +163,19 @@ api:
 
 #### SymfonyValidator
 
-Requires a doctrine annotation reader, you could use [contributte/phpdoc](https://github.com/contributte/phpdoc)
+Requires a doctrine annotation reader, you may use [nettrine/annotations](https://github.com/nettrine/annotations)
 
 Also install [symfony/validator](https://symfony.com/doc/master/validation.html)
 
 ```yaml
 extensions:
-  phpdoc: Contributte\PhpDoc\DI\PhpDocExtension
+  annotations: Nettrine\Annotations\DI\AnnotationsExtension
 
 api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
           request:
-            validator: Apitte\Core\Mapping\Validator\SymfonyValidator(@phpdoc.reader)
+            validator: Apitte\Core\Mapping\Validator\SymfonyValidator()
 ```
 
 With SymfonyValidator your request entity could look like this:

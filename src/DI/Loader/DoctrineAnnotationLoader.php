@@ -279,7 +279,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	private function getReader(): AnnotationReader
 	{
 		if (!$this->reader) {
-			AnnotationRegistry::registerLoader('class_exists');
+			AnnotationRegistry::registerUniqueLoader('class_exists');
 			$this->reader = new AnnotationReader();
 		}
 

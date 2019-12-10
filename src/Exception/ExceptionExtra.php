@@ -3,6 +3,7 @@
 namespace Apitte\Core\Exception;
 
 use Exception;
+use ReflectionClass;
 use Throwable;
 
 /**
@@ -48,7 +49,11 @@ trait ExceptionExtra
 	 */
 	public function withPrevious(Throwable $exception)
 	{
-		$this->previous = $exception;
+		$reflection = new ReflectionClass(Exception::class);
+		$property = $reflection->getProperty('previous');
+		$property->setAccessible(true);
+		$property->setValue($this, $exception);
+		$property->setAccessible(false);
 
 		return $this;
 	}
@@ -74,7 +79,6 @@ trait ExceptionExtra
 
 		return $this;
 	}
-
 
 	/**
 	 * @return mixed

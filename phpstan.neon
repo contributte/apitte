@@ -7,9 +7,6 @@ parameters:
 		- '#^Variable property access on (\$this|static)\(Apitte\\Core\\Mapping\\(Request|Response)\\BasicEntity\)\.$#'
 		- '#^Variable property access on Apitte\\Core\\Mapping\\Request\\BasicEntity\.$#'
 
-		# Magic access
-		- '#^Access to private property \$previous of parent class Exception.$#'
-
 		# There is no apitte/negotiation dependency
 		- '#^Return typehint of method Apitte\\Core\\Http\\ApiResponse::getEntity\(\) has invalid type Apitte\\Negotiation\\Http\\AbstractEntity\.$#'
 		- '#^Parameter \$entity of method Apitte\\Core\\Http\\ApiResponse::withEntity\(\) has invalid typehint type Apitte\\Negotiation\\Http\\AbstractEntity\.$#'

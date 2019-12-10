@@ -15,6 +15,10 @@
         </properties>
     </rule>
 
+	<rule ref="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException">
+		<exclude-pattern>src/Exception/ExceptionExtra.php</exclude-pattern>
+	</rule>
+
     <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
         <exclude-pattern>*tests/cases/*</exclude-pattern>
     </rule>

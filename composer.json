@@ -27,7 +27,7 @@
     "ext-json": "*",
     "contributte/psr7-http-message": "~0.6.0",
     "doctrine/annotations": "^1.8.0",
-    "nette/utils": "~3.0.0"
+    "nette/utils": "~3.0.0|~3.1.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.1.0",
@@ -41,7 +41,7 @@
     "phpstan/phpstan-shim": "^0.11",
     "phpstan/phpstan-strict-rules": "^0.11",
     "psr/log": "^1.1",
-    "symfony/validator": "^4.1.1"
+    "symfony/validator": "^4.1.1|^5.0.0"
   },
   "conflict": {
     "nette/di": "<=3.0.0-RC"

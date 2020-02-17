@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Annotation
  * @Target("METHOD")
  */
-final class RequestParameters
+class RequestParameters
 {
 
 	/** @var RequestParameter[] */

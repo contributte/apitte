@@ -36,7 +36,6 @@ services:
 ```php
 namespace App\Api\V1\Controllers;
 
-use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Http\ApiRequest;

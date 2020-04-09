@@ -101,8 +101,9 @@ class RequestParameterValidation implements IValidation
 					}
 
 					throw new InvalidSchemaException(sprintf(
-						'Mask parameter "%s" is not defined as @RequestParameter(in=path)',
-						$maskParameter['name']
+						'Mask parameter "%s" is not defined as @RequestParameter(in=path) in "%s"',
+						$maskParameter['name'],
+						$controller->getClass()
 					));
 				}
 			}

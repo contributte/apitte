@@ -24,6 +24,7 @@ That is what request parameters are used for.
 ```php
 namespace App\Api\V1\Controllers;
 
+use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestParameters;
@@ -32,7 +33,7 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 
 /**
- * @Path("/users")
+ * @ControllerPath("/users")
  */
 class UsersController extends BaseV1Controller
 {
@@ -48,7 +49,7 @@ class UsersController extends BaseV1Controller
     {
         /** @var int $id Perfectly valid integer */
         $id = $request->getParameter('id');
-        
+
         // Return response with error or user
     }
 
@@ -82,7 +83,7 @@ class UsersController extends BaseV1Controller
     - and `'false'` to `false`
 - `datetime`
     - Converts value to DateTimeImmutable.
-    
+
 - Each of the data types could return null if request parameter is allowed to be empty
 - If conversion is not possible (because data type is invalid) then API returns HTTP 400
 

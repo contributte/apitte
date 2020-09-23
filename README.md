@@ -12,7 +12,7 @@ Core library of Apitte API framework
 
 ```php
 /**
- * @Path("/hello")
+ * @ControllerPath("/hello")
  */
 final class HelloController implements IController
 {

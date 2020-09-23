@@ -14,9 +14,10 @@ Create base controller with root path to your api
 namespace App\Api\V1\Controllers;
 
 use Apitte\Core\UI\Controller\IController;
+use Apitte\Core\Annotation\Controller\ControllerPath;
 
 /**
- * @Path("/api/v1")
+ * @ControllerPath("/api/v1")
  */
 abstract class BaseV1Controller implements IController
 {
@@ -25,7 +26,7 @@ abstract class BaseV1Controller implements IController
 
 Create an endpoint
 
-- Controller must have annotation `@Path()` and be registered as service
+- Controller must have annotation `@ControllerPath()` and be registered as service
 - Method must have annotations `@Path()` and `@Method()`
 
 ```yaml
@@ -36,6 +37,7 @@ services:
 ```php
 namespace App\Api\V1\Controllers;
 
+use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Http\ApiRequest;
@@ -43,7 +45,7 @@ use Apitte\Core\Http\ApiResponse;
 use Nette\Utils\Json;
 
 /**
- * @Path("/users")
+ * @ControllerPath("/users")
  */
 class UsersController extends BaseV1Controller
 {
@@ -79,7 +81,7 @@ class UsersController extends BaseV1Controller
 }
 ```
 
-**Tip** Use the `@Path("/")` annotation on a Controller and its method to target the homepage, e.q. `example.com/`.
+**Tip** Use the `@ControllerPath("/")` annotation on a Controller and its method to target the homepage, e.q. `example.com/`.
 
 ### List of annotations
 
@@ -87,12 +89,17 @@ class UsersController extends BaseV1Controller
   - Must consist only of following characters: `a-z`, `A-Z`, `0-9`, `_`
   - Not used by Apitte for anything, it may just help you identify, group, etc. your endpoints
 
-`@Path`
+`@ControllerPath`
   - See example controllers above
   - Must consist only of following characters: `a-z`, `A-Z`, `0-9`, `-_/`
-  - The `@Path` annotation can be used on:
+  - The `@ControllerPath` annotation can be used on:
     - abstract controller to define a group path for multiple controllers (e.g. `example.com/v1/...`)
     - final controller to define a path for that particular controller (e.g. `example.com/v1/users`)
+
+`@Path`
+  - See example methods above
+  - Must consist only of following characters: `a-z`, `A-Z`, `0-9`, `-_/`
+  - The `@Path` annotation can be used on:
     - method to define a path for a specific endpoint
   - This hierarchy is then used to build the schema and make routing possible.
 
@@ -102,7 +109,7 @@ class UsersController extends BaseV1Controller
   - `@Method("GET")`
   - `@Method({"POST", "PUT"})`
   - Defined on method
-  
+
 `@Tag`
   - Used by [OpenApi](schema.md#openapi)
   - Could by also used by your custom logic

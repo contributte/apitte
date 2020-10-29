@@ -1,5 +1,6 @@
 <?php declare(strict_types = 1);
 
+use Apitte\Core\Dispatcher\DispatchError;
 use Apitte\Core\ErrorHandler\PsrLogErrorHandler;
 use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Api\ServerErrorException;
@@ -15,10 +16,11 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 // Log - generic exception
 test(function (): void {
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$logger = new TestLogger();
 	$handler = new PsrLogErrorHandler($logger);
 	$error = new Exception('test');
-	$handler->handle($error);
+	$handler->handle(new DispatchError($error, $request));
 
 	Assert::same(
 		[
@@ -36,24 +38,29 @@ test(function (): void {
 
 // Log - api exception
 test(function (): void {
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$logger = new TestLogger();
 	$handler = new PsrLogErrorHandler($logger);
-	$handler->handle(new ClientErrorException('test', ApiResponse::S404_NOT_FOUND, null, ['foo' => 'bar']));
+	$handler->handle(new DispatchError(
+		new ClientErrorException('test', ApiResponse::S404_NOT_FOUND, null, ['foo' => 'bar']),
+		$request
+	));
 
 	Assert::same([], $logger->records);
 });
 
 // Log - api exception with previous exception
 test(function (): void {
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$logger = new TestLogger();
 	$handler = new PsrLogErrorHandler($logger);
 	$previousError = new Exception('test');
 
 	$clientError = new ClientErrorException('client', 400, $previousError);
-	$handler->handle($clientError);
+	$handler->handle(new DispatchError($clientError, $request));
 
 	$serverError = new ServerErrorException('server', 500, $previousError);
-	$handler->handle($serverError);
+	$handler->handle(new DispatchError($serverError, $request));
 
 	Assert::same(
 		[
@@ -78,30 +85,40 @@ test(function (): void {
 
 // Log - snapshot exception
 test(function (): void {
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$logger = new TestLogger();
 	$handler = new PsrLogErrorHandler($logger);
 
 	// Api exception, without previous, not loggable
-	$handler->handle(new SnapshotException(
-		new ClientErrorException('client'),
-		new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal()),
-		new ApiResponse(Psr7ResponseFactory::fromGlobal())
+	$handler->handle(new DispatchError(
+		new SnapshotException(
+			new ClientErrorException('client'),
+			$request,
+			new ApiResponse(Psr7ResponseFactory::fromGlobal())
+		),
+		$request
 	));
 
 	$genericException = new Exception('generic');
 
 	// Api exception, with previous, loggable
-	$handler->handle(new SnapshotException(
-		new ClientErrorException('client', 400, $genericException),
-		new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal()),
-		new ApiResponse(Psr7ResponseFactory::fromGlobal())
+	$handler->handle(new DispatchError(
+		new SnapshotException(
+			new ClientErrorException('client', 400, $genericException),
+			$request,
+			new ApiResponse(Psr7ResponseFactory::fromGlobal())
+		),
+		$request
 	));
 
 	// Generic exception, loggable
-	$handler->handle(new SnapshotException(
-		$genericException,
-		new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal()),
-		new ApiResponse(Psr7ResponseFactory::fromGlobal())
+	$handler->handle(new DispatchError(
+		new SnapshotException(
+			$genericException,
+			$request,
+			new ApiResponse(Psr7ResponseFactory::fromGlobal())
+		),
+		$request
 	));
 
 	Assert::same(

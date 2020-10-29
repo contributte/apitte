@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Application;
 
+use Apitte\Core\Dispatcher\DispatchError;
 use Apitte\Core\ErrorHandler\IErrorHandler;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
@@ -34,7 +35,7 @@ abstract class BaseApplication implements IApplication
 		try {
 			$response = $this->dispatch($request);
 		} catch (Throwable $exception) {
-			$response = $this->errorHandler->handle($exception);
+			$response = $this->errorHandler->handle(new DispatchError($exception, $request));
 		}
 
 		$this->sendResponse($response);

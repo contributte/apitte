@@ -2,8 +2,8 @@
 
 namespace Apitte\Core\ErrorHandler;
 
+use Apitte\Core\Dispatcher\DispatchError;
 use Apitte\Core\Http\ApiResponse;
-use Throwable;
 
 interface IErrorHandler
 {
@@ -11,6 +11,6 @@ interface IErrorHandler
 	/**
 	 * Log error and generate response
 	 */
-	public function handle(Throwable $error): ApiResponse;
+	public function handle(DispatchError $dispatchError): ApiResponse;
 
 }

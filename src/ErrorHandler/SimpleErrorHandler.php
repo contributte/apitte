@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\ErrorHandler;
 
+use Apitte\Core\Dispatcher\DispatchError;
 use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Exception\Runtime\SnapshotException;
@@ -22,8 +23,10 @@ class SimpleErrorHandler implements IErrorHandler
 		$this->catchException = $catchException;
 	}
 
-	public function handle(Throwable $error): ApiResponse
+	public function handle(DispatchError $dispatchError): ApiResponse
 	{
+		$error = $dispatchError->getError();
+
 		// Rethrow error if it should not be catch (debug only)
 		if (!$this->catchException) {
 			// Unwrap exception from snapshot

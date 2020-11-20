@@ -87,8 +87,8 @@ class HierarchyBuilder
 		}
 
 		// Remove empty indexes created during split
-		$parts = array_filter($parts, static function ($value) {
-			return $value !== null && $value !== '';
+		$parts = array_filter($parts, static function ($value): bool {
+			return $value !== '';
 		});
 
 		return $parts;

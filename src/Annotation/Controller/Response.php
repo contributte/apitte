@@ -26,7 +26,7 @@ final class Response
 	 */
 	public function __construct(array $values)
 	{
-		if (!isset($values['description'])) {
+		if (!array_key_exists('description', $values)) {
 			throw new AnnotationException('No @Response description given');
 		}
 

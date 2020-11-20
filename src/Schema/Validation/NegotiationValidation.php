@@ -29,9 +29,7 @@ class NegotiationValidation implements IValidation
 						$haveDefault = $negotiation;
 					}
 
-					if (!isset($takenSuffixes[$negotiation->getSuffix()])) {
-						$takenSuffixes[$negotiation->getSuffix()] = $negotiation;
-					} else {
+					if (isset($takenSuffixes[$negotiation->getSuffix()])) {
 						throw new InvalidSchemaException(sprintf(
 							'Multiple negotiations with "suffix=%s" given in "%s::%s()". Each negotiation must have unique suffix',
 							$negotiation->getSuffix(),
@@ -39,6 +37,8 @@ class NegotiationValidation implements IValidation
 							$method->getName()
 						));
 					}
+
+					$takenSuffixes[$negotiation->getSuffix()] = $negotiation;
 
 					$renderer = $negotiation->getRenderer();
 					if ($renderer !== null) {

@@ -39,7 +39,7 @@ final class RequestParameter
 	 */
 	public function __construct(array $values)
 	{
-		if (!isset($values['name'])) {
+		if (!array_key_exists('name', $values)) {
 			throw new AnnotationException('No @RequestParameter name given');
 		}
 
@@ -48,7 +48,7 @@ final class RequestParameter
 			throw new AnnotationException('Empty @RequestParameter name given');
 		}
 
-		if (!isset($values['type'])) {
+		if (!array_key_exists('type', $values)) {
 			throw new AnnotationException('No @RequestParameter type given');
 		}
 

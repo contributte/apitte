@@ -37,14 +37,14 @@ final class Responses
 		$takenCodes = [];
 		/** @var Response $response */
 		foreach ($responses as $response) {
-			if (!isset($takenCodes[$response->getCode()])) {
-				$takenCodes[$response->getCode()] = $response;
-			} else {
+			if (isset($takenCodes[$response->getCode()])) {
 				throw new AnnotationException(sprintf(
 					'Multiple @Response annotations with "code=%s" given. Each response must have unique code.',
 					$response->getCode()
 				));
 			}
+
+			$takenCodes[$response->getCode()] = $response;
 		}
 
 		$this->responses = $responses;

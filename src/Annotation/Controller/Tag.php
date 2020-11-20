@@ -27,7 +27,7 @@ final class Tag
 			$values['name'] = $values['value'];
 		}
 
-		if (!isset($values['name'])) {
+		if (!array_key_exists('name', $values)) {
 			throw new AnnotationException('No @Tag name given');
 		}
 

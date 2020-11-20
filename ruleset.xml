@@ -31,6 +31,10 @@
 		<exclude-pattern>*tests/fixtures/*</exclude-pattern>
 	</rule>
 
+	<rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed">
+		<exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed"/>
+	</rule>
+
     <!-- Exclude folders -->
     <exclude-pattern>/tests/tmp</exclude-pattern>
 </ruleset>

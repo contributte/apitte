@@ -116,17 +116,17 @@ final class ArraySerializator implements ISerializator
 		$maskParameters = [];
 
 		/** @var EndpointParameter[] $pathParameters */
-		$pathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter) {
+		$pathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter): bool {
 			return $parameter->getIn() === EndpointParameter::IN_PATH;
 		});
 
 		/** @var EndpointParameter[] $notPathParameters */
-		$notPathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter) {
+		$notPathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter): bool {
 			return $parameter->getIn() !== EndpointParameter::IN_PATH;
 		});
 
 		// Collect variable parameters from URL
-		$pattern = Regex::replaceCallback($mask, '#({([a-zA-Z0-9\-_]+)})#U', function ($matches) use (&$endpoint, &$maskParameters) {
+		$pattern = Regex::replaceCallback($mask, '#({([a-zA-Z0-9\-_]+)})#U', function ($matches) use (&$endpoint, &$maskParameters): string {
 			[$whole, $variable, $variableName] = $matches;
 
 			// Duplication check

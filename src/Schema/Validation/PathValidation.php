@@ -112,7 +112,7 @@ class PathValidation implements IValidation
 				// -> -_
 				// @regex https://regex101.com/r/APckUJ/3
 				$matches = Regex::matchAll($path, '#\{(.+)\}#U');
-				if ($matches) {
+				if ($matches !== null) {
 					foreach ($matches as $item) {
 						$match = Regex::match($item[1], '#.*([^a-zA-Z0-9\-_]+).*#');
 
@@ -126,8 +126,8 @@ class PathValidation implements IValidation
 									$match[1]
 								)
 							))
-							 ->withController($controller)
-							 ->withMethod($method);
+								->withController($controller)
+								->withMethod($method);
 						}
 					}
 				}

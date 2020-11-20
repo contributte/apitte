@@ -37,15 +37,15 @@ class RequestParameters
 		$takenNames = [];
 		/** @var RequestParameter $parameter */
 		foreach ($parameters as $parameter) {
-			if (!isset($takenNames[$parameter->getIn()][$parameter->getName()])) {
-				$takenNames[$parameter->getIn()][$parameter->getName()] = $parameter;
-			} else {
+			if (isset($takenNames[$parameter->getIn()][$parameter->getName()])) {
 				throw new AnnotationException(sprintf(
 					'Multiple @RequestParameter annotations with "name=%s" and "in=%s" given. Each parameter must have unique combination of location and name.',
 					$parameter->getName(),
 					$parameter->getIn()
 				));
 			}
+
+			$takenNames[$parameter->getIn()][$parameter->getName()] = $parameter;
 		}
 
 		$this->parameters = $parameters;

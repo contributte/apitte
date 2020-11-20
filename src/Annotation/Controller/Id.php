@@ -16,11 +16,11 @@ final class Id
 	private $name;
 
 	/**
-	 * @param mixed[] $values
+	 * @param array<string, mixed|null> $values
 	 */
 	public function __construct(array $values)
 	{
-		if (!isset($values['value'])) {
+		if (!array_key_exists('value', $values)) {
 			throw new AnnotationException('No @Id given');
 		}
 

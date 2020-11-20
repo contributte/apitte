@@ -26,7 +26,7 @@ final class Regex
 	}
 
 	/**
-	 * @param mixed $replacement
+	 * @param string|string[] $replacement
 	 * @return mixed
 	 */
 	public static function replace(string $subject, string $pattern, $replacement, int $limit = -1)

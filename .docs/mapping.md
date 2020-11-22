@@ -198,3 +198,13 @@ final class UserFilter extends BasicEntity
 
 }
 ```
+
+If you want to use [custom validation contstraints](https://symfony.com/doc/current/validation/custom_constraint.html) with support of Nette DI, you should also install [contributte/validator](https://github.com/contributte/validator).
+
+```yaml
+api:
+    plugins:
+        Apitte\Core\DI\Plugin\CoreMappingPlugin:
+            request:
+                validator: Apitte\Core\Mapping\Validator\SymfonyValidator(..., Contributte\Validator\ContainerConstraintValidatorFactory())
+```

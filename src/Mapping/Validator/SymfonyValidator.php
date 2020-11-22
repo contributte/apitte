@@ -5,6 +5,7 @@ namespace Apitte\Core\Mapping\Validator;
 use Apitte\Core\Exception\Api\ValidationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
+use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validation;
 
@@ -14,9 +15,13 @@ class SymfonyValidator implements IEntityValidator
 	/** @var Reader */
 	private $reader;
 
-	public function __construct(Reader $reader)
+	/** @var ConstraintValidatorFactoryInterface|null */
+	private $constraintValidatorFactory;
+
+	public function __construct(Reader $reader, ?ConstraintValidatorFactoryInterface $constraintValidatorFactory = null)
 	{
 		$this->reader = $reader;
+		$this->constraintValidatorFactory = $constraintValidatorFactory;
 		AnnotationReader::addGlobalIgnoredName('mapping');
 	}
 
@@ -27,9 +32,14 @@ class SymfonyValidator implements IEntityValidator
 	 */
 	public function validate($entity): void
 	{
-		$validator = Validation::createValidatorBuilder()
-			->enableAnnotationMapping($this->reader)
-			->getValidator();
+		$validatorBuilder = Validation::createValidatorBuilder()
+			->enableAnnotationMapping($this->reader);
+
+		if ($this->constraintValidatorFactory !== null) {
+			$validatorBuilder->setConstraintValidatorFactory($this->constraintValidatorFactory);
+		}
+
+		$validator = $validatorBuilder->getValidator();
 
 		/** @var ConstraintViolationInterface[] $violations */
 		$violations = $validator->validate($entity);

@@ -18,7 +18,7 @@ test(function (): void {
 
 // Regex::replace
 test(function (): void {
-	Assert::equal('foo', Regex::replace('foobar', '#bar#', null));
+	Assert::equal('foo', Regex::replace('foobar', '#bar#', ''));
 });
 
 // Regex::replaceCallback

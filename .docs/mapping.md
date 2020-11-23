@@ -206,5 +206,5 @@ api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
             request:
-                validator: Apitte\Core\Mapping\Validator\SymfonyValidator(..., Contributte\Validator\ContainerConstraintValidatorFactory())
+                validator: Apitte\Core\Mapping\Validator\SymfonyValidator()::setConstraintValidatorFactory(Contributte\Validator\ContainerConstraintValidatorFactory())
 ```

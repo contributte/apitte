@@ -15,14 +15,20 @@ class SymfonyValidator implements IEntityValidator
 	/** @var Reader */
 	private $reader;
 
-	/** @var ConstraintValidatorFactoryInterface|null */
+	/** @var ConstraintValidatorFactoryInterface */
 	private $constraintValidatorFactory;
 
-	public function __construct(Reader $reader, ?ConstraintValidatorFactoryInterface $constraintValidatorFactory = null)
+	public function __construct(Reader $reader)
 	{
 		$this->reader = $reader;
-		$this->constraintValidatorFactory = $constraintValidatorFactory;
 		AnnotationReader::addGlobalIgnoredName('mapping');
+	}
+
+	public function setConstraintValidatorFactory(ConstraintValidatorFactoryInterface $constraintValidatorFactory): self
+	{
+		$this->constraintValidatorFactory = $constraintValidatorFactory;
+
+		return $this;
 	}
 
 	/**

@@ -8,9 +8,9 @@ use Apitte\Core\Exception\ApiException;
 use Apitte\Core\Exception\Runtime\SnapshotException;
 use Apitte\Core\Http\ApiResponse;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Utils;
 use Nette\Utils\Json;
 use Throwable;
-use function GuzzleHttp\Psr7\stream_for;
 
 class SimpleErrorHandler implements IErrorHandler
 {
@@ -60,7 +60,7 @@ class SimpleErrorHandler implements IErrorHandler
 			$data['context'] = $context;
 		}
 
-		$body = stream_for(Json::encode($data));
+		$body = Utils::streamFor(Json::encode($data));
 
 		$response = new ApiResponse(new Response());
 		return $response

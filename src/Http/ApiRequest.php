@@ -14,7 +14,7 @@ class ApiRequest extends ProxyRequest
 
 	public function hasParameter(string $name): bool
 	{
-		return isset($this->getAttribute(RequestAttributes::ATTR_PARAMETERS, [])[$name]);
+		return array_key_exists($name, $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []));
 	}
 
 	/**
@@ -23,15 +23,7 @@ class ApiRequest extends ProxyRequest
 	 */
 	public function getParameter(string $name, $default = null)
 	{
-		if (!$this->hasParameter($name)) {
-			if (func_num_args() < 2) {
-				throw new InvalidStateException(sprintf('No parameter "%s" found', $name));
-			}
-
-			return $default;
-		}
-
-		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS)[$name];
+		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, [])[$name] ?? $default;
 	}
 
 	/**

@@ -6,7 +6,6 @@
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\RequestAttributes;
 use Contributte\Psr7\Psr7ServerRequestFactory;
@@ -18,29 +17,24 @@ test(function (): void {
 	$apiRequest = new ApiRequest($request);
 
 	Assert::false($apiRequest->hasParameter('name'));
+	Assert::false($apiRequest->hasParameter('fake'));
+	Assert::equal(null, $apiRequest->getParameter('name'));
 	Assert::equal('default', $apiRequest->getParameter('name', 'default'));
-	Assert::exception(
-		function () use ($apiRequest): void {
-			$apiRequest->getParameter('name');
-		},
-		InvalidStateException::class,
-		'No parameter "name" found'
-	);
 	Assert::equal([], $apiRequest->getParameters());
+});
 
-	$request = $request->withAttribute(RequestAttributes::ATTR_PARAMETERS, ['name' => 'John Doe']);
+// Parameters > withAttribute
+test(function (): void {
+	$request = Psr7ServerRequestFactory::fromSuperGlobal();
+	$request = $request->withAttribute(RequestAttributes::ATTR_PARAMETERS, ['name' => 'John Doe', 'title' => null]);
 	$apiRequest = new ApiRequest($request);
 
 	Assert::true($apiRequest->hasParameter('name'));
+	Assert::true($apiRequest->hasParameter('title'));
+	Assert::false($apiRequest->hasParameter('fake'));
 	Assert::equal('John Doe', $apiRequest->getParameter('name'));
-	Assert::equal(['name' => 'John Doe'], $apiRequest->getParameters());
+	Assert::equal(['name' => 'John Doe', 'title' => null], $apiRequest->getParameters());
 	Assert::false($apiRequest->hasParameter('company'));
+	Assert::equal(null, $apiRequest->getParameter('company'));
 	Assert::equal('default', $apiRequest->getParameter('company', 'default'));
-	Assert::exception(
-		function () use ($apiRequest): void {
-			$apiRequest->getParameter('company');
-		},
-		InvalidStateException::class,
-		'No parameter "company" found'
-	);
 });

@@ -13,8 +13,19 @@
   <a href="https://packagist.org/packages/apitte/core">
     <img src="https://badgen.net/packagist/v/apitte/core">
   </a>
+</p>
+<p align=center>
+  <a href="https://packagist.org/packages/apitte/core">
+    <img src="https://badgen.net/packagist/php/apitte/core">
+  </a>
+  <a href="https://github.com/apitte/core">
+    <img src="https://badgen.net/github/license/apitte/core">
+  </a>
   <a href="http://bit.ly/apittegitter">
     <img src="https://badgen.net/badge/chat/apitte/cyan">
+  </a>
+  <a href="https://bit.ly/cttfo">
+    <img src="https://badgen.net/badge/support/forum/yellow">
   </a>
   <a href="https://contributte.org/partners.html">
     <img src="https://badgen.net/badge/become/a%20patron/F96854">
@@ -41,7 +52,8 @@ For details on how to use this package, check out our [documentation](.docs).
 
 | State       | Version | Branch   | Nette | PHP     |
 |-------------|---------|----------|-------|---------|
-| dev         | `^0.7`  | `master` | 3.0+  | `>=7.2` |
+| dev         | `^0.8`  | `master` | 3.0+  | `>=7.2` |
+| stable      | `^0.7`  | `master` | 3.0+  | `>=7.2` |
 | stable      | `^0.6`  | `master` | 3.0+  | `^7.2`  |
 | stable      | `^0.5`  | `master` | 2.4   | `>=7.1` |
 | stable      | `^0.3`  | `master` | 2.4   | `>=5.6` |

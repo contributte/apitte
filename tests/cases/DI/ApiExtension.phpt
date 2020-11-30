@@ -2,6 +2,8 @@
 
 /**
  * Test: DI\ApiExtension
+ *
+ * @phpVersion > 7.3
  */
 
 use Apitte\Core\Application\Application;

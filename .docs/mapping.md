@@ -48,7 +48,7 @@ class UsersController extends BaseV1Controller
     {
         /** @var int $id Perfectly valid integer */
         $id = $request->getParameter('id');
-        
+
         // Return response with error or user
     }
 
@@ -82,7 +82,7 @@ class UsersController extends BaseV1Controller
     - and `'false'` to `false`
 - `datetime`
     - Converts value to DateTimeImmutable.
-    
+
 - Each of the data types could return null if request parameter is allowed to be empty
 - If conversion is not possible (because data type is invalid) then API returns HTTP 400
 
@@ -178,7 +178,7 @@ api:
             validator: Apitte\Core\Mapping\Validator\SymfonyValidator()
 ```
 
-With SymfonyValidator your request entity could look like this:
+Using SymfonyValidator your request entity could look like this:
 
 ```php
 use Apitte\Core\Mapping\Request\BasicEntity;
@@ -197,4 +197,25 @@ final class UserFilter extends BasicEntity
     public $userId;
 
 }
+```
+
+You can override `ConstraintValidatorFactory` on `SymfonyValidator`. If you want to use [custom validation contstraints](https://symfony.com/doc/current/validation/custom_constraint.html) with support of Nette DI,
+you should also install [contributte/validator](https://github.com/contributte/validator). Take a look at example.
+
+```yaml
+services:
+    symfonyValidator:
+        factory: Apitte\Core\Mapping\Validator\SymfonyValidator(
+            Doctrine\Common\Annotations\AnnotationReader()
+        )
+        setup:
+            # simple constrained
+            - setConstraintValidatorFactory(Symfony\Component\Validator\ConstraintValidatorFactory())
+            # container based
+            - setConstraintValidatorFactory(Symfony\Component\Validator\ContainerConstraintValidatorFactory())
+api:
+    plugins:
+        Apitte\Core\DI\Plugin\CoreMappingPlugin:
+            request:
+                validator: @symfonyValidator
 ```

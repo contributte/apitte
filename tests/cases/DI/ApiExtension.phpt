@@ -9,6 +9,8 @@ use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\Dispatcher\JsonDispatcher;
 use Apitte\Core\ErrorHandler\IErrorHandler;
 use Apitte\Core\ErrorHandler\PsrLogErrorHandler;
+use Apitte\Core\Mapping\Validator\IEntityValidator;
+use Apitte\Core\Mapping\Validator\SymfonyValidator;
 use Apitte\Core\Schema\Schema;
 use Nette\DI\Compiler;
 use Nette\DI\Container;
@@ -16,6 +18,7 @@ use Nette\DI\ContainerLoader;
 use Psr\Log\Test\TestLogger;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\FoobarController;
+use Tests\Toolkit\NeonLoader;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -89,4 +92,34 @@ test(function (): void {
 	/** @var IErrorHandler $errorHandler */
 	$errorHandler = $container->getService('api.core.errorHandler');
 	Assert::true($errorHandler instanceof PsrLogErrorHandler);
+});
+
+// Mapping > SymfonyValidator
+test(function (): void {
+	$loader = new ContainerLoader(TEMP_DIR, true);
+	$class = $loader->load(function (Compiler $compiler): void {
+		$compiler->addExtension('api', new ApiExtension());
+		$compiler->addConfig(NeonLoader::load(<<<NEON
+			services:
+				validator:
+					factory: Apitte\Core\Mapping\Validator\SymfonyValidator(
+						Doctrine\Common\Annotations\AnnotationReader()
+					)
+					setup:
+						- setConstraintValidatorFactory(Symfony\Component\Validator\ConstraintValidatorFactory())
+			api:
+				plugins:
+					Apitte\Core\DI\Plugin\CoreMappingPlugin:
+						request:
+							validator: @validator
+		NEON
+		));
+	}, 4);
+
+	/** @var Container $container */
+	$container = new $class();
+
+	/** @var IEntityValidator $validator */
+	$validator = $container->getService('api.mapping.request.entity.mapping.validator');
+	Assert::type(SymfonyValidator::class, $validator);
 });

@@ -25,7 +25,7 @@ final class Path
 		}
 
 		$value = $values['value'];
-		if ($value === null || $value === '') {
+		if (empty($value)) {
 			throw new AnnotationException('Empty @Path given');
 		}
 

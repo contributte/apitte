@@ -31,7 +31,7 @@ final class Response
 		}
 
 		$description = $values['description'];
-		if ($description === null || $description === '') {
+		if (empty($description)) {
 			throw new AnnotationException('Empty @Response description given');
 		}
 

@@ -16,7 +16,7 @@ final class Id
 	private $name;
 
 	/**
-	 * @param mixed[] $values
+	 * @param array<string, mixed|null> $values
 	 */
 	public function __construct(array $values)
 	{
@@ -25,7 +25,7 @@ final class Id
 		}
 
 		$value = $values['value'];
-		if ($value === null || $value === '') {
+		if (empty($value)) {
 			throw new AnnotationException('Empty @Id given');
 		}
 

@@ -143,7 +143,7 @@ final class Endpoint
 	 */
 	public function getParametersByIn(string $in): array
 	{
-		return array_filter($this->getParameters(), function (EndpointParameter $parameter) use ($in) {
+		return array_filter($this->getParameters(), function (EndpointParameter $parameter) use ($in): bool {
 			return $parameter->getIn() === $in;
 		});
 	}

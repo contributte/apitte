@@ -25,7 +25,7 @@ final class Method
 		}
 
 		$methods = $values['value'];
-		if ($methods === [] || $methods === null || $methods === '') {
+		if (empty($methods)) {
 			throw new AnnotationException('Empty @Method given');
 		}
 

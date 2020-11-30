@@ -32,7 +32,7 @@ final class Tag
 		}
 
 		$name = $values['name'];
-		if ($name === null || $name === '') {
+		if (empty($name)) {
 			throw new AnnotationException('Empty @Tag name given');
 		}
 

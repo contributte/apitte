@@ -44,7 +44,7 @@ final class RequestParameter
 		}
 
 		$name = $values['name'];
-		if ($name === null || $name === '') {
+		if (empty($name)) {
 			throw new AnnotationException('Empty @RequestParameter name given');
 		}
 
@@ -53,7 +53,7 @@ final class RequestParameter
 		}
 
 		$type = $values['type'];
-		if ($type === null || $type === '') {
+		if (empty($type)) {
 			throw new AnnotationException('Empty @RequestParameter type given');
 		}
 

@@ -3,18 +3,18 @@
 Core library of Apitte API framework
 
 Need to start with Apitte
-- [Setup](.docs/index.md)
-- [Endpoints](.docs/endpoints.md)
-- [Mapping](.docs/mapping.md)
+- [Setup](index.md)
+- [Endpoints](endpoints.md)
+- [Mapping](mapping.md)
 
 This knowledge could make your life easier
-- [Architecture](.docs/architecture.md)
-- [Decorators](.docs/decorators.md)
-- [Dispatcher](.docs/dispatcher.md)
-- [Errors](.docs/errors.md)
-- [Request and response](.docs/request-and-response.md)
-- [Router](.docs/router.md)
-- [Schema](.docs/schema.md)
+- [Architecture](architecture.md)
+- [Decorators](decorators.md)
+- [Dispatcher](dispatcher.md)
+- [Errors](errors.md)
+- [Request and response](request-and-response.md)
+- [Router](router.md)
+- [Schema](schema.md)
 
 Playground with example applications
 - [Examples](https://github.com/planette/playground)

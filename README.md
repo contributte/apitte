@@ -74,4 +74,7 @@ This package is currently maintaining by these authors.
   <img width="80" height="80" src="https://avatars1.githubusercontent.com/u/22914186?s=80&v=4">
 </a>
 
-The development is sponsored by [Tlapnet](https://www.tlapnet.cz)
+-----
+
+Consider to [support](https://contributte.com/partners) **apitte** development team.
+Also thank you for using this package.

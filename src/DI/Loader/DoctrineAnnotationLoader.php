@@ -85,6 +85,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		];
 
 		// Get all parents
+		/** @var string[] */
 		$parents = class_parents($class);
 		$reflections = [];
 

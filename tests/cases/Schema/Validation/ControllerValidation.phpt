@@ -17,7 +17,7 @@ test(function (): void {
 	$validation = new ControllerValidation();
 	$builder = new SchemaBuilder();
 
-	$c1 = $builder->addController(FoobarController::class);
+	$builder->addController(FoobarController::class);
 
 	Assert::noError(function () use ($validation, $builder): void {
 		$validation->validate($builder);
@@ -29,7 +29,7 @@ test(function (): void {
 	$validation = new ControllerValidation();
 	$builder = new SchemaBuilder();
 
-	$c1 = $builder->addController('c1');
+	$builder->addController('c1');
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);

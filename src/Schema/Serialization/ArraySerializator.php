@@ -126,8 +126,8 @@ final class ArraySerializator implements ISerializator
 		});
 
 		// Collect variable parameters from URL
-		$pattern = Regex::replaceCallback($mask, '#({([a-zA-Z0-9\-_]+)})#U', function ($matches) use (&$endpoint, &$maskParameters): string {
-			[$whole, $variable, $variableName] = $matches;
+		$pattern = Regex::replaceCallback($mask, '#{([a-zA-Z0-9\-_]+)}#U', function ($matches) use (&$endpoint, &$maskParameters): string {
+			[, $variableName] = $matches;
 
 			// Duplication check
 			if (isset($maskParameters[$variableName])) {

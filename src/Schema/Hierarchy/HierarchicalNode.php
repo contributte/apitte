@@ -63,7 +63,6 @@ class HierarchicalNode
 	{
 		$staticNodes = [];
 		$variableNodes = [];
-		$rootNode = null;
 
 		// Divide static and variable nodes
 		foreach ($this->nodes as $key => $node) {

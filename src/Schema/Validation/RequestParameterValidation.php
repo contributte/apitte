@@ -67,18 +67,21 @@ class RequestParameterValidation implements IValidation
 				$pathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter): bool {
 					return $parameter->getIn() === EndpointParameter::IN_PATH;
 				});
+
 				$maskParameters = [];
 				$maskp = array_merge(
 					$controller->getGroupPaths(),
 					[$controller->getPath()],
 					[$method->getPath()]
 				);
+
 				$mask = implode('/', $maskp);
 				$mask = Helpers::slashless($mask);
 				$mask = '/' . trim($mask, '/');
+
 				// Collect variable parameters from URL
-				$pattern = Regex::replaceCallback($mask, '#({([a-zA-Z0-9\-_]+)})#U', function ($matches) use (&$maskParameters): string {
-					[$whole, $variable, $variableName] = $matches;
+				$pattern = Regex::replaceCallback($mask, '#{([a-zA-Z0-9\-_]+)}#U', function ($matches) use (&$maskParameters): string {
+					[, $variableName] = $matches;
 
 					// Build parameter pattern
 					$pattern = sprintf('(?P<%s>[^/]+)', $variableName);

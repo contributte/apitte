@@ -4,6 +4,7 @@
 	<rule ref="./vendor/ninjify/coding-standard/contributte.xml">
 		<exclude name="Squiz.PHP.Heredoc.NotAllowed"/>
 		<exclude name="Squiz.Commenting.FunctionComment.InvalidTypeHint"/>
+		<exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed"/>
 	</rule>
 
 	<!-- Specific rules -->
@@ -29,12 +30,8 @@
 		<exclude-pattern>*tests/cases/*</exclude-pattern>
 	</rule>
 
-	<rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment">
-		<exclude-pattern>*tests/fixtures/*</exclude-pattern>
-	</rule>
-
-	<rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed">
-		<exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed"/>
+	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName.NoMatchBetweenTypeNameAndFileName">
+		<exclude-pattern>*tests/cases/*</exclude-pattern>
 	</rule>
 
 	<!-- Exclude folders -->

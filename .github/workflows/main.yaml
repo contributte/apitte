@@ -147,7 +147,7 @@ jobs:
             composer-args: "--prefer-lowest"
           - php-version: "8.0"
             operating-system: "ubuntu-latest"
-            composer-args: "--ignore-platform-reqs"
+            composer-args: ""
       fail-fast: false
 
     continue-on-error: "${{ matrix.php-version == '8.0' }}"
@@ -257,7 +257,7 @@ jobs:
         run: "${{ env.composer-install }}"
 
       - name: "Tests"
-        run: "make coverage"
+        run: "make coverage-clover"
 
       - name: "Coveralls.io"
         env:
@@ -267,4 +267,3 @@ jobs:
         run: |
           wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar
           php php-coveralls.phar --verbose --config tests/.coveralls.yml
-

@@ -1,35 +1,17 @@
-![Apitte Core](https://heatbadger.now.sh/github/readme/apitte/core/)
+![](https://heatbadger.now.sh/github/readme/apitte/core/)
 
 <p align=center>
-  <a href="https://github.com/apitte/core/actions">
-    <img src="https://badgen.net/github/checks/apitte/core/master?cache=300">
-  </a>
-  <a href="https://coveralls.io/r/apitte/core">
-    <img src="https://badgen.net/coveralls/c/github/apitte/core?cache=300">
-  </a>
-  <a href="https://packagist.org/packages/apitte/core">
-    <img src="https://badgen.net/packagist/dm/apitte/core">
-  </a>
-  <a href="https://packagist.org/packages/apitte/core">
-    <img src="https://badgen.net/packagist/v/apitte/core">
-  </a>
+  <a href="https://github.com/apitte/core/actions"><img src="https://badgen.net/github/checks/apitte/core/master?cache=300"></a>
+  <a href="https://coveralls.io/r/apitte/core"> <img src="https://badgen.net/coveralls/c/github/apitte/core?cache=300"> </a>
+  <a href="https://packagist.org/packages/apitte/core"> <img src="https://badgen.net/packagist/dm/apitte/core"> </a>
+  <a href="https://packagist.org/packages/apitte/core"> <img src="https://badgen.net/packagist/v/apitte/core"> </a>
 </p>
 <p align=center>
-  <a href="https://packagist.org/packages/apitte/core">
-    <img src="https://badgen.net/packagist/php/apitte/core">
-  </a>
-  <a href="https://github.com/apitte/core">
-    <img src="https://badgen.net/github/license/apitte/core">
-  </a>
-  <a href="http://bit.ly/apittegitter">
-    <img src="https://badgen.net/badge/chat/apitte/cyan">
-  </a>
-  <a href="https://bit.ly/cttfo">
-    <img src="https://badgen.net/badge/support/forum/yellow">
-  </a>
-  <a href="https://contributte.org/partners.html">
-    <img src="https://badgen.net/badge/become/a%20patron/F96854">
-  </a>
+  <a href="https://packagist.org/packages/apitte/core"><img src="https://badgen.net/packagist/php/apitte/core"></a>
+  <a href="https://github.com/apitte/core"><img src="https://badgen.net/github/license/apitte/core"></a>
+  <a href="https://bit.ly/ctteg"><img src="https://badgen.net/badge/support/gitter/cyan"></a>
+  <a href="https://bit.ly/cttfo"><img src="https://badgen.net/badge/support/forum/yellow"></a>
+  <a href="https://contributte.org/partners.html"><img src="https://badgen.net/badge/become/a%20patron/F96854"></a>
 <p>
 
 <p align=center>

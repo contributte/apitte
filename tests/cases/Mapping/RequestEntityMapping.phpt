@@ -16,8 +16,10 @@ use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointRequestBody;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use GuzzleHttp\Psr7\Utils;
 use Tester\Assert;
 use Tests\Fixtures\Mapping\Request\FooEntity;
+use Tests\Fixtures\Mapping\Request\NotEmptyEntity;
 
 // Add entity to request
 test(function (): void {
@@ -78,4 +80,28 @@ test(function (): void {
 	Assert::exception(function () use ($mapping, $request, $response): void {
 		$request = $mapping->map($request, $response);
 	}, InvalidStateException::class, sprintf('Attribute "%s" is required', RequestAttributes::ATTR_ENDPOINT));
+});
+
+// Mapping from query or body
+test(function (): void {
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$entity = new NotEmptyEntity();
+
+	$queryRequest = $request
+		->withQueryParams(['foo' => 1]);
+
+	$bodyRequest = $request
+		->withBody(Utils::streamFor(json_encode(['foo' => 1])));
+
+	foreach ([Endpoint::METHOD_GET, Endpoint::METHOD_DELETE] as $method) {
+		$entity = $entity->fromRequest($queryRequest->withMethod($method));
+
+		Assert::same(1, $entity->foo);
+	}
+
+	foreach ([Endpoint::METHOD_POST, Endpoint::METHOD_PUT, Endpoint::METHOD_PATCH] as $method) {
+		$entity = $entity->fromRequest($bodyRequest->withMethod($method));
+
+		Assert::same(1, $entity->foo);
+	}
 });

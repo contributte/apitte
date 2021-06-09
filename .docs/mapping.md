@@ -205,14 +205,9 @@ you should also install [contributte/validator](https://github.com/contributte/v
 ```yaml
 services:
     symfonyValidator:
-        factory: Apitte\Core\Mapping\Validator\SymfonyValidator(
-            Doctrine\Common\Annotations\AnnotationReader()
-        )
+        factory: Apitte\Core\Mapping\Validator\SymfonyValidator
         setup:
-            # simple constrained
-            - setConstraintValidatorFactory(Symfony\Component\Validator\ConstraintValidatorFactory())
-            # container based
-            - setConstraintValidatorFactory(Symfony\Component\Validator\ContainerConstraintValidatorFactory())
+            - setConstraintValidatorFactory(Contributte\Validator\ContainerConstraintValidatorFactory())
 api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:

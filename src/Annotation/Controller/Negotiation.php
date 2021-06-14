@@ -2,12 +2,13 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
  * @Target("ANNOTATION")
+ * @NamedArgumentConstructor()
  */
 final class Negotiation
 {
@@ -21,18 +22,11 @@ final class Negotiation
 	/** @var string|null */
 	private $renderer;
 
-	/**
-	 * @param mixed[] $values
-	 */
-	public function __construct(array $values)
+	public function __construct(string $suffix, bool $default = false, ?string $renderer = null)
 	{
-		if (!isset($values['suffix'])) {
-			throw new AnnotationException('Suffix is required at @Negotiation');
-		}
-
-		$this->suffix = $values['suffix'];
-		$this->default = $values['default'] ?? false;
-		$this->renderer = $values['renderer'] ?? null;
+		$this->suffix = $suffix;
+		$this->default = $default;
+		$this->renderer = $renderer;
 	}
 
 	public function getSuffix(): string

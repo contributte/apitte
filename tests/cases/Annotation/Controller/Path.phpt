@@ -12,21 +12,13 @@ use Tester\Assert;
 
 // OK
 test(function (): void {
-	$path = new Path([
-		'value' => 'FakePath',
-	]);
+	$path = new Path('FakePath');
 	Assert::same('FakePath', $path->getPath());
 });
 
 // Exception - empty path
 test(function (): void {
 	Assert::exception(function (): void {
-		new Path([
-			'value' => '',
-		]);
+		new Path('');
 	}, AnnotationException::class, 'Empty @Path given');
-
-	Assert::exception(function (): void {
-		new Path([]);
-	}, AnnotationException::class, 'No @Path given');
 });

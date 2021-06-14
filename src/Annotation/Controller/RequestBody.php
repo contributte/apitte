@@ -2,11 +2,13 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * @Annotation
  * @Target("METHOD")
+ * @NamedArgumentConstructor()
  */
 final class RequestBody
 {
@@ -23,15 +25,12 @@ final class RequestBody
 	/** @var bool */
 	private $validation;
 
-	/**
-	 * @param mixed[] $values
-	 */
-	public function __construct(array $values)
+	public function __construct(?string $description = null, ?string $entity = null, bool $required = false, bool $validation = true)
 	{
-		$this->description = $values['description'] ?? null;
-		$this->entity = $values['entity'] ?? null;
-		$this->required = $values['required'] ?? false;
-		$this->validation = $values['validation'] ?? true;
+		$this->description = $description;
+		$this->entity = $entity;
+		$this->required = $required;
+		$this->validation = $validation;
 	}
 
 	public function getEntity(): ?string

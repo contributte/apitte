@@ -12,10 +12,7 @@ use Tester\Assert;
 
 // OK
 test(function (): void {
-	$tag = new Tag([
-		'name' => 'name',
-		'value' => null,
-	]);
+	$tag = new Tag('name', null);
 
 	Assert::same('name', $tag->getName());
 	Assert::same(null, $tag->getValue());
@@ -24,15 +21,6 @@ test(function (): void {
 // Exception - empty name
 test(function (): void {
 	Assert::exception(function (): void {
-		new Tag([
-			'value' => null,
-		]);
-	}, AnnotationException::class, 'No @Tag name given');
-
-	Assert::exception(function (): void {
-		new Tag([
-			'name' => '',
-			'value' => null,
-		]);
+		new Tag('', null);
 	}, AnnotationException::class, 'Empty @Tag name given');
 });

@@ -2,12 +2,14 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
  * @Target("METHOD")
+ * @NamedArgumentConstructor()
  */
 final class Negotiations
 {
@@ -16,16 +18,11 @@ final class Negotiations
 	private $negotiations = [];
 
 	/**
-	 * @param mixed[] $values
+	 * @param Negotiation[]|Negotiation $negotiations
 	 */
-	public function __construct(array $values)
+	public function __construct($negotiations)
 	{
-		if (!isset($values['value'])) {
-			throw new AnnotationException('No @Negotiation given in @Negotiations');
-		}
-
-		$negotiations = $values['value'];
-		if ($negotiations === []) {
+		if (empty($negotiations)) {
 			throw new AnnotationException('Empty @Negotiations given');
 		}
 

@@ -15,20 +15,9 @@ use Tester\Assert;
 // OK
 test(function (): void {
 	$parameters = new RequestParameters([
-		'value' => [
-			$parameter1 = new RequestParameter([
-				'name' => 'foo',
-				'type' => EndpointParameter::TYPE_STRING,
-			]),
-			$parameter2 = new RequestParameter([
-				'name' => 'bar',
-				'type' => EndpointParameter::TYPE_STRING,
-			]),
-			$parameter3 = new RequestParameter([
-				'name' => 'baz',
-				'type' => EndpointParameter::TYPE_STRING,
-			]),
-		],
+		$parameter1 = new RequestParameter('foo', EndpointParameter::TYPE_STRING),
+		$parameter2 = new RequestParameter('bar', EndpointParameter::TYPE_STRING),
+		$parameter3 = new RequestParameter('baz', EndpointParameter::TYPE_STRING),
 	]);
 
 	Assert::same([$parameter1, $parameter2, $parameter3], $parameters->getParameters());
@@ -38,12 +27,6 @@ test(function (): void {
 test(function (): void {
 	Assert::exception(function (): void {
 		new RequestParameters([]);
-	}, AnnotationException::class, 'No @RequestParameter given in @RequestParameters');
-
-	Assert::exception(function (): void {
-		new RequestParameters([
-			'value' => [],
-		]);
 	}, AnnotationException::class, 'Empty @RequestParameters given');
 });
 
@@ -51,20 +34,28 @@ test(function (): void {
 test(function (): void {
 	Assert::exception(
 		function (): void {
-			new RequestParameters([
-				'value' => [
-					$parameter1 = new RequestParameter([
-						'name' => 'foo',
-						'type' => EndpointParameter::TYPE_STRING,
-						'in' => EndpointParameter::IN_QUERY,
-					]),
-					$parameter2 = new RequestParameter([
-						'name' => 'foo',
-						'type' => EndpointParameter::TYPE_INTEGER,
-						'in' => EndpointParameter::IN_QUERY,
-					]),
-				],
-			]);
+			new RequestParameters(
+				[
+					$parameter1 = new RequestParameter(
+						'foo',
+						EndpointParameter::TYPE_STRING,
+						false,
+						false,
+						false,
+						null,
+						EndpointParameter::IN_QUERY
+					),
+					$parameter2 = new RequestParameter(
+						'foo',
+						EndpointParameter::TYPE_INTEGER,
+						false,
+						false,
+						false,
+						null,
+						EndpointParameter::IN_QUERY
+					),
+				]
+			);
 		},
 		AnnotationException::class,
 		'Multiple @RequestParameter annotations with "name=foo" and "in=query" given. Each parameter must have unique combination of location and name.'

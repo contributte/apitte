@@ -12,18 +12,18 @@ use Tests\Fixtures\Mapping\Request\FooEntity;
 
 // OK
 test(function (): void {
-	$requestBody1 = new RequestBody([]);
+	$requestBody1 = new RequestBody();
 	Assert::same(null, $requestBody1->getEntity());
 	Assert::same(true, $requestBody1->isValidation());
 	Assert::same(null, $requestBody1->getDescription());
 	Assert::same(false, $requestBody1->isRequired());
 
-	$requestBody2 = new RequestBody([
-		'entity' => FooEntity::class,
-		'validation' => false,
-		'required' => true,
-		'description' => 'description',
-	]);
+	$requestBody2 = new RequestBody(
+		'description',
+		FooEntity::class,
+		true,
+		false
+	);
 	Assert::same(FooEntity::class, $requestBody2->getEntity());
 	Assert::same(false, $requestBody2->isValidation());
 	Assert::same('description', $requestBody2->getDescription());

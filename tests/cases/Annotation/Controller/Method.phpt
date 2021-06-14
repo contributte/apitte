@@ -12,10 +12,10 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 // Ok
 test(function (): void {
-	$method = new Method(['value' => 'GET']);
+	$method = new Method('GET');
 	Assert::equal(['GET'], $method->getMethods());
 
-	$method = new Method(['value' => ['GET', 'POST']]);
+	$method = new Method(['GET', 'POST']);
 	Assert::equal(['GET', 'POST'], $method->getMethods());
 });
 
@@ -23,13 +23,9 @@ test(function (): void {
 test(function (): void {
 	Assert::exception(function (): void {
 		new Method([]);
-	}, AnnotationException::class, 'No @Method given');
-
-	Assert::exception(function (): void {
-		new Method(['value' => []]);
 	}, AnnotationException::class, 'Empty @Method given');
 
 	Assert::exception(function (): void {
-		new Method(['value' => '']);
+		new Method('');
 	}, AnnotationException::class, 'Empty @Method given');
 });

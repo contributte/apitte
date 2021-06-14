@@ -14,20 +14,9 @@ use Tester\Assert;
 // OK
 test(function (): void {
 	$negotiations = new Negotiations([
-		'value' => [
-			$negotiation1 = new Negotiation([
-				'suffix' => 'json',
-				'default' => true,
-			]),
-			$negotiation2 = new Negotiation([
-				'suffix' => 'xml',
-				'default' => false,
-			]),
-			$negotiation3 = new Negotiation([
-				'suffix' => 'csv',
-				'default' => false,
-			]),
-		],
+		$negotiation1 = new Negotiation('json', true),
+		$negotiation2 = new Negotiation('xml', false),
+		$negotiation3 = new Negotiation('csv', false),
 	]);
 
 	Assert::same([$negotiation1, $negotiation2, $negotiation3], $negotiations->getNegotiations());
@@ -36,12 +25,6 @@ test(function (): void {
 // Exception - empty negotiations
 test(function (): void {
 	Assert::exception(function (): void {
-		new Negotiations([
-			'value' => [],
-		]);
-	}, AnnotationException::class, 'Empty @Negotiations given');
-
-	Assert::exception(function (): void {
 		new Negotiations([]);
-	}, AnnotationException::class, 'No @Negotiation given in @Negotiations');
+	}, AnnotationException::class, 'Empty @Negotiations given');
 });

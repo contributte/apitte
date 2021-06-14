@@ -3,12 +3,14 @@
 namespace Apitte\Core\Annotation\Controller;
 
 use Apitte\Core\Schema\EndpointParameter;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
  * @Target("ANNOTATION")
+ * @NamedArgumentConstructor()
  */
 final class RequestParameter
 {
@@ -34,36 +36,31 @@ final class RequestParameter
 	/** @var bool */
 	private $allowEmpty;
 
-	/**
-	 * @param mixed[] $values
-	 */
-	public function __construct(array $values)
+	public function __construct(
+		string $name,
+		string $type,
+		bool $required = true,
+		bool $allowEmpty = false,
+		bool $deprecated = false,
+		?string $description = null,
+		string $in = EndpointParameter::IN_PATH
+	)
 	{
-		if (!isset($values['name'])) {
-			throw new AnnotationException('No @RequestParameter name given');
-		}
-
-		$name = $values['name'];
-		if (empty($name)) {
+		if ($name === '') {
 			throw new AnnotationException('Empty @RequestParameter name given');
 		}
 
-		if (!isset($values['type'])) {
-			throw new AnnotationException('No @RequestParameter type given');
-		}
-
-		$type = $values['type'];
-		if (empty($type)) {
+		if ($type === '') {
 			throw new AnnotationException('Empty @RequestParameter type given');
 		}
 
 		$this->name = $name;
 		$this->type = $type;
-		$this->required = $values['required'] ?? true;
-		$this->allowEmpty = $values['allowEmpty'] ?? false;
-		$this->deprecated = $values['deprecated'] ?? false;
-		$this->description = $values['description'] ?? null;
-		$this->in = $values['in'] ?? EndpointParameter::IN_PATH;
+		$this->required = $required;
+		$this->allowEmpty = $allowEmpty;
+		$this->deprecated = $deprecated;
+		$this->description = $description;
+		$this->in = $in;
 	}
 
 	public function getName(): string

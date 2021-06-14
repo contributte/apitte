@@ -2,12 +2,14 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
  * @Target({"CLASS","METHOD"})
+ * @NamedArgumentConstructor()
  */
 final class Id
 {
@@ -15,21 +17,13 @@ final class Id
 	/** @var string */
 	private $name;
 
-	/**
-	 * @param array<string, mixed|null> $values
-	 */
-	public function __construct(array $values)
+	public function __construct(string $name)
 	{
-		if (!isset($values['value'])) {
-			throw new AnnotationException('No @Id given');
-		}
-
-		$value = $values['value'];
-		if (empty($value)) {
+		if ($name === '') {
 			throw new AnnotationException('Empty @Id given');
 		}
 
-		$this->name = $value;
+		$this->name = $name;
 	}
 
 	public function getName(): string

@@ -2,12 +2,14 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
  * @Target("METHOD")
+ * @NamedArgumentConstructor()
  */
 final class Responses
 {
@@ -16,16 +18,11 @@ final class Responses
 	private $responses = [];
 
 	/**
-	 * @param mixed[] $values
+	 * @param Response[]|Response $responses
 	 */
-	public function __construct(array $values)
+	public function __construct($responses)
 	{
-		if (!isset($values['value'])) {
-			throw new AnnotationException('No @Response given in @Responses');
-		}
-
-		$responses = $values['value'];
-		if ($responses === []) {
+		if (empty($responses)) {
 			throw new AnnotationException('Empty @Responses given');
 		}
 
@@ -35,6 +32,7 @@ final class Responses
 		}
 
 		$takenCodes = [];
+
 		/** @var Response $response */
 		foreach ($responses as $response) {
 			if (!isset($takenCodes[$response->getCode()])) {

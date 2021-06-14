@@ -2,12 +2,14 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
  * @Target({"CLASS", "METHOD"})
+ * @NamedArgumentConstructor()
  */
 final class Tag
 {
@@ -18,26 +20,14 @@ final class Tag
 	/** @var string|null */
 	private $value;
 
-	/**
-	 * @param mixed[] $values
-	 */
-	public function __construct(array $values)
+	public function __construct(string $name, ?string $value = null)
 	{
-		if (isset($values['value']) && !isset($values['name'])) {
-			$values['name'] = $values['value'];
-		}
-
-		if (!isset($values['name'])) {
-			throw new AnnotationException('No @Tag name given');
-		}
-
-		$name = $values['name'];
-		if (empty($name)) {
+		if ($name === '') {
 			throw new AnnotationException('Empty @Tag name given');
 		}
 
 		$this->name = $name;
-		$this->value = $values['value'] ?? null;
+		$this->value = $value;
 	}
 
 	public function getName(): string

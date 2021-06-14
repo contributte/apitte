@@ -12,21 +12,13 @@ use Tester\Assert;
 
 // Value
 test(function (): void {
-	$id = new Id([
-		'value' => 'id',
-	]);
+	$id = new Id('id');
 	Assert::same('id', $id->getName());
 });
 
 // Exception - no name
 test(function (): void {
 	Assert::exception(function (): void {
-		new Id([
-			'value' => '',
-		]);
+		new Id('');
 	}, AnnotationException::class, 'Empty @Id given');
-
-	Assert::exception(function (): void {
-		new Id([]);
-	}, AnnotationException::class, 'No @Id given');
 });

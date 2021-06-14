@@ -2,12 +2,14 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
  * @Target("METHOD")
+ * @NamedArgumentConstructor()
  */
 class RequestParameters
 {
@@ -16,16 +18,11 @@ class RequestParameters
 	private $parameters = [];
 
 	/**
-	 * @param mixed[] $values
+	 * @param RequestParameter[]|RequestParameter $parameters
 	 */
-	public function __construct(array $values)
+	public function __construct($parameters)
 	{
-		if (!isset($values['value'])) {
-			throw new AnnotationException('No @RequestParameter given in @RequestParameters');
-		}
-
-		$parameters = $values['value'];
-		if ($parameters === []) {
+		if (empty($parameters)) {
 			throw new AnnotationException('Empty @RequestParameters given');
 		}
 
@@ -35,7 +32,7 @@ class RequestParameters
 		}
 
 		$takenNames = [];
-		/** @var RequestParameter $parameter */
+
 		foreach ($parameters as $parameter) {
 			if (!isset($takenNames[$parameter->getIn()][$parameter->getName()])) {
 				$takenNames[$parameter->getIn()][$parameter->getName()] = $parameter;

@@ -27,6 +27,7 @@
     "ext-json": "*",
     "contributte/psr7-http-message": "~0.7.0",
     "doctrine/annotations": "^1.13",
+    "koriym/attributes": "^1.0",
     "nette/utils": "^3.0.3"
   },
   "require-dev": {

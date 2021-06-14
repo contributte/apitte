@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Attribute;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
@@ -11,6 +12,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Target("ANNOTATION")
  * @NamedArgumentConstructor()
  */
+#[Attribute(Attribute::TARGET_CLASS)]
 final class RequestParameter
 {
 

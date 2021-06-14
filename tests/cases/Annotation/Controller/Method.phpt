@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 
 // Ok
 test(function (): void {
-	$method = new Method('GET');
+	$method = new Method(['GET']);
 	Assert::equal(['GET'], $method->getMethods());
 
 	$method = new Method(['GET', 'POST']);

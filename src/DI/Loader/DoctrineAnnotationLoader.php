@@ -11,13 +11,13 @@ use Apitte\Core\Annotation\Controller\RequestBody;
 use Apitte\Core\Annotation\Controller\RequestParameters;
 use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Tag;
+use Apitte\Core\DI\LoaderFactory\DualReaderFactory;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\UI\Controller\IController;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\Common\Annotations\Reader;
 use Nette\Neon\Neon;
 use ReflectionClass;
 use ReflectionMethod;
@@ -25,7 +25,7 @@ use ReflectionMethod;
 final class DoctrineAnnotationLoader extends AbstractContainerLoader
 {
 
-	/** @var AnnotationReader|null */
+	/** @var Reader|null */
 	private $reader;
 
 	/** @var mixed[] */
@@ -270,18 +270,16 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$negotiation->setDefault($n->isDefault());
 						$negotiation->setRenderer($n->getRenderer());
 					}
-
-					continue;
 				}
 			}
 		}
 	}
 
-	private function getReader(): AnnotationReader
+	private function getReader(): Reader
 	{
 		if (!$this->reader) {
-			AnnotationRegistry::registerUniqueLoader('class_exists');
-			$this->reader = new AnnotationReader();
+			$dualReaderFactory = new DualReaderFactory();
+			$this->reader = $dualReaderFactory->create();
 		}
 
 		return $this->reader;

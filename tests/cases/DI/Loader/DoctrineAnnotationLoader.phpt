@@ -7,12 +7,14 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
+use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\UI\Controller\IController;
 use Nette\DI\ContainerBuilder;
-use Nette\DI\ServiceDefinition;
+use Nette\DI\Definitions\ServiceDefinition;
 use Tester\Assert;
-use Tests\Fixtures\Controllers\FoobarController;
+use Tests\Fixtures\Controllers\AnnotationFoobarController;
+use Tests\Fixtures\Controllers\AttributeFoobarController;
 
 // Check if controller is found
 test(function (): void {
@@ -23,7 +25,7 @@ test(function (): void {
 		->andReturnUsing(function (): array {
 			$controllers = [];
 			$controllers[] = $c1 = new ServiceDefinition();
-			$c1->setClass(FoobarController::class);
+			$c1->setType(AnnotationFoobarController::class);
 
 			return $controllers;
 		});
@@ -39,19 +41,26 @@ test(function (): void {
 // Parse annotations
 test(function (): void {
 	$builder = new ContainerBuilder();
-	$builder->addDefinition('foobar')
-		->setClass(FoobarController::class);
+	$builder->addDefinition('annotation_controller')
+		->setType(AnnotationFoobarController::class);
+	$builder->addDefinition('attribute_controller')
+		->setType(AttributeFoobarController::class);
 
 	$loader = new DoctrineAnnotationLoader($builder);
 	$schemaBuilder = $loader->load(new SchemaBuilder());
 
 	Assert::type(SchemaBuilder::class, $schemaBuilder);
-	Assert::count(1, $schemaBuilder->getControllers());
+	Assert::count(2, $schemaBuilder->getControllers());
 
 	$controllers = $schemaBuilder->getControllers();
-	$controller = array_pop($controllers);
 
-	Assert::equal(FoobarController::class, $controller->getClass());
+	foreach ($controllers as $controller) {
+		testController($controller);
+	}
+});
+
+function testController(Controller $controller): void
+{
 	Assert::equal('/foobar', $controller->getPath());
 	Assert::equal('foobar', $controller->getId());
 
@@ -76,4 +85,4 @@ test(function (): void {
 
 	Assert::equal(['testapi'], $controller->getGroupIds());
 	Assert::equal(['/api', '/v1'], $controller->getGroupPaths());
-});
+}

@@ -22,6 +22,10 @@
 		<exclude-pattern>src/Exception/ExceptionExtra.php</exclude-pattern>
 	</rule>
 
+	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse">
+		<exclude-pattern>tests/fixtures/Controllers/AttributeFoobarController.php</exclude-pattern>
+	</rule>
+
 	<rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
 		<exclude-pattern>*tests/cases/*</exclude-pattern>
 	</rule>

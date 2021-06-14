@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Attribute;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
@@ -11,6 +12,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Target({"CLASS","METHOD"})
  * @NamedArgumentConstructor()
  */
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class Path
 {
 

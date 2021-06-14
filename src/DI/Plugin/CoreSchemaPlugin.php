@@ -114,7 +114,6 @@ class CoreSchemaPlugin extends Plugin
 
 		if ($loaders->annotations->enable) {
 			$loader = new DoctrineAnnotationLoader($this->getContainerBuilder());
-
 			$builder = $loader->load($builder);
 		}
 

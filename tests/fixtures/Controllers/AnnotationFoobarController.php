@@ -13,7 +13,7 @@ use Apitte\Core\Http\ApiResponse;
  * @Path("/foobar")
  * @Id("foobar")
  */
-final class FoobarController extends ApiV1Controller
+final class AnnotationFoobarController extends ApiV1Controller
 {
 
 	/**

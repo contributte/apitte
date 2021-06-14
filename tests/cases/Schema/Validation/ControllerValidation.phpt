@@ -10,14 +10,14 @@ use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\ControllerValidation;
 use Tester\Assert;
-use Tests\Fixtures\Controllers\FoobarController;
+use Tests\Fixtures\Controllers\AnnotationFoobarController;
 
 // Validate: success
 test(function (): void {
 	$validation = new ControllerValidation();
 	$builder = new SchemaBuilder();
 
-	$builder->addController(FoobarController::class);
+	$builder->addController(AnnotationFoobarController::class);
 
 	Assert::noError(function () use ($validation, $builder): void {
 		$validation->validate($builder);

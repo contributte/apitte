@@ -2,7 +2,6 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
-use Apitte\Core\Schema\EndpointParameter;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;

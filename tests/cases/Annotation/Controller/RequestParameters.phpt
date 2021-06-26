@@ -46,8 +46,7 @@ test(function (): void {
 					EndpointParameter::TYPE_INTEGER,
 					EndpointParameter::IN_QUERY,
 					false
-				)]
-			);
+				)]);
 		},
 		AnnotationException::class,
 		'Multiple @RequestParameter annotations with "name=foo" and "in=query" given. Each parameter must have unique combination of location and name.'

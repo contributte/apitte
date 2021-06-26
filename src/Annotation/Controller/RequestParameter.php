@@ -39,11 +39,11 @@ final class RequestParameter
 	public function __construct(
 		string $name,
 		string $type,
+		string $in,
 		bool $required = true,
 		bool $allowEmpty = false,
 		bool $deprecated = false,
-		?string $description = null,
-		string $in = EndpointParameter::IN_PATH
+		?string $description = null
 	)
 	{
 		if ($name === '') {

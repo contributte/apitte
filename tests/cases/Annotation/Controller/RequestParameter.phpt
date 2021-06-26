@@ -16,11 +16,11 @@ test(function (): void {
 	$requestParameter = new RequestParameter(
 		'Parameter',
 		EndpointParameter::TYPE_STRING,
+		EndpointParameter::IN_QUERY,
 		true,
 		false,
 		false,
-		'Desc',
-		EndpointParameter::IN_QUERY
+		'Desc'
 	);
 
 	Assert::same('Parameter', $requestParameter->getName());
@@ -32,6 +32,6 @@ test(function (): void {
 // Exception - no type
 test(function (): void {
 	Assert::exception(function (): void {
-		new RequestParameter('Param', '');
+		new RequestParameter('Param', '', EndpointParameter::IN_PATH);
 	}, AnnotationException::class, 'Empty @RequestParameter type given');
 });

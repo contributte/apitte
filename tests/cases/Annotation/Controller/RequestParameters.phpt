@@ -15,9 +15,9 @@ use Tester\Assert;
 // OK
 test(function (): void {
 	$parameters = new RequestParameters([
-		$parameter1 = new RequestParameter('foo', EndpointParameter::TYPE_STRING),
-		$parameter2 = new RequestParameter('bar', EndpointParameter::TYPE_STRING),
-		$parameter3 = new RequestParameter('baz', EndpointParameter::TYPE_STRING),
+		$parameter1 = new RequestParameter('foo', EndpointParameter::TYPE_STRING, EndpointParameter::IN_PATH),
+		$parameter2 = new RequestParameter('bar', EndpointParameter::TYPE_STRING, EndpointParameter::IN_PATH),
+		$parameter3 = new RequestParameter('baz', EndpointParameter::TYPE_STRING, EndpointParameter::IN_PATH),
 	]);
 
 	Assert::same([$parameter1, $parameter2, $parameter3], $parameters->getParameters());
@@ -34,27 +34,19 @@ test(function (): void {
 test(function (): void {
 	Assert::exception(
 		function (): void {
-			new RequestParameters(
-				[
-					$parameter1 = new RequestParameter(
-						'foo',
-						EndpointParameter::TYPE_STRING,
-						false,
-						false,
-						false,
-						null,
-						EndpointParameter::IN_QUERY
-					),
-					$parameter2 = new RequestParameter(
-						'foo',
-						EndpointParameter::TYPE_INTEGER,
-						false,
-						false,
-						false,
-						null,
-						EndpointParameter::IN_QUERY
-					),
-				]
+			new RequestParameters([
+				$parameter1 = new RequestParameter(
+					'foo',
+					EndpointParameter::TYPE_STRING,
+					EndpointParameter::IN_QUERY,
+					false
+				),
+				$parameter2 = new RequestParameter(
+					'foo',
+					EndpointParameter::TYPE_INTEGER,
+					EndpointParameter::IN_QUERY,
+					false
+				)]
 			);
 		},
 		AnnotationException::class,

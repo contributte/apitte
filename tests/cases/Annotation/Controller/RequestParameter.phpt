@@ -13,12 +13,15 @@ use Tester\Assert;
 
 // OK
 test(function (): void {
-	$requestParameter = new RequestParameter([
-		'name' => 'Parameter',
-		'description' => 'Desc',
-		'type' => EndpointParameter::TYPE_STRING,
-		'in' => EndpointParameter::IN_QUERY,
-	]);
+	$requestParameter = new RequestParameter(
+		'Parameter',
+		EndpointParameter::TYPE_STRING,
+		EndpointParameter::IN_QUERY,
+		true,
+		false,
+		false,
+		'Desc'
+	);
 
 	Assert::same('Parameter', $requestParameter->getName());
 	Assert::same('Desc', $requestParameter->getDescription());
@@ -26,31 +29,9 @@ test(function (): void {
 	Assert::same(EndpointParameter::IN_QUERY, $requestParameter->getIn());
 });
 
-// Exception - no name
-test(function (): void {
-	Assert::exception(function (): void {
-		new RequestParameter([]);
-	}, AnnotationException::class, 'No @RequestParameter name given');
-
-	Assert::exception(function (): void {
-		new RequestParameter([
-			'name' => '',
-		]);
-	}, AnnotationException::class, 'Empty @RequestParameter name given');
-});
-
 // Exception - no type
 test(function (): void {
 	Assert::exception(function (): void {
-		new RequestParameter([
-			'name' => 'Param',
-		]);
-	}, AnnotationException::class, 'No @RequestParameter type given');
-
-	Assert::exception(function (): void {
-		new RequestParameter([
-			'name' => 'Param',
-			'type' => '',
-		]);
+		new RequestParameter('Param', '', EndpointParameter::IN_PATH);
 	}, AnnotationException::class, 'Empty @RequestParameter type given');
 });

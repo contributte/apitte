@@ -2,12 +2,14 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
  * @Target("ANNOTATION")
+ * @NamedArgumentConstructor()
  */
 final class Response
 {
@@ -21,22 +23,14 @@ final class Response
 	/** @var string|null */
 	private $entity;
 
-	/**
-	 * @param mixed[] $values
-	 */
-	public function __construct(array $values)
+	public function __construct(string $description, string $code = 'default', ?string $entity = null)
 	{
-		if (!isset($values['description'])) {
-			throw new AnnotationException('No @Response description given');
-		}
-
-		$description = $values['description'];
 		if (empty($description)) {
 			throw new AnnotationException('Empty @Response description given');
 		}
 
-		$this->code = $values['code'] ?? 'default';
-		$this->entity = $values['entity'] ?? null;
+		$this->code = $code;
+		$this->entity = $entity;
 		$this->description = $description;
 	}
 

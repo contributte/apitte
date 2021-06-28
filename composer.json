@@ -26,7 +26,7 @@
     "php": ">=7.2",
     "ext-json": "*",
     "contributte/psr7-http-message": "~0.7.0",
-    "doctrine/annotations": "^1.8.0",
+    "doctrine/annotations": "^1.13",
     "nette/utils": "^3.0.3"
   },
   "require-dev": {

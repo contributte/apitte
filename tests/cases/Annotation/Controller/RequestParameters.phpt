@@ -15,20 +15,9 @@ use Tester\Assert;
 // OK
 test(function (): void {
 	$parameters = new RequestParameters([
-		'value' => [
-			$parameter1 = new RequestParameter([
-				'name' => 'foo',
-				'type' => EndpointParameter::TYPE_STRING,
-			]),
-			$parameter2 = new RequestParameter([
-				'name' => 'bar',
-				'type' => EndpointParameter::TYPE_STRING,
-			]),
-			$parameter3 = new RequestParameter([
-				'name' => 'baz',
-				'type' => EndpointParameter::TYPE_STRING,
-			]),
-		],
+		$parameter1 = new RequestParameter('foo', EndpointParameter::TYPE_STRING, EndpointParameter::IN_PATH),
+		$parameter2 = new RequestParameter('bar', EndpointParameter::TYPE_STRING, EndpointParameter::IN_PATH),
+		$parameter3 = new RequestParameter('baz', EndpointParameter::TYPE_STRING, EndpointParameter::IN_PATH),
 	]);
 
 	Assert::same([$parameter1, $parameter2, $parameter3], $parameters->getParameters());
@@ -38,12 +27,6 @@ test(function (): void {
 test(function (): void {
 	Assert::exception(function (): void {
 		new RequestParameters([]);
-	}, AnnotationException::class, 'No @RequestParameter given in @RequestParameters');
-
-	Assert::exception(function (): void {
-		new RequestParameters([
-			'value' => [],
-		]);
 	}, AnnotationException::class, 'Empty @RequestParameters given');
 });
 
@@ -52,19 +35,18 @@ test(function (): void {
 	Assert::exception(
 		function (): void {
 			new RequestParameters([
-				'value' => [
-					$parameter1 = new RequestParameter([
-						'name' => 'foo',
-						'type' => EndpointParameter::TYPE_STRING,
-						'in' => EndpointParameter::IN_QUERY,
-					]),
-					$parameter2 = new RequestParameter([
-						'name' => 'foo',
-						'type' => EndpointParameter::TYPE_INTEGER,
-						'in' => EndpointParameter::IN_QUERY,
-					]),
-				],
-			]);
+				$parameter1 = new RequestParameter(
+					'foo',
+					EndpointParameter::TYPE_STRING,
+					EndpointParameter::IN_QUERY,
+					false
+				),
+				$parameter2 = new RequestParameter(
+					'foo',
+					EndpointParameter::TYPE_INTEGER,
+					EndpointParameter::IN_QUERY,
+					false
+				)]);
 		},
 		AnnotationException::class,
 		'Multiple @RequestParameter annotations with "name=foo" and "in=query" given. Each parameter must have unique combination of location and name.'

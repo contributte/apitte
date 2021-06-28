@@ -2,11 +2,13 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * @Annotation
  * @Target({"CLASS","METHOD"})
+ * @NamedArgumentConstructor()
  */
 final class OpenApi
 {
@@ -14,12 +16,9 @@ final class OpenApi
 	/** @var string */
 	private $data;
 
-	/**
-	 * @param mixed[] $data
-	 */
-	public function __construct(array $data)
+	public function __construct(string $data)
 	{
-		$this->data = $this->purifyDocblock($data['value']);
+		$this->data = $this->purifyDocblock($data);
 	}
 
 	public function getData(): string

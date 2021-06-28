@@ -2,12 +2,14 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Doctrine\Common\Annotations\AnnotationException;
 
 /**
  * @Annotation
  * @Target({"CLASS","METHOD"})
+ * @NamedArgumentConstructor()
  */
 final class Path
 {
@@ -15,21 +17,13 @@ final class Path
 	/** @var string */
 	private $path;
 
-	/**
-	 * @param mixed[] $values
-	 */
-	public function __construct(array $values)
+	public function __construct(string $path)
 	{
-		if (!isset($values['value'])) {
-			throw new AnnotationException('No @Path given');
-		}
-
-		$value = $values['value'];
-		if (empty($value)) {
+		if ($path === '') {
 			throw new AnnotationException('Empty @Path given');
 		}
 
-		$this->path = $value;
+		$this->path = $path;
 	}
 
 	public function getPath(): string

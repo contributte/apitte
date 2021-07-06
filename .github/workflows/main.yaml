@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: ["7.4"]
+        php-version: ["8.0"]
         operating-system: ["ubuntu-latest"]
       fail-fast: false
 
@@ -82,7 +82,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: ["7.4"]
+        php-version: ["8.0"]
         operating-system: ["ubuntu-latest"]
       fail-fast: false
 
@@ -138,19 +138,14 @@ jobs:
 
     strategy:
       matrix:
-        php-version: ["7.3", "7.4"]
+        php-version: ["7.4", "8.0"]
         operating-system: ["ubuntu-latest"]
         composer-args: [ "" ]
         include:
           - php-version: "7.3"
             operating-system: "ubuntu-latest"
             composer-args: "--prefer-lowest"
-          - php-version: "8.0"
-            operating-system: "ubuntu-latest"
-            composer-args: ""
       fail-fast: false
-
-    continue-on-error: "${{ matrix.php-version == '8.0' }}"
 
     steps:
       - name: "Checkout"
@@ -207,7 +202,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: ["7.4"]
+        php-version: ["8.0"]
         operating-system: ["ubuntu-latest"]
       fail-fast: false
 

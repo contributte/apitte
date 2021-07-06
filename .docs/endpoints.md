@@ -13,6 +13,7 @@ Create base controller with root path to your api
 ```php
 namespace App\Api\V1\Controllers;
 
+use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\UI\Controller\IController;
 
 /**
@@ -81,7 +82,9 @@ class UsersController extends BaseV1Controller
 
 **Tip** Use the `@Path("/")` annotation on a Controller and its method to target the homepage, e.q. `example.com/`.
 
-### List of annotations
+### List of annotations / attributes
+
+> You can use seamless PHP 8 attributes.
 
 `@Id`
   - Must consist only of following characters: `a-z`, `A-Z`, `0-9`, `_`
@@ -102,7 +105,7 @@ class UsersController extends BaseV1Controller
   - `@Method("GET")`
   - `@Method({"POST", "PUT"})`
   - Defined on method
-  
+
 `@Tag`
   - Used by [OpenApi](schema.md#openapi)
   - Could by also used by your custom logic

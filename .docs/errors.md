@@ -28,6 +28,7 @@ Default error handler
   - ApiException (and inherited errors like ClientErrorException) message, context and code are used directly in response
   - For other (non-api) errors is used generic message described bellow
   - Context is send only if is not empty
+
     ```json
     {
       "status": "error",
@@ -36,6 +37,7 @@ Default error handler
       "context": []
     }
     ```
+
 - Allows rethrow error in debug mode (see catchException option in [setup](setup.md))
 
 ### PsrLogErrorHandler

@@ -57,9 +57,9 @@ class EnsureTagIsDefinedValidation implements IValidation
 
     public function validate(SchemaBuilder $builder): void
     {
-    	foreach ($builder->getControllers() as $controller) {
-    		// Get tags from controller and controller methods, check if any available...
-    	}
+        foreach ($builder->getControllers() as $controller) {
+            // Get tags from controller and controller methods, check if any available...
+        }
     }
 
 }

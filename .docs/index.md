@@ -28,9 +28,9 @@ use App\Bootstrap;
 require __DIR__ . '/../vendor/autoload.php';
 
 Bootstrap::boot()
-	->createContainer()
-	->getByType(IApplication::class)
-	->run();
+    ->createContainer()
+    ->getByType(IApplication::class)
+    ->run();
 ```
 
 ## Usage in combination with nette application
@@ -131,10 +131,10 @@ use Apitte\Core\DI\Plugin\Plugin;
 
 class YourAmazingPlugin extends Plugin
 {
-	
-	public static function getName() : string
-	{
-		return 'pluginName';
+
+    public static function getName() : string
+    {
+        return 'pluginName';
     }
 
     // Add new services, override existing or whatever you want

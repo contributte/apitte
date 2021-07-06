@@ -35,15 +35,16 @@ final class AttributeFoobarController extends ApiV1Controller
 
 	#[Path('/openapi')]
 	#[Method(['PUT'])]
-	#[OpenApi('
-foo:
-	bar: baz
-lorem:
-	- ipsum
-	- dolor
-	- sit
-	- amet
-	 ')]
+	#[OpenApi(<<<'DOC'
+		foo:
+			bar: baz
+		lorem:
+			- ipsum
+			- dolor
+			- sit
+			- amet
+	DOC
+	)]
 	public function openapi(ApiRequest $request, ApiResponse $response): void
 	{
 	}

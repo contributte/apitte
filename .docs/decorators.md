@@ -135,7 +135,7 @@ use Apitte\Core\Schema\Endpoint;
 $endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 
 if ($endpoint->hasTag('noAuthentication')) {
-	// Don't authenticate
+    // Don't authenticate
 }
 ```
 
@@ -200,7 +200,7 @@ use Throwable;
 
 class ExampleExceptionDecorator implements IErrorDecorator
 {
-    
+
     public function decorateError(ApiRequest $request, ApiResponse $response, Throwable $error): ApiResponse
     {
         $response = $this->errorToResponse($response, $error);

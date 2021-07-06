@@ -14,6 +14,7 @@ use Nette\DI\ContainerBuilder;
 use Nette\DI\Definitions\ServiceDefinition;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\AnnotationFoobarController;
+use Tests\Fixtures\Controllers\ApiV1Controller;
 use Tests\Fixtures\Controllers\AttributeFoobarController;
 
 // Check if controller is found
@@ -43,18 +44,23 @@ test(function (): void {
 	$builder = new ContainerBuilder();
 	$builder->addDefinition('annotation_controller')
 		->setType(AnnotationFoobarController::class);
-	$builder->addDefinition('attribute_controller')
-		->setType(AttributeFoobarController::class);
+
+	// include attribute controller only on PHP 8.0 and up
+	if (PHP_VERSION_ID >= 80000) {
+		$builder->addDefinition('attribute_controller')
+			->setType(AttributeFoobarController::class);
+	}
 
 	$loader = new DoctrineAnnotationLoader($builder);
 	$schemaBuilder = $loader->load(new SchemaBuilder());
 
 	Assert::type(SchemaBuilder::class, $schemaBuilder);
-	Assert::count(2, $schemaBuilder->getControllers());
+	Assert::count(count($builder->findByType(ApiV1Controller::class)), $schemaBuilder->getControllers());
 
 	$controllers = $schemaBuilder->getControllers();
 
 	foreach ($controllers as $controller) {
+
 		testController($controller);
 	}
 });

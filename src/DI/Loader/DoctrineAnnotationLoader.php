@@ -4,11 +4,14 @@ namespace Apitte\Core\DI\Loader;
 
 use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
+use Apitte\Core\Annotation\Controller\Negotiation;
 use Apitte\Core\Annotation\Controller\Negotiations;
 use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestBody;
+use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Annotation\Controller\RequestParameters;
+use Apitte\Core\Annotation\Controller\Response;
 use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\DI\LoaderFactory\DualReaderFactory;
@@ -236,13 +239,32 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 					continue;
 				}
 
-				// Parse @Response ================
+				// Parse #[RequestParameter] ================
+				if ($annotation instanceof RequestParameter) {
+					$parameter = $schemaMethod->addParameter($annotation->getName(), $annotation->getType());
+					$parameter->setDescription($annotation->getDescription());
+					$parameter->setIn($annotation->getIn());
+					$parameter->setRequired($annotation->isRequired());
+					$parameter->setDeprecated($annotation->isDeprecated());
+					$parameter->setAllowEmpty($annotation->isAllowEmpty());
+
+					continue;
+				}
+
+				// Parse @Responses ================
 				if ($annotation instanceof Responses) {
 					foreach ($annotation->getResponses() as $r) {
 						$response = $schemaMethod->addResponse($r->getCode(), $r->getDescription());
 						$response->setEntity($r->getEntity());
 					}
 
+					continue;
+				}
+
+				// Parse #[Response] attribute
+				if ($annotation instanceof Response) {
+					$response = $schemaMethod->addResponse($annotation->getCode(), $annotation->getDescription());
+					$response->setEntity($annotation->getEntity());
 					continue;
 				}
 
@@ -270,6 +292,13 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 						$negotiation->setDefault($n->isDefault());
 						$negotiation->setRenderer($n->getRenderer());
 					}
+				}
+
+				// Parse #[Negotiation] =====================
+				if ($annotation instanceof Negotiation) {
+					$negotiation = $schemaMethod->addNegotiation($annotation->getSuffix());
+					$negotiation->setDefault($annotation->isDefault());
+					$negotiation->setRenderer($annotation->getRenderer());
 				}
 			}
 		}

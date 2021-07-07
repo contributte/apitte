@@ -278,18 +278,14 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse @Negotiations =====================
 				if ($annotation instanceof Negotiations) {
-					foreach ($annotation->getNegotiations() as $n) {
-						$negotiation = $schemaMethod->addNegotiation($n->getSuffix());
-						$negotiation->setDefault($n->isDefault());
-						$negotiation->setRenderer($n->getRenderer());
+					foreach ($annotation->getNegotiations() as $negotiation) {
+						$this->addNegotiationToSchemaMethod($schemaMethod, $negotiation);
 					}
 				}
 
 				// Parse #[Negotiation] =====================
 				if ($annotation instanceof Negotiation) {
-					$negotiation = $schemaMethod->addNegotiation($annotation->getSuffix());
-					$negotiation->setDefault($annotation->isDefault());
-					$negotiation->setRenderer($annotation->getRenderer());
+					$this->addNegotiationToSchemaMethod($schemaMethod, $annotation);
 				}
 			}
 		}
@@ -314,6 +310,13 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		$parameter->setRequired($requestParameter->isRequired());
 		$parameter->setDeprecated($requestParameter->isDeprecated());
 		$parameter->setAllowEmpty($requestParameter->isAllowEmpty());
+	}
+
+	private function addNegotiationToSchemaMethod(SchemaMethod $schemaMethod, Negotiation $negotiation): void
+	{
+		$endpointNegotiation = $schemaMethod->addNegotiation($negotiation->getSuffix());
+		$endpointNegotiation->setDefault($negotiation->isDefault());
+		$endpointNegotiation->setRenderer($negotiation->getRenderer());
 	}
 
 }

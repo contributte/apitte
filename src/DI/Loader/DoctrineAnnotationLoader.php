@@ -244,9 +244,8 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse @Responses ================
 				if ($annotation instanceof Responses) {
-					foreach ($annotation->getResponses() as $r) {
-						$response = $schemaMethod->addResponse($r->getCode(), $r->getDescription());
-						$response->setEntity($r->getEntity());
+					foreach ($annotation->getResponses() as $response) {
+						$this->addResponseToSchemaMethod($schemaMethod, $response);
 					}
 
 					continue;
@@ -254,8 +253,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse #[Response] attribute
 				if ($annotation instanceof Response) {
-					$response = $schemaMethod->addResponse($annotation->getCode(), $annotation->getDescription());
-					$response->setEntity($annotation->getEntity());
+					$this->addResponseToSchemaMethod($schemaMethod, $annotation);
 					continue;
 				}
 
@@ -317,6 +315,12 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		$endpointNegotiation = $schemaMethod->addNegotiation($negotiation->getSuffix());
 		$endpointNegotiation->setDefault($negotiation->isDefault());
 		$endpointNegotiation->setRenderer($negotiation->getRenderer());
+	}
+
+	private function addResponseToSchemaMethod(SchemaMethod $schemaMethod, Response $response): void
+	{
+		$endpointResponse = $schemaMethod->addResponse($response->getCode(), $response->getDescription());
+		$endpointResponse->setEntity($response->getEntity());
 	}
 
 }

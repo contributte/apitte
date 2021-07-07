@@ -34,14 +34,14 @@ test(function (): void {
 	$controllers = $schemaBuilder->getControllers();
 
 	foreach ($controllers as $controller) {
-		testMultiController($controller);
-		testMultiControllerResponses($controller);
-		testMultiControllerRequestParameters($controller);
-		testMultiControllerNegotiations($controller);
+		testTags($controller);
+		testResponses($controller);
+		testRequestParameters($controller);
+		testNegotiations($controller);
 	}
 });
 
-function testMultiController(Controller $controller): void
+function testTags(Controller $controller): void
 {
 	Assert::count(2, $controller->getTags());
 
@@ -52,7 +52,7 @@ function testMultiController(Controller $controller): void
 	Assert::same('no', $secondTagValue);
 }
 
-function testMultiControllerRequestParameters(Controller $controller): void
+function testRequestParameters(Controller $controller): void
 {
 	$requestParametersMethod = $controller->getMethods()['requestParameters'];
 	Assert::equal('requestParameters', $requestParametersMethod->getName());
@@ -73,7 +73,7 @@ function testMultiControllerRequestParameters(Controller $controller): void
 	Assert::null($secondParameter->getDescription());
 }
 
-function testMultiControllerResponses(Controller $controller): void
+function testResponses(Controller $controller): void
 {
 	$responsesMethod = $controller->getMethods()['responses'];
 	Assert::equal('responses', $responsesMethod->getName());
@@ -92,7 +92,7 @@ function testMultiControllerResponses(Controller $controller): void
 	Assert::null($secondResponse->getEntity());
 }
 
-function testMultiControllerNegotiations(Controller $controller): void
+function testNegotiations(Controller $controller): void
 {
 	$negotiationsMethod = $controller->getMethods()['negotiations'];
 	Assert::equal('negotiations', $negotiationsMethod->getName());

@@ -301,13 +301,13 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 	private function addEndpointParameterToSchemaMethod(SchemaMethod $schemaMethod, RequestParameter $requestParameter): void
 	{
-		$parameter = $schemaMethod->addParameter($requestParameter->getName(), $requestParameter->getType());
+		$endpointParameter = $schemaMethod->addParameter($requestParameter->getName(), $requestParameter->getType());
 
-		$parameter->setDescription($requestParameter->getDescription());
-		$parameter->setIn($requestParameter->getIn());
-		$parameter->setRequired($requestParameter->isRequired());
-		$parameter->setDeprecated($requestParameter->isDeprecated());
-		$parameter->setAllowEmpty($requestParameter->isAllowEmpty());
+		$endpointParameter->setDescription($requestParameter->getDescription());
+		$endpointParameter->setIn($requestParameter->getIn());
+		$endpointParameter->setRequired($requestParameter->isRequired());
+		$endpointParameter->setDeprecated($requestParameter->isDeprecated());
+		$endpointParameter->setAllowEmpty($requestParameter->isAllowEmpty());
 	}
 
 	private function addNegotiationToSchemaMethod(SchemaMethod $schemaMethod, Negotiation $negotiation): void

@@ -84,7 +84,6 @@ function testMultiControllerResponses(Controller $controller): void
 	Assert::equal('com', $secondResponse->getCode());
 	Assert::equal('some_description_2', $secondResponse->getDescription());
 	Assert::null($secondResponse->getEntity());
-
 }
 
 function testMultiControllerNegotiations(Controller $controller): void
@@ -94,5 +93,12 @@ function testMultiControllerNegotiations(Controller $controller): void
 	Assert::count(2, $negotiationsMethod->getNegotiations());
 
 	$firstNegotiation = $negotiationsMethod->getNegotiations()[0];
+
+	Assert::same('some_suffix', $firstNegotiation->getSuffix());
+	Assert::null($firstNegotiation->getRenderer());
+
 	$secondNegotiation = $negotiationsMethod->getNegotiations()[1];
+
+	Assert::same('some_suffix_2', $secondNegotiation->getSuffix());
+	Assert::null($secondNegotiation->getRenderer());
 }

@@ -17,6 +17,7 @@ use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\DI\LoaderFactory\DualReaderFactory;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
+use Apitte\Core\Schema\Builder\Controller\Method as SchemaMethod;
 use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\UI\Controller\IController;
@@ -227,13 +228,8 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse @RequestParameters ================
 				if ($annotation instanceof RequestParameters) {
-					foreach ($annotation->getParameters() as $p) {
-						$parameter = $schemaMethod->addParameter($p->getName(), $p->getType());
-						$parameter->setDescription($p->getDescription());
-						$parameter->setIn($p->getIn());
-						$parameter->setRequired($p->isRequired());
-						$parameter->setDeprecated($p->isDeprecated());
-						$parameter->setAllowEmpty($p->isAllowEmpty());
+					foreach ($annotation->getParameters() as $parameter) {
+						$this->addEndpointParameterToSchemaMethod($schemaMethod, $parameter);
 					}
 
 					continue;
@@ -241,12 +237,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse #[RequestParameter] ================
 				if ($annotation instanceof RequestParameter) {
-					$parameter = $schemaMethod->addParameter($annotation->getName(), $annotation->getType());
-					$parameter->setDescription($annotation->getDescription());
-					$parameter->setIn($annotation->getIn());
-					$parameter->setRequired($annotation->isRequired());
-					$parameter->setDeprecated($annotation->isDeprecated());
-					$parameter->setAllowEmpty($annotation->isAllowEmpty());
+					$this->addEndpointParameterToSchemaMethod($schemaMethod, $annotation);
 
 					continue;
 				}
@@ -312,6 +303,17 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		}
 
 		return $this->reader;
+	}
+
+	private function addEndpointParameterToSchemaMethod(SchemaMethod $schemaMethod, RequestParameter $requestParameter): void
+	{
+		$parameter = $schemaMethod->addParameter($requestParameter->getName(), $requestParameter->getType());
+
+		$parameter->setDescription($requestParameter->getDescription());
+		$parameter->setIn($requestParameter->getIn());
+		$parameter->setRequired($requestParameter->isRequired());
+		$parameter->setDeprecated($requestParameter->isDeprecated());
+		$parameter->setAllowEmpty($requestParameter->isAllowEmpty());
 	}
 
 }

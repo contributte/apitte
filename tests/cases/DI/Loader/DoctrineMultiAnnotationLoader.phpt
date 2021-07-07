@@ -53,7 +53,18 @@ function testMultiControllerRequestParameters(Controller $controller): void
 	Assert::count(2, $requestParametersMethod->getParameters());
 
 	$firstParameter = $requestParametersMethod->getParameters()['name_value'];
+
+	Assert::equal('name_value', $firstParameter->getName());
+	Assert::equal('type_value', $firstParameter->getType());
+	Assert::equal('in_value', $firstParameter->getIn());
+	Assert::null($firstParameter->getDescription());
+
 	$secondParameter = $requestParametersMethod->getParameters()['name_value_2'];
+
+	Assert::equal('name_value_2', $secondParameter->getName());
+	Assert::equal('type_value_2', $secondParameter->getType());
+	Assert::equal('in_value_2', $secondParameter->getIn());
+	Assert::null($secondParameter->getDescription());
 }
 
 function testMultiControllerResponses(Controller $controller): void

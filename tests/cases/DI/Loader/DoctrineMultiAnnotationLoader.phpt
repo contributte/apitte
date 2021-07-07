@@ -44,6 +44,12 @@ test(function (): void {
 function testMultiController(Controller $controller): void
 {
 	Assert::count(2, $controller->getTags());
+
+	$firstTagValue = $controller->getTags()['nice'];
+	Assert::same('yes', $firstTagValue);
+
+	$secondTagValue = $controller->getTags()['one'];
+	Assert::same('no', $secondTagValue);
 }
 
 function testMultiControllerRequestParameters(Controller $controller): void

@@ -11,8 +11,8 @@ use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Tag;
 
 /**
- * @Tag("nice")
- * @Tag("one")
+ * @Tag("nice", value="yes")
+ * @Tag("one", value="no")
  */
 final class AnnotationMultiController extends ApiV1Controller
 {

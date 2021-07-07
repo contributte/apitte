@@ -313,6 +313,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	private function addNegotiationToSchemaMethod(SchemaMethod $schemaMethod, Negotiation $negotiation): void
 	{
 		$endpointNegotiation = $schemaMethod->addNegotiation($negotiation->getSuffix());
+
 		$endpointNegotiation->setDefault($negotiation->isDefault());
 		$endpointNegotiation->setRenderer($negotiation->getRenderer());
 	}
@@ -320,6 +321,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 	private function addResponseToSchemaMethod(SchemaMethod $schemaMethod, Response $response): void
 	{
 		$endpointResponse = $schemaMethod->addResponse($response->getCode(), $response->getDescription());
+
 		$endpointResponse->setEntity($response->getEntity());
 	}
 

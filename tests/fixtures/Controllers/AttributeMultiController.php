@@ -7,8 +7,8 @@ use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Annotation\Controller\Response;
 use Apitte\Core\Annotation\Controller\Tag;
 
-#[Tag('nice')]
-#[Tag('one')]
+#[Tag('nice', value: 'yes')]
+#[Tag('one', value: 'no')]
 final class AttributeMultiController extends ApiV1Controller
 {
 

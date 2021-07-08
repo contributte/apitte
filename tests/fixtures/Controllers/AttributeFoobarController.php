@@ -35,7 +35,7 @@ final class AttributeFoobarController extends ApiV1Controller
 
 	#[Path('/openapi')]
 	#[Method(['PUT'])]
-	#[OpenApi(<<<'DOC'
+	#[OpenApi(<<<'NEON'
 		foo:
 			bar: baz
 		lorem:
@@ -43,7 +43,7 @@ final class AttributeFoobarController extends ApiV1Controller
 			- dolor
 			- sit
 			- amet
-	DOC
+	NEON
 	)]
 	public function openapi(ApiRequest $request, ApiResponse $response): void
 	{

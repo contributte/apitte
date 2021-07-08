@@ -7,6 +7,7 @@ use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Utils\Helpers;
 use Apitte\Core\Utils\Regex;
+use InvalidArgumentException;
 
 class RequestParameterValidation implements IValidation
 {
@@ -61,7 +62,6 @@ class RequestParameterValidation implements IValidation
 	{
 		foreach ($builder->getControllers() as $controller) {
 			foreach ($controller->getMethods() as $method) {
-
 				// Check if parameters in mask are in path
 				/** @var EndpointParameter[] $pathParameters */
 				$pathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter): bool {

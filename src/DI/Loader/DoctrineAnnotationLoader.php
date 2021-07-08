@@ -238,7 +238,6 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				// Parse #[RequestParameter] ================
 				if ($annotation instanceof RequestParameter) {
 					$this->addEndpointParameterToSchemaMethod($schemaMethod, $annotation);
-
 					continue;
 				}
 

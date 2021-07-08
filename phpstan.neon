@@ -45,3 +45,6 @@ parameters:
 
 		# Allow empty()
 		- '#Construct empty\(\) is not allowed. Use more strict comparison.$#'
+
+		# invalid generics
+		- '#Unable to resolve the template type T in call to method Koriym\\Attributes\\AttributeReader::(.*?)\(\)#'

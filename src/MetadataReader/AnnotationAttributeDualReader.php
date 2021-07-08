@@ -53,10 +53,6 @@ final class AnnotationAttributeDualReader implements Reader
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @psalm-param ReflectionClass $class
-	 * @phpstan-param ReflectionClass<object> $class
-	 * @return array<object>
 	 */
 	public function getClassAnnotations(ReflectionClass $class): array
 	{
@@ -71,12 +67,6 @@ final class AnnotationAttributeDualReader implements Reader
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @param class-string<T> $annotationName
-	 * @psalm-param ReflectionClass $class
-	 * @phpstan-param ReflectionClass<object> $class
-	 * @return T|null
-	 * @template T of object
 	 */
 	public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
 	{

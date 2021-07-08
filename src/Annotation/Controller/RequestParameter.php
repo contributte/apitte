@@ -12,7 +12,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Target("ANNOTATION")
  * @NamedArgumentConstructor()
  */
-#[Attribute(Attribute::TARGET_CLASS)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class RequestParameter
 {
 

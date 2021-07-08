@@ -23,7 +23,9 @@
 	</rule>
 
 	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse">
+		<!-- false positive; slevomat ignores attribute class names and removes their imports -->
 		<exclude-pattern>tests/fixtures/Controllers/AttributeFoobarController.php</exclude-pattern>
+		<exclude-pattern>tests/fixtures/Controllers/AttributeMultiController.php</exclude-pattern>
 	</rule>
 
 	<rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">

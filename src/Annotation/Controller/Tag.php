@@ -12,7 +12,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Target({"CLASS", "METHOD"})
  * @NamedArgumentConstructor()
  */
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Tag
 {
 

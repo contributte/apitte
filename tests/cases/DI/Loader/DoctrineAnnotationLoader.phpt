@@ -60,7 +60,6 @@ test(function (): void {
 	$controllers = $schemaBuilder->getControllers();
 
 	foreach ($controllers as $controller) {
-
 		testController($controller);
 	}
 });

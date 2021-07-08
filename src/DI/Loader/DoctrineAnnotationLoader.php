@@ -4,16 +4,20 @@ namespace Apitte\Core\DI\Loader;
 
 use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
+use Apitte\Core\Annotation\Controller\Negotiation;
 use Apitte\Core\Annotation\Controller\Negotiations;
 use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestBody;
+use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Annotation\Controller\RequestParameters;
+use Apitte\Core\Annotation\Controller\Response;
 use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\DI\LoaderFactory\DualReaderFactory;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
+use Apitte\Core\Schema\Builder\Controller\Method as SchemaMethod;
 use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\UI\Controller\IController;
@@ -224,25 +228,31 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse @RequestParameters ================
 				if ($annotation instanceof RequestParameters) {
-					foreach ($annotation->getParameters() as $p) {
-						$parameter = $schemaMethod->addParameter($p->getName(), $p->getType());
-						$parameter->setDescription($p->getDescription());
-						$parameter->setIn($p->getIn());
-						$parameter->setRequired($p->isRequired());
-						$parameter->setDeprecated($p->isDeprecated());
-						$parameter->setAllowEmpty($p->isAllowEmpty());
+					foreach ($annotation->getParameters() as $parameter) {
+						$this->addEndpointParameterToSchemaMethod($schemaMethod, $parameter);
 					}
 
 					continue;
 				}
 
-				// Parse @Response ================
+				// Parse #[RequestParameter] ================
+				if ($annotation instanceof RequestParameter) {
+					$this->addEndpointParameterToSchemaMethod($schemaMethod, $annotation);
+					continue;
+				}
+
+				// Parse @Responses ================
 				if ($annotation instanceof Responses) {
-					foreach ($annotation->getResponses() as $r) {
-						$response = $schemaMethod->addResponse($r->getCode(), $r->getDescription());
-						$response->setEntity($r->getEntity());
+					foreach ($annotation->getResponses() as $response) {
+						$this->addResponseToSchemaMethod($schemaMethod, $response);
 					}
 
+					continue;
+				}
+
+				// Parse #[Response] attribute
+				if ($annotation instanceof Response) {
+					$this->addResponseToSchemaMethod($schemaMethod, $annotation);
 					continue;
 				}
 
@@ -265,11 +275,14 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 				// Parse @Negotiations =====================
 				if ($annotation instanceof Negotiations) {
-					foreach ($annotation->getNegotiations() as $n) {
-						$negotiation = $schemaMethod->addNegotiation($n->getSuffix());
-						$negotiation->setDefault($n->isDefault());
-						$negotiation->setRenderer($n->getRenderer());
+					foreach ($annotation->getNegotiations() as $negotiation) {
+						$this->addNegotiationToSchemaMethod($schemaMethod, $negotiation);
 					}
+				}
+
+				// Parse #[Negotiation] =====================
+				if ($annotation instanceof Negotiation) {
+					$this->addNegotiationToSchemaMethod($schemaMethod, $annotation);
 				}
 			}
 		}
@@ -283,6 +296,32 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		}
 
 		return $this->reader;
+	}
+
+	private function addEndpointParameterToSchemaMethod(SchemaMethod $schemaMethod, RequestParameter $requestParameter): void
+	{
+		$endpointParameter = $schemaMethod->addParameter($requestParameter->getName(), $requestParameter->getType());
+
+		$endpointParameter->setDescription($requestParameter->getDescription());
+		$endpointParameter->setIn($requestParameter->getIn());
+		$endpointParameter->setRequired($requestParameter->isRequired());
+		$endpointParameter->setDeprecated($requestParameter->isDeprecated());
+		$endpointParameter->setAllowEmpty($requestParameter->isAllowEmpty());
+	}
+
+	private function addNegotiationToSchemaMethod(SchemaMethod $schemaMethod, Negotiation $negotiation): void
+	{
+		$endpointNegotiation = $schemaMethod->addNegotiation($negotiation->getSuffix());
+
+		$endpointNegotiation->setDefault($negotiation->isDefault());
+		$endpointNegotiation->setRenderer($negotiation->getRenderer());
+	}
+
+	private function addResponseToSchemaMethod(SchemaMethod $schemaMethod, Response $response): void
+	{
+		$endpointResponse = $schemaMethod->addResponse($response->getCode(), $response->getDescription());
+
+		$endpointResponse->setEntity($response->getEntity());
 	}
 
 }

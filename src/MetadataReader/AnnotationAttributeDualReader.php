@@ -71,7 +71,7 @@ final class AnnotationAttributeDualReader implements Reader
 	public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
 	{
 		$annotation = $this->annotationReader->getClassAnnotation($class, $annotationName);
-		if (! $this->php8 || $annotation) {
+		if (! $this->php8) {
 			return $annotation;
 		}
 
@@ -84,7 +84,7 @@ final class AnnotationAttributeDualReader implements Reader
 	public function getMethodAnnotation(ReflectionMethod $method, $annotationName): ?object
 	{
 		$annotatoin = $this->annotationReader->getMethodAnnotation($method, $annotationName);
-		if (! $this->php8 || $annotatoin) {
+		if (! $this->php8) {
 			return $annotatoin;
 		}
 
@@ -111,7 +111,7 @@ final class AnnotationAttributeDualReader implements Reader
 	public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
 	{
 		$annotation = $this->annotationReader->getPropertyAnnotation($property, $annotationName);
-		if (! $this->php8 || $annotation) {
+		if (! $this->php8) {
 			return $annotation;
 		}
 

@@ -1,7 +1,9 @@
 <?php declare(strict_types = 1);
 
 /**
- * Test: DI\Loader\DoctrineAnnotationLoader for combination of attribute and annotations at once
+ * Test: DI\Loader\DoctrineAnnotationLoader for combination of attribute and annotations
+ *
+ * @phpVersion 8.0
  */
 
 require_once __DIR__ . '/../../../bootstrap.php';
@@ -13,11 +15,6 @@ use Apitte\Core\Schema\Validation\RequestParameterValidation;
 use Nette\DI\ContainerBuilder;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\AnnotationAttributeController;
-
-// run only on PHP 8 and higher, that supports attributes
-if (PHP_VERSION_ID < 80000) {
-	return;
-}
 
 // Parse annotations
 test(function (): void {

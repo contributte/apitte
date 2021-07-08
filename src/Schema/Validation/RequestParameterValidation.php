@@ -7,7 +7,6 @@ use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Utils\Helpers;
 use Apitte\Core\Utils\Regex;
-use InvalidArgumentException;
 
 class RequestParameterValidation implements IValidation
 {

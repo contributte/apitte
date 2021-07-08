@@ -44,5 +44,5 @@
 	<exclude-pattern>/tests/tmp</exclude-pattern>
 
 	<!-- fails on PHP 7.4 because of attributes syntax collision (remove when on PHP 8) -->
-	<exclude-pattern>/tests/fixtures/Controllers/AttributeFoobarController.php</exclude-pattern>
+	<exclude-pattern>/tests/fixtures/Controllers/*.php</exclude-pattern>
 </ruleset>

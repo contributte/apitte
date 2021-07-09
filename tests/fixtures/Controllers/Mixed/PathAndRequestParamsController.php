@@ -13,10 +13,10 @@ final class PathAndRequestParamsController extends ApiV1Controller
 {
 
 	/**
-	 * @RequestParameters({
+	 * @RequestParameters(
 	 *     @RequestParameter(name="userId", type="int", description="User ID", in="path"),
 	 *     @RequestParameter(name="photoId", type="int", description="Verification photo ID", in="path")
-	 * })
+	 * )
 	 */
 	#[Path(path: '/user/{userId}/verification-photo/{photoId}')]
 	public function run()

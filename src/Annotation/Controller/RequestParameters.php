@@ -31,6 +31,24 @@ class RequestParameters
 			$parameters = [$parameters];
 		}
 
+		$this->validateUniqueNames($parameters);
+
+		$this->parameters = $parameters;
+	}
+
+	/**
+	 * @return RequestParameter[]
+	 */
+	public function getParameters(): array
+	{
+		return $this->parameters;
+	}
+
+	/**
+	 * @param RequestParameter[] $parameters
+	 */
+	private function validateUniqueNames(array $parameters): void
+	{
 		$takenNames = [];
 
 		foreach ($parameters as $parameter) {
@@ -44,16 +62,6 @@ class RequestParameters
 				));
 			}
 		}
-
-		$this->parameters = $parameters;
-	}
-
-	/**
-	 * @return RequestParameter[]
-	 */
-	public function getParameters(): array
-	{
-		return $this->parameters;
 	}
 
 }

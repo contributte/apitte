@@ -185,10 +185,10 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 		}
 	}
 
-	protected function parseControllerMethodsAnnotations(Controller $controller, ReflectionClass $class): void
+	protected function parseControllerMethodsAnnotations(Controller $controller, ReflectionClass $reflectionClass): void
 	{
 		// Iterate over all methods in class
-		foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+		foreach ($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
 			// Read method annotations
 			$annotations = $this->getReader()->getMethodAnnotations($method);
 

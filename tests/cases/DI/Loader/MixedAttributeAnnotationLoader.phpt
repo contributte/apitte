@@ -9,29 +9,28 @@
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
-use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\RequestParameterValidation;
 use Nette\DI\ContainerBuilder;
 use Tester\Assert;
-use Tests\Fixtures\Controllers\AnnotationAttributeController;
+use Tests\Fixtures\Controllers\Mixed\AnnotationAttributeController;
+use Tests\Fixtures\Controllers\Mixed\PathAndRequestParamsController;
 
 // Parse annotations
 test(function (): void {
 	$builder = new ContainerBuilder();
-	$builder->addDefinition('annotation_attribute_controller')
+	$builder->addDefinition('first_controller')
 		->setType(AnnotationAttributeController::class);
+
+	$builder->addDefinition('second_controller')
+		->setType(PathAndRequestParamsController::class);
 
 	$loader = new DoctrineAnnotationLoader($builder);
 	$schemaBuilder = $loader->load(new SchemaBuilder());
-
 	Assert::type(SchemaBuilder::class, $schemaBuilder);
 
 	$controllers = $schemaBuilder->getControllers();
-	Assert::count(1, $controllers);
-
-	$controller = $controllers[AnnotationAttributeController::class];
-	Assert::type(Controller::class, $controller);
+	Assert::count(2, $controllers);
 
 	$requestParameterValidation = new RequestParameterValidation();
 	$requestParameterValidation->validate($schemaBuilder);

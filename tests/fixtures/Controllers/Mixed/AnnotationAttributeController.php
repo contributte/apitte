@@ -1,10 +1,11 @@
 <?php declare(strict_types = 1);
 
-namespace Tests\Fixtures\Controllers;
+namespace Tests\Fixtures\Controllers\Mixed;
 
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Annotation\Controller\RequestParameters;
+use Tests\Fixtures\Controllers\ApiV1Controller;
 
 final class AnnotationAttributeController extends ApiV1Controller
 {

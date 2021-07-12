@@ -61,7 +61,6 @@ class RequestParameterValidation implements IValidation
 	{
 		foreach ($builder->getControllers() as $controller) {
 			foreach ($controller->getMethods() as $method) {
-
 				// Check if parameters in mask are in path
 				/** @var EndpointParameter[] $pathParameters */
 				$pathParameters = array_filter($method->getParameters(), function (EndpointParameter $parameter): bool {

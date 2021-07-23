@@ -16,5 +16,6 @@ This knowledge could make your life easier
 - [Router](router.md)
 - [Schema](schema.md)
 
-Playground with example applications
-- [Examples](https://github.com/planette/playground)
+Examples
+- https://github.com/contributte/playground (playground)
+- https://contributte.org/examples.html (more examples)

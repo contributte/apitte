@@ -75,7 +75,7 @@ class SchemaBuilderTest extends TestCase
 		Assert::same('PUT, PATCH /users/{id}', $this->buildPath($endpoints[3]));
 		Assert::same('GET /users', $this->buildPath($endpoints[4]));
 		Assert::same('GET /{id}/users', $this->buildPath($endpoints[5]));
-		Assert::same('GET, POST, PUT, DELETE, OPTIONS, PATCH /', $this->buildPath($endpoints[6]));
+		Assert::same('GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD /', $this->buildPath($endpoints[6]));
 	}
 
 	private function addGetUsersSomethingEndpoint(SchemaBuilder $builder): void

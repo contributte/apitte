@@ -93,7 +93,7 @@ test(function (): void {
 	$bodyRequest = $request
 		->withBody(Utils::streamFor(json_encode(['foo' => 1])));
 
-	foreach ([Endpoint::METHOD_GET, Endpoint::METHOD_DELETE] as $method) {
+	foreach ([Endpoint::METHOD_GET, Endpoint::METHOD_DELETE, Endpoint::METHOD_HEAD] as $method) {
 		$entity = $entity->fromRequest($queryRequest->withMethod($method));
 
 		Assert::same(1, $entity->foo);

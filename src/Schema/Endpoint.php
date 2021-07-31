@@ -16,6 +16,7 @@ final class Endpoint
 	public const METHOD_DELETE = 'DELETE';
 	public const METHOD_OPTIONS = 'OPTIONS';
 	public const METHOD_PATCH = 'PATCH';
+	public const METHOD_HEAD = 'HEAD';
 
 	public const METHODS = [
 		self::METHOD_GET,
@@ -24,6 +25,7 @@ final class Endpoint
 		self::METHOD_DELETE,
 		self::METHOD_OPTIONS,
 		self::METHOD_PATCH,
+		self::METHOD_HEAD,
 	];
 
 	// Tags

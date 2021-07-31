@@ -28,7 +28,7 @@ abstract class BasicEntity extends AbstractEntity
 			return $this->fromBodyRequest($request);
 		}
 
-		if (in_array($request->getMethod(), [Endpoint::METHOD_GET, Endpoint::METHOD_DELETE], true)) {
+		if (in_array($request->getMethod(), [Endpoint::METHOD_GET, Endpoint::METHOD_DELETE, Endpoint::METHOD_HEAD], true)) {
 			return $this->fromGetRequest($request);
 		}
 

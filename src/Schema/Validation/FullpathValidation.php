@@ -27,6 +27,7 @@ class FullpathValidation implements IValidation
 			Endpoint::METHOD_DELETE => [],
 			Endpoint::METHOD_OPTIONS => [],
 			Endpoint::METHOD_PATCH => [],
+			Endpoint::METHOD_HEAD => [],
 		];
 
 		foreach ($controllers as $controller) {

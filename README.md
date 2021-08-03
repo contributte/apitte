@@ -20,7 +20,7 @@ Website ðŸš€ <a href="https://contributte.org">contributte.org</a> | Contact ðŸ‘
 
 ## Usage
 
-To install the latest version of `apitte/core` use [Composer](https://getcomposer.com).
+To install the latest version of `apitte/core` use [Composer](https://getcomposer.org).
 
 ```
 composer require apitte/core

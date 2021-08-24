@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../../bootstrap.php';
 
+use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
@@ -104,4 +105,17 @@ test(function (): void {
 
 		Assert::same(1, $entity->foo);
 	}
+});
+
+// Try mapping invalid json body
+test(function (): void {
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$entity = new NotEmptyEntity();
+
+	$bodyRequest = $request
+		->withBody(Utils::streamFor('invalid-json'));
+
+	Assert::exception(function () use ($entity, $bodyRequest): void {
+		$entity = $entity->fromRequest($bodyRequest->withMethod('POST'));
+	}, ClientErrorException::class, sprintf('Invalid json data: Syntax error', RequestAttributes::ATTR_ENDPOINT));
 });

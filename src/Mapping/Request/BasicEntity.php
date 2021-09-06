@@ -83,7 +83,7 @@ abstract class BasicEntity extends AbstractEntity
 		try {
 			$body = (array) $request->getJsonBody(true);
 		} catch (JsonException $ex) {
-			throw new ClientErrorException('Invalid json data', null, $ex);
+			throw new ClientErrorException('Invalid json data', 400, $ex);
 		}
 
 		return $this->factory($body);

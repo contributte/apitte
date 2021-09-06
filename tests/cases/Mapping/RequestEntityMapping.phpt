@@ -117,5 +117,5 @@ test(function (): void {
 
 	Assert::exception(function () use ($entity, $bodyRequest): void {
 		$entity = $entity->fromRequest($bodyRequest->withMethod('POST'));
-	}, ClientErrorException::class, 'Invalid json data', RequestAttributes::ATTR_ENDPOINT));
+	}, ClientErrorException::class, 'Invalid json data');
 });

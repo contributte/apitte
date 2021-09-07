@@ -2,9 +2,11 @@
 
 namespace Apitte\Core\Mapping\Request;
 
+use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Mapping\TReflectionProperties;
 use Apitte\Core\Schema\Endpoint;
+use Nette\Utils\JsonException;
 
 abstract class BasicEntity extends AbstractEntity
 {
@@ -78,7 +80,13 @@ abstract class BasicEntity extends AbstractEntity
 	 */
 	protected function fromBodyRequest(ApiRequest $request): self
 	{
-		return $this->factory((array) $request->getJsonBody(true));
+		try {
+			$body = (array) $request->getJsonBody(true);
+		} catch (JsonException $ex) {
+			throw new ClientErrorException('Invalid json data', 400, $ex);
+		}
+
+		return $this->factory($body);
 	}
 
 	/**

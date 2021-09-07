@@ -8,6 +8,7 @@ require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
 use Apitte\Core\Schema\Builder\Controller\Controller;
+use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\SchemaBuilder;
 use Nette\DI\ContainerBuilder;
 use Tester\Assert;
@@ -62,14 +63,14 @@ function testRequestParameters(Controller $controller): void
 
 	Assert::equal('name_value', $firstParameter->getName());
 	Assert::equal('type_value', $firstParameter->getType());
-	Assert::equal('in_value', $firstParameter->getIn());
+	Assert::equal(EndpointParameter::IN_PATH, $firstParameter->getIn());
 	Assert::null($firstParameter->getDescription());
 
 	$secondParameter = $requestParametersMethod->getParameters()['name_value_2'];
 
 	Assert::equal('name_value_2', $secondParameter->getName());
 	Assert::equal('type_value_2', $secondParameter->getType());
-	Assert::equal('in_value_2', $secondParameter->getIn());
+	Assert::equal(EndpointParameter::IN_QUERY, $secondParameter->getIn());
 	Assert::null($secondParameter->getDescription());
 }
 

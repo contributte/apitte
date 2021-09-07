@@ -29,8 +29,8 @@ final class AnnotationMultiController extends ApiV1Controller
 
 	/**
 	 * @RequestParameters({
-	 *		@RequestParameter(name="name_value", type="type_value", in="in_value"),
-	 *		@RequestParameter(in="in_value_2", type="type_value_2", name="name_value_2")
+	 *		@RequestParameter(name="name_value", type="type_value", in="path"),
+	 *		@RequestParameter(in="query", type="type_value_2", name="name_value_2")
 	 * })
 	 */
 	public function requestParameters(): void

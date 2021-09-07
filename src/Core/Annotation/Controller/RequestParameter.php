@@ -2,6 +2,7 @@
 
 namespace Apitte\Core\Annotation\Controller;
 
+use Apitte\Core\Schema\EndpointParameter;
 use Attribute;
 use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 use Doctrine\Common\Annotations\Annotation\Target;
@@ -40,7 +41,7 @@ final class RequestParameter
 	public function __construct(
 		string $name,
 		string $type,
-		string $in,
+		string $in = EndpointParameter::IN_PATH,
 		bool $required = true,
 		bool $allowEmpty = false,
 		bool $deprecated = false,
@@ -53,6 +54,10 @@ final class RequestParameter
 
 		if ($type === '') {
 			throw new AnnotationException('Empty @RequestParameter type given');
+		}
+
+		if (!in_array($in, EndpointParameter::IN, true)) {
+			throw new AnnotationException('Invalid @RequestParameter in given');
 		}
 
 		$this->name = $name;

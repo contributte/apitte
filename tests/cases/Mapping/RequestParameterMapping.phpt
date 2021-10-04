@@ -255,7 +255,7 @@ final class TestRequestParameterMapping extends TestCase
 			->withAttribute(RequestAttributes::ATTR_PARAMETERS, []);
 
 		$requestWithEmptyHeader = $request->withHeader(
-			'Auth',
+			'auth',
 			[
 				'some',
 				'',
@@ -271,41 +271,25 @@ final class TestRequestParameterMapping extends TestCase
 			400
 		);
 
-		$requestWithHeader = $request->withHeader(
-			'Auth',
-			[
-				'some',
-				'other',
-			]
-		);
+		foreach (['auth', 'Auth'] as $name) {
+			$requestWithHeader = $request->withHeader(
+				$name,
+				[
+					'some',
+					'other',
+				]
+			);
 
-		$headerResponse = $this->requestParameterMapping->map($requestWithHeader, $this->response);
+			$headerResponse = $this->requestParameterMapping->map($requestWithHeader, $this->response);
 
-		Assert::equal(
-			[
-				'some',
-				'other',
-			],
-			$headerResponse->getHeader('Auth')
-		);
-
-		$requestWithHeader = $request->withHeader(
-			'auth',
-			[
-				'some',
-				'other',
-			]
-		);
-
-		$headerResponse = $this->requestParameterMapping->map($requestWithHeader, $this->response);
-
-		Assert::equal(
-			[
-				'some',
-				'other',
-			],
-			$headerResponse->getHeader('auth')
-		);
+			Assert::equal(
+				[
+					'some',
+					'other',
+				],
+				$headerResponse->getHeader($name)
+			);
+		}
 	}
 
 	public function testDatetimeInQuery(): void

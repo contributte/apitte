@@ -57,7 +57,7 @@ class RequestParameterMapping
 			return $request;
 		}
 
-		$headerParameters = $request->getHeaders();
+		$headerParameters = array_change_key_case($request->getHeaders(), CASE_LOWER);
 		$cookieParams = $request->getCookieParams();
 		// Get request parameters from attribute
 		$requestParameters = $request->getAttribute(RequestAttributes::ATTR_PARAMETERS);

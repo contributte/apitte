@@ -255,7 +255,7 @@ final class TestRequestParameterMapping extends TestCase
 			->withAttribute(RequestAttributes::ATTR_PARAMETERS, []);
 
 		$requestWithEmptyHeader = $request->withHeader(
-			'auth',
+			'Auth',
 			[
 				'some',
 				'',
@@ -272,7 +272,7 @@ final class TestRequestParameterMapping extends TestCase
 		);
 
 		$requestWithHeader = $request->withHeader(
-			'auth',
+			'Auth',
 			[
 				'some',
 				'other',
@@ -286,7 +286,7 @@ final class TestRequestParameterMapping extends TestCase
 				'some',
 				'other',
 			],
-			$headerResponse->getHeader('auth')
+			$headerResponse->getHeader('Auth')
 		);
 	}
 

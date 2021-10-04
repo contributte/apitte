@@ -288,6 +288,24 @@ final class TestRequestParameterMapping extends TestCase
 			],
 			$headerResponse->getHeader('Auth')
 		);
+
+		$requestWithHeader = $request->withHeader(
+			'auth',
+			[
+				'some',
+				'other',
+			]
+		);
+
+		$headerResponse = $this->requestParameterMapping->map($requestWithHeader, $this->response);
+
+		Assert::equal(
+			[
+				'some',
+				'other',
+			],
+			$headerResponse->getHeader('auth')
+		);
 	}
 
 	public function testDatetimeInQuery(): void

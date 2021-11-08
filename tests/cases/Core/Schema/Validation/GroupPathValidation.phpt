@@ -24,6 +24,19 @@ test(function (): void {
 	});
 });
 
+// Validate: success with parameter
+test(function (): void {
+	$validation = new GroupPathValidation();
+	$builder = new SchemaBuilder();
+
+	$c1 = $builder->addController('c1');
+	$c1->addGroupPath('/foo/{bar}');
+
+	Assert::noError(function () use ($validation, $builder): void {
+		$validation->validate($builder);
+	});
+});
+
 // Validate: only /
 test(function (): void {
 	$validation = new GroupPathValidation();
@@ -69,9 +82,22 @@ test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
-	$c1->addGroupPath('/{foo$}');
+	$c1->addGroupPath('/foo$');
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);
-	}, InvalidSchemaException::class, '@Path "/{foo$}" in "c1" contains illegal characters "{". Allowed characters are only [a-zA-Z0-9-_/].');
+	}, InvalidSchemaException::class, '@Path "/foo$" in "c1" contains illegal characters "$". Allowed characters are only [a-zA-Z0-9-_/{}].');
+});
+
+// Validate: invalid parameter (contains)
+test(function (): void {
+	$validation = new GroupPathValidation();
+	$builder = new SchemaBuilder();
+
+	$c1 = $builder->addController('c1');
+	$c1->addGroupPath('/{foo&&&bar}');
+
+	Assert::exception(function () use ($validation, $builder): void {
+		$validation->validate($builder);
+	}, InvalidSchemaException::class, '@Path "/{foo&&&bar}" in "c1" contains illegal characters "&&&". Allowed characters are only [a-zA-Z0-9-_/{}].');
 });

@@ -10,11 +10,12 @@
 	<!-- Specific rules -->
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<properties>
-			<property name="rootNamespaces" type="array" value="
-				src=>Apitte\Core,
-				tests/fixtures=>Tests\Fixtures,
-				tests/toolkit=>Tests\Toolkit,
-			"/>
+			<property name="rootNamespaces" type="array">
+				<element key=" src" value="Apitte"/>
+				<element key="tests/cases" value="Tests\Cases"/>
+				<element key="tests/fixtures" value="Tests\Fixtures"/>
+				<element key="tests/toolkit" value="Tests\Toolkit"/>
+			</property>
 		</properties>
 	</rule>
 

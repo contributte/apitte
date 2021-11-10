@@ -1,6 +1,6 @@
 {
-  "name": "apitte/core",
-  "description": "Core API library in Apitte stack",
+  "name": "contributte/apitte",
+  "description": "An opinionated and enjoyable API framework based on Nette Framework. Supporting content negotiation, debugging, middlewares, attributes, annotations and loving openapi/swagger.",
   "keywords": [
     "api",
     "apitte",
@@ -11,7 +11,7 @@
   ],
   "type": "library",
   "license": "MIT",
-  "homepage": "https://github.com/apitte/core",
+  "homepage": "https://github.com/contributte/apitte",
   "authors": [
     {
       "name": "Milan Felix Šulc",
@@ -22,13 +22,16 @@
     "php": ">=7.3",
     "ext-json": "*",
     "contributte/psr7-http-message": "~0.7.0",
+    "contributte/middlewares": "^0.10.0",
     "doctrine/annotations": "^1.13",
     "koriym/attributes": "^1.0.2",
     "nette/utils": "^3.0.3"
   },
   "require-dev": {
     "mockery/mockery": "^1.1.0",
+    "nette/application": "^3.0.0",
     "nette/di": "^3.0.0",
+    "nette/http": "^3.0.1",
     "nettrine/annotations": "^0.7.0",
     "ninjify/nunjuck": "^0.4",
     "ninjify/qa": "^0.12",
@@ -36,8 +39,11 @@
     "phpstan/phpstan-deprecation-rules": "^0.12",
     "phpstan/phpstan-nette": "^0.12",
     "phpstan/phpstan-strict-rules": "^0.12",
-    "psr/log": "^1.1",
-    "symfony/validator": "^4.1.1|^5.0.0"
+    "psr/log": "^1.1|^2.0|^3.0",
+    "symfony/console": "^5.3",
+    "symfony/validator": "^4.1.1|^5.0.0",
+    "symfony/yaml": "^4.4.0|^5.0.0",
+    "tracy/tracy": "^2.6.0"
   },
   "conflict": {
     "nette/di": "<=3.0.0-RC"
@@ -47,7 +53,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Apitte\\Core\\": "src"
+      "Apitte\\": "src"
     }
   },
   "autoload-dev": {

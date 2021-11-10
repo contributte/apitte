@@ -15,15 +15,10 @@ parameters:
 		- '#^Variable property access on (\$this|static)\(Apitte\\Core\\Mapping\\(Request|Response)\\BasicEntity\)\.$#'
 		- '#^Variable property access on Apitte\\Core\\Mapping\\Request\\BasicEntity\.$#'
 
-		# There is no apitte/negotiation dependency
-		- '#^Return typehint of method Apitte\\Core\\Http\\ApiResponse::getEntity\(\) has invalid type Apitte\\Negotiation\\Http\\AbstractEntity\.$#'
-		- '#^Parameter \$entity of method Apitte\\Core\\Http\\ApiResponse::withEntity\(\) has invalid typehint type Apitte\\Negotiation\\Http\\AbstractEntity\.$#'
-		- '#^Call to static method from\(\) on an unknown class Apitte\\Negotiation\\Http\\#'
-
 		# Phpstan bug
 		- '#^Parameter \#1 (.*?) of function call_user_func expects callable\(\)\: mixed, array\(Apitte\\Core\\UI\\Controller\\IController, string\) given\.$#'
 		- message: '#^Parameter \#1 \$argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given\.$#'
-		  path: %currentWorkingDirectory%/src/DI/Loader/DoctrineAnnotationLoader.php
+		  path: %currentWorkingDirectory%/src/Core/DI/Loader/DoctrineAnnotationLoader.php
 
 		# Missing strict comparison
 		- '#^Only booleans are allowed in#'
@@ -31,17 +26,24 @@ parameters:
 		# Ignore bad php internal functions behavior
 		- '#^Parameter \#1 \$haystack of static method Nette\\Utils\\Strings\:\:contains\(\) expects string, string\|false given\.$#'
 		- message: '#^Method Apitte\\Core\\Annotation\\Controller\\OpenApi\:\:purifyDocblock\(\) should return string but returns string\|null\.$#'
-		  path: %currentWorkingDirectory%/src/Annotation/Controller/OpenApi.php
+		  path: %currentWorkingDirectory%/src/Core/Annotation/Controller/OpenApi.php
 		- message: '#^Return type \(iterable&Traversable\) of method Apitte\\Core\\Mapping\\Request\\AbstractEntity\:\:getIterator\(\) should be covariant with return type \(Traversable<mixed, mixed>\) of method IteratorAggregate<mixed,mixed>\:\:getIterator\(\)$#'
-		  path: %currentWorkingDirectory%/src/Mapping/Request/AbstractEntity.php
+		  path: %currentWorkingDirectory%/src/Core/Mapping/Request/AbstractEntity.php
 		- message: '#^Return type \(iterable&Traversable\) of method Apitte\\Core\\Mapping\\Response\\AbstractEntity\:\:getIterator\(\) should be covariant with return type \(Traversable<mixed, mixed>\) of method IteratorAggregate<mixed,mixed>\:\:getIterator\(\)$#'
-		  path: %currentWorkingDirectory%/src/Mapping/Response/AbstractEntity.php
+		  path: %currentWorkingDirectory%/src/Core/Mapping/Response/AbstractEntity.php
 
 		# Ignore unsage usage of new static()
-		- message: '#^Unsafe usage of new static\(\)\.$#'
-		  paths:
-		  	- %currentWorkingDirectory%/src/Exception/ExceptionExtra.php
-		  	- %currentWorkingDirectory%/src/Mapping/Request/BasicEntity.php
+		- '#^Unsafe usage of new static\(\)\.$#'
 
 		# Allow empty()
 		- '#Construct empty\(\) is not allowed. Use more strict comparison.$#'
+
+		# Ignore bad php behavior - should not happen
+		- message: '#\|false given\.$#'
+		  path: %currentWorkingDirectory%/src/Debug/Tracy/BlueScreen/ValidationBlueScreen.php
+
+		# Ignore PHP soft-failing functions
+		- message: '#.+(int|string|string\>)\|false.+#'
+		  path: %currentWorkingDirectory%/src/OpenApi/SchemaDefinition/Entity/EntityAdapter.php
+
+		- '#Unable to resolve the template type T in call to method Nette\\DI\\Container::getByType\(\)#'

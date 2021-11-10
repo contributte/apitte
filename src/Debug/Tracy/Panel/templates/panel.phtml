@@ -1,0 +1,41 @@
+<?php
+
+/** @var Apitte\Core\Schema\Schema $schema */
+
+use Tracy\Helpers;
+?>
+
+<h1>API</h1>
+
+<h2>Endpoints (<?= count($schema->getEndpoints()) ?>)</h2>
+
+<div class="tracy-inner">
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>Mask</th>
+            <th>Handler</th>
+        </tr>
+        <?php foreach ($schema->getEndpoints() as $endpoint) { ?>
+            <?php
+            $endpointRf = new ReflectionClass($endpoint->getHandler()->getClass());
+            $methodRf = $endpointRf->getMethod($endpoint->getHandler()->getMethod());
+            ?>
+            <tr>
+                <td><?= implode(',', $endpoint->getMethods()) ?></td>
+                <td><?= $endpoint->getMask() ?></td>
+                <td>
+                    <a href="<?= Helpers::editorUri($endpointRf->getFileName(), $methodRf->getStartLine()) ?>">
+                    <?= $endpoint->getHandler()->getClass() ?>::<?= $endpoint->getHandler()->getMethod() ?>()
+                    </a>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>
+</div>
+
+<h2>Schema</h2>
+
+<div>
+    <?= Tracy\Dumper::toHtml($schema, [Tracy\Dumper::COLLAPSE => true]); ?>
+</div>

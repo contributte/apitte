@@ -10,7 +10,7 @@ Apitte api schema is used to generate [OpenApi](https://github.com/OAI/OpenAPI-S
 
 You could also define OpenApi schema directly if you need define things that are not directly supported by apitte schema.
 
-See [apitte/openapi docs](https://github.com/apitte/openapi) for more info.
+See [openapi](openapi.md) chapter for details.
 
 ## Loaders
 

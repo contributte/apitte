@@ -122,7 +122,7 @@ Mapping
 Negotiations
   - Response transformations
   - `@Negotiation`, `@Negotiations`
-  - See [apitte/negotiation](https://github.com/apitte/negotiation) docs for more info.
+  - See [negotiation](negotiation.md) chapter for details.
 
 ### Automatic controllers registration
 

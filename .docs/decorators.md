@@ -149,7 +149,7 @@ You could return response through `EarlyReturnResponseException` so other respon
 
 Transforms data into format requested in `Accept` header and in url suffix (`/api/v1/users.xml`)
 
-See [apitte/negotiation](https://github.com/apitte/negotiation) for details.
+See [negotiation](negotiation.md) chapter for details.
 
 ### Implementing response decorator
 
@@ -186,7 +186,7 @@ If an exception decorator return null instead of response then error is handled 
 
 Transforms error into format requested in `Accept` header and in url suffix (`/api/v1/users.xml`)
 
-See [apitte/negotiation](https://github.com/apitte/negotiation) for details.
+See [negotiation](negotiation.md) chapter for details.
 
 ### Implementing exception decorator
 

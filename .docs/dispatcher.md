@@ -22,4 +22,4 @@ Adds possibility to return scalar or array from endpoint - raw data are transfor
 
 Used by default (but could be overriden by decorator plugin)
 
-> Incompatible with [decorators](decorators.md), alternative solution is available in [apitte/negotiation transformers](https://github.com/apitte/negotiation)
+> Incompatible with [decorators](decorators.md), alternative solution is available in [negotiation transformers](negotiation.md).

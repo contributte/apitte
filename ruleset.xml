@@ -5,6 +5,7 @@
 		<exclude name="Squiz.PHP.Heredoc.NotAllowed"/>
 		<exclude name="Squiz.Commenting.FunctionComment.InvalidTypeHint"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed"/>
+		<exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException"/>
 	</rule>
 
 	<!-- Specific rules -->

@@ -1,14 +1,14 @@
-![](https://heatbadger.now.sh/github/readme/apitte/core/)
+![](https://heatbadger.now.sh/github/readme/contributte/apitte/)
 
 <p align=center>
-  <a href="https://github.com/apitte/core/actions"><img src="https://badgen.net/github/checks/apitte/core/master?cache=300"></a>
-  <a href="https://coveralls.io/r/apitte/core"> <img src="https://badgen.net/coveralls/c/github/apitte/core?cache=300"> </a>
-  <a href="https://packagist.org/packages/apitte/core"> <img src="https://badgen.net/packagist/dm/apitte/core"> </a>
-  <a href="https://packagist.org/packages/apitte/core"> <img src="https://badgen.net/packagist/v/apitte/core"> </a>
+  <a href="https://github.com/contributte/apitte/actions"><img src="https://badgen.net/github/checks/contributte/apitte/master?cache=300"></a>
+  <a href="https://coveralls.io/r/contributte/apitte"> <img src="https://badgen.net/coveralls/c/github/contributte/apitte?cache=300"> </a>
+  <a href="https://packagist.org/packages/contributte/apitte"> <img src="https://badgen.net/packagist/dm/contributte/apitte"> </a>
+  <a href="https://packagist.org/packages/contributte/apitte"> <img src="https://badgen.net/packagist/v/contributte/apitte"> </a>
 </p>
 <p align=center>
-  <a href="https://packagist.org/packages/apitte/core"><img src="https://badgen.net/packagist/php/apitte/core"></a>
-  <a href="https://github.com/apitte/core"><img src="https://badgen.net/github/license/apitte/core"></a>
+  <a href="https://packagist.org/packages/contributte/apitte"><img src="https://badgen.net/packagist/php/contributte/apitte"></a>
+  <a href="https://github.com/contributte/apitte"><img src="https://badgen.net/github/license/contributte/apitte"></a>
   <a href="https://bit.ly/ctteg"><img src="https://badgen.net/badge/support/gitter/cyan"></a>
   <a href="https://bit.ly/cttfo"><img src="https://badgen.net/badge/support/forum/yellow"></a>
   <a href="https://contributte.org/partners.html"><img src="https://badgen.net/badge/become/a%20patron/F96854"></a>
@@ -20,10 +20,10 @@ Website ðŸš€ <a href="https://contributte.org">contributte.org</a> | Contact ðŸ‘
 
 ## Usage
 
-To install the latest version of `apitte/core` use [Composer](https://getcomposer.org).
+To install the latest version of `contributte/apitte` use [Composer](https://getcomposer.org).
 
 ```
-composer require apitte/core
+composer require contributte/apitte
 ```
 
 ## Documentation
@@ -36,9 +36,6 @@ For details on how to use this package, check out our [documentation](.docs).
 |-------------|---------|----------|-------|---------|
 | dev         | `^0.8`  | `master` | 3.0+  | `>=7.3` |
 | stable      | `^0.7`  | `master` | 3.0+  | `>=7.2` |
-| stable      | `^0.6`  | `master` | 3.0+  | `^7.2`  |
-| stable      | `^0.5`  | `master` | 2.4   | `>=7.1` |
-| stable      | `^0.3`  | `master` | 2.4   | `>=5.6` |
 
 ## Development
 

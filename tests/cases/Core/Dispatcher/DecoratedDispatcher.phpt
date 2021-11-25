@@ -25,7 +25,6 @@ use Tests\Fixtures\Decorator\RethrowErrorDecorator;
 use Tests\Fixtures\Handler\ErroneousHandler;
 use Tests\Fixtures\Handler\FakeNullHandler;
 use Tests\Fixtures\Handler\FakeResponseHandler;
-use Tests\Fixtures\Handler\ReturnFooBarHandler;
 use Tests\Fixtures\Router\FakeRouter;
 
 //TODO - EarlyReturnResponseException

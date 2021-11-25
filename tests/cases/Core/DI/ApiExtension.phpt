@@ -17,7 +17,6 @@ use Apitte\Core\Schema\Schema;
 use Nette\DI\Compiler;
 use Nette\DI\Container;
 use Nette\DI\ContainerLoader;
-use Psr\Log\Test\TestLogger;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\AnnotationFoobarController;
 use Tests\Fixtures\Psr\DummyLogger;

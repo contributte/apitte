@@ -14,7 +14,6 @@ use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Response\IResponseEntity;
 use Apitte\Core\Router\IRouter;
-use Apitte\Negotiation\Http\AbstractEntity;
 use Apitte\Negotiation\Http\ArrayEntity;
 use Apitte\Negotiation\Http\MappingEntity;
 use Apitte\Negotiation\Http\ScalarEntity;

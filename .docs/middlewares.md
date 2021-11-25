@@ -16,6 +16,20 @@ api:
 
 In `index.php` replace `Apitte\Core\Application\IApplication` with `Contributte\Middlewares\Application\IApplication`.
 
+```php
+// www/index.php
+
+use Contributte\Middlewares\Application\IApplication;
+use App\Bootstrap;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+Bootstrap::boot()
+    ->createContainer()
+    ->getByType(IApplication::class)
+    ->run();
+```
+
 ## Configuration
 
 [TracyMiddleware](https://github.com/contributte/middlewares/blob/master/.docs/README.md#tracymiddleware) (with priority 100)
@@ -55,7 +69,7 @@ class ExampleMiddleware implements IMiddleware
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
-    	// Call next middleware in a row
+        // Call next middleware in a row
         $response = $next($request, $response);
         // Return response
         return $response;

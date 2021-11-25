@@ -1,14 +1,16 @@
 # Setup
 
-Install core
+At first, install composer package.
 
 ```bash
-composer require apitte/core
+composer require contributte/apitte
 ```
 
-Register DI extension
+After that, register `Apitte` using `ApiExtension` to your Nette-based application.
 
-```yaml
+```neon
+# config.neon
+
 extensions:
     api: Apitte\Core\DI\ApiExtension
 
@@ -17,7 +19,7 @@ api:
     catchException: true # Sets if exception should be catched and transformed into response or rethrown to output (debug only)
 ```
 
-Create entry point
+After that, create entrypoint to your Nette-based application. For example `www/index.php` looks like that.
 
 ```php
 // www/index.php
@@ -33,7 +35,7 @@ Bootstrap::boot()
     ->run();
 ```
 
-## Usage in combination with nette application
+If you wanna combine Nette application and Apitte application together, `www/index.php` looks like that.
 
 ```php
 // www/index.php
@@ -48,75 +50,48 @@ $isApi = substr($_SERVER['REQUEST_URI'], 0, 4) === '/api';
 $container = Bootstrap::boot()->createContainer();
 
 if ($isApi) {
+    // Apitte application
     $container->getByType(ApiApplication::class)->run();
 } else {
+    // Nette application
     $container->getByType(UIApplication::class)->run();
 }
 ```
 
-## Add some plugins
+## Plugins
 
-### Decorators
+### Prepared plugins
 
-Transform all requests and responses with single class.
+- Schema plugin
+  - Core plugin (**enabled by default**) which manage building and validation of whole api schema.
+  - See [schema](schema.md) chapter for more info.
+- OpenApi plugin
+  - [OpenApi](https://github.com/OAI/OpenAPI-Specification) integration with [Swagger UI](https://petstore.swagger.io) support.
+  - See [openapi](openapi.md) chapter for more info.
+- Mapping plugin
+  - Validate request parameters, map request body to entity and entity to response body.
+  - See [mapping](mapping.md) chapter for more info.
+- Middleware plugin
+  - PSR-7 request/response integration, a.k.a. middlewares. Based on [contributte/middlewares](https://github.com/contributte/middlewares).
+  - See [middlewares](middlewares.md) chapter for more info.
+- Decorator plugin
+  - Decorate request and response objects (e.q. authentication/authorization).
+  - See [decorators](decorators.md) chapter for more info.
+- Negotiation plugin
+  - Transforms data into format requested in `Accept` header and in url suffix (`/api/v1/users.xml`)
+  - See [negotiation](negotiation.md) chapter for more info.
+- Debug plugin
+  - Debug api easily and display [Tracy debug bar](https://github.com/nette/tracy) along with dumped response data.
+  - See [debug](debug.md) chapter for more info.
+- Console plugin
+  - Console commands for your api.
+  - Based on [symfony/console](https://github.com/symfony/console)
+  - See [console](console.md) chpater for more info.
+- Presenter plugin
+  - Route into your api through a single nette route and presenter.
+  - See [presenter](presenter.md) chapter for more info.
 
-See [decorators](decorators.md) chapter for more info.
-
-### Mapping
-
-Validate request parameters, map request body to entity and entity to response body.
-
-See [mapping](mapping.md) chapter for more info.
-
-### Middlewares
-
-PSR-7 middlewares integration
-
-Based on [contributte/middlewares](https://github.com/contributte/middlewares),
-integrated by [apitte/middlewares](https://github.com/apitte/middlewares).
-
-See [apitte/middlewares docs](https://github.com/apitte/middlewares) for more info.
-
-### Negotiation
-
-Transforms data into format requested in `Accept` header and in url suffix (`/api/v1/users.xml`)
-
-See [apitte/negotiation docs](https://github.com/apitte/negotiation) for more info.
-
-### Debug
-
-Debug api easily with [negotiation](https://github.com/apitte/negotiation) extension
-and display [Tracy debug bar](https://github.com/nette/tracy) along with dumped response data.
-
-See [apitte/debug docs](https://github.com/apitte/debug) for more info.
-
-### Schema
-
-Core plugin (enabled by default) which manage building and validation of whole api schema.
-
-See [schema](schema.md) chapter for more info.
-
-### OpenApi
-
-[OpenApi](https://github.com/OAI/OpenAPI-Specification) integration with [Swagger UI](https://petstore.swagger.io) support.
-
-See [apitte/openapi docs](https://github.com/apitte/openapi) for more info.
-
-### Console
-
-Console commands for your api.
-
-Based on [symfony/console](https://github.com/symfony/console)
-
-See [apitte/console docs](https://github.com/apitte/console) for more info.
-
-### Presenter
-
-Route into your api through a single nette route and presenter.
-
-See [apitte/presenter docs](https://github.com/apitte/presenter) for more info.
-
-## Implementing own plugins
+### Custom plugin
 
 ```yaml
 api:

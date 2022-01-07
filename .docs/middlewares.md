@@ -30,6 +30,16 @@ Bootstrap::boot()
     ->run();
 ```
 
+In your **NEON** configuration file, register `MiddlewaresExtension` from [contributte/middlewares](https://github.com/contributte/middlewares) package.
+
+```neon
+extensions:
+	middleware: Contributte\Middlewares\DI\MiddlewaresExtension
+
+middleware:
+	debug: %debugMode%
+```
+
 ## Configuration
 
 [TracyMiddleware](https://github.com/contributte/middlewares/blob/master/.docs/README.md#tracymiddleware) (with priority 100)

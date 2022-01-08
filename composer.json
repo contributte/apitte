@@ -34,7 +34,7 @@
     "nette/http": "^3.0.1",
     "nettrine/annotations": "^0.7.0",
     "ninjify/nunjuck": "^0.4",
-    "ninjify/qa": "^0.12",
+    "ninjify/qa": "^0.13",
     "phpstan/phpstan": "^0.12",
     "phpstan/phpstan-deprecation-rules": "^0.12",
     "phpstan/phpstan-nette": "^0.12",

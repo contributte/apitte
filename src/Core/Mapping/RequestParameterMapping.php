@@ -101,6 +101,7 @@ class RequestParameterMapping
 					$request = $request->withAttribute(RequestAttributes::ATTR_PARAMETERS, $requestParameters);
 
 					break;
+
 				case $parameter::IN_COOKIE:
 					// Logical check
 					if (!array_key_exists($parameter->getName(), $cookieParams)) {
@@ -129,6 +130,7 @@ class RequestParameterMapping
 					$request = $request->withCookieParams($cookieParams);
 
 					break;
+
 				case $parameter::IN_HEADER:
 					$headerParameterName = strtolower($parameter->getName());
 					// Logical check

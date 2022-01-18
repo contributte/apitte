@@ -27,10 +27,6 @@ parameters:
 		- '#^Parameter \#1 \$haystack of static method Nette\\Utils\\Strings\:\:contains\(\) expects string, string\|false given\.$#'
 		- message: '#^Method Apitte\\Core\\Annotation\\Controller\\OpenApi\:\:purifyDocblock\(\) should return string but returns string\|null\.$#'
 		  path: %currentWorkingDirectory%/src/Core/Annotation/Controller/OpenApi.php
-		- message: '#^Return type \(iterable&Traversable\) of method Apitte\\Core\\Mapping\\Request\\AbstractEntity\:\:getIterator\(\) should be covariant with return type \(Traversable<mixed, mixed>\) of method IteratorAggregate<mixed,mixed>\:\:getIterator\(\)$#'
-		  path: %currentWorkingDirectory%/src/Core/Mapping/Request/AbstractEntity.php
-		- message: '#^Return type \(iterable&Traversable\) of method Apitte\\Core\\Mapping\\Response\\AbstractEntity\:\:getIterator\(\) should be covariant with return type \(Traversable<mixed, mixed>\) of method IteratorAggregate<mixed,mixed>\:\:getIterator\(\)$#'
-		  path: %currentWorkingDirectory%/src/Core/Mapping/Response/AbstractEntity.php
 
 		# Ignore unsage usage of new static()
 		- '#^Unsafe usage of new static\(\)\.$#'

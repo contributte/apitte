@@ -4,7 +4,6 @@ namespace Apitte\Core\Mapping\Response;
 
 use ArrayIterator;
 use IteratorAggregate;
-use Traversable;
 
 abstract class AbstractEntity implements IResponseEntity, IteratorAggregate
 {
@@ -15,9 +14,9 @@ abstract class AbstractEntity implements IResponseEntity, IteratorAggregate
 	abstract public function toArray(): array;
 
 	/**
-	 * @return ArrayIterator|Traversable|mixed[]
+	 * @return ArrayIterator<int|string, mixed>
 	 */
-	public function getIterator(): iterable
+	public function getIterator(): ArrayIterator
 	{
 		return new ArrayIterator($this->toArray());
 	}

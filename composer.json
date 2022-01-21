@@ -25,7 +25,7 @@
     "contributte/middlewares": "^0.10.0",
     "doctrine/annotations": "^1.13",
     "koriym/attributes": "^1.0.2",
-    "nette/utils": "^3.0.3"
+    "nette/utils": "^3.2"
   },
   "require-dev": {
     "mockery/mockery": "^1.1.0",

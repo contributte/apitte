@@ -9,7 +9,10 @@ use DateTimeInterface;
 use Tester\Assert;
 use Tester\TestCase;
 use Tests\Fixtures\ResponseEntity\CompoundResponseEntity;
+use Tests\Fixtures\ResponseEntity\NativeIntersectionEntity;
+use Tests\Fixtures\ResponseEntity\NativeUnionEntity;
 use Tests\Fixtures\ResponseEntity\SelfReferencingEntity;
+use Tests\Fixtures\ResponseEntity\TypedResponseEntity;
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
@@ -171,6 +174,89 @@ final class EntityAdapterTest extends TestCase
 		Assert::same(
 			['oneOf' => [['type' => 'boolean'], ['type' => 'string']]],
 			$adapter->getMetadata('bOOl|STRing')
+		);
+	}
+
+	/**
+	 * @phpVersion 7.4
+	 */
+	public function testTypedEntity(): void
+	{
+		if (PHP_VERSION_ID < 70400) {
+			$this->skip();
+		}
+
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			[
+				'type' => 'object',
+				'properties' => [
+					'int' => ['type' => 'integer'],
+					'nullableFloat' => ['nullable' => true, 'type' => 'number'],
+					'string' => ['type' => 'string'],
+					'bool' => ['type' => 'boolean'],
+					'datetime' => ['type' => 'string', 'format' => 'date-time'],
+					'phpdocInt' => ['type' => 'integer'],
+					'untypedProperty' => ['type' => 'string'],
+				],
+			],
+			$adapter->getMetadata(TypedResponseEntity::class)
+		);
+	}
+
+	public function testNativeUnionEntity(): void
+	{
+		if (PHP_VERSION_ID < 80000) {
+			$this->skip();
+		}
+
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			[
+				'type' => 'object',
+				'properties' => [
+					'stringOrInt' => [
+						'oneOf' => [
+							['type' => 'string'],
+							['type' => 'integer'],
+						],
+					],
+					'nullableBool' => ['nullable' => true, 'type' => 'boolean'],
+					'dateOrInt' => [
+						'oneOf' => [
+							['type' => 'string', 'format' => 'date-time'],
+							['type' => 'integer'],
+						],
+					],
+				],
+			],
+			$adapter->getMetadata(NativeUnionEntity::class)
+		);
+	}
+
+	public function testNativeIntersectionEntity(): void
+	{
+		if (PHP_VERSION_ID < 80100) {
+			$this->skip();
+		}
+
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			[
+				'type' => 'object',
+				'properties' => [
+					'intersection' => [
+						'allOf' => [
+							['type' => 'string', 'format' => 'date-time'],
+							['type' => 'object'],
+						],
+					],
+				],
+			],
+			$adapter->getMetadata(NativeIntersectionEntity::class)
 		);
 	}
 

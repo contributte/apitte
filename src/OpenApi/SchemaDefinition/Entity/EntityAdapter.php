@@ -7,11 +7,13 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 use DateTimeInterface;
 use Nette\Utils\Reflection;
 use Nette\Utils\Strings;
+use Nette\Utils\Type;
 use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionFunctionAbstract;
 use ReflectionProperty;
 use Reflector;
+use RuntimeException;
 
 class EntityAdapter implements IEntityAdapter
 {
@@ -148,10 +150,23 @@ class EntityAdapter implements IEntityAdapter
 
 	private function getPropertyType(ReflectionProperty $property): ?string
 	{
-		//TODO - fix typed properties support
-		//if (PHP_VERSION_ID >= 70400 && ($type = Reflection::getPropertyType($property) !== null)) {
-		//	return ($property->getType()->allowsNull() ? '?' : '') . $type;
-		//}
+		if (PHP_VERSION_ID >= 70400 && ($type = Type::fromReflection($property)) !== null) {
+			if ($type->isSingle() && count($type->getNames()) === 1) {
+				return $type->getNames()[0];
+			}
+
+			if ($type->isUnion()
+				|| ($type->isSingle() && count($type->getNames()) === 2) // nullable type is single but returns name of type and null in names
+			) {
+				return implode('|', $type->getNames());
+			}
+
+			if ($type->isIntersection()) {
+				return implode('&', $type->getNames());
+			}
+
+			throw new RuntimeException(sprintf('Could not parse type "%s"', $property));
+		}
 
 		$annotation = $this->parseAnnotation($property, 'var');
 

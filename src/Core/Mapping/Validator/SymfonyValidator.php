@@ -37,7 +37,8 @@ class SymfonyValidator implements IEntityValidator
 	public function validate($entity): void
 	{
 		$validatorBuilder = Validation::createValidatorBuilder()
-			->enableAnnotationMapping($this->reader);
+			->enableAnnotationMapping()
+			->setDoctrineAnnotationReader($this->reader);
 
 		if ($this->constraintValidatorFactory !== null) {
 			$validatorBuilder->setConstraintValidatorFactory($this->constraintValidatorFactory);

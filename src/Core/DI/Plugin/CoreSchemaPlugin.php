@@ -13,6 +13,7 @@ use Apitte\Core\Schema\Validation\ControllerValidation;
 use Apitte\Core\Schema\Validation\FullpathValidation;
 use Apitte\Core\Schema\Validation\GroupPathValidation;
 use Apitte\Core\Schema\Validation\IdValidation;
+use Apitte\Core\Schema\Validation\IValidation;
 use Apitte\Core\Schema\Validation\NegotiationValidation;
 use Apitte\Core\Schema\Validation\PathValidation;
 use Apitte\Core\Schema\Validation\RequestBodyValidation;
@@ -146,6 +147,7 @@ class CoreSchemaPlugin extends Plugin
 		$validator = new SchemaBuilderValidator();
 
 		// Add all validators at compile-time
+		/** @var class-string<IValidation> $validation */
 		foreach ($validations as $validation) {
 			$validator->add(new $validation());
 		}

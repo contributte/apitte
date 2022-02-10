@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace Tests\Fixtures\Controllers\Mixed;
 
@@ -11,8 +9,8 @@ use Tests\Fixtures\Controllers\ApiV1Controller;
 final class AttributesOnlyController extends ApiV1Controller
 {
 
-	#[RequestParameter(name: "userId", type: "int", in: "path")]
-	#[RequestParameter(name: "photoId", type: "int", in: "path")]
+	#[RequestParameter(name: 'userId', type: 'int', in: 'path')]
+	#[RequestParameter(name: 'photoId', type: 'int', in: 'path')]
 	#[Path(path: '/user/{userId}/verification-photo/{photoId}')]
 	public function run()
 	{

@@ -19,26 +19,26 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
+    "php": ">=7.3",
     "ext-json": "*",
     "contributte/psr7-http-message": "~0.7.0",
     "contributte/middlewares": "^0.10.0",
     "doctrine/annotations": "^1.13",
     "koriym/attributes": "^1.0.2",
-    "nette/utils": "^3.2"
+    "nette/utils": "^3.2.7"
   },
   "require-dev": {
-    "mockery/mockery": "^1.1.0",
+    "mockery/mockery": "^1.5.0",
     "nette/application": "^3.0.0",
     "nette/di": "^3.0.0",
     "nette/http": "^3.0.1",
     "nettrine/annotations": "^0.7.0",
     "ninjify/nunjuck": "^0.4",
     "ninjify/qa": "^0.13",
-    "phpstan/phpstan": "^0.12",
-    "phpstan/phpstan-deprecation-rules": "^0.12",
-    "phpstan/phpstan-nette": "^0.12",
-    "phpstan/phpstan-strict-rules": "^0.12",
+    "phpstan/phpstan": "^1.0.0",
+    "phpstan/phpstan-deprecation-rules": "^1.0.0",
+    "phpstan/phpstan-nette": "^1.0.0",
+    "phpstan/phpstan-strict-rules": "^1.0.0",
     "psr/log": "^1.1|^2.0|^3.0",
     "symfony/console": "^5.4.3 || ^6.0.0",
     "symfony/validator": "^5.4.3 || ^6.0",
@@ -46,7 +46,7 @@
     "tracy/tracy": "^2.6.0"
   },
   "conflict": {
-    "nette/di": "<=3.0.0-RC"
+    "nette/tester": "<2.4.1"
   },
   "provide": {
     "psr/http-message-implementation": "1.0"
@@ -58,8 +58,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\Fixtures\\": "tests/fixtures",
-      "Tests\\Toolkit\\": "tests/toolkit"
+      "Tests\\": "tests"
     }
   },
   "minimum-stability": "dev",

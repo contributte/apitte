@@ -3,6 +3,7 @@
 namespace Apitte\Core\Handler;
 
 use Apitte\Core\UI\Controller\IController;
+use Apitte\Core\Utils\Helpers;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -36,7 +37,7 @@ class ServiceCallback
 	 */
 	public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
 	{
-		return call_user_func([$this->service, $this->method], $request, $response);
+		return call_user_func(Helpers::callback([$this->service, $this->method]), $request, $response);
 	}
 
 }

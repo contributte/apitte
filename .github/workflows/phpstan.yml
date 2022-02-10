@@ -10,8 +10,6 @@ on:
     - cron: "0 8 * * 1"
 
 jobs:
-  build:
+  phpstan:
     name: "Phpstan"
     uses: contributte/.github/.github/workflows/phpstan.yml@v1
-    with:
-      php: "8.0"

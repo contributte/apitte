@@ -12,39 +12,31 @@
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<properties>
 			<property name="rootNamespaces" type="array">
-				<element key=" src" value="Apitte"/>
-				<element key="tests/cases" value="Tests\Cases"/>
-				<element key="tests/fixtures" value="Tests\Fixtures"/>
-				<element key="tests/toolkit" value="Tests\Toolkit"/>
+				<element key="src" value="Apitte"/>
+				<element key="tests" value="Tests"/>
 			</property>
 		</properties>
 	</rule>
 
-	<rule ref="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException">
-		<exclude-pattern>src/Exception/ExceptionExtra.php</exclude-pattern>
-	</rule>
-
 	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse">
 		<!-- false positive; slevomat ignores attribute class names and removes their imports -->
-		<exclude-pattern>tests/fixtures/Controllers/AttributeFoobarController.php</exclude-pattern>
-		<exclude-pattern>tests/fixtures/Controllers/AttributeMultiController.php</exclude-pattern>
+		<exclude-pattern>tests/Fixtures/Controllers/AttributeFoobarController.php</exclude-pattern>
+		<exclude-pattern>tests/Fixtures/Controllers/AttributeMultiController.php</exclude-pattern>
 	</rule>
 
 	<rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
-		<exclude-pattern>*tests/cases/*</exclude-pattern>
+		<exclude-pattern>*tests/Cases/*</exclude-pattern>
 	</rule>
 
 	<rule ref="Squiz.Classes.ClassFileName.NoMatch">
-		<exclude-pattern>*tests/cases/*</exclude-pattern>
+		<exclude-pattern>*tests/Cases/*</exclude-pattern>
 	</rule>
 
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName.NoMatchBetweenTypeNameAndFileName">
-		<exclude-pattern>*tests/cases/*</exclude-pattern>
+		<exclude-pattern>*tests/Cases/*</exclude-pattern>
 	</rule>
 
 	<!-- Exclude folders -->
 	<exclude-pattern>/tests/tmp</exclude-pattern>
-
-	<!-- fails on PHP 7.4 because of attributes syntax collision (remove when on PHP 8) -->
-	<exclude-pattern>/tests/fixtures/Controllers/*.php</exclude-pattern>
 </ruleset>
+

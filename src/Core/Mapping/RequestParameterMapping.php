@@ -24,11 +24,11 @@ class RequestParameterMapping
 		InvalidArgumentTypeException::TYPE_DATETIME => '%s request parameter "%s" should be of type datetime in format ISO 8601 (Y-m-d\TH:i:sP).',
 	];
 
-	/** @var string[]|ITypeMapper[] */
+	/** @var array<string, ITypeMapper|class-string<ITypeMapper>> */
 	protected $types = [];
 
 	/**
-	 * @param string|ITypeMapper $mapper
+	 * @param ITypeMapper|string $mapper
 	 */
 	public function addMapper(string $type, $mapper): void
 	{
@@ -223,14 +223,12 @@ class RequestParameterMapping
 			return null;
 		}
 
-		$mapper = $this->types[$type];
-
 		// Initialize mapper
-		if (!is_object($mapper)) {
-			$this->types[$type] = $mapper = new $mapper();
+		if (!($this->types[$type] instanceof ITypeMapper)) {
+			$this->types[$type] = new $this->types[$type]();
 		}
 
-		return $mapper;
+		return $this->types[$type];
 	}
 
 }

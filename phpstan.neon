@@ -5,8 +5,15 @@ includes:
 	- vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-	# @todo
+	level: 8
+	phpVersion: 70400
+
+	paths:
+		- src
+
+	reportMaybesInPropertyPhpDocTypes: false
 	checkGenericClassInNonGenericObjectType: false
+
 	ignoreErrors:
 		# deprecated with no replacement until 2.0.0
 		- '#^Call to deprecated method registerUniqueLoader\(\) of class Doctrine\\Common\\Annotations\\AnnotationRegistry.+#'
@@ -16,7 +23,6 @@ parameters:
 		- '#^Variable property access on Apitte\\Core\\Mapping\\Request\\BasicEntity\.$#'
 
 		# Phpstan bug
-		- '#^Parameter \#1 (.*?) of function call_user_func expects callable\(\)\: mixed, array\(Apitte\\Core\\UI\\Controller\\IController, string\) given\.$#'
 		- message: '#^Parameter \#1 \$argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given\.$#'
 		  path: %currentWorkingDirectory%/src/Core/DI/Loader/DoctrineAnnotationLoader.php
 
@@ -43,3 +49,6 @@ parameters:
 		  path: %currentWorkingDirectory%/src/OpenApi/SchemaDefinition/Entity/EntityAdapter.php
 
 		- '#Unable to resolve the template type T in call to method Nette\\DI\\Container::getByType\(\)#'
+
+		- '#Property Apitte\\OpenApi\\Schema\\(\w+)::\$(\w+) is never read, only written.#'
+		- '#Property Apitte\\OpenApi\\Schema\\(\w+)::\$(\w+) is unused.#'

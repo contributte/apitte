@@ -6,6 +6,7 @@
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
+use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Utils\Helpers;
 use Tester\Assert;
 
@@ -18,4 +19,13 @@ test(function (): void {
 	Assert::equal('/foo', Helpers::slashless('//foo'));
 	Assert::equal('/foo/', Helpers::slashless('/foo/'));
 	Assert::equal('/foo/', Helpers::slashless('//foo//'));
+});
+
+// Helpers::callback
+test(function (): void {
+	Assert::type('callable', Helpers::callback([Helpers::class, 'callback']));
+
+	Assert::exception(static function (): void {
+		Assert::type('callable', Helpers::callback([Helpers::class, 'fake']));
+	}, InvalidArgumentException::class);
 });

@@ -150,28 +150,19 @@ class EntityAdapter implements IEntityAdapter
 
 	private function getPropertyType(ReflectionProperty $property): ?string
 	{
+		$nativeType = null;
 		if (PHP_VERSION_ID >= 70400 && ($type = Type::fromReflection($property)) !== null) {
-			if ($type->isSingle() && count($type->getNames()) === 1) {
-				return $type->getNames()[0];
+			$nativeType = $this->getNativePropertyType($type, $property);
+			// If type is array/mixed or union/intersection of it, try to get more information from annotations
+			if (!preg_match('#[|&]?(array|mixed)[|&]?#', $nativeType)) {
+				return $nativeType;
 			}
-
-			if ($type->isUnion()
-				|| ($type->isSingle() && count($type->getNames()) === 2) // nullable type is single but returns name of type and null in names
-			) {
-				return implode('|', $type->getNames());
-			}
-
-			if ($type->isIntersection()) {
-				return implode('&', $type->getNames());
-			}
-
-			throw new RuntimeException(sprintf('Could not parse type "%s"', $property));
 		}
 
 		$annotation = $this->parseAnnotation($property, 'var');
 
 		if ($annotation === null) {
-			return null;
+			return $nativeType;
 		}
 
 		if (($type = preg_replace('#\s.*#', '', $annotation)) !== null) {
@@ -233,6 +224,7 @@ class EntityAdapter implements IEntityAdapter
 			'float' => 'number',
 			'bool' => 'boolean',
 			'string' => 'string',
+			'array' => 'array',
 		];
 
 		$type = $this->normalizeType($type);
@@ -257,6 +249,25 @@ class EntityAdapter implements IEntityAdapter
 		];
 
 		return $map[strtolower($type)] ?? $type;
+	}
+
+	private function getNativePropertyType(Type $type, ReflectionProperty $property): string
+	{
+		if ($type->isSingle() && count($type->getNames()) === 1) {
+			return $type->getNames()[0];
+		}
+
+		if ($type->isUnion()
+			|| ($type->isSingle() && count($type->getNames()) === 2) // nullable type is single but returns name of type and null in names
+		) {
+			return implode('|', $type->getNames());
+		}
+
+		if ($type->isIntersection()) {
+			return implode('&', $type->getNames());
+		}
+
+		throw new RuntimeException(sprintf('Could not parse type "%s"', $property));
 	}
 
 }

@@ -23,4 +23,9 @@ class TypedResponseEntity
 	// phpcs:ignore
 	public $untypedProperty;
 
+	public array $untypedArray;
+
+	/** @var int[] */
+	public array $arrayOfInt;
+
 }

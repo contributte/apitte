@@ -13,4 +13,9 @@ class NativeUnionEntity
 
 	public DateTime|int $dateOrInt;
 
+	public array|int $arrayOrInt;
+
+	/** @var string[]|string */
+	public array|string $strings;
+
 }

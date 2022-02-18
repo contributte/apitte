@@ -9,6 +9,7 @@ use DateTimeInterface;
 use Tester\Assert;
 use Tester\TestCase;
 use Tests\Fixtures\ResponseEntity\CompoundResponseEntity;
+use Tests\Fixtures\ResponseEntity\MixedEntity;
 use Tests\Fixtures\ResponseEntity\NativeIntersectionEntity;
 use Tests\Fixtures\ResponseEntity\NativeUnionEntity;
 use Tests\Fixtures\ResponseEntity\SelfReferencingEntity;
@@ -199,6 +200,8 @@ final class EntityAdapterTest extends TestCase
 					'datetime' => ['type' => 'string', 'format' => 'date-time'],
 					'phpdocInt' => ['type' => 'integer'],
 					'untypedProperty' => ['type' => 'string'],
+					'untypedArray' => ['type' => 'array'],
+					'arrayOfInt' => ['type' => 'array', 'items' => ['type' => 'integer']],
 				],
 			],
 			$adapter->getMetadata(TypedResponseEntity::class)
@@ -230,6 +233,18 @@ final class EntityAdapterTest extends TestCase
 							['type' => 'integer'],
 						],
 					],
+					'arrayOrInt' => [
+						'oneOf' => [
+							['type' => 'array'],
+							['type' => 'integer'],
+						],
+					],
+					'strings' => [
+						'oneOf' => [
+							['type' => 'array', 'items' => ['type' => 'string']],
+							['type' => 'string'],
+						],
+					],
 				],
 			],
 			$adapter->getMetadata(NativeUnionEntity::class)
@@ -257,6 +272,31 @@ final class EntityAdapterTest extends TestCase
 				],
 			],
 			$adapter->getMetadata(NativeIntersectionEntity::class)
+		);
+	}
+
+	public function testMixedEntity(): void
+	{
+		if (PHP_VERSION_ID < 80000) {
+			$this->skip();
+		}
+
+		$adapter = new EntityAdapter();
+		Assert::same(
+			[
+				'type' => 'object',
+				'properties' => [
+					'mixed' => ['nullable' => true],
+					'complexType' => [
+						'anyOf' => [
+							['type' => 'array', 'items' => ['type' => 'string']],
+							['type' => 'array', 'items' => ['type' => 'integer']],
+							['type' => 'array', 'items' => ['type' => 'number']],
+						],
+					],
+				],
+			],
+			$adapter->getMetadata(MixedEntity::class)
 		);
 	}
 

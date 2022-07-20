@@ -157,7 +157,7 @@ class CoreDefinition implements IDefinition
 		}
 
 		$parameter['required'] = $endpointParameter->isRequired();
-		$parameter['schema'] = ['type' => $endpointParameter->getType()];
+		$parameter['schema'] = ['type' => $endpointParameter->getSchemaType()];
 
 		// $param->setAllowEmptyValue($endpointParam->isAllowEmpty());
 		// $param->setDeprecated($endpointParam->isDeprecated());

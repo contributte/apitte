@@ -26,6 +26,9 @@ class SecurityScheme
 	/** @var string|null */
 	private $bearerFormat;
 
+	/** @var mixed[] */
+	private $flows;
+
 	public function __construct(string $type)
 	{
 		$this->type = $type;
@@ -62,6 +65,10 @@ class SecurityScheme
 			$data['bearerFormat'] = $this->bearerFormat;
 		}
 
+		if (count($this->flows) > 0) {
+			$data['flows'] = $this->flows;
+		}
+
 		return $data;
 	}
 
@@ -77,6 +84,7 @@ class SecurityScheme
 		$securityScheme->setTemplate($data['template'] ?? null);
 		$securityScheme->setScheme($data['scheme'] ?? null);
 		$securityScheme->setBearerFormat($data['bearerFormat'] ?? null);
+		$securityScheme->setFlows($data['flows'] ?? []);
 		return $securityScheme;
 	}
 
@@ -148,6 +156,16 @@ class SecurityScheme
 	public function setBearerFormat(?string $bearerFormat): void
 	{
 		$this->bearerFormat = $bearerFormat;
+	}
+	
+	public function getFlows(): mixed
+	{
+		return $this->flows;
+	}
+
+	public function setFlows(mixed $flows): void
+	{
+		$this->flows = $flows;
 	}
 
 }

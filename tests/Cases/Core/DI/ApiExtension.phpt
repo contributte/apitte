@@ -67,7 +67,7 @@ test(function (): void {
 	Assert::count(4, $schema->getEndpoints());
 	Assert::equal(['GET'], $schema->getEndpoints()[0]->getMethods());
 	Assert::equal('/api/v1/foobar/baz1', $schema->getEndpoints()[0]->getMask());
-	Assert::equal('#/api/v1/foobar/baz1$#', $schema->getEndpoints()[0]->getPattern());
+	Assert::equal('#^/api/v1/foobar/baz1$#', $schema->getEndpoints()[0]->getPattern());
 	Assert::equal([], $schema->getEndpoints()[0]->getParameters());
 	Assert::equal(AnnotationFoobarController::class, $schema->getEndpoints()[0]->getHandler()->getClass());
 	Assert::equal('baz1', $schema->getEndpoints()[0]->getHandler()->getMethod());

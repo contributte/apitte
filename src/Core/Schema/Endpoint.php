@@ -313,7 +313,7 @@ final class Endpoint
 
 		if ($suffixes) {
 			return sprintf(
-				'#%s' . // Always start with raw pattern
+				'#^%s' . // Always start with raw pattern
 				'(%s)?$#U', // Optionally followed by one of suffixes
 				$rawPattern,
 				implode('|', array_map('preg_quote', $suffixes))
@@ -321,7 +321,7 @@ final class Endpoint
 		}
 
 		return sprintf(
-			'#%s$#', // Exactly match raw pattern
+			'#^%s$#', // Exactly match raw pattern
 			$rawPattern
 		);
 	}

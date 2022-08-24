@@ -74,7 +74,7 @@ class DecoratedDispatcher extends CoreDispatcher
 		try {
 			$request = $this->decoratorManager->decorateRequest($request, $response);
 		} catch (EarlyReturnResponseException $exception) {
-			return $exception->getResponse();
+			return $this->decoratorManager->decorateResponse($request, $exception->getResponse());
 		}
 
 		try {

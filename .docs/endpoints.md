@@ -126,15 +126,19 @@ Negotiations
 
 ### Automatic controllers registration
 
-It's boring to register each controller one by one as a service, let them register through the `ResourceExtension`.
+It's boring to register each controller one by one as a service. You can make your life easier and use [contributte/di](https://github.com/contributte/di) and let register all controllers themself.
 
-Install [contributte/di](https://github.com/contributte/di)
+```sh
+composer require contributte/di
+```
 
 Configure resource extension and profit.
 
 ```yaml
 extensions:
+    # This must be first extension!
     resource: Contributte\DI\Extension\ResourceExtension
+    api: Apitte\Core\DI\ApiExtension
 
 resource:
     resources:

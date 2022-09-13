@@ -65,7 +65,7 @@ class HierarchicalNode
 		$variableNodes = [];
 
 		// Divide static and variable nodes
-		foreach ($this->nodes as $key => $node) {
+		foreach ($this->nodes as $node) {
 			$path = $node->getPath();
 			if (Strings::contains($path, '{') && Strings::contains($path, '}')) {
 				$variableNodes[] = $node;

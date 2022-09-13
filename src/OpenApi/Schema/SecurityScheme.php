@@ -157,7 +157,7 @@ class SecurityScheme
 	{
 		$this->bearerFormat = $bearerFormat;
 	}
-	
+
 	public function getFlows(): mixed
 	{
 		return $this->flows;

@@ -7,7 +7,7 @@ use Apitte\Core\Http\ApiRequest;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Contributte\Psr7\Psr7UriFactory;
 use Nette\Application\IPresenter;
-use Nette\Application\IResponse;
+use Nette\Application\Response;
 use Nette\Application\Request;
 use Nette\Application\Responses\CallbackResponse;
 use Nette\Http\Request as HttpRequest;
@@ -27,7 +27,7 @@ class ApiPresenter implements IPresenter
 		$this->request = $request;
 	}
 
-	public function run(Request $request): IResponse
+	public function run(Request $request): Response
 	{
 		$url = $this->request->getUrl();
 

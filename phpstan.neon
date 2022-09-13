@@ -6,10 +6,11 @@ includes:
 
 parameters:
 	level: 8
-	phpVersion: 70400
+	phpVersion: 80100
 
 	paths:
 		- src
+		- .docs
 
 	reportMaybesInPropertyPhpDocTypes: false
 	checkGenericClassInNonGenericObjectType: false

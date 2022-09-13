@@ -9,7 +9,7 @@ use Apitte\Core\Decorator\IResponseDecorator;
 use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\DI\Helpers;
 use Apitte\Core\Dispatcher\DecoratedDispatcher;
-use Nette\DI\ServiceDefinition;
+use Nette\DI\Definitions\ServiceDefinition;
 
 class CoreDecoratorPlugin extends Plugin
 {

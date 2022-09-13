@@ -7,8 +7,8 @@ use Apitte\Core\Http\ApiRequest;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Contributte\Psr7\Psr7UriFactory;
 use Nette\Application\IPresenter;
-use Nette\Application\Response;
 use Nette\Application\Request;
+use Nette\Application\Response;
 use Nette\Application\Responses\CallbackResponse;
 use Nette\Http\Request as HttpRequest;
 

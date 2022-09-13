@@ -10,8 +10,8 @@ on:
     - cron: "0 8 * * 1"
 
 jobs:
-  test80:
+  test81:
     name: "Nette Tester"
     uses: contributte/.github/.github/workflows/nette-tester-coverage.yml@v1
     with:
-        php: "8.0"
+        php: "8.1"

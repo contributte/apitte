@@ -70,20 +70,22 @@ final class EndpointParameter
 
 	public function getSchemaType(): string
 	{
-		$schemaType = $this->type;
-
 		switch ($this->type) {
-			case self::TYPE_BOOLEAN:
-				$schemaType = 'boolean';
-				break;
-			case self::TYPE_INTEGER:
-				$schemaType = 'integer';
-				break;
-			default:
-				break;
-		}
+			case self::TYPE_STRING:
+			case self::TYPE_FLOAT:
+			case self::TYPE_DATETIME:
+				return $this->type;
 
-		return $schemaType;
+			case self::TYPE_BOOLEAN:
+				return 'boolean';
+
+			case self::TYPE_INTEGER:
+				return 'integer';
+
+			default:
+				// custom type
+				return 'string';
+		}
 	}
 
 	public function getDescription(): ?string

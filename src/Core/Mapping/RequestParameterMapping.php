@@ -24,6 +24,9 @@ class RequestParameterMapping
 		InvalidArgumentTypeException::TYPE_DATETIME => '%s request parameter "%s" should be of type datetime in format ISO 8601 (Y-m-d\TH:i:sP).',
 	];
 
+	/** @var string */
+	protected static $customException = '%s request parameter "%s" should be of type %s.%s';
+
 	/** @var array<string, ITypeMapper|class-string<ITypeMapper>> */
 	protected $types = [];
 
@@ -209,15 +212,25 @@ class RequestParameterMapping
 		try {
 			return $mapper->normalize($value);
 		} catch (InvalidArgumentTypeException $e) {
-			throw new ClientErrorException(sprintf(
-				self::$exceptions[$e->getType()],
-				ucfirst($parameter->getIn()),
-				$parameter->getName()
-			));
+			if (array_key_exists($e->getType(), self::$exceptions)) {
+				throw new ClientErrorException(sprintf(
+					self::$exceptions[$e->getType()],
+					ucfirst($parameter->getIn()),
+					$parameter->getName()
+				));
+			} else {
+				throw new ClientErrorException(sprintf(
+					self::$customException,
+					ucfirst($parameter->getIn()),
+					$parameter->getName(),
+					$e->getType(),
+					$e->getDescription() !== null ? (' ' . $e->getDescription()) : ''
+				));
+			}
 		}
 	}
 
-	protected function getMapper(string $type): ?ITypeMapper
+	public function getMapper(string $type): ?ITypeMapper
 	{
 		if (!isset($this->types[$type])) {
 			return null;

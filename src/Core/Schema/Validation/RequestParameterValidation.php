@@ -11,6 +11,17 @@ use Apitte\Core\Utils\Regex;
 class RequestParameterValidation implements IValidation
 {
 
+	/** @var array<string> */
+	private array $allowedTypes;
+
+	/**
+	 * @param array<string> $allowedTypes
+	 */
+	public function __construct(array $allowedTypes = EndpointParameter::TYPES)
+	{
+		$this->allowedTypes = $allowedTypes;
+	}
+
 	public function validate(SchemaBuilder $builder): void
 	{
 		$this->validateInParameters($builder);
@@ -43,13 +54,13 @@ class RequestParameterValidation implements IValidation
 			foreach ($controller->getMethods() as $method) {
 				foreach ($method->getParameters() as $parameter) {
 					// Types
-					if (!in_array($parameter->getType(), EndpointParameter::TYPES, true)) {
+					if (!in_array($parameter->getType(), $this->allowedTypes, true)) {
 						throw new InvalidSchemaException(sprintf(
 							'Invalid request parameter "type=%s" given in "%s::%s()". Choose one of %s',
 							$parameter->getType(),
 							$controller->getClass(),
 							$method->getName(),
-							implode(', ', EndpointParameter::TYPES)
+							implode(', ', $this->allowedTypes)
 						));
 					}
 				}

@@ -83,6 +83,10 @@ class UsersController extends BaseV1Controller
 - `datetime`
     - Converts value to DateTimeImmutable.
 
+
+- You can define [custom data types](#custom-datatypes)
+
+
 - Each of the data types could return null if request parameter is allowed to be empty
 - If conversion is not possible (because data type is invalid) then API returns HTTP 400
 
@@ -101,6 +105,38 @@ api:
                 float: Apitte\Core\Mapping\Parameter\FloatTypeMapper
                 bool: Apitte\Core\Mapping\Parameter\BooleanTypeMapper
                 datetime: Apitte\Core\Mapping\Parameter\DateTimeTypeMapper
+```
+
+### Custom datatypes
+
+You can also add your custom data types.
+
+```yaml
+api:
+    plugins:
+        Apitte\Core\DI\Plugin\CoreMappingPlugin:
+            types:
+                email: MyEmailTypeMapper
+```
+
+```php
+use Apitte\Core\Mapping\Parameter\ITypeMapper;
+use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
+
+class MyEmailTypeMapper implements ITypeMapper
+{
+
+	public function normalize($value): string
+	{
+		if (is_string($value) && filter_var($value, FILTER_VALIDATE_EMAIL)) {
+			return $value;
+		}
+
+		throw new InvalidArgumentTypeException('email', 'Pass valid email address.');
+	}
+
+}
+
 ```
 
 ## RequestBody

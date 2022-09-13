@@ -14,6 +14,7 @@ use Apitte\Core\Mapping\RequestEntityMapping;
 use Apitte\Core\Mapping\RequestParameterMapping;
 use Apitte\Core\Mapping\Validator\IEntityValidator;
 use Apitte\Core\Mapping\Validator\NullValidator;
+use Apitte\Core\Schema\EndpointParameter;
 use Nette\DI\Definitions\Statement;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
@@ -25,6 +26,15 @@ use stdClass;
 class CoreMappingPlugin extends Plugin
 {
 
+	/** @var array<string, string> */
+	private array $defaultTypes = [
+		'string' => StringTypeMapper::class,
+		'int' => IntegerTypeMapper::class,
+		'float' => FloatTypeMapper::class,
+		'bool' => BooleanTypeMapper::class,
+		'datetime' => DateTimeTypeMapper::class,
+	];
+
 	public static function getName(): string
 	{
 		return 'mapping';
@@ -33,13 +43,7 @@ class CoreMappingPlugin extends Plugin
 	protected function getConfigSchema(): Schema
 	{
 		return Expect::structure([
-			'types' => Expect::arrayOf('string')->default([
-				'string' => StringTypeMapper::class,
-				'int' => IntegerTypeMapper::class,
-				'float' => FloatTypeMapper::class,
-				'bool' => BooleanTypeMapper::class,
-				'datetime' => DateTimeTypeMapper::class,
-			]),
+			'types' => Expect::arrayOf('string', 'string'),
 			'request' => Expect::structure([
 				'validator' => Expect::type('string|array|' . Statement::class)->default(NullValidator::class),
 			]),
@@ -65,6 +69,12 @@ class CoreMappingPlugin extends Plugin
 		$parametersMapping = $builder->addDefinition($this->prefix('request.parameters.mapping'))
 			->setFactory(RequestParameterMapping::class);
 
+		foreach ($this->defaultTypes as $type => $mapper) {
+			if (!array_key_exists($type, $config->types)) {
+				$parametersMapping->addSetup('addMapper', [$type, $mapper]);
+			}
+		}
+
 		foreach ($config->types as $type => $mapper) {
 			$parametersMapping->addSetup('addMapper', [$type, $mapper]);
 		}
@@ -76,6 +86,16 @@ class CoreMappingPlugin extends Plugin
 		$builder->addDefinition($this->prefix('request.entity.mapping'))
 			->setFactory(RequestEntityMapping::class)
 			->addSetup('setValidator', ['@' . $this->prefix('request.entity.mapping.validator')]);
+	}
+
+	/**
+	 * @return array<string>
+	 */
+	public function getAllowedTypes(): array
+	{
+		/** @var array<string> $configuredTypes */
+		$configuredTypes = array_keys($this->config->types);
+		return array_merge(EndpointParameter::TYPES, $configuredTypes);
 	}
 
 }

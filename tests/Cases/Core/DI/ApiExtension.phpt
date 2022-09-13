@@ -11,6 +11,8 @@ use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\Dispatcher\JsonDispatcher;
 use Apitte\Core\ErrorHandler\IErrorHandler;
 use Apitte\Core\ErrorHandler\PsrLogErrorHandler;
+use Apitte\Core\Mapping\Parameter\StringTypeMapper;
+use Apitte\Core\Mapping\RequestParameterMapping;
 use Apitte\Core\Mapping\Validator\IEntityValidator;
 use Apitte\Core\Mapping\Validator\SymfonyValidator;
 use Apitte\Core\Schema\Schema;
@@ -124,4 +126,27 @@ test(function (): void {
 	/** @var IEntityValidator $validator */
 	$validator = $container->getService('api.mapping.request.entity.mapping.validator');
 	Assert::type(SymfonyValidator::class, $validator);
+});
+
+// Mapping - custom type
+test(function (): void {
+	$loader = new ContainerLoader(TEMP_DIR, true);
+	$class = $loader->load(function (Compiler $compiler): void {
+		$compiler->addExtension('api', new ApiExtension());
+		$compiler->addConfig(NeonLoader::load(<<<NEON
+			api:
+				plugins:
+					Apitte\Core\DI\Plugin\CoreMappingPlugin:
+						types:
+							bar: Apitte\Core\Mapping\Parameter\StringTypeMapper
+		NEON
+		));
+	}, 5);
+
+	/** @var Container $container */
+	$container = new $class();
+
+	/** @var RequestParameterMapping $mapping*/
+	$mapping = $container->getService('api.mapping.request.parameters.mapping');
+	Assert::type(StringTypeMapper::class, $mapping->getMapper('bar'));
 });

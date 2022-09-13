@@ -71,6 +71,40 @@ test(function (): void {
 	);
 });
 
+// Custom type
+test(function (): void {
+	$builder = new SchemaBuilder();
+	$validation = new RequestParameterValidation(array_merge(EndpointParameter::TYPES, ['bar']));
+
+	$c1 = $builder->addController('c1');
+	$c1->setId('foo');
+	$c1m1 = $c1->addMethod('method');
+	$c1m1->setId('bar1');
+
+	$c1m1->addParameter('foo', 'bar');
+
+	Assert::noError(function () use ($validation, $builder): void {
+		$validation->validate($builder);
+	});
+});
+
+// Default type with custom types
+test(function (): void {
+	$builder = new SchemaBuilder();
+	$validation = new RequestParameterValidation(array_merge(EndpointParameter::TYPES, ['bar']));
+
+	$c1 = $builder->addController('c1');
+	$c1->setId('foo');
+	$c1m1 = $c1->addMethod('method');
+	$c1m1->setId('bar1');
+
+	$c1m1->addParameter('foo', 'string');
+
+	Assert::noError(function () use ($validation, $builder): void {
+		$validation->validate($builder);
+	});
+});
+
 // Invalid in
 test(function (): void {
 	$builder = new SchemaBuilder();

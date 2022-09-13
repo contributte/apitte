@@ -139,17 +139,18 @@ class CoreSchemaPlugin extends Plugin
 	{
 		$validations = $this->config->validations;
 
-		$coreMappingPlugin = $this->compiler->getPlugin(CoreMappingPlugin::getName());
-		if ($coreMappingPlugin !== null) {
-			$validations['requestParameter'] = RequestParameterValidation::class;
-		}
-
 		$validator = new SchemaBuilderValidator();
 
 		// Add all validators at compile-time
 		/** @var class-string<IValidation> $validation */
 		foreach ($validations as $validation) {
 			$validator->add(new $validation());
+		}
+
+		/** @var ?CoreMappingPlugin $coreMappingPlugin */
+		$coreMappingPlugin = $this->compiler->getPlugin(CoreMappingPlugin::getName());
+		if ($coreMappingPlugin !== null) {
+			$validator->add(new RequestParameterValidation($coreMappingPlugin->getAllowedTypes()));
 		}
 
 		// Validate schema

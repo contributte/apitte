@@ -6,7 +6,7 @@ class Responses
 {
 
 	/** @var Response[]|Reference[] */
-	private $responses = [];
+	private array $responses = [];
 
 	/**
 	 * @param Response|Reference $response

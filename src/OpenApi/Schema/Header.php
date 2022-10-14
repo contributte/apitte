@@ -6,10 +6,10 @@ class Header
 {
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	/** @var Schema|Reference|null */
-	private $schema;
+	private $schema = null;
 
 	/**
 	 * @param mixed[] $data

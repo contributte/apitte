@@ -6,13 +6,13 @@ class Contact
 {
 
 	/** @var string|null */
-	private $name;
+	private ?string $name = null;
 
 	/** @var string|null */
-	private $url;
+	private ?string $url = null;
 
 	/** @var string|null */
-	private $email;
+	private ?string $email = null;
 
 	/**
 	 * @return mixed[]

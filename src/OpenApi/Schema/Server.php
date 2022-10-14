@@ -6,13 +6,13 @@ class Server
 {
 
 	/** @var string */
-	private $url;
+	private string $url;
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	/** @var ServerVariable[] */
-	private $variables = [];
+	private array $variables = [];
 
 	public function __construct(string $url)
 	{

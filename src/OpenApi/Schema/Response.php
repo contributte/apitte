@@ -6,16 +6,16 @@ class Response
 {
 
 	/** @var string */
-	private $description;
+	private string $description;
 
 	/** @var Header[]|Reference[] */
-	private $headers = [];
+	private array $headers = [];
 
 	/** @var MediaType[] */
-	private $content = [];
+	private array $content = [];
 
 	/** @var Link[]|Reference[] */
-	private $links = [];
+	private array $links = [];
 
 	public function __construct(string $description)
 	{

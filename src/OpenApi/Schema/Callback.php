@@ -6,7 +6,7 @@ class Callback
 {
 
 	/** @var mixed[] */
-	private $data = [];
+	private array $data = [];
 
 	/**
 	 * @param mixed[] $data

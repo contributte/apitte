@@ -6,13 +6,13 @@ class RequestBody
 {
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	/** @var MediaType[] */
-	private $content = [];
+	private array $content = [];
 
 	/** @var bool */
-	private $required = false;
+	private bool $required = false;
 
 	/**
 	 * @param mixed[] $data
@@ -44,7 +44,7 @@ class RequestBody
 			$data['content'][$key] = $mediaType->toArray();
 		}
 
-		if ($this->required === true) {
+		if ($this->required) {
 			$data['required'] = true;
 		}
 

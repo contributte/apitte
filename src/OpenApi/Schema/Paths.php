@@ -6,7 +6,7 @@ class Paths
 {
 
 	/** @var PathItem[] */
-	private $paths = [];
+	private array $paths = [];
 
 	/**
 	 * @return mixed[]
@@ -41,7 +41,7 @@ class Paths
 
 	public function getPath(string $path): ?PathItem
 	{
-		return array_key_exists($path, $this->paths) ? $this->paths[$path] : null;
+		return $this->paths[$path] ?? null;
 	}
 
 }

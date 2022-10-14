@@ -94,8 +94,8 @@ class SecurityScheme
 			$data['bearerFormat'] = $this->bearerFormat;
 		}
 
-		if (count($this->flows) > 0) {
-			$data['flows'] = array_map(fn(OAuthFlow $flow) => $flow->toArray(), $this->flows);
+		if ($this->flows !== []) {
+			$data['flows'] = array_map(static fn(OAuthFlow $flow): array => $flow->toArray(), $this->flows);
 		}
 
 		if ($this->openIdConnectUrl !== null) {
@@ -117,7 +117,7 @@ class SecurityScheme
 		$securityScheme->setIn($data['in'] ?? null);
 		$securityScheme->setScheme($data['scheme'] ?? null);
 		$securityScheme->setBearerFormat($data['bearerFormat'] ?? null);
-		$securityScheme->setFlows(array_map(fn(array $flow) => OAuthFlow::fromArray($flow), $data['flows'] ?? []));
+		$securityScheme->setFlows(array_map(static fn(array $flow): OAuthFlow => OAuthFlow::fromArray($flow), $data['flows'] ?? []));
 		$securityScheme->setOpenIdConnectUrl($data['openIdConnectUrl'] ?? null);
 		return $securityScheme;
 	}
@@ -228,7 +228,7 @@ class SecurityScheme
 	 */
 	public function setFlows(array $flows): void
 	{
-		if ($this->type === self::TYPE_OAUTH2 && count($flows) === 0) {
+		if ($this->type === self::TYPE_OAUTH2 && $flows === []) {
 			throw new InvalidArgumentException('Attribute "flows" is required for type "oauth2".');
 		}
 

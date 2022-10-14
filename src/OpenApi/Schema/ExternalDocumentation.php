@@ -6,10 +6,10 @@ class ExternalDocumentation
 {
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	/** @var string */
-	private $url;
+	private string $url;
 
 	public function __construct(string $url)
 	{

@@ -6,22 +6,22 @@ class Info
 {
 
 	/** @var string */
-	private $title;
+	private string $title;
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	/** @var string|null */
-	private $termsOfService;
+	private ?string $termsOfService = null;
 
 	/** @var Contact|null */
-	private $contact;
+	private ?Contact $contact = null;
 
 	/** @var License|null */
-	private $license;
+	private ?License $license = null;
 
 	/** @var string */
-	private $version;
+	private string $version;
 
 	public function __construct(string $title, string $version)
 	{

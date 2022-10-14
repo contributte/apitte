@@ -16,7 +16,7 @@ class PathItem
 		OPERATION_TRACE = 'trace';
 
 	/** @var string[] */
-	private static $allowedOperations = [
+	private static array $allowedOperations = [
 		self::OPERATION_GET,
 		self::OPERATION_PUT,
 		self::OPERATION_POST,
@@ -28,19 +28,19 @@ class PathItem
 	];
 
 	/** @var string|null */
-	private $ref;
+	private ?string $ref = null;
 
 	/** @var string|null */
-	private $summary;
+	private ?string $summary = null;
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	/** @var Operation[] */
-	private $operations = [];
+	private array $operations = [];
 
 	/** @var Server[] */
-	private $servers = [];
+	private array $servers = [];
 
 	/** @var Parameter|Reference */
 	private $params;

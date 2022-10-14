@@ -21,11 +21,10 @@ final class ExamplesTest extends TestCase
 
 	public function testApiWithExamples(): void
 	{
-		// TODO examples
-		//$rawData = Yaml::parseFile(__DIR__ . '/examples/api-with-examples.yaml');
-		//$openApi = OpenApi::fromArray($rawData);
-		//$openApiData = $openApi->toArray();
-		//self::assertSameDataStructure($rawData, $openApiData);
+		$rawData = Yaml::parseFile(__DIR__ . '/examples/api-with-examples.yaml');
+		$openApi = OpenApi::fromArray($rawData);
+		$openApiData = $openApi->toArray();
+		self::assertSameDataStructure($rawData, $openApiData);
 	}
 
 	public function testCallbackExample(): void
@@ -64,10 +63,10 @@ final class ExamplesTest extends TestCase
 
 	public function testUspto(): void
 	{
-		//$rawData = Yaml::parseFile(__DIR__ . '/examples/uspto.yaml');
-		//$openApi = OpenApi::fromArray($rawData);
-		//$openApiData = $openApi->toArray();
-		//self::assertSameDataStructure($rawData, $openApiData);
+		$rawData = Yaml::parseFile(__DIR__ . '/examples/uspto.yaml');
+		$openApi = OpenApi::fromArray($rawData);
+		$openApiData = $openApi->toArray();
+		self::assertSameDataStructure($rawData, $openApiData);
 	}
 
 	/**

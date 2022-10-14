@@ -2,36 +2,69 @@
 
 namespace Apitte\OpenApi\Schema;
 
+use Apitte\Core\Exception\Logical\InvalidArgumentException;
+
 class SecurityScheme
 {
+
+	public const
+		TYPE_API_KEY = 'apiKey',
+		TYPE_HTTP = 'http',
+		TYPE_OAUTH2 = 'oauth2',
+		TYPE_OPEN_ID_CONNECT = 'openIdConnect';
+
+	public const TYPES = [
+		self::TYPE_API_KEY,
+		self::TYPE_HTTP,
+		self::TYPE_OAUTH2,
+		self::TYPE_OPEN_ID_CONNECT,
+	];
+
+	public const
+		IN_COOKIE = 'cookie',
+		IN_HEADER = 'header',
+		IN_QUERY = 'query';
+
+	public const INS = [
+		self::IN_COOKIE,
+		self::IN_HEADER,
+		self::IN_QUERY,
+	];
+
+	public const FLOWS = [
+		'implicit',
+		'password',
+		'clientCredentials',
+		'authorizationCode',
+	];
 
 	/** @var string */
 	private string $type;
 
 	/** @var string|null */
-	private ?string $name;
+	private ?string $name = null;
 
 	/** @var string|null */
-	private ?string $description;
+	private ?string $description = null;
 
 	/** @var string|null */
-	private ?string $in;
+	private ?string $in = null;
 
 	/** @var string|null */
-	private ?string $template;
+	private ?string $scheme = null;
 
 	/** @var string|null */
-	private ?string $scheme;
-
-	/** @var string|null */
-	private ?string $bearerFormat;
+	private ?string $bearerFormat = null;
 
 	/** @var array<string, OAuthFlow> */
-	private array $flows;
+	private array $flows = [];
+
+	/** @var string|null */
+	private ?string $openIdConnectUrl = null;
 
 	public function __construct(string $type)
 	{
-		$this->type = $type;
+		$this->setType($type);
 	}
 
 	/**
@@ -53,10 +86,6 @@ class SecurityScheme
 			$data['in'] = $this->in;
 		}
 
-		if ($this->template !== null) {
-			$data['template'] = $this->template;
-		}
-
 		if ($this->scheme !== null) {
 			$data['scheme'] = $this->scheme;
 		}
@@ -66,7 +95,11 @@ class SecurityScheme
 		}
 
 		if (count($this->flows) > 0) {
-			$data['flows'] = $this->flows;
+			$data['flows'] = array_map(fn(OAuthFlow $flow) => $flow->toArray(), $this->flows);
+		}
+
+		if ($this->openIdConnectUrl !== null) {
+			$data['openIdConnectUrl'] = $this->openIdConnectUrl;
 		}
 
 		return $data;
@@ -77,14 +110,15 @@ class SecurityScheme
 	 */
 	public static function fromArray(array $data): SecurityScheme
 	{
-		$securityScheme = new SecurityScheme($data['type']);
+		$type = $data['type'];
+		$securityScheme = new SecurityScheme($type);
 		$securityScheme->setName($data['name'] ?? null);
 		$securityScheme->setDescription($data['description'] ?? null);
 		$securityScheme->setIn($data['in'] ?? null);
-		$securityScheme->setTemplate($data['template'] ?? null);
 		$securityScheme->setScheme($data['scheme'] ?? null);
 		$securityScheme->setBearerFormat($data['bearerFormat'] ?? null);
 		$securityScheme->setFlows(array_map(fn(array $flow) => OAuthFlow::fromArray($flow), $data['flows'] ?? []));
+		$securityScheme->setOpenIdConnectUrl($data['openIdConnectUrl'] ?? null);
 		return $securityScheme;
 	}
 
@@ -95,6 +129,14 @@ class SecurityScheme
 
 	public function setType(string $type): void
 	{
+		if (!in_array($type, self::TYPES, true)) {
+			throw new InvalidArgumentException(sprintf(
+				'Invalid value "%s" for attribute "type" given. It must be one of "%s".',
+				$type,
+				implode(', ', self::TYPES)
+			));
+		}
+
 		$this->type = $type;
 	}
 
@@ -105,6 +147,10 @@ class SecurityScheme
 
 	public function setName(?string $name): void
 	{
+		if ($this->type === self::TYPE_API_KEY && $name === null) {
+			throw new InvalidArgumentException('Attribute "name" is required for type "apiKey".');
+		}
+
 		$this->name = $name;
 	}
 
@@ -125,17 +171,20 @@ class SecurityScheme
 
 	public function setIn(?string $in): void
 	{
-		$this->in = $in;
-	}
+		if ($this->type === self::TYPE_API_KEY && $in === null) {
+			throw new InvalidArgumentException('Attribute "in" is required for type "apiKey".');
+		}
 
-	public function getTemplate(): ?string
-	{
-		return $this->template;
-	}
+		if ($in === null || in_array($in, self::INS, true)) {
+			$this->in = $in;
+			return;
+		}
 
-	public function setTemplate(?string $template): void
-	{
-		$this->template = $template;
+		throw new InvalidArgumentException(sprintf(
+			'Invalid value "%s" for attribute "in" given. It must be one of "%s".',
+			$in,
+			implode(', ', self::INS)
+		));
 	}
 
 	public function getScheme(): ?string
@@ -145,6 +194,10 @@ class SecurityScheme
 
 	public function setScheme(?string $scheme): void
 	{
+		if ($this->type === self::TYPE_HTTP && $scheme === null) {
+			throw new InvalidArgumentException('Attribute "scheme" is required for type "http".');
+		}
+
 		$this->scheme = $scheme;
 	}
 
@@ -155,6 +208,10 @@ class SecurityScheme
 
 	public function setBearerFormat(?string $bearerFormat): void
 	{
+		if ($this->type === self::TYPE_HTTP && $this->scheme === 'bearer' && $bearerFormat === null) {
+			throw new InvalidArgumentException('Attribute "bearerFormat" is required for type "http" and scheme "bearer".');
+		}
+
 		$this->bearerFormat = $bearerFormat;
 	}
 
@@ -171,7 +228,36 @@ class SecurityScheme
 	 */
 	public function setFlows(array $flows): void
 	{
+		if ($this->type === self::TYPE_OAUTH2 && count($flows) === 0) {
+			throw new InvalidArgumentException('Attribute "flows" is required for type "oauth2".');
+		}
+
+		if ($this->type === self::TYPE_OAUTH2) {
+			foreach (self::FLOWS as $flow) {
+				if (!array_key_exists($flow, $flows)) {
+					throw new InvalidArgumentException(sprintf(
+						'Attribute "flows" is missing required key "%s".',
+						$flow
+					));
+				}
+			}
+		}
+
 		$this->flows = $flows;
+	}
+
+	public function getOpenIdConnectUrl(): ?string
+	{
+		return $this->openIdConnectUrl;
+	}
+
+	public function setOpenIdConnectUrl(?string $openIdConnectUrl): void
+	{
+		if ($this->type === self::TYPE_OPEN_ID_CONNECT && $openIdConnectUrl === null) {
+			throw new InvalidArgumentException('Attribute "openIdConnectUrl" is required for type "openIdConnect".');
+		}
+
+		$this->openIdConnectUrl = $openIdConnectUrl;
 	}
 
 }

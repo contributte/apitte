@@ -6,28 +6,28 @@ class SecurityScheme
 {
 
 	/** @var string */
-	private $type;
+	private string $type;
 
 	/** @var string|null */
-	private $name;
+	private ?string $name;
 
 	/** @var string|null */
-	private $description;
+	private ?string $description;
 
 	/** @var string|null */
-	private $in;
+	private ?string $in;
 
 	/** @var string|null */
-	private $template;
+	private ?string $template;
 
 	/** @var string|null */
-	private $scheme;
+	private ?string $scheme;
 
 	/** @var string|null */
-	private $bearerFormat;
+	private ?string $bearerFormat;
 
-	/** @var mixed[] */
-	private $flows;
+	/** @var array<string, OAuthFlow> */
+	private array $flows;
 
 	public function __construct(string $type)
 	{
@@ -84,7 +84,7 @@ class SecurityScheme
 		$securityScheme->setTemplate($data['template'] ?? null);
 		$securityScheme->setScheme($data['scheme'] ?? null);
 		$securityScheme->setBearerFormat($data['bearerFormat'] ?? null);
-		$securityScheme->setFlows($data['flows'] ?? []);
+		$securityScheme->setFlows(array_map(fn(array $flow) => OAuthFlow::fromArray($flow), $data['flows'] ?? []));
 		return $securityScheme;
 	}
 
@@ -158,12 +158,18 @@ class SecurityScheme
 		$this->bearerFormat = $bearerFormat;
 	}
 
-	public function getFlows(): mixed
+	/**
+	 * @return array<string, OAuthFlow>
+	 */
+	public function getFlows(): array
 	{
 		return $this->flows;
 	}
 
-	public function setFlows(mixed $flows): void
+	/**
+	 * @param array<string, OAuthFlow> $flows
+	 */
+	public function setFlows(array $flows): void
 	{
 		$this->flows = $flows;
 	}

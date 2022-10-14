@@ -15,7 +15,7 @@ class OAuthFlow
 	private string $refreshUrl;
 
 	/** @var array<string, string> */
-	private array $scopes;
+	private array $scopes = [];
 
 	/**
 	 * @param string $authorizationUrl

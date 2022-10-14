@@ -6,13 +6,13 @@ class Tag
 {
 
 	/** @var string */
-	private $name;
+	private string $name;
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	/** @var ExternalDocumentation|null */
-	private $externalDocs;
+	private ?ExternalDocumentation $externalDocs = null;
 
 	public function __construct(string $name)
 	{

@@ -21,22 +21,22 @@ class Parameter
 	];
 
 	/** @var string */
-	private $name;
+	private string $name;
 
 	/** @var string */
-	private $in;
+	private string $in;
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	/** @var bool */
-	private $required = false;
+	private bool $required = false;
 
 	/** @var bool */
-	private $deprecated = false;
+	private bool $deprecated = false;
 
 	/** @var bool */
-	private $allowEmptyValue = false;
+	private bool $allowEmptyValue = false;
 
 	/** @var Schema|Reference|null */
 	private $schema;
@@ -45,7 +45,7 @@ class Parameter
 	private $example;
 
 	/** @var string|null */
-	private $style;
+	private ?string $style = null;
 
 	public function __construct(string $name, string $in)
 	{

@@ -6,28 +6,28 @@ class OpenApi
 {
 
 	/** @var string */
-	private $openapi;
+	private string $openapi;
 
 	/** @var Info */
-	private $info;
+	private Info $info;
 
 	/** @var Server[] */
-	private $servers = [];
+	private array $servers = [];
 
 	/** @var Paths */
-	private $paths;
+	private Paths $paths;
 
 	/** @var Components|null */
-	private $components;
+	private ?Components $components = null;
 
 	/** @var SecurityRequirement[] */
-	private $security = [];
+	private array $security = [];
 
 	/** @var Tag[] */
-	private $tags = [];
+	private array $tags = [];
 
 	/** @var ExternalDocumentation|null */
-	private $externalDocs;
+	private ?ExternalDocumentation $externalDocs = null;
 
 	public function __construct(string $openapi, Info $info, Paths $paths)
 	{

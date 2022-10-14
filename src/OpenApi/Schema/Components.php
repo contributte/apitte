@@ -6,31 +6,31 @@ class Components
 {
 
 	/** @var Schema[]|Reference[] */
-	private $schemas = [];
+	private array $schemas = [];
 
 	/** @var Response[]|Reference[] */
-	private $responses = [];
+	private array $responses = [];
 
 	/** @var Parameter[]|Reference[] */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/** @var Example[]|Reference[] */
-	private $examples = [];
+	private array $examples = [];
 
 	/** @var RequestBody[]|Reference[] */
-	private $requestBodies = [];
+	private array $requestBodies = [];
 
 	/** @var Header[]|Reference[] */
-	private $headers = [];
+	private array $headers = [];
 
 	/** @var SecurityScheme[]|Reference[] */
-	private $securitySchemes = [];
+	private array $securitySchemes = [];
 
 	/** @var Link[]|Reference[] */
-	private $links = [];
+	private array $links = [];
 
 	/** @var Callback[]|Reference[] */
-	private $callbacks = [];
+	private array $callbacks = [];
 
 	/**
 	 * @param mixed[] $data
@@ -53,6 +53,12 @@ class Components
 		if (isset($data['parameters'])) {
 			foreach ($data['parameters'] as $parameterKey => $parameterData) {
 				$components->setParameter($parameterKey, Parameter::fromArray($parameterData));
+			}
+		}
+
+		if (isset($data['examples'])) {
+			foreach ($data['examples'] as $exampleKey => $exampleData) {
+				$components->setExample($exampleKey, Example::fromArray($exampleData));
 			}
 		}
 
@@ -102,6 +108,14 @@ class Components
 	}
 
 	/**
+	 * @param Example|Reference $example
+	 */
+	public function setExample(string $name, $example): void
+	{
+		$this->examples[$name] = $example;
+	}
+
+	/**
 	 * @param RequestBody|Reference $requestBody
 	 */
 	public function setRequestBody(string $name, $requestBody): void
@@ -141,6 +155,10 @@ class Components
 
 		foreach ($this->parameters as $parameterKey => $parameter) {
 			$data['parameters'][$parameterKey] = $parameter->toArray();
+		}
+
+		foreach ($this->examples as $exampleKey => $example) {
+			$data['examples'][$exampleKey] = $example->toArray();
 		}
 
 		foreach ($this->requestBodies as $requestBodyKey => $requestBody) {

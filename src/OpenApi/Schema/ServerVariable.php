@@ -6,13 +6,13 @@ class ServerVariable
 {
 
 	/** @var string[] */
-	private $enum = [];
+	private array $enum = [];
 
 	/** @var string */
-	private $default;
+	private string $default;
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	public function __construct(string $default)
 	{

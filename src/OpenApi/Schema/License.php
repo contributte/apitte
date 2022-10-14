@@ -6,10 +6,10 @@ class License
 {
 
 	/** @var string */
-	private $name;
+	private string $name;
 
 	/** @var string|null */
-	private $url;
+	private ?string $url = null;
 
 	public function __construct(string $name)
 	{

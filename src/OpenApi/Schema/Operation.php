@@ -6,40 +6,40 @@ class Operation
 {
 
 	/** @var string[] */
-	private $tags = [];
+	private array $tags = [];
 
 	/** @var string|null */
-	private $summary;
+	private ?string $summary = null;
 
 	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
 	/** @var ExternalDocumentation|null */
-	private $externalDocs;
+	private ?ExternalDocumentation $externalDocs = null;
 
 	/** @var string|null */
-	private $operationId;
+	private ?string $operationId = null;
 
 	/** @var Parameter[]|Reference[] */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/** @var RequestBody|Reference|null */
-	private $requestBody;
+	private $requestBody = null;
 
 	/** @var Responses */
-	private $responses;
+	private Responses $responses;
 
 	/** @var Callback[]|Reference[] */
-	private $callbacks = [];
+	private array $callbacks = [];
 
 	/** @var bool */
-	private $deprecated = false;
+	private bool $deprecated = false;
 
 	/** @var SecurityRequirement[] */
-	private $security = [];
+	private array $security = [];
 
 	/** @var Server[] */
-	private $servers = [];
+	private array $servers = [];
 
 	public function __construct(Responses $responses)
 	{

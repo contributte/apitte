@@ -11,6 +11,9 @@ class MediaType
 	/** @var mixed */
 	private $example;
 
+	/** @var string[]|Example[]|Reference[] */
+	private array $examples = [];
+
 	/**
 	 * @param mixed[] $data
 	 */
@@ -26,6 +29,16 @@ class MediaType
 		}
 
 		$mediaType->setExample($data['example'] ?? null);
+		if (isset($data['examples'])) {
+			foreach ($data['examples'] as $name => $example) {
+				if (isset($example['$ref'])) {
+					$mediaType->addExample($name, new Reference($example['$ref']));
+				} else {
+					$mediaType->addExample($name, Example::fromArray($example));
+				}
+			}
+		}
+
 		return $mediaType;
 	}
 
@@ -62,6 +75,14 @@ class MediaType
 	}
 
 	/**
+	 * @param Example|Reference|string $example
+	 */
+	public function addExample(string $name, $example): void
+	{
+		$this->examples[$name] = $example;
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -73,6 +94,12 @@ class MediaType
 
 		if ($this->example !== null) {
 			$data['example'] = $this->example;
+		}
+
+		if ($this->examples !== []) {
+			$data['examples'] = array_map(static function ($example) {
+				return is_string($example) ? $example : $example->toArray();
+			}, $this->examples);
 		}
 
 		return $data;

@@ -6,7 +6,7 @@ class Reference
 {
 
 	/** @var string */
-	private $ref;
+	private string $ref;
 
 	public function __construct(string $ref)
 	{

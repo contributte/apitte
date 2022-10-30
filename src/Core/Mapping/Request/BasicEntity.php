@@ -81,7 +81,7 @@ abstract class BasicEntity extends AbstractEntity
 	protected function fromBodyRequest(ApiRequest $request): self
 	{
 		try {
-			$body = (array) $request->getJsonBody(true);
+			$body = (array) $request->getJsonBodyCopy(true);
 		} catch (JsonException $ex) {
 			throw new ClientErrorException('Invalid json data', 400, $ex);
 		}

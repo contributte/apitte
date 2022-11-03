@@ -16,8 +16,7 @@ use Doctrine\Common\Annotations\AnnotationException;
 final class Path
 {
 
-	/** @var string */
-	private $path;
+	private string $path;
 
 	public function __construct(string $path)
 	{

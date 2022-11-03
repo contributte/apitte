@@ -10,7 +10,7 @@ class SchemaBuilder implements ISchemaBuilder
 {
 
 	/** @var IDefinition[] */
-	private $definitions = [];
+	private array $definitions = [];
 
 	public function addDefinition(IDefinition $definition): void
 	{

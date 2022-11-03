@@ -15,8 +15,7 @@ use stdClass;
 abstract class Plugin
 {
 
-	/** @var PluginCompiler */
-	protected $compiler;
+	protected PluginCompiler $compiler;
 
 	/** @var stdClass|mixed[] */
 	protected $config;
@@ -50,7 +49,7 @@ abstract class Plugin
 	protected function setupConfig(Schema $schema, array $config, string $name): void
 	{
 		$processor = new Processor();
-		$processor->onNewContext[] = function (Context $context) use ($name): void {
+		$processor->onNewContext[] = static function (Context $context) use ($name): void {
 			$context->path = [$name];
 		};
 		try {

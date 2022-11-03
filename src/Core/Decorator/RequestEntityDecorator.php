@@ -9,8 +9,7 @@ use Apitte\Core\Mapping\RequestEntityMapping;
 class RequestEntityDecorator implements IRequestDecorator
 {
 
-	/** @var RequestEntityMapping */
-	protected $mapping;
+	protected RequestEntityMapping $mapping;
 
 	public function __construct(RequestEntityMapping $mapping)
 	{

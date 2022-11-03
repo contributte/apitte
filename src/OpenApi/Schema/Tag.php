@@ -5,13 +5,10 @@ namespace Apitte\OpenApi\Schema;
 class Tag
 {
 
-	/** @var string */
 	private string $name;
 
-	/** @var string|null */
 	private ?string $description = null;
 
-	/** @var ExternalDocumentation|null */
 	private ?ExternalDocumentation $externalDocs = null;
 
 	public function __construct(string $name)

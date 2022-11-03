@@ -16,11 +16,9 @@ use Doctrine\Common\Annotations\AnnotationException;
 final class Tag
 {
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var string|null */
-	private $value;
+	private ?string $value;
 
 	public function __construct(string $name, ?string $value = null)
 	{

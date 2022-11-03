@@ -19,20 +19,16 @@ class SwaggerUIPanel implements IBarPanel
 		self::EXPANSION_NONE,
 	];
 
-	/** @var string|null */
-	private $url;
+	private ?string $url = null;
 
-	/** @var string */
-	private $expansion = self::EXPANSION_LIST;
+	private string $expansion = self::EXPANSION_LIST;
 
 	/** @var string|bool */
 	private $filter;
 
-	/** @var string */
-	private $title = 'OpenAPI';
+	private string $title = 'OpenAPI';
 
-	/** @var ISchemaBuilder */
-	private $schemaBuilder;
+	private ISchemaBuilder $schemaBuilder;
 
 	public function __construct(ISchemaBuilder $schemaBuilder)
 	{

@@ -13,8 +13,7 @@ use Apitte\Core\Utils\Regex;
 class SimpleRouter implements IRouter
 {
 
-	/** @var Schema */
-	private $schema;
+	private Schema $schema;
 
 	public function __construct(Schema $schema)
 	{

@@ -6,10 +6,9 @@ final class EndpointHandler
 {
 
 	/** @var class-string */
-	private $class;
+	private string $class;
 
-	/** @var string */
-	private $method;
+	private string $method;
 
 	/**
 	 * @param class-string $class

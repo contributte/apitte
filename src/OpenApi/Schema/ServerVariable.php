@@ -8,10 +8,8 @@ class ServerVariable
 	/** @var string[] */
 	private array $enum = [];
 
-	/** @var string */
 	private string $default;
 
-	/** @var string|null */
 	private ?string $description = null;
 
 	public function __construct(string $default)

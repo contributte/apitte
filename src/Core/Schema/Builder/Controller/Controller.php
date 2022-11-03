@@ -5,29 +5,26 @@ namespace Apitte\Core\Schema\Builder\Controller;
 final class Controller
 {
 
-	/** @var string */
-	private $class;
+	private string $class;
 
 	/** @var Method[] */
-	private $methods = [];
+	private array $methods = [];
 
-	/** @var string|null */
-	private $id;
+	private ?string $id = null;
 
-	/** @var string */
-	private $path = '';
+	private string $path = '';
 
 	/** @var string[] */
-	private $groupIds = [];
+	private array $groupIds = [];
 
 	/** @var string[] */
-	private $groupPaths = [];
+	private array $groupPaths = [];
 
 	/** @var mixed[] */
-	private $tags = [];
+	private array $tags = [];
 
 	/** @var mixed[] */
-	private $openApi = [];
+	private array $openApi = [];
 
 	public function __construct(string $class)
 	{

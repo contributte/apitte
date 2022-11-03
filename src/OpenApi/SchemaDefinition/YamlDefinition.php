@@ -7,8 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 class YamlDefinition implements IDefinition
 {
 
-	/** @var string */
-	private $file;
+	private string $file;
 
 	public function __construct(string $file)
 	{

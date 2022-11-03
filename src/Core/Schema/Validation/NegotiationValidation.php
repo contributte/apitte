@@ -17,7 +17,7 @@ class NegotiationValidation implements IValidation
 				$haveDefault = null;
 				$takenSuffixes = [];
 				foreach ($method->getNegotiations() as $negotiation) {
-					if ($negotiation->isDefault() === true) {
+					if ($negotiation->isDefault()) {
 						if ($haveDefault !== null) {
 							throw new InvalidSchemaException(sprintf(
 								'Multiple negotiations with "default=true" given in "%s::%s()". Only one negotiation could be default.',

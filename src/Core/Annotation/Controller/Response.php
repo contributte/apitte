@@ -16,14 +16,11 @@ use Doctrine\Common\Annotations\AnnotationException;
 final class Response
 {
 
-	/** @var string */
-	private $code;
+	private string $code;
 
-	/** @var string */
-	private $description;
+	private string $description;
 
-	/** @var string|null */
-	private $entity;
+	private ?string $entity;
 
 	public function __construct(string $description, string $code = 'default', ?string $entity = null)
 	{

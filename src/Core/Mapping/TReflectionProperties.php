@@ -8,14 +8,14 @@ trait TReflectionProperties
 {
 
 	/** @var mixed[] */
-	protected $properties = [];
+	protected array $properties = [];
 
 	/**
 	 * @return mixed[]
 	 */
 	public function getProperties(): array
 	{
-		if (!$this->properties) {
+		if ($this->properties === []) {
 			$properties = [];
 			$rf = new ReflectionObject($this);
 			$class = static::class;

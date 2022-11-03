@@ -9,8 +9,7 @@ use Apitte\Core\Mapping\RequestParameterMapping;
 class RequestParametersDecorator implements IRequestDecorator
 {
 
-	/** @var RequestParameterMapping */
-	protected $mapping;
+	protected RequestParameterMapping $mapping;
 
 	public function __construct(RequestParameterMapping $mapping)
 	{

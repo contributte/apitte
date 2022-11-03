@@ -7,11 +7,9 @@ use Apitte\Core\DI\ApiExtension;
 class PluginCompiler
 {
 
-	/** @var PluginManager */
-	protected $manager;
+	protected PluginManager $manager;
 
-	/** @var ApiExtension */
-	protected $extension;
+	protected ApiExtension $extension;
 
 	public function __construct(PluginManager $manager, ApiExtension $extension)
 	{

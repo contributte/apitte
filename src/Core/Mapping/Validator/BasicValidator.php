@@ -25,7 +25,7 @@ class BasicValidator implements IEntityValidator
 
 		$violations = $this->validateProperties($entity);
 
-		if (count($violations) > 0) {
+		if ($violations !== []) {
 			$fields = [];
 			foreach ($violations as $property => $messages) {
 				$fields[$property] = count($messages) > 1 ? $messages : $messages[0];

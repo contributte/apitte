@@ -11,7 +11,7 @@ class SuffixNegotiator implements INegotiator
 {
 
 	/** @var ITransformer[] */
-	private $transformers = [];
+	private array $transformers = [];
 
 	/**
 	 * @param ITransformer[] $transformers

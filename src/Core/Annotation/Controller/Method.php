@@ -17,7 +17,7 @@ final class Method
 {
 
 	/** @var string[] */
-	private $methods = [];
+	private array $methods = [];
 
 	/**
 	 * @param string[]|string $methods

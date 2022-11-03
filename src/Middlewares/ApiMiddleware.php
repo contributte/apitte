@@ -15,11 +15,9 @@ use Throwable;
 class ApiMiddleware implements IMiddleware
 {
 
-	/** @var IDispatcher */
-	protected $dispatcher;
+	protected IDispatcher $dispatcher;
 
-	/** @var IErrorHandler */
-	protected $errorHandler;
+	protected IErrorHandler $errorHandler;
 
 	public function __construct(IDispatcher $dispatcher, IErrorHandler $errorHandler)
 	{

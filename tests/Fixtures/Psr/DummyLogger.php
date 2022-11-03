@@ -8,7 +8,7 @@ use Stringable;
 class DummyLogger extends AbstractLogger
 {
 
-	public $records = [];
+	public array $records = [];
 
 	/**
 	 * @param mixed $level

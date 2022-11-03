@@ -11,8 +11,7 @@ use Contributte\Psr7\Psr7Response;
 class Application extends BaseApplication
 {
 
-	/** @var IDispatcher */
-	private $dispatcher;
+	private IDispatcher $dispatcher;
 
 	public function __construct(IErrorHandler $errorHandler, IDispatcher $dispatcher)
 	{

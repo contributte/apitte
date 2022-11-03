@@ -13,11 +13,9 @@ use Apitte\OpenApi\Utils\Helpers;
 class CoreDefinition implements IDefinition
 {
 
-	/** @var ApiSchema */
-	protected $schema;
+	protected ApiSchema $schema;
 
-	/** @var IEntityAdapter */
-	private $entityAdapter;
+	private IEntityAdapter $entityAdapter;
 
 	public function __construct(ApiSchema $schema, IEntityAdapter $entityAdapter)
 	{
@@ -51,7 +49,7 @@ class CoreDefinition implements IDefinition
 
 		// Tags
 		$tags = $this->getOperationTags($endpoint);
-		if (count($tags) > 0) {
+		if ($tags !== []) {
 			$operation['tags'] = array_keys($tags);
 		}
 

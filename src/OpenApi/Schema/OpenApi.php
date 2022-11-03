@@ -5,19 +5,15 @@ namespace Apitte\OpenApi\Schema;
 class OpenApi
 {
 
-	/** @var string */
 	private string $openapi;
 
-	/** @var Info */
 	private Info $info;
 
 	/** @var Server[] */
 	private array $servers = [];
 
-	/** @var Paths */
 	private Paths $paths;
 
-	/** @var Components|null */
 	private ?Components $components = null;
 
 	/** @var SecurityRequirement[] */
@@ -26,7 +22,6 @@ class OpenApi
 	/** @var Tag[] */
 	private array $tags = [];
 
-	/** @var ExternalDocumentation|null */
 	private ?ExternalDocumentation $externalDocs = null;
 
 	public function __construct(string $openapi, Info $info, Paths $paths)

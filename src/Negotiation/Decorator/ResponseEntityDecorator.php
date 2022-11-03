@@ -12,8 +12,7 @@ use Apitte\Negotiation\ContentNegotiation;
 class ResponseEntityDecorator implements IResponseDecorator, IErrorDecorator
 {
 
-	/** @var ContentNegotiation */
-	private $negotiation;
+	private ContentNegotiation $negotiation;
 
 	public function __construct(ContentNegotiation $negotiation)
 	{

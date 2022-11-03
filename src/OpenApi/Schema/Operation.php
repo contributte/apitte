@@ -8,16 +8,12 @@ class Operation
 	/** @var string[] */
 	private array $tags = [];
 
-	/** @var string|null */
 	private ?string $summary = null;
 
-	/** @var string|null */
 	private ?string $description = null;
 
-	/** @var ExternalDocumentation|null */
 	private ?ExternalDocumentation $externalDocs = null;
 
-	/** @var string|null */
 	private ?string $operationId = null;
 
 	/** @var Parameter[]|Reference[] */
@@ -26,13 +22,11 @@ class Operation
 	/** @var RequestBody|Reference|null */
 	private $requestBody = null;
 
-	/** @var Responses */
 	private Responses $responses;
 
 	/** @var Callback[]|Reference[] */
 	private array $callbacks = [];
 
-	/** @var bool */
 	private bool $deprecated = false;
 
 	/** @var SecurityRequirement[] */

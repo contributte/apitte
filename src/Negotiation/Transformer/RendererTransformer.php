@@ -10,8 +10,7 @@ use Nette\DI\Container;
 class RendererTransformer extends AbstractTransformer
 {
 
-	/** @var Container */
-	protected $container;
+	protected Container $container;
 
 	public function __construct(Container $container)
 	{

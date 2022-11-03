@@ -13,8 +13,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 class ResponsesTest extends TestCase
 {
 
-	/** @var Responses */
-	private $responses;
+	private Responses $responses;
 
 	private const ARRAY = [
 		'200' => ['description' => self::S200_DESCRIPTION],

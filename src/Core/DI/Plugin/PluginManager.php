@@ -9,11 +9,10 @@ use Nette\PhpGenerator\ClassType;
 final class PluginManager
 {
 
-	/** @var PluginCompiler */
-	private $compiler;
+	private PluginCompiler $compiler;
 
 	/** @var mixed[] */
-	private $plugins = [];
+	private array $plugins = [];
 
 	public function __construct(ApiExtension $extension)
 	{

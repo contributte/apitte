@@ -8,11 +8,9 @@ use Throwable;
 class DispatchError
 {
 
-	/** @var Throwable */
-	protected $error;
+	protected Throwable $error;
 
-	/** @var ApiRequest */
-	protected $request;
+	protected ApiRequest $request;
 
 	public function __construct(Throwable $error, ApiRequest $request)
 	{

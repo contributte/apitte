@@ -12,7 +12,7 @@ class NeonLoader implements ILoader
 {
 
 	/** @var mixed[] */
-	private $schema;
+	private array $schema;
 
 	/**
 	 * @param mixed[] $schema

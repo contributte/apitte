@@ -16,8 +16,7 @@ abstract class BaseApplication implements IApplication
 		'content-type',
 	];
 
-	/** @var IErrorHandler */
-	private $errorHandler;
+	private IErrorHandler $errorHandler;
 
 	public function __construct(IErrorHandler $errorHandler)
 	{

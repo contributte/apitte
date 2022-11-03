@@ -5,22 +5,16 @@ namespace Apitte\OpenApi\Schema;
 class OAuthFlow
 {
 
-	/** @var string */
 	private string $authorizationUrl;
 
-	/** @var string */
 	private string $tokenUrl;
 
-	/** @var string */
 	private string $refreshUrl;
 
 	/** @var array<string, string> */
 	private array $scopes = [];
 
 	/**
-	 * @param string $authorizationUrl
-	 * @param string $tokenUrl
-	 * @param string $refreshUrl
 	 * @param array<string, string> $scopes
 	 */
 	public function __construct(string $authorizationUrl, string $tokenUrl, string $refreshUrl, array $scopes)

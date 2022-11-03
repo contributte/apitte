@@ -12,7 +12,7 @@ class IntegerTypeMapper implements ITypeMapper
 	 */
 	public function normalize($value): int
 	{
-		if (is_int($value) || (is_string($value) && preg_match('#^[+-]?[0-9]+\z#', $value))) {
+		if (is_int($value) || (is_string($value) && preg_match('#^[+-]?[0-9]+\z#', $value) === 1)) {
 			return (int) $value;
 		}
 

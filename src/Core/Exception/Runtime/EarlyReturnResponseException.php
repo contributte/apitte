@@ -8,8 +8,7 @@ use Apitte\Core\Http\ApiResponse;
 class EarlyReturnResponseException extends RuntimeException
 {
 
-	/** @var ApiResponse */
-	protected $response;
+	protected ApiResponse $response;
 
 	public function __construct(ApiResponse $response)
 	{

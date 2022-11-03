@@ -13,11 +13,9 @@ use Psr\Http\Message\ResponseInterface;
 class CoreDispatcher implements IDispatcher
 {
 
-	/** @var IRouter */
-	protected $router;
+	protected IRouter $router;
 
-	/** @var IHandler */
-	protected $handler;
+	protected IHandler $handler;
 
 	public function __construct(IRouter $router, IHandler $handler)
 	{

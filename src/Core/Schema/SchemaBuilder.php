@@ -8,7 +8,7 @@ final class SchemaBuilder
 {
 
 	/** @var Controller[] */
-	private $controllers = [];
+	private array $controllers = [];
 
 	public function addController(string $class): Controller
 	{

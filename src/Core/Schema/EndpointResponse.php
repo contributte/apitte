@@ -5,14 +5,11 @@ namespace Apitte\Core\Schema;
 final class EndpointResponse
 {
 
-	/** @var string */
-	private $code;
+	private string $code;
 
-	/** @var string */
-	private $description;
+	private string $description;
 
-	/** @var string|null */
-	private $entity;
+	private ?string $entity = null;
 
 	public function __construct(string $code, string $description)
 	{

@@ -20,8 +20,7 @@ final class RouteDumpCommand extends Command
 	/** @var string */
 	protected static $defaultName = 'apitte:route:dump';
 
-	/** @var Schema */
-	private $schema;
+	private Schema $schema;
 
 	public function __construct(Schema $schema)
 	{

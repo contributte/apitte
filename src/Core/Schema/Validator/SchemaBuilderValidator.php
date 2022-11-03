@@ -9,7 +9,7 @@ class SchemaBuilderValidator
 {
 
 	/** @var IValidation[] */
-	private $validators = [];
+	private array $validators = [];
 
 	public function add(IValidation $validator): void
 	{

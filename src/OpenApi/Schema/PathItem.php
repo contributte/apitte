@@ -27,13 +27,10 @@ class PathItem
 		self::OPERATION_TRACE,
 	];
 
-	/** @var string|null */
 	private ?string $ref = null;
 
-	/** @var string|null */
 	private ?string $summary = null;
 
-	/** @var string|null */
 	private ?string $description = null;
 
 	/** @var Operation[] */

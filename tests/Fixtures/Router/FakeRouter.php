@@ -8,8 +8,7 @@ use Apitte\Core\Router\IRouter;
 class FakeRouter implements IRouter
 {
 
-	/** @var bool */
-	private $match;
+	private bool $match;
 
 	public function __construct(bool $match)
 	{

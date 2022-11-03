@@ -18,8 +18,7 @@ use Tester\TestCase;
 final class BaseSchemaTypeTest extends TestCase
 {
 
-	/** @var ISchemaType */
-	private $baseSchemaType;
+	private ISchemaType $baseSchemaType;
 
 	protected function setUp(): void
 	{

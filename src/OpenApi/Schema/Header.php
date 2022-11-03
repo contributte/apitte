@@ -5,7 +5,6 @@ namespace Apitte\OpenApi\Schema;
 class Header
 {
 
-	/** @var string|null */
 	private ?string $description = null;
 
 	/** @var Schema|Reference|null */

@@ -5,22 +5,16 @@ namespace Apitte\OpenApi\Schema;
 class Info
 {
 
-	/** @var string */
 	private string $title;
 
-	/** @var string|null */
 	private ?string $description = null;
 
-	/** @var string|null */
 	private ?string $termsOfService = null;
 
-	/** @var Contact|null */
 	private ?Contact $contact = null;
 
-	/** @var License|null */
 	private ?License $license = null;
 
-	/** @var string */
 	private string $version;
 
 	public function __construct(string $title, string $version)

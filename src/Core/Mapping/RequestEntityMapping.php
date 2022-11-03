@@ -14,8 +14,7 @@ use Apitte\Core\Schema\EndpointRequestBody;
 class RequestEntityMapping
 {
 
-	/** @var IEntityValidator|null */
-	protected $validator;
+	protected ?IEntityValidator $validator = null;
 
 	public function setValidator(?IEntityValidator $validator): void
 	{
@@ -28,12 +27,13 @@ class RequestEntityMapping
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 
 		// Validate that we have an endpoint
-		if (!$endpoint) {
+		if ($endpoint === null) {
 			throw new InvalidStateException(sprintf('Attribute "%s" is required', RequestAttributes::ATTR_ENDPOINT));
 		}
 
+		$requestBody = $endpoint->getRequestBody();
 		// If there's no request mapper, then skip it
-		if (!($requestBody = $endpoint->getRequestBody())) {
+		if ($requestBody === null) {
 			return $request;
 		}
 
@@ -68,7 +68,7 @@ class RequestEntityMapping
 		}
 
 		// Try to validate entity only if its enabled
-		if ($requestBody->isValidation() === true) {
+		if ($requestBody->isValidation()) {
 			$this->validate($entity);
 		}
 
@@ -94,7 +94,7 @@ class RequestEntityMapping
 	 */
 	protected function validate($entity): void
 	{
-		if (!$this->validator) {
+		if ($this->validator === null) {
 			return;
 		}
 

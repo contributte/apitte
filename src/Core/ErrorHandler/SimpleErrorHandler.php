@@ -15,8 +15,7 @@ use Throwable;
 class SimpleErrorHandler implements IErrorHandler
 {
 
-	/** @var bool */
-	private $catchException = true;
+	private bool $catchException = true;
 
 	public function setCatchException(bool $catchException): void
 	{

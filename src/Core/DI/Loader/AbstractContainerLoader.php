@@ -9,8 +9,7 @@ use Nette\DI\Definitions\Definition;
 abstract class AbstractContainerLoader implements ILoader
 {
 
-	/** @var ContainerBuilder */
-	private $builder;
+	private ContainerBuilder $builder;
 
 	public function __construct(ContainerBuilder $builder)
 	{

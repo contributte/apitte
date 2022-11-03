@@ -32,37 +32,33 @@ final class Endpoint
 	public const TAG_ID = 'id';
 
 	/** @var string[] */
-	private $methods = [];
+	private array $methods = [];
 
-	/** @var string|null */
-	private $mask;
+	private ?string $mask = null;
 
-	/** @var string|null */
-	private $pattern;
+	private ?string $pattern = null;
 
-	/** @var EndpointHandler */
-	private $handler;
+	private EndpointHandler $handler;
 
 	/** @var EndpointParameter[] */
-	private $parameters = [];
+	private array $parameters = [];
 
-	/** @var EndpointRequestBody|null */
-	private $requestBody;
+	private ?EndpointRequestBody $requestBody = null;
 
 	/** @var EndpointResponse[] */
-	private $responses = [];
+	private array $responses = [];
 
 	/** @var EndpointNegotiation[] */
-	private $negotiations = [];
+	private array $negotiations = [];
 
 	/** @var mixed[] */
-	private $tags = [];
+	private array $tags = [];
 
 	/** @var mixed[] */
-	private $metadata = [];
+	private array $metadata = [];
 
 	/** @var mixed[] */
-	private $openApi = [];
+	private array $openApi = [];
 
 	public function __construct(EndpointHandler $handler)
 	{
@@ -115,7 +111,7 @@ final class Endpoint
 
 	public function getPattern(): string
 	{
-		if (!$this->pattern) {
+		if ($this->pattern === null) {
 			$this->pattern = $this->generatePattern();
 		}
 
@@ -145,7 +141,7 @@ final class Endpoint
 	 */
 	public function getParametersByIn(string $in): array
 	{
-		return array_filter($this->getParameters(), function (EndpointParameter $parameter) use ($in): bool {
+		return array_filter($this->getParameters(), static function (EndpointParameter $parameter) use ($in): bool {
 			return $parameter->getIn() === $in;
 		});
 	}
@@ -304,14 +300,14 @@ final class Endpoint
 			$suffix = $negotiation->getSuffix();
 
 			// Skip if suffix is not provided
-			if (!$suffix) {
+			if ($suffix === '') {
 				continue;
 			}
 
 			$suffixes[] = $suffix;
 		}
 
-		if ($suffixes) {
+		if ($suffixes !== []) {
 			return sprintf(
 				'#^%s' . // Always start with raw pattern
 				'(%s)?$#U', // Optionally followed by one of suffixes

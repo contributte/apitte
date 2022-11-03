@@ -9,11 +9,9 @@ use Apitte\Core\Schema\Builder\Controller\Method;
 final class InvalidSchemaException extends LogicalException
 {
 
-	/** @var Controller */
-	public $controller;
+	public ?Controller $controller = null;
 
-	/** @var Method */
-	public $method;
+	public ?Method $method = null;
 
 	/**
 	 * @return static

@@ -6,17 +6,15 @@ use Apitte\Core\Exception\Api\ValidationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 
 class SymfonyValidator implements IEntityValidator
 {
 
-	/** @var Reader */
-	private $reader;
+	private Reader $reader;
 
-	/** @var ConstraintValidatorFactoryInterface|null */
-	private $constraintValidatorFactory;
+	private ?ConstraintValidatorFactoryInterface $constraintValidatorFactory = null;
 
 	public function __construct(Reader $reader)
 	{
@@ -46,7 +44,7 @@ class SymfonyValidator implements IEntityValidator
 
 		$validator = $validatorBuilder->getValidator();
 
-		/** @var ConstraintViolationInterface[] $violations */
+		/** @var ConstraintViolationListInterface $violations */
 		$violations = $validator->validate($entity);
 
 		if (count($violations) > 0) {

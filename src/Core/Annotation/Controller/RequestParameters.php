@@ -15,7 +15,7 @@ class RequestParameters
 {
 
 	/** @var RequestParameter[] */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * @param RequestParameter[]|RequestParameter $parameters

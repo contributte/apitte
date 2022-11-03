@@ -17,26 +17,19 @@ use Doctrine\Common\Annotations\AnnotationException;
 final class RequestParameter
 {
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var string */
-	private $type;
+	private string $type;
 
-	/** @var string|null */
-	private $description;
+	private ?string $description;
 
-	/** @var string */
-	private $in;
+	private string $in;
 
-	/** @var bool */
-	private $required;
+	private bool $required;
 
-	/** @var bool */
-	private $deprecated;
+	private bool $deprecated;
 
-	/** @var bool */
-	private $allowEmpty;
+	private bool $allowEmpty;
 
 	public function __construct(
 		string $name,

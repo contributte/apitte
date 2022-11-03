@@ -14,8 +14,7 @@ use Nette\DI\Container;
 class ServiceHandler implements IHandler
 {
 
-	/** @var Container */
-	protected $container;
+	protected Container $container;
 
 	public function __construct(Container $container)
 	{
@@ -30,8 +29,7 @@ class ServiceHandler implements IHandler
 		// Create and trigger callback
 		$endpoint = $this->getEndpoint($request);
 		$callback = $this->createCallback($endpoint);
-		$response = $callback($request, $response);
-		return $response;
+		return $callback($request, $response);
 	}
 
 	protected function createCallback(Endpoint $endpoint): ServiceCallback
@@ -50,7 +48,7 @@ class ServiceHandler implements IHandler
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 
 		// Validate that we have an endpoint
-		if (!$endpoint) {
+		if ($endpoint === null) {
 			throw new InvalidStateException(sprintf('Attribute "%s" is required', RequestAttributes::ATTR_ENDPOINT));
 		}
 

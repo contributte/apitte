@@ -8,11 +8,9 @@ use Apitte\Core\Schema\Builder\Controller\Method;
 class ControllerMethodPair
 {
 
-	/** @var Controller */
-	private $controller;
+	private Controller $controller;
 
-	/** @var Method */
-	private $method;
+	private Method $method;
 
 	public function __construct(Controller $controller, Method $method)
 	{

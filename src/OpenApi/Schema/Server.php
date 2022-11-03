@@ -5,10 +5,8 @@ namespace Apitte\OpenApi\Schema;
 class Server
 {
 
-	/** @var string */
 	private string $url;
 
-	/** @var string|null */
 	private ?string $description = null;
 
 	/** @var ServerVariable[] */

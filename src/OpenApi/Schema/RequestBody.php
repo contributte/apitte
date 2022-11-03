@@ -5,13 +5,11 @@ namespace Apitte\OpenApi\Schema;
 class RequestBody
 {
 
-	/** @var string|null */
 	private ?string $description = null;
 
 	/** @var MediaType[] */
 	private array $content = [];
 
-	/** @var bool */
 	private bool $required = false;
 
 	/**

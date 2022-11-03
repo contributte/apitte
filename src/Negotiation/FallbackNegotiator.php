@@ -9,8 +9,7 @@ use Apitte\Negotiation\Transformer\ITransformer;
 class FallbackNegotiator implements INegotiator
 {
 
-	/** @var ITransformer */
-	protected $transformer;
+	protected ITransformer $transformer;
 
 	public function __construct(ITransformer $transformer)
 	{

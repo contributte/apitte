@@ -6,7 +6,7 @@ class ArrayDefinition implements IDefinition
 {
 
 	/** @var mixed[] */
-	private $data = [];
+	private array $data = [];
 
 	/**
 	 * @param mixed[] $data

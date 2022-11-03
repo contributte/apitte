@@ -3,6 +3,7 @@
 namespace Tests\Cases\OpenApi\Cases\Schema;
 
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
+use Apitte\OpenApi\Schema\OAuthFlow;
 use Apitte\OpenApi\Schema\SecurityScheme;
 use Tester\Assert;
 use Tester\TestCase;
@@ -117,7 +118,7 @@ class SecuritySchemeTest extends TestCase
 
 	public function testInvalidType(): void
 	{
-		Assert::exception(function () {
+		Assert::exception(static function (): void {
 			new SecurityScheme('invalid');
 		}, InvalidArgumentException::class, 'Invalid value "invalid" for attribute "type" given. It must be one of "apiKey, http, oauth2, openIdConnect".');
 	}
@@ -125,7 +126,7 @@ class SecuritySchemeTest extends TestCase
 
 	public function testMissingName(): void
 	{
-		Assert::exception(function () {
+		Assert::exception(static function (): void {
 			$securityScheme = new SecurityScheme(SecurityScheme::TYPE_API_KEY);
 			$securityScheme->setIn(SecurityScheme::IN_HEADER);
 			$securityScheme->setName(null);
@@ -134,7 +135,7 @@ class SecuritySchemeTest extends TestCase
 
 	public function testMissingIn(): void
 	{
-		Assert::exception(function () {
+		Assert::exception(static function (): void {
 			$securityScheme = new SecurityScheme(SecurityScheme::TYPE_API_KEY);
 			$securityScheme->setName('api_key');
 			$securityScheme->setIn(null);
@@ -143,7 +144,7 @@ class SecuritySchemeTest extends TestCase
 
 	public function testInvalidIn(): void
 	{
-		Assert::exception(function () {
+		Assert::exception(static function (): void {
 			$securityScheme = new SecurityScheme(SecurityScheme::TYPE_API_KEY);
 			$securityScheme->setName('api_key');
 			$securityScheme->setIn('invalid');
@@ -152,7 +153,7 @@ class SecuritySchemeTest extends TestCase
 
 	public function testMissingScheme(): void
 	{
-		Assert::exception(function () {
+		Assert::exception(static function (): void {
 			$securityScheme = new SecurityScheme(SecurityScheme::TYPE_HTTP);
 			$securityScheme->setScheme(null);
 		}, InvalidArgumentException::class, 'Attribute "scheme" is required for type "http".');
@@ -160,7 +161,7 @@ class SecuritySchemeTest extends TestCase
 
 	public function testMissingBearerFormat(): void
 	{
-		Assert::exception(function () {
+		Assert::exception(static function (): void {
 			$securityScheme = new SecurityScheme(SecurityScheme::TYPE_HTTP);
 			$securityScheme->setScheme('bearer');
 			$securityScheme->setBearerFormat(null);
@@ -169,7 +170,7 @@ class SecuritySchemeTest extends TestCase
 
 	public function testMissingFlows(): void
 	{
-		Assert::exception(function () {
+		Assert::exception(static function (): void {
 			$securityScheme = new SecurityScheme(SecurityScheme::TYPE_OAUTH2);
 			$securityScheme->setFlows([]);
 		}, InvalidArgumentException::class, 'Attribute "flows" is required for type "oauth2".');
@@ -177,22 +178,22 @@ class SecuritySchemeTest extends TestCase
 
 	public function testMissingFlow(): void
 	{
-		Assert::exception(function () {
+		Assert::exception(static function (): void {
 			$securityScheme = new SecurityScheme(SecurityScheme::TYPE_OAUTH2);
 			$securityScheme->setFlows([
-				'implicit' => [
+				'implicit' => OAuthFlow::fromArray([
 					'authorizationUrl' => 'https://example.com/authorization',
 					'tokenUrl' => 'https://example.com/token',
 					'refreshUrl' => 'https://example.com/refresh',
 					'scopes' => ['read' => 'Read access', 'write' => 'Write access'],
-				],
+				]),
 			]);
 		}, InvalidArgumentException::class, 'Attribute "flows" is missing required key "password".');
 	}
 
 	public function testMissingOpenIdConnectUrl(): void
 	{
-		Assert::exception(function () {
+		Assert::exception(static function (): void {
 			$securityScheme = new SecurityScheme(SecurityScheme::TYPE_OPEN_ID_CONNECT);
 			$securityScheme->setOpenIdConnectUrl(null);
 		}, InvalidArgumentException::class, 'Attribute "openIdConnectUrl" is required for type "openIdConnect".');

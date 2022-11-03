@@ -5,10 +5,8 @@ namespace Apitte\OpenApi\Schema;
 class License
 {
 
-	/** @var string */
 	private string $name;
 
-	/** @var string|null */
 	private ?string $url = null;
 
 	public function __construct(string $name)

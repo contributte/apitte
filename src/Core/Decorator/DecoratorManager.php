@@ -10,13 +10,13 @@ class DecoratorManager
 {
 
 	/** @var IRequestDecorator[] */
-	protected $requestDecorators = [];
+	protected array $requestDecorators = [];
 
 	/** @var IResponseDecorator[] */
-	protected $responseDecorators = [];
+	protected array $responseDecorators = [];
 
 	/** @var IErrorDecorator[] */
-	protected $errorDecorators = [];
+	protected array $errorDecorators = [];
 
 	/**
 	 * @return static

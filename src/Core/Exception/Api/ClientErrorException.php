@@ -13,7 +13,7 @@ class ClientErrorException extends ApiException
 {
 
 	/** @var string */
-	public static $defaultMessage = 'Request contains an unspecified error.';
+	public static string $defaultMessage = 'Request contains an unspecified error.';
 
 	/**
 	 * @param mixed $context

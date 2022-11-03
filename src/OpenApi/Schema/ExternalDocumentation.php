@@ -5,10 +5,8 @@ namespace Apitte\OpenApi\Schema;
 class ExternalDocumentation
 {
 
-	/** @var string|null */
 	private ?string $description = null;
 
-	/** @var string */
 	private string $url;
 
 	public function __construct(string $url)

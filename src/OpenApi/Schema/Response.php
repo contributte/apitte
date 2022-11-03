@@ -5,7 +5,6 @@ namespace Apitte\OpenApi\Schema;
 class Response
 {
 
-	/** @var string */
 	private string $description;
 
 	/** @var Header[]|Reference[] */

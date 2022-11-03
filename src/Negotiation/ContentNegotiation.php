@@ -13,7 +13,7 @@ class ContentNegotiation
 	public const ATTR_SKIP = 'apitte.negotiation.skip';
 
 	/** @var INegotiator[] */
-	protected $negotiators = [];
+	protected array $negotiators = [];
 
 	/**
 	 * @param INegotiator[] $negotiators

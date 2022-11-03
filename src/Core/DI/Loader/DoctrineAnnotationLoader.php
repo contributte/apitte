@@ -29,11 +29,10 @@ use ReflectionMethod;
 final class DoctrineAnnotationLoader extends AbstractContainerLoader
 {
 
-	/** @var Reader|null */
-	private $reader;
+	private ?Reader $reader = null;
 
 	/** @var mixed[] */
-	private $meta = [
+	private array $meta = [
 		'services' => [],
 	];
 
@@ -290,7 +289,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 	private function getReader(): Reader
 	{
-		if (!$this->reader) {
+		if ($this->reader === null) {
 			$dualReaderFactory = new DualReaderFactory();
 			$this->reader = $dualReaderFactory->create();
 		}

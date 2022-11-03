@@ -33,7 +33,7 @@ class CoreSchemaPlugin extends Plugin
 {
 
 	/** @var IDecorator[] */
-	public static $decorators = [];
+	public static array $decorators = [];
 
 	public static function getName(): string
 	{

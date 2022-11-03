@@ -5,14 +5,11 @@ namespace Apitte\Core\Schema;
 final class EndpointNegotiation
 {
 
-	/** @var string */
-	private $suffix;
+	private string $suffix;
 
-	/** @var bool */
-	private $default = false;
+	private bool $default = false;
 
-	/** @var string|null */
-	private $renderer;
+	private ?string $renderer = null;
 
 	public function __construct(string $suffix)
 	{

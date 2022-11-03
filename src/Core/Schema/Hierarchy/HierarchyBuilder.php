@@ -8,10 +8,10 @@ class HierarchyBuilder
 {
 
 	/** @var Controller[] */
-	private $controllers;
+	private array $controllers;
 
 	/** @var HierarchicalNode[] */
-	private $nodes = [];
+	private array $nodes = [];
 
 	/**
 	 * @param Controller[] $controllers
@@ -105,9 +105,7 @@ class HierarchyBuilder
 			$endpoints = array_merge($endpoints, $this->getSortedEndpointsFromNode($subnode));
 		}
 
-		$endpoints = array_merge($endpoints, $node->getSortedEndpoints());
-
-		return $endpoints;
+		return array_merge($endpoints, $node->getSortedEndpoints());
 	}
 
 	/**

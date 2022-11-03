@@ -23,8 +23,7 @@ use Throwable;
 class DecoratedDispatcher extends CoreDispatcher
 {
 
-	/** @var DecoratorManager */
-	protected $decoratorManager;
+	protected DecoratorManager $decoratorManager;
 
 	public function __construct(IRouter $router, IHandler $handler, DecoratorManager $decoratorManager)
 	{

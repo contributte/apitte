@@ -5,11 +5,10 @@ namespace Apitte\Core\Schema;
 class SchemaInspector
 {
 
-	/** @var Schema */
-	private $schema;
+	private Schema $schema;
 
 	/** @var Endpoint[][] */
-	private $cache = [];
+	private array $cache = [];
 
 	public function __construct(Schema $schema)
 	{

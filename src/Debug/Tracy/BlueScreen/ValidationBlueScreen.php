@@ -12,7 +12,7 @@ final class ValidationBlueScreen
 
 	public static function register(BlueScreen $blueScreen): void
 	{
-		$blueScreen->addPanel(function ($e): ?array {
+		$blueScreen->addPanel(static function ($e): ?array {
 			if (!($e instanceof InvalidSchemaException)) {
 				return null;
 			}

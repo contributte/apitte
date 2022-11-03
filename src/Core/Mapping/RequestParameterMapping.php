@@ -17,18 +17,17 @@ class RequestParameterMapping
 {
 
 	/** @var string[] */
-	protected static $exceptions = [
+	protected static array $exceptions = [
 		InvalidArgumentTypeException::TYPE_INTEGER => '%s request parameter "%s" should be of type integer.',
 		InvalidArgumentTypeException::TYPE_FLOAT => '%s request parameter "%s" should be of type float or integer.',
 		InvalidArgumentTypeException::TYPE_BOOLEAN => '%s request parameter "%s" should be of type boolean. Pass "true" for true or "false" for false.',
 		InvalidArgumentTypeException::TYPE_DATETIME => '%s request parameter "%s" should be of type datetime in format ISO 8601 (Y-m-d\TH:i:sP).',
 	];
 
-	/** @var string */
-	protected static $customException = '%s request parameter "%s" should be of type %s.%s';
+	protected static string $customException = '%s request parameter "%s" should be of type %s.%s';
 
 	/** @var array<string, ITypeMapper|class-string<ITypeMapper>> */
-	protected $types = [];
+	protected array $types = [];
 
 	/**
 	 * @param ITypeMapper|string $mapper
@@ -48,7 +47,7 @@ class RequestParameterMapping
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT);
 
 		// Validate that we have an endpoint
-		if (!$endpoint) {
+		if ($endpoint === null) {
 			throw new InvalidStateException(sprintf('Attribute "%s" is required', RequestAttributes::ATTR_ENDPOINT));
 		}
 
@@ -56,7 +55,7 @@ class RequestParameterMapping
 		$parameters = $endpoint->getParameters();
 
 		// Skip, if there are no parameters
-		if (!$parameters) {
+		if ($parameters === []) {
 			return $request;
 		}
 
@@ -70,7 +69,7 @@ class RequestParameterMapping
 			$mapper = $this->getMapper($parameter->getType());
 
 			// If it's unsupported type, skip it
-			if (!$mapper) {
+			if ($mapper === null) {
 				continue;
 			}
 

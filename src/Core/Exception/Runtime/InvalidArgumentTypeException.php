@@ -12,11 +12,9 @@ class InvalidArgumentTypeException extends RuntimeException
 	public const TYPE_BOOLEAN = 'bool';
 	public const TYPE_DATETIME = 'datetime';
 
-	/** @var string */
-	private $type;
+	private string $type;
 
-	/** @var ?string */
-	private $description;
+	private ?string $description;
 
 	public function __construct(string $type, ?string $description = null)
 	{

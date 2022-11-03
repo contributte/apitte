@@ -38,28 +38,21 @@ class SecurityScheme
 		'authorizationCode',
 	];
 
-	/** @var string */
 	private string $type;
 
-	/** @var string|null */
 	private ?string $name = null;
 
-	/** @var string|null */
 	private ?string $description = null;
 
-	/** @var string|null */
 	private ?string $in = null;
 
-	/** @var string|null */
 	private ?string $scheme = null;
 
-	/** @var string|null */
 	private ?string $bearerFormat = null;
 
 	/** @var array<string, OAuthFlow> */
 	private array $flows = [];
 
-	/** @var string|null */
 	private ?string $openIdConnectUrl = null;
 
 	public function __construct(string $type)

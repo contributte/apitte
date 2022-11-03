@@ -76,7 +76,7 @@ class ApiResponse extends ProxyResponse
 		S511_NETWORK_AUTHENTICATION_REQUIRED = 511;
 
 	/** @var mixed[] */
-	protected $attributes = [];
+	protected array $attributes = [];
 
 	public function hasAttribute(string $name): bool
 	{

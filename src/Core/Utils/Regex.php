@@ -28,17 +28,13 @@ final class Regex
 
 	/**
 	 * @param string|string[] $replacement
-	 * @return mixed
 	 */
-	public static function replace(string $subject, string $pattern, $replacement, int $limit = -1)
+	public static function replace(string $subject, string $pattern, $replacement, int $limit = -1): ?string
 	{
 		return preg_replace($pattern, $replacement, $subject, $limit);
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public static function replaceCallback(string $subject, string $pattern, callable $callback, int $limit = -1)
+	public static function replaceCallback(string $subject, string $pattern, callable $callback, int $limit = -1): ?string
 	{
 		return preg_replace_callback($pattern, $callback, $subject, $limit);
 	}

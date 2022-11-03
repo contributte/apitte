@@ -6,10 +6,10 @@ class CsvEntity extends AbstractEntity
 {
 
 	/** @var string[] */
-	private $header = [];
+	private array $header = [];
 
 	/** @var string[] */
-	private $rows = [];
+	private array $rows = [];
 
 	/**
 	 * @param string[] $header

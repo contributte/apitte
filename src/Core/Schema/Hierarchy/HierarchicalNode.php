@@ -7,14 +7,13 @@ use Nette\Utils\Strings;
 class HierarchicalNode
 {
 
-	/** @var string */
-	private $path;
+	private string $path;
 
 	/** @var HierarchicalNode[] */
-	private $nodes = [];
+	private array $nodes = [];
 
 	/** @var ControllerMethodPair[] */
-	private $endpoints = [];
+	private array $endpoints = [];
 
 	public function __construct(string $path)
 	{
@@ -75,7 +74,7 @@ class HierarchicalNode
 		}
 
 		// Sort static nodes from A to Z and keep empty path last
-		uasort($staticNodes, static function (HierarchicalNode $a, HierarchicalNode $b) {
+		uasort($staticNodes, static function (HierarchicalNode $a, HierarchicalNode $b): int {
 			$pathA = $a->getPath();
 			$pathB = $b->getPath();
 

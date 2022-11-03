@@ -25,7 +25,7 @@ class ApiExtension extends CompilerExtension
 	public const NEGOTIATION_RESOLVER_TAG = 'apitte.negotiation.resolver';
 
 	/** @var PluginManager */
-	private $pm;
+	private PluginManager $pm;
 
 	public function getConfigSchema(): Schema
 	{

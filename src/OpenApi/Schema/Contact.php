@@ -5,13 +5,10 @@ namespace Apitte\OpenApi\Schema;
 class Contact
 {
 
-	/** @var string|null */
 	private ?string $name = null;
 
-	/** @var string|null */
 	private ?string $url = null;
 
-	/** @var string|null */
 	private ?string $email = null;
 
 	/**

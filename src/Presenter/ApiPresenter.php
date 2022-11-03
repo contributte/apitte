@@ -15,11 +15,9 @@ use Nette\Http\Request as HttpRequest;
 class ApiPresenter implements IPresenter
 {
 
-	/** @var IApplication */
-	private $application;
+	private IApplication $application;
 
-	/** @var HttpRequest */
-	private $request;
+	private HttpRequest $request;
 
 	public function __construct(IApplication $application, HttpRequest $request)
 	{

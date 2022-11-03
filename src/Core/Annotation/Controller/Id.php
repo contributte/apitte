@@ -16,8 +16,7 @@ use Doctrine\Common\Annotations\AnnotationException;
 final class Id
 {
 
-	/** @var string */
-	private $name;
+	private string $name;
 
 	public function __construct(string $name)
 	{

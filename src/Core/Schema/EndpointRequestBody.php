@@ -5,17 +5,13 @@ namespace Apitte\Core\Schema;
 final class EndpointRequestBody
 {
 
-	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
-	/** @var string|null */
-	private $entity;
+	private ?string $entity = null;
 
-	/** @var bool */
-	private $required = false;
+	private bool $required = false;
 
-	/** @var bool */
-	private $validation = true;
+	private bool $validation = true;
 
 	public function getDescription(): ?string
 	{

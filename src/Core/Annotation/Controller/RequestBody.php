@@ -15,17 +15,13 @@ use Doctrine\Common\Annotations\Annotation\Target;
 final class RequestBody
 {
 
-	/** @var string|null */
-	private $description;
+	private ?string $description;
 
-	/** @var string|null */
-	private $entity;
+	private ?string $entity;
 
-	/** @var bool */
-	private $required;
+	private bool $required;
 
-	/** @var bool */
-	private $validation;
+	private bool $validation;
 
 	public function __construct(?string $description = null, ?string $entity = null, bool $required = false, bool $validation = true)
 	{

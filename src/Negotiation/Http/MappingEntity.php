@@ -7,8 +7,7 @@ use Apitte\Core\Mapping\Response\IResponseEntity;
 class MappingEntity extends AbstractEntity
 {
 
-	/** @var IResponseEntity */
-	protected $entity;
+	protected IResponseEntity $entity;
 
 	public function __construct(IResponseEntity $entity)
 	{

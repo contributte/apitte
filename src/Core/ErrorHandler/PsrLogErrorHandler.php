@@ -13,8 +13,7 @@ use Psr\Log\LogLevel;
 class PsrLogErrorHandler extends SimpleErrorHandler
 {
 
-	/** @var LoggerInterface */
-	private $logger;
+	private LoggerInterface $logger;
 
 	public function __construct(LoggerInterface $logger)
 	{

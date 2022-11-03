@@ -6,7 +6,7 @@ class Schema
 {
 
 	/** @var Endpoint[] */
-	private $endpoints = [];
+	private array $endpoints = [];
 
 	public function addEndpoint(Endpoint $endpoint): void
 	{

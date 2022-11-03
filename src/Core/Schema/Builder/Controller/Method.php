@@ -10,35 +10,31 @@ use Apitte\Core\Schema\EndpointResponse;
 final class Method
 {
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var string */
-	private $path = '';
+	private string $path = '';
 
-	/** @var string|null */
-	private $id;
+	private ?string $id = null;
 
 	/** @var string[] */
-	private $httpMethods = [];
+	private array $httpMethods = [];
 
 	/** @var mixed[] */
-	private $tags = [];
+	private array $tags = [];
 
-	/** @var EndpointRequestBody|null */
-	private $requestBody;
+	private ?EndpointRequestBody $requestBody = null;
 
 	/** @var EndpointParameter[] */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/** @var EndpointResponse[] */
-	private $responses = [];
+	private array $responses = [];
 
 	/** @var EndpointNegotiation[] */
-	private $negotiations = [];
+	private array $negotiations = [];
 
 	/** @var mixed[] */
-	private $openApi = [];
+	private array $openApi = [];
 
 	public function __construct(string $name)
 	{

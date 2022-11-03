@@ -11,11 +11,9 @@ use Tracy\Debugger;
 class DebugDataTransformer extends AbstractTransformer
 {
 
-	/** @var int */
-	private $maxDepth;
+	private int $maxDepth;
 
-	/** @var int */
-	private $maxLength;
+	private int $maxLength;
 
 	public function __construct(int $maxDepth = 10, int $maxLength = 1500)
 	{

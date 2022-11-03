@@ -5,7 +5,6 @@ namespace Apitte\OpenApi\Schema;
 class Reference
 {
 
-	/** @var string */
 	private string $ref;
 
 	public function __construct(string $ref)

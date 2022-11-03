@@ -20,22 +20,16 @@ class Parameter
 		self::IN_QUERY,
 	];
 
-	/** @var string */
 	private string $name;
 
-	/** @var string */
 	private string $in;
 
-	/** @var string|null */
 	private ?string $description = null;
 
-	/** @var bool */
 	private bool $required = false;
 
-	/** @var bool */
 	private bool $deprecated = false;
 
-	/** @var bool */
 	private bool $allowEmptyValue = false;
 
 	/** @var Schema|Reference|null */
@@ -44,7 +38,6 @@ class Parameter
 	/** @var mixed */
 	private $example;
 
-	/** @var string|null */
 	private ?string $style = null;
 
 	public function __construct(string $name, string $in)

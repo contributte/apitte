@@ -17,7 +17,7 @@ use Tracy\Debugger;
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 // Warnings
-Toolkit::test(function (): void {
+Toolkit::test(static function (): void {
 	$transformer = new DebugDataTransformer();
 
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());

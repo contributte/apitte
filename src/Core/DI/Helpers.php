@@ -14,7 +14,7 @@ class Helpers
 	public static function sortByPriorityInTag(string $tagname, array $definitions, int $default = 10): array
 	{
 		// Sort by priority
-		uasort($definitions, function (Definition $a, Definition $b) use ($tagname, $default) {
+		uasort($definitions, static function (Definition $a, Definition $b) use ($tagname, $default): int {
 			$tag1 = $a->getTag($tagname);
 			$p1 = $tag1 !== null && isset($tag1['priority']) ? $tag1['priority'] : $default;
 

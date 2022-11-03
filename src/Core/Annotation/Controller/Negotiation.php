@@ -15,14 +15,11 @@ use Doctrine\Common\Annotations\Annotation\Target;
 final class Negotiation
 {
 
-	/** @var string */
-	private $suffix;
+	private string $suffix;
 
-	/** @var bool */
-	private $default;
+	private bool $default;
 
-	/** @var string|null */
-	private $renderer;
+	private ?string $renderer;
 
 	public function __construct(string $suffix, bool $default = false, ?string $renderer = null)
 	{

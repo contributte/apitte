@@ -13,11 +13,9 @@ use Throwable;
 class SnapshotException extends RuntimeException
 {
 
-	/** @var ApiRequest */
-	protected $request;
+	protected ApiRequest $request;
 
-	/** @var ApiResponse */
-	protected $response;
+	protected ApiResponse $response;
 
 	public function __construct(Throwable $exception, ApiRequest $request, ApiResponse $response)
 	{

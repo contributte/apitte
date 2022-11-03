@@ -31,26 +31,19 @@ final class EndpointParameter
 		self::IN_PATH,
 	];
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var string */
-	private $type;
+	private string $type;
 
-	/** @var string|null */
-	private $description;
+	private ?string $description = null;
 
-	/** @var string */
-	private $in = self::IN_PATH;
+	private string $in = self::IN_PATH;
 
-	/** @var bool */
-	private $required = true;
+	private bool $required = true;
 
-	/** @var bool */
-	private $deprecated = false;
+	private bool $deprecated = false;
 
-	/** @var bool */
-	private $allowEmpty = false;
+	private bool $allowEmpty = false;
 
 	public function __construct(string $name, string $type = self::TYPE_STRING)
 	{

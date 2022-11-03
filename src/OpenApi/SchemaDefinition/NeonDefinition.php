@@ -8,8 +8,7 @@ use Nette\Neon\Neon;
 class NeonDefinition implements IDefinition
 {
 
-	/** @var string */
-	private $file;
+	private string $file;
 
 	public function __construct(string $file)
 	{

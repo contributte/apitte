@@ -6,6 +6,7 @@ final class Regex
 {
 
 	/**
+	 * @param 0|256|512|768 $flags
 	 * @return mixed
 	 */
 	public static function match(string $subject, string $pattern, int $flags = 0)

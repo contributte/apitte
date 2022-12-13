@@ -88,20 +88,22 @@ test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$entity = new NotEmptyEntity();
 
-	$queryRequest = $request
-		->withQueryParams(['foo' => 1]);
-
-	$bodyRequest = $request
-		->withBody(Utils::streamFor(json_encode(['foo' => 1])));
-
 	foreach ([Endpoint::METHOD_GET, Endpoint::METHOD_DELETE, Endpoint::METHOD_HEAD] as $method) {
-		$entity = $entity->fromRequest($queryRequest->withMethod($method));
+		$queryRequest = $request
+			->withQueryParams(['foo' => 1])
+			->withMethod($method);
+
+		$entity = $entity->fromRequest($queryRequest);
 
 		Assert::same(1, $entity->foo);
 	}
 
 	foreach ([Endpoint::METHOD_POST, Endpoint::METHOD_PUT, Endpoint::METHOD_PATCH] as $method) {
-		$entity = $entity->fromRequest($bodyRequest->withMethod($method));
+		$bodyRequest = $request
+			->withBody(Utils::streamFor(json_encode(['foo' => 1])))
+			->withMethod($method);
+
+		$entity = $entity->fromRequest($bodyRequest);
 
 		Assert::same(1, $entity->foo);
 	}

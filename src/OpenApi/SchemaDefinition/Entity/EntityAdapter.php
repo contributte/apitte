@@ -84,6 +84,14 @@ class EntityAdapter implements IEntityAdapter
 			];
 		}
 
+		// Array shape
+		if (preg_match('~array<(\w+),\s?([^>]+)>~', $type, $m)) {
+			return [
+				'type' => 'object',
+				'additionalProperties' => $this->getMetadata($m[2]),
+			];
+		}
+
 		// Get schema for class
 		if (class_exists($type)) {
 			// String is converted to DateTimeInterface internally in core

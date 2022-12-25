@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Tester\Assert;
 use Tester\TestCase;
+use Tests\Fixtures\ResponseEntity\ArrayShapeEntity;
 use Tests\Fixtures\ResponseEntity\CompoundResponseEntity;
 use Tests\Fixtures\ResponseEntity\MixedEntity;
 use Tests\Fixtures\ResponseEntity\NativeIntersectionEntity;
@@ -205,6 +206,37 @@ final class EntityAdapterTest extends TestCase
 				],
 			],
 			$adapter->getMetadata(TypedResponseEntity::class)
+		);
+	}
+
+	public function testArrayShape(): void
+	{
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			[
+				'type' => 'object',
+				'properties' => [
+					'shapeOfStringToInt' => [
+						'type' => 'object',
+						'additionalProperties' => [
+							'type' => 'integer',
+						],
+					],
+					'shapeOfStringToObject' => [
+						'type' => 'object',
+						'additionalProperties' => [
+							'type' => 'object',
+							'properties' => [
+								'name' => [
+									'type' => 'string',
+								],
+							],
+						],
+					],
+				],
+			],
+			$adapter->getMetadata(ArrayShapeEntity::class)
 		);
 	}
 

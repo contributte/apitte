@@ -1,12 +1,6 @@
 # Setup
 
-At first, install composer package.
-
-```bash
-composer require contributte/apitte
-```
-
-After that, register `Apitte` using `ApiExtension` to your Nette-based application.
+Register `Apitte` using `ApiExtension` to your Nette-based application.
 
 ```neon
 # config.neon

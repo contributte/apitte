@@ -7,11 +7,11 @@ use ReflectionObject;
 trait TReflectionProperties
 {
 
-	/** @var mixed[] */
+	/** @var array<string, array<string, mixed>> */
 	protected array $properties = [];
 
 	/**
-	 * @return mixed[]
+	 * @return array<string, array<string, mixed>>
 	 */
 	public function getProperties(): array
 	{
@@ -35,7 +35,7 @@ trait TReflectionProperties
 				$name = $property->getName();
 				$properties[$name] = [
 					'name' => $name,
-					'type' => $property->getValue($this),
+					'type' => $property->isInitialized($this) ? $property->getValue($this) : null,
 					'defaultValue' => $defaultProperties[$name] ?? null,
 				];
 			}
@@ -47,7 +47,7 @@ trait TReflectionProperties
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return array<string, mixed>
 	 */
 	public function toArray(): array
 	{

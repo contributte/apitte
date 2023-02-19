@@ -261,19 +261,17 @@ class EntityAdapter implements IEntityAdapter
 
 	private function getNativePropertyType(Type $type, ReflectionProperty $property): string
 	{
-		if ($type->isSingle() && count($type->getNames()) === 1) { /** @phpstan-ignore-line */
-			return $type->getNames()[0]; /** @phpstan-ignore-line */
+		if ($type->isSingle() && count($type->getNames()) === 1) {
+			return $type->getNames()[0];
 		}
 
-		if ($type->isUnion()
-			|| ($type->isSingle() /** @phpstan-ignore-line */
-				&& count($type->getNames()) === 2) // nullable type is single but returns name of type and null in names
+		if ($type->isUnion() || ($type->isSingle() && count($type->getNames()) === 2) // nullable type is single but returns name of type and null in names
 		) {
-			return implode('|', $type->getNames()); /** @phpstan-ignore-line */
+			return implode('|', $type->getNames());
 		}
 
 		if ($type->isIntersection()) {
-			return implode('&', $type->getNames()); /** @phpstan-ignore-line */
+			return implode('&', $type->getNames());
 		}
 
 		throw new RuntimeException(sprintf('Could not parse type "%s"', $property));

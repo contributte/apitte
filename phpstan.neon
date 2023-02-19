@@ -54,3 +54,18 @@ parameters:
 
 		# This should not happen because null is returned on error
 		- '#Method Apitte\\Core\\Utils\\Helpers::slashless\(\) should return string but returns string\|null\.#'
+
+		# To pass php8.0 tests where library doesn't have isSingle()
+		- message: """
+				#^Call to deprecated method isSingle\\(\\) of class Nette\\\\Utils\\\\Type\\:
+				use isSimple\\(\\)$#
+			"""
+		  path: %currentWorkingDirectory%/src/OpenApi/SchemaDefinition/Entity/EntityAdapter.php
+
+		# Nette changed return typehint
+		- message: "#^Method Apitte\\\\OpenApi\\\\SchemaDefinition\\\\Entity\\\\EntityAdapter\\:\\:getNativePropertyType\\(\\) should return string but returns array\\<string\\>\\|string\\.$#"
+		  path: %currentWorkingDirectory%/src/OpenApi/SchemaDefinition/Entity/EntityAdapter.php
+
+		# Nette changed return typehint
+		- message: "#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, array\\<int, array\\<string\\>\\|string\\> given\\.$#"
+		  path: %currentWorkingDirectory%/src/OpenApi/SchemaDefinition/Entity/EntityAdapter.php

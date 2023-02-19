@@ -12,11 +12,11 @@ use Symfony\Component\Validator\Validation;
 class SymfonyValidator implements IEntityValidator
 {
 
-	private Reader $reader;
+	private ?Reader $reader;
 
 	private ?ConstraintValidatorFactoryInterface $constraintValidatorFactory = null;
 
-	public function __construct(Reader $reader)
+	public function __construct(?Reader $reader = null)
 	{
 		$this->reader = $reader;
 		AnnotationReader::addGlobalIgnoredName('mapping');

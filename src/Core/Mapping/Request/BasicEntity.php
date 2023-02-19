@@ -7,6 +7,7 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Mapping\TReflectionProperties;
 use Apitte\Core\Schema\Endpoint;
 use Nette\Utils\JsonException;
+use TypeError;
 
 abstract class BasicEntity extends AbstractEntity
 {
@@ -38,7 +39,7 @@ abstract class BasicEntity extends AbstractEntity
 	}
 
 	/**
-	 * @param mixed[] $data
+	 * @param array<string, mixed> $data
 	 * @return static
 	 */
 	public function factory(array $data): self
@@ -60,7 +61,11 @@ abstract class BasicEntity extends AbstractEntity
 			}
 
 			// Fill single property
-			$inst->{$property['name']} = $value;
+			try {
+				$inst->{$property['name']} = $value;
+			} catch (TypeError) {
+				// do nothing, entity will be invalid if something is missing and ValidationException will be thrown
+			}
 		}
 
 		return $inst;

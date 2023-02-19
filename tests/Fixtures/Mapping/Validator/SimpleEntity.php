@@ -18,4 +18,8 @@ final class SimpleEntity extends BasicEntity
 	 */
 	public $id;
 
+	#[Assert\NotNull]
+	#[Assert\Type(type: 'integer')]
+	public int $typedId;
+
 }

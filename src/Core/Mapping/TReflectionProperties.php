@@ -47,7 +47,7 @@ trait TReflectionProperties
 	}
 
 	/**
-	 * @return array<string, mixed>
+	 * @return mixed[]
 	 */
 	public function toArray(): array
 	{

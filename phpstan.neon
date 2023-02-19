@@ -49,8 +49,6 @@ parameters:
 		- message: '#.+(int|string|string\>)\|false.+#'
 		  path: %currentWorkingDirectory%/src/OpenApi/SchemaDefinition/Entity/EntityAdapter.php
 
-		- '#Unable to resolve the template type T in call to method Nette\\DI\\Container::getByType\(\)#'
-
 		- '#Property Apitte\\OpenApi\\Schema\\(\w+)::\$(\w+) is never read, only written.#'
 		- '#Property Apitte\\OpenApi\\Schema\\(\w+)::\$(\w+) is unused.#'
 

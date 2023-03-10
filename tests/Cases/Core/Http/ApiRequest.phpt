@@ -11,6 +11,15 @@ use Apitte\Core\Http\RequestAttributes;
 use Contributte\Psr7\Psr7ServerRequestFactory;
 use Tester\Assert;
 
+// Entity
+test(function (): void {
+	$request = Psr7ServerRequestFactory::fromSuperGlobal();
+	$apiRequest = new ApiRequest($request);
+	$apiRequest = $apiRequest->withAttribute(RequestAttributes::ATTR_REQUEST_ENTITY, new stdClass());
+
+	Assert::type(stdClass::class, $apiRequest->getEntity());
+});
+
 // Parameters
 test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();

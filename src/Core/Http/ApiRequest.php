@@ -42,7 +42,7 @@ class ApiRequest extends ProxyRequest
 	{
 		$entity = $this->getAttribute(RequestAttributes::ATTR_REQUEST_ENTITY, null);
 
-		if ($entity !== null) {
+		if ($entity === null) {
 			if (func_num_args() < 1) {
 				throw new InvalidStateException('No request entity found');
 			}

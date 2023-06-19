@@ -35,9 +35,9 @@ class OperationTest extends TestCase
 		$operation->setExternalDocs($externalDocs);
 
 		$parameters = [];
-		$parameters[] = $p1 = new Parameter('p1', Parameter::IN_PATH);
+		$parameters['path-p1'] = $p1 = new Parameter('p1', Parameter::IN_PATH);
 		$operation->addParameter($p1);
-		$parameters[] = $p2 = new Parameter('p2', Parameter::IN_COOKIE);
+		$parameters['cookie-p2'] = $p2 = new Parameter('p2', Parameter::IN_COOKIE);
 		$operation->addParameter($p2);
 		$parameters[] = $p3 = new Reference('r1');
 		$operation->addParameter($p3);

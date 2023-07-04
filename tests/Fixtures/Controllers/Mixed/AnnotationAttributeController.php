@@ -16,8 +16,9 @@ final class AnnotationAttributeController extends ApiV1Controller
 	 * })
 	 */
 	#[Path(path: '/user/{userId}/collections')]
-	public function run()
+	public function run(): void
 	{
+		// Tests
 	}
 
 }

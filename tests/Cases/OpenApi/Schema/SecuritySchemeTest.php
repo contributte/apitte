@@ -123,7 +123,6 @@ class SecuritySchemeTest extends TestCase
 		}, InvalidArgumentException::class, 'Invalid value "invalid" for attribute "type" given. It must be one of "apiKey, http, oauth2, openIdConnect".');
 	}
 
-
 	public function testMissingName(): void
 	{
 		Assert::exception(static function (): void {

@@ -20,7 +20,7 @@ final class Negotiations
 	/**
 	 * @param Negotiation[]|Negotiation $negotiations
 	 */
-	public function __construct($negotiations)
+	public function __construct(array|Negotiation $negotiations)
 	{
 		if (empty($negotiations)) {
 			throw new AnnotationException('Empty @Negotiations given');

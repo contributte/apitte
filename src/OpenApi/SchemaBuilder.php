@@ -20,6 +20,7 @@ class SchemaBuilder implements ISchemaBuilder
 	public function build(): OpenApi
 	{
 		$data = $this->loadDefinitions();
+
 		return OpenApi::fromArray($data);
 	}
 

@@ -24,34 +24,11 @@ use Tests\Fixtures\Mapping\Parameter\MyEmailTypeMapper;
 final class RequestParameterMappingTest extends TestCase
 {
 
-	/** @var RequestParameterMapping */
-	private $requestParameterMapping;
+	private RequestParameterMapping $requestParameterMapping;
 
-	/** @var ApiRequest */
-	private $request;
+	private ApiRequest $request;
 
-	/** @var ApiResponse */
-	private $response;
-
-	protected function setUp(): void
-	{
-		$this->requestParameterMapping = new RequestParameterMapping();
-
-		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_BOOLEAN, new BooleanTypeMapper());
-		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_DATETIME, new DateTimeTypeMapper());
-		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_FLOAT, new FloatTypeMapper());
-		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_INTEGER, new IntegerTypeMapper());
-		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_STRING, new StringTypeMapper());
-		$this->requestParameterMapping->addMapper('email', new MyEmailTypeMapper());
-
-		$this->request = new ApiRequest(
-			new ServerRequest(
-				'GET',
-				'/'
-			)
-		);
-		$this->response = new ApiResponse(new Response());
-	}
+	private ApiResponse $response;
 
 	public function testIntInPath(): void
 	{
@@ -349,7 +326,6 @@ final class RequestParameterMappingTest extends TestCase
 		);
 	}
 
-
 	public function testEmailInQuery(): void
 	{
 		$handler = new EndpointHandler('class', 'method');
@@ -407,6 +383,26 @@ final class RequestParameterMappingTest extends TestCase
 			'Query request parameter "email" should be provided.',
 			400
 		);
+	}
+
+	protected function setUp(): void
+	{
+		$this->requestParameterMapping = new RequestParameterMapping();
+
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_BOOLEAN, new BooleanTypeMapper());
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_DATETIME, new DateTimeTypeMapper());
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_FLOAT, new FloatTypeMapper());
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_INTEGER, new IntegerTypeMapper());
+		$this->requestParameterMapping->addMapper(EndpointParameter::TYPE_STRING, new StringTypeMapper());
+		$this->requestParameterMapping->addMapper('email', new MyEmailTypeMapper());
+
+		$this->request = new ApiRequest(
+			new ServerRequest(
+				'GET',
+				'/'
+			)
+		);
+		$this->response = new ApiResponse(new Response());
 	}
 
 }

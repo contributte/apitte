@@ -20,6 +20,7 @@ final class DualReaderFactory
 		AnnotationRegistry::registerUniqueLoader('class_exists');
 
 		$attributeReader = new AttributeReader();
+
 		return new DualReader($annotationReader, $attributeReader);
 	}
 

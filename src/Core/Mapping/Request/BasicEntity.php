@@ -71,11 +71,7 @@ abstract class BasicEntity extends AbstractEntity
 		return $inst;
 	}
 
-	/**
-	 * @param mixed $value
-	 * @return mixed
-	 */
-	protected function normalize(string $property, $value)
+	protected function normalize(string $property, mixed $value): mixed
 	{
 		return $value;
 	}

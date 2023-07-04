@@ -16,18 +16,21 @@ final class AttributeMultiController extends ApiV1Controller
 	#[Response(description: 'some_description_2', code: 'com')]
 	public function responses(): void
 	{
+		// Tests
 	}
 
 	#[RequestParameter(name: 'name_value', type: 'type_value', in: 'path')]
 	#[RequestParameter(in: 'query', type: 'type_value_2', name: 'name_value_2')]
 	public function requestParameters(): void
 	{
+		// Tests
 	}
 
 	#[Negotiation('some_suffix')]
 	#[Negotiation(suffix: 'some_suffix_2')]
 	public function negotiations(): void
 	{
+		// Tests
 	}
 
 }

@@ -122,10 +122,7 @@ final class Controller
 		return $this->tags;
 	}
 
-	/**
-	 * @param mixed $value
-	 */
-	public function addTag(string $name, $value = null): void
+	public function addTag(string $name, mixed $value = null): void
 	{
 		$this->tags[$name] = $value;
 	}

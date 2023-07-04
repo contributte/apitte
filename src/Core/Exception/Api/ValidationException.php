@@ -20,7 +20,7 @@ class ValidationException extends ClientErrorException
 	 * @param mixed[] $fields
 	 * @return static
 	 */
-	public function withFields(array $fields)
+	public function withFields(array $fields): static
 	{
 		return $this->withTypedContext('validation', $fields);
 	}
@@ -29,7 +29,7 @@ class ValidationException extends ClientErrorException
 	 * @param mixed[] $fields
 	 * @return static
 	 */
-	public function withFormFields(array $fields)
+	public function withFormFields(array $fields): static
 	{
 		foreach ($fields as $key => $value) {
 			if (is_numeric($key)) {

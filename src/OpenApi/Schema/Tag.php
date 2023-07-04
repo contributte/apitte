@@ -17,6 +17,18 @@ class Tag
 	}
 
 	/**
+	 * @param mixed[] $data
+	 */
+	public static function fromArray(array $data): Tag
+	{
+		$tag = new Tag($data['name']);
+		$tag->setDescription($data['description'] ?? null);
+		$tag->setExternalDocs(isset($data['externalDocs']) ? ExternalDocumentation::fromArray($data['externalDocs']) : null);
+
+		return $tag;
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -34,17 +46,6 @@ class Tag
 		}
 
 		return $data;
-	}
-
-	/**
-	 * @param mixed[] $data
-	 */
-	public static function fromArray(array $data): Tag
-	{
-		$tag = new Tag($data['name']);
-		$tag->setDescription($data['description'] ?? null);
-		$tag->setExternalDocs(isset($data['externalDocs']) ? ExternalDocumentation::fromArray($data['externalDocs']) : null);
-		return $tag;
 	}
 
 	public function setDescription(?string $description): void

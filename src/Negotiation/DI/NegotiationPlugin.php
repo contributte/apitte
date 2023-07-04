@@ -34,13 +34,6 @@ class NegotiationPlugin extends Plugin
 		return 'negotiation';
 	}
 
-	protected function getConfigSchema(): Schema
-	{
-		return Expect::structure([
-			'unification' => Expect::bool(false),
-		]);
-	}
-
 	/**
 	 * Register services
 	 */
@@ -114,6 +107,13 @@ class NegotiationPlugin extends Plugin
 	{
 		$this->compileNegotiators();
 		$this->compileTransformers();
+	}
+
+	protected function getConfigSchema(): Schema
+	{
+		return Expect::structure([
+			'unification' => Expect::bool(false),
+		]);
 	}
 
 	protected function compileNegotiators(): void

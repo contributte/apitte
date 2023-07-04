@@ -8,14 +8,13 @@ use Stringable;
 class DummyLogger extends AbstractLogger
 {
 
+	/** @var mixed[] */
 	public array $records = [];
 
 	/**
-	 * @param mixed $level
-	 * @param string|Stringable $message
 	 * @param mixed[] $context
 	 */
-	public function log($level, $message, array $context = []): void
+	public function log(mixed $level, string|Stringable $message, array $context = []): void
 	{
 		$record = [
 			'level' => $level,

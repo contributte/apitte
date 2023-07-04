@@ -5,10 +5,7 @@ namespace Apitte\Core\Mapping\Parameter;
 class StringTypeMapper implements ITypeMapper
 {
 
-	/**
-	 * @param mixed $value
-	 */
-	public function normalize($value): ?string
+	public function normalize(mixed $value): ?string
 	{
 		return (string) $value;
 	}

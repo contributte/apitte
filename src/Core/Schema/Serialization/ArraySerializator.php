@@ -116,16 +116,13 @@ final class ArraySerializator implements ISerializator
 		$maskParameters = [];
 
 		/** @var EndpointParameter[] $pathParameters */
-		$pathParameters = array_filter($method->getParameters(), static function (EndpointParameter $parameter): bool {
-			return $parameter->getIn() === EndpointParameter::IN_PATH;
-		});
+		$pathParameters = array_filter($method->getParameters(), static fn (EndpointParameter $parameter): bool => $parameter->getIn() === EndpointParameter::IN_PATH);
 
 		/** @var EndpointParameter[] $notPathParameters */
-		$notPathParameters = array_filter($method->getParameters(), static function (EndpointParameter $parameter): bool {
-			return $parameter->getIn() !== EndpointParameter::IN_PATH;
-		});
+		$notPathParameters = array_filter($method->getParameters(), static fn (EndpointParameter $parameter): bool => $parameter->getIn() !== EndpointParameter::IN_PATH);
 
 		// Collect variable parameters from URL
+		// @phpcs:ignore SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
 		$pattern = Regex::replaceCallback($mask, '#{([a-zA-Z0-9\-_]+)}#U', static function ($matches) use (&$endpoint, &$maskParameters): string {
 			[, $variableName] = $matches;
 

@@ -46,7 +46,7 @@ Toolkit::test(function (): void {
 
 	};
 
-	$eh = new EndpointHandler(get_class($controller), 'foobar');
+	$eh = new EndpointHandler($controller::class, 'foobar');
 
 	$endpoint = new Endpoint($eh);
 

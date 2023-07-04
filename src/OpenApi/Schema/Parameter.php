@@ -7,11 +7,10 @@ use Apitte\Core\Exception\Logical\InvalidArgumentException;
 class Parameter
 {
 
-	public const
-		IN_COOKIE = 'cookie',
-		IN_HEADER = 'header',
-		IN_PATH = 'path',
-		IN_QUERY = 'query';
+	public const IN_COOKIE = 'cookie';
+	public const IN_HEADER = 'header';
+	public const IN_PATH = 'path';
+	public const IN_QUERY = 'query';
 
 	public const INS = [
 		self::IN_COOKIE,
@@ -32,11 +31,9 @@ class Parameter
 
 	private bool $allowEmptyValue = false;
 
-	/** @var Schema|Reference|null */
-	private $schema;
+	private Schema|Reference|null $schema = null;
 
-	/** @var mixed */
-	private $example;
+	private mixed $example = null;
 
 	private ?string $style = null;
 
@@ -72,6 +69,7 @@ class Parameter
 
 		$parameter->setExample($data['example'] ?? null);
 		$parameter->setStyle($data['style'] ?? null);
+
 		return $parameter;
 	}
 
@@ -95,18 +93,12 @@ class Parameter
 		$this->allowEmptyValue = $allowEmptyValue;
 	}
 
-	/**
-	 * @param Schema|Reference|null $schema
-	 */
-	public function setSchema($schema): void
+	public function setSchema(Schema|Reference|null $schema): void
 	{
 		$this->schema = $schema;
 	}
 
-	/**
-	 * @param mixed $example
-	 */
-	public function setExample($example): void
+	public function setExample(mixed $example): void
 	{
 		$this->example = $example;
 	}
@@ -172,18 +164,12 @@ class Parameter
 		return $this->allowEmptyValue;
 	}
 
-	/**
-	 * @return Reference|Schema|null
-	 */
-	public function getSchema()
+	public function getSchema(): Reference|Schema|null
 	{
 		return $this->schema;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getExample()
+	public function getExample(): mixed
 	{
 		return $this->example;
 	}

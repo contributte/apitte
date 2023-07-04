@@ -8,10 +8,9 @@ use Tracy\IBarPanel;
 class SwaggerUIPanel implements IBarPanel
 {
 
-	public const
-		EXPANSION_FULL = 'full',
-		EXPANSION_LIST = 'list',
-		EXPANSION_NONE = 'none';
+	public const EXPANSION_FULL = 'full';
+	public const EXPANSION_LIST = 'list';
+	public const EXPANSION_NONE = 'none';
 
 	public const EXPANSIONS = [
 		self::EXPANSION_FULL,
@@ -23,8 +22,7 @@ class SwaggerUIPanel implements IBarPanel
 
 	private string $expansion = self::EXPANSION_LIST;
 
-	/** @var string|bool */
-	private $filter;
+	private string|bool $filter;
 
 	private string $title = 'OpenAPI';
 
@@ -45,10 +43,7 @@ class SwaggerUIPanel implements IBarPanel
 		$this->expansion = $expansion;
 	}
 
-	/**
-	 * @param string|bool $filter
-	 */
-	public function setFilter($filter): void
+	public function setFilter(string|bool $filter): void
 	{
 		$this->filter = $filter;
 	}

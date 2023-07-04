@@ -15,10 +15,7 @@ use Apitte\Core\Schema\Schema;
 final class ArrayHydrator implements IHydrator
 {
 
-	/**
-	 * @param mixed $data
-	 */
-	public function hydrate($data): Schema
+	public function hydrate(mixed $data): Schema
 	{
 		if (!is_array($data)) {
 			throw new InvalidArgumentException(sprintf('%s support only arrays hydration.', self::class));

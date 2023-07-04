@@ -7,25 +7,18 @@ use DateTime;
 class SimpleResponseEntity
 {
 
-	/** @var int */
-	public $int;
+	public int $int;
 
-	/** @var float|null */
-	public $nullableFloat;
+	public ?float $nullableFloat = null;
 
-	/** @var string */
-	public $string;
+	public string $string;
 
-	/** @var bool */
-	public $bool;
+	public bool $bool;
 
-	/** @var DateTime */
-	public $datetime;
+	public DateTime $datetime;
 
-	/** @var mixed */
-	public $mixed;
+	public mixed $mixed;
 
-	// phpcs:ignore
 	public $untypedProperty;
 
 }

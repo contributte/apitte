@@ -11,11 +11,10 @@ class BasicValidator implements IEntityValidator
 {
 
 	/**
-	 * @param object $entity
 	 * @throws ValidationException
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function validate($entity): void
+	public function validate(object $entity): void
 	{
 		// Only BasicEntity implements required method for
 		// handling properties, etc...

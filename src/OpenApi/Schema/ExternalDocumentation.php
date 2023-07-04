@@ -15,6 +15,17 @@ class ExternalDocumentation
 	}
 
 	/**
+	 * @param mixed[] $data
+	 */
+	public static function fromArray(array $data): ExternalDocumentation
+	{
+		$externalDocumentation = new ExternalDocumentation($data['url']);
+		$externalDocumentation->setDescription($data['description'] ?? null);
+
+		return $externalDocumentation;
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -28,16 +39,6 @@ class ExternalDocumentation
 		}
 
 		return $data;
-	}
-
-	/**
-	 * @param mixed[] $data
-	 */
-	public static function fromArray(array $data): ExternalDocumentation
-	{
-		$externalDocumentation = new ExternalDocumentation($data['url']);
-		$externalDocumentation->setDescription($data['description'] ?? null);
-		return $externalDocumentation;
 	}
 
 	public function setDescription(?string $description): void

@@ -9,14 +9,13 @@ final class SimpleEntity extends BasicEntity
 {
 
 	/**
-	 * @var int
 	 * @Assert\NotNull()
 	 * @Assert\Type(
 	 *     type="integer",
 	 *     message="The value {{ value }} is not a valid {{ type }}."
 	 * )
 	 */
-	public $id;
+	public int $id;
 
 	#[Assert\NotNull]
 	#[Assert\Type(type: 'integer')]

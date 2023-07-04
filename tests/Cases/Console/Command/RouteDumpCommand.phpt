@@ -55,11 +55,9 @@ Toolkit::test(function (): void {
 
 	$command->run($input, $output);
 
-	$result = trim(implode("\n", array_map(static function (string $line): string {
-		return rtrim($line);
-	}, explode("\n", $output->fetch()))));
+	$result = trim(implode("\n", array_map(static fn (string $line): string => rtrim($line), explode("\n", $output->fetch()))));
 
-	$expected = <<<EOD
+	$expected = <<<'EOD'
 Method Path          Handler         Parameters
 
  GET    /example/foo  class1  method1

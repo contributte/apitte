@@ -12,13 +12,9 @@ use Throwable;
 class ClientErrorException extends ApiException
 {
 
-	/** @var string */
 	public static string $defaultMessage = 'Request contains an unspecified error.';
 
-	/**
-	 * @param mixed $context
-	 */
-	public function __construct(string $message = '', int $code = 400, ?Throwable $previous = null, $context = null)
+	public function __construct(string $message = '', int $code = 400, ?Throwable $previous = null, mixed $context = null)
 	{
 		if ($code < 400 || $code > 499) {
 			throw new InvalidArgumentException(sprintf('%s code could be only in range from 400 to 499', static::class));

@@ -12,6 +12,19 @@ class Contact
 	private ?string $email = null;
 
 	/**
+	 * @param mixed[] $data
+	 */
+	public static function fromArray(array $data): Contact
+	{
+		$contact = new Contact();
+		$contact->setName($data['name'] ?? null);
+		$contact->setUrl($data['url'] ?? null);
+		$contact->setEmail($data['email'] ?? null);
+
+		return $contact;
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -30,18 +43,6 @@ class Contact
 		}
 
 		return $data;
-	}
-
-	/**
-	 * @param mixed[] $data
-	 */
-	public static function fromArray(array $data): Contact
-	{
-		$contact = new Contact();
-		$contact->setName($data['name'] ?? null);
-		$contact->setUrl($data['url'] ?? null);
-		$contact->setEmail($data['email'] ?? null);
-		return $contact;
 	}
 
 	public function setName(?string $name): void

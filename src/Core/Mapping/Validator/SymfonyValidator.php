@@ -28,11 +28,10 @@ class SymfonyValidator implements IEntityValidator
 	}
 
 	/**
-	 * @param object $entity
 	 * @throws ValidationException
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function validate($entity): void
+	public function validate(object $entity): void
 	{
 		$validatorBuilder = Validation::createValidatorBuilder()
 			->enableAnnotationMapping()

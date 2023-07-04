@@ -36,9 +36,8 @@ class JsonTransformer extends AbstractTransformer
 
 	/**
 	 * @param mixed[] $context
-	 * @return mixed
 	 */
-	protected function extractData(ApiRequest $request, ApiResponse $response, array $context)
+	protected function extractData(ApiRequest $request, ApiResponse $response, array $context): mixed
 	{
 		return $this->getEntity($response)->getData();
 	}

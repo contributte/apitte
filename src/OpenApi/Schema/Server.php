@@ -18,6 +18,22 @@ class Server
 	}
 
 	/**
+	 * @param mixed[] $data
+	 */
+	public static function fromArray(array $data): Server
+	{
+		$server = new Server($data['url']);
+		$server->setDescription($data['description'] ?? null);
+		if (isset($data['variables'])) {
+			foreach ($data['variables'] as $key => $variable) {
+				$server->addVariable($key, ServerVariable::fromArray($variable));
+			}
+		}
+
+		return $server;
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -34,22 +50,6 @@ class Server
 		}
 
 		return $data;
-	}
-
-	/**
-	 * @param mixed[] $data
-	 */
-	public static function fromArray(array $data): Server
-	{
-		$server = new Server($data['url']);
-		$server->setDescription($data['description'] ?? null);
-		if (isset($data['variables'])) {
-			foreach ($data['variables'] as $key => $variable) {
-				$server->addVariable($key, ServerVariable::fromArray($variable));
-			}
-		}
-
-		return $server;
 	}
 
 	public function setDescription(?string $description): void

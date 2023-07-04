@@ -6,13 +6,13 @@ class CompoundResponseEntity
 {
 
 	/** @var SimpleResponseEntity[]|null */
-	public $nullableObjects;
+	public ?array $nullableObjects = null;
 
 	/** @var string[]|int[] */
-	public $unionProperties = [];
+	public array $unionProperties = [];
 
 	/** @var string[]&int[] */
-	public $intersectionProperties = [];
+	public array $intersectionProperties = [];
 
 	/** @var string[]|(int[]&float[]) */
 	public $unionAndIntersectionProperties;

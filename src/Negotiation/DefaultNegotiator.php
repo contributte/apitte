@@ -22,21 +22,6 @@ class DefaultNegotiator implements INegotiator
 	}
 
 	/**
-	 * @param ITransformer[] $transformers
-	 */
-	private function addTransformers(array $transformers): void
-	{
-		foreach ($transformers as $suffix => $transformer) {
-			$this->addTransformer($suffix, $transformer);
-		}
-	}
-
-	private function addTransformer(string $suffix, ITransformer $transformer): void
-	{
-		$this->transformers[$suffix] = $transformer;
-	}
-
-	/**
 	 * @param mixed[] $context
 	 */
 	public function negotiate(ApiRequest $request, ApiResponse $response, array $context = []): ?ApiResponse
@@ -47,7 +32,9 @@ class DefaultNegotiator implements INegotiator
 
 		// Early return if there's no endpoint
 		$endpoint = $response->getEndpoint();
-		if ($endpoint === null) return null;
+		if ($endpoint === null)
+
+		return null;
 
 		// Get negotiations
 		$negotiations = $endpoint->getNegotiations();
@@ -55,7 +42,9 @@ class DefaultNegotiator implements INegotiator
 		// Try default
 		foreach ($negotiations as $negotiation) {
 			// Skip non default negotiations
-			if (!$negotiation->isDefault()) continue;
+			if (!$negotiation->isDefault())
+
+			continue;
 
 			// Normalize suffix for transformer
 			$transformer = ltrim($negotiation->getSuffix(), '.');
@@ -76,6 +65,21 @@ class DefaultNegotiator implements INegotiator
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param ITransformer[] $transformers
+	 */
+	private function addTransformers(array $transformers): void
+	{
+		foreach ($transformers as $suffix => $transformer) {
+			$this->addTransformer($suffix, $transformer);
+		}
+	}
+
+	private function addTransformer(string $suffix, ITransformer $transformer): void
+	{
+		$this->transformers[$suffix] = $transformer;
 	}
 
 }

@@ -37,9 +37,7 @@ class EntityAdapter implements IEntityAdapter
 			$types = preg_split('#([&|])#', $type, -1, PREG_SPLIT_NO_EMPTY);
 
 			// Filter out duplicate definitions
-			$types = array_map(function (string $type): string {
-				return $this->normalizeType($type);
-			}, $types);
+			$types = array_map(fn (string $type): string => $this->normalizeType($type), $types);
 			$types = array_unique($types);
 
 			$metadata = [];
@@ -156,6 +154,44 @@ class EntityAdapter implements IEntityAdapter
 		return $data;
 	}
 
+	/**
+	 * Converts scalar types (including phpdoc types and reserved words) to open api types
+	 */
+	protected function phpScalarTypeToOpenApiType(string $type): string
+	{
+		// Mixed and null not included, they are handled their own special way
+		static $map = [
+			'int' => 'integer',
+			'float' => 'number',
+			'bool' => 'boolean',
+			'string' => 'string',
+			'array' => 'array',
+		];
+
+		$type = $this->normalizeType($type);
+		$lower = strtolower($type);
+
+		if (!array_key_exists($lower, $map)) {
+			throw new InvalidArgumentException(sprintf('Unsupported or unconvertible variable type \'%s\'', $type));
+		}
+
+		return $map[$lower];
+	}
+
+	protected function normalizeType(string $type): string
+	{
+		static $map = [
+			'integer' => 'int',
+			'double' => 'float',
+			'numeric' => 'float',
+			'boolean' => 'bool',
+			'false' => 'bool',
+			'true' => 'bool',
+		];
+
+		return $map[strtolower($type)] ?? $type;
+	}
+
 	private function getPropertyType(ReflectionProperty $property): ?string
 	{
 		$nativeType = null;
@@ -219,44 +255,6 @@ class EntityAdapter implements IEntityAdapter
 		}
 
 		return null;
-	}
-
-	/**
-	 * Converts scalar types (including phpdoc types and reserved words) to open api types
-	 */
-	protected function phpScalarTypeToOpenApiType(string $type): string
-	{
-		// Mixed and null not included, they are handled their own special way
-		static $map = [
-			'int' => 'integer',
-			'float' => 'number',
-			'bool' => 'boolean',
-			'string' => 'string',
-			'array' => 'array',
-		];
-
-		$type = $this->normalizeType($type);
-		$lower = strtolower($type);
-
-		if (!array_key_exists($lower, $map)) {
-			throw new InvalidArgumentException(sprintf('Unsupported or unconvertible variable type \'%s\'', $type));
-		}
-
-		return $map[$lower];
-	}
-
-	protected function normalizeType(string $type): string
-	{
-		static $map = [
-			'integer' => 'int',
-			'double' => 'float',
-			'numeric' => 'float',
-			'boolean' => 'bool',
-			'false' => 'bool',
-			'true' => 'bool',
-		];
-
-		return $map[strtolower($type)] ?? $type;
 	}
 
 	private function getNativePropertyType(Type $type, ReflectionProperty $property): string

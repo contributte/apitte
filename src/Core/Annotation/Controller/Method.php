@@ -22,7 +22,7 @@ final class Method
 	/**
 	 * @param string[]|string $methods
 	 */
-	public function __construct($methods)
+	public function __construct(array|string $methods)
 	{
 		if (empty($methods)) {
 			throw new AnnotationException('Empty @Method given');

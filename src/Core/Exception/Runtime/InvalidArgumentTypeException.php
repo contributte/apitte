@@ -19,6 +19,7 @@ class InvalidArgumentTypeException extends RuntimeException
 	public function __construct(string $type, ?string $description = null)
 	{
 		parent::__construct();
+
 		$this->type = $type;
 		$this->description = $description;
 	}

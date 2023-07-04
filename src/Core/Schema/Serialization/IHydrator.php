@@ -7,9 +7,6 @@ use Apitte\Core\Schema\Schema;
 interface IHydrator
 {
 
-	/**
-	 * @param mixed $data
-	 */
-	public function hydrate($data): Schema;
+	public function hydrate(mixed $data): Schema;
 
 }

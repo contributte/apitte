@@ -9,10 +9,7 @@ use Apitte\Core\Http\ApiResponse;
 class FakeNullHandler implements IHandler
 {
 
-	/**
-	 * @return null
-	 */
-	public function handle(ApiRequest $request, ApiResponse $response)
+	public function handle(ApiRequest $request, ApiResponse $response): mixed
 	{
 		return null;
 	}

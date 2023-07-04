@@ -20,6 +20,7 @@ class SnapshotException extends RuntimeException
 	public function __construct(Throwable $exception, ApiRequest $request, ApiResponse $response)
 	{
 		parent::__construct($exception->getMessage(), is_string($exception->getCode()) ? -1 : $exception->getCode(), $exception);
+
 		$this->request = $request;
 		$this->response = $response;
 	}

@@ -98,6 +98,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			if (isset($this->meta['services'][$parentClass])) {
 				// Just reference it in reflections
 				$reflections[$parentClass] = $this->meta['services'][$parentClass]['reflection'];
+
 				continue;
 			}
 
@@ -136,6 +137,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Parse @Path =======================
 			if ($annotation instanceof Path) {
 				$controller->setPath($annotation->getPath());
+
 				continue;
 			}
 
@@ -152,6 +154,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Parse @OpenApi ============================
 			if ($annotation instanceof OpenApi) {
 				$controller->setOpenApi(Neon::decode($annotation->getData()) ?? []);
+
 				continue;
 			}
 		}
@@ -204,24 +207,28 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				// Parse @Path =============================
 				if ($annotation instanceof Path) {
 					$schemaMethod->setPath($annotation->getPath());
+
 					continue;
 				}
 
 				// Parse @Method ===========================
 				if ($annotation instanceof Method) {
 					$schemaMethod->addHttpMethods($annotation->getMethods());
+
 					continue;
 				}
 
 				// Parse @Tag ==============================
 				if ($annotation instanceof Tag) {
 					$schemaMethod->addTag($annotation->getName(), $annotation->getValue());
+
 					continue;
 				}
 
 				// Parse @Id ===============================
 				if ($annotation instanceof Id) {
 					$schemaMethod->setId($annotation->getName());
+
 					continue;
 				}
 
@@ -237,6 +244,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				// Parse #[RequestParameter] ================
 				if ($annotation instanceof RequestParameter) {
 					$this->addEndpointParameterToSchemaMethod($schemaMethod, $annotation);
+
 					continue;
 				}
 
@@ -252,6 +260,7 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 				// Parse #[Response] attribute
 				if ($annotation instanceof Response) {
 					$this->addResponseToSchemaMethod($schemaMethod, $annotation);
+
 					continue;
 				}
 
@@ -263,12 +272,14 @@ final class DoctrineAnnotationLoader extends AbstractContainerLoader
 					$requestBody->setRequired($annotation->isRequired());
 					$requestBody->setValidation($annotation->isValidation());
 					$schemaMethod->setRequestBody($requestBody);
+
 					continue;
 				}
 
 				// Parse @OpenApi ================
 				if ($annotation instanceof OpenApi) {
 					$schemaMethod->setOpenApi(Neon::decode($annotation->getData()) ?? []);
+
 					continue;
 				}
 

@@ -18,6 +18,18 @@ class ServerVariable
 	}
 
 	/**
+	 * @param mixed[] $data
+	 */
+	public static function fromArray(array $data): ServerVariable
+	{
+		$variable = new ServerVariable($data['default']);
+		$variable->setDescription($data['description'] ?? null);
+		$variable->setEnum($data['enum'] ?? []);
+
+		return $variable;
+	}
+
+	/**
 	 * @param string[] $enum
 	 */
 	public function setEnum(array $enum): void
@@ -66,17 +78,6 @@ class ServerVariable
 		}
 
 		return $data;
-	}
-
-	/**
-	 * @param mixed[] $data
-	 */
-	public static function fromArray(array $data): ServerVariable
-	{
-		$variable = new ServerVariable($data['default']);
-		$variable->setDescription($data['description'] ?? null);
-		$variable->setEnum($data['enum'] ?? []);
-		return $variable;
 	}
 
 }

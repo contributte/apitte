@@ -83,58 +83,37 @@ class Components
 		return $components;
 	}
 
-	/**
-	 * @param Schema|Reference $schema
-	 */
-	public function setSchema(string $name, $schema): void
+	public function setSchema(string $name, Schema|Reference $schema): void
 	{
 		$this->schemas[$name] = $schema;
 	}
 
-	/**
-	 * @param Response|Reference $response
-	 */
-	public function setResponse(string $name, $response): void
+	public function setResponse(string $name, Response|Reference $response): void
 	{
 		$this->responses[$name] = $response;
 	}
 
-	/**
-	 * @param Parameter|Reference $parameter
-	 */
-	public function setParameter(string $name, $parameter): void
+	public function setParameter(string $name, Parameter|Reference $parameter): void
 	{
 		$this->parameters[$name] = $parameter;
 	}
 
-	/**
-	 * @param Example|Reference $example
-	 */
-	public function setExample(string $name, $example): void
+	public function setExample(string $name, Example|Reference $example): void
 	{
 		$this->examples[$name] = $example;
 	}
 
-	/**
-	 * @param RequestBody|Reference $requestBody
-	 */
-	public function setRequestBody(string $name, $requestBody): void
+	public function setRequestBody(string $name, RequestBody|Reference $requestBody): void
 	{
 		$this->requestBodies[$name] = $requestBody;
 	}
 
-	/**
-	 * @param Header|Reference $header
-	 */
-	public function setHeader(string $name, $header): void
+	public function setHeader(string $name, Header|Reference $header): void
 	{
 		$this->headers[$name] = $header;
 	}
 
-	/**
-	 * @param SecurityScheme|Reference $securityScheme
-	 */
-	public function setSecurityScheme(string $name, $securityScheme): void
+	public function setSecurityScheme(string $name, SecurityScheme|Reference $securityScheme): void
 	{
 		$this->securitySchemes[$name] = $securityScheme;
 	}

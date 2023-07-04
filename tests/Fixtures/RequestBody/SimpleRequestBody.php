@@ -5,7 +5,6 @@ namespace Tests\Fixtures\RequestBody;
 class SimpleRequestBody
 {
 
-	/** @var int */
-	public $int;
+	public int $int;
 
 }

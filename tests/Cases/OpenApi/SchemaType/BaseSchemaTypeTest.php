@@ -16,11 +16,6 @@ final class BaseSchemaTypeTest extends TestCase
 
 	private ISchemaType $baseSchemaType;
 
-	protected function setUp(): void
-	{
-		$this->baseSchemaType = new BaseSchemaType();
-	}
-
 	public function testString(): void
 	{
 		$endpointParameter = new EndpointParameter('foo', EndpointParameter::TYPE_STRING);
@@ -97,6 +92,11 @@ final class BaseSchemaTypeTest extends TestCase
 			],
 			$scalarSchema->toArray()
 		);
+	}
+
+	protected function setUp(): void
+	{
+		$this->baseSchemaType = new BaseSchemaType();
 	}
 
 }

@@ -10,7 +10,7 @@ use RuntimeException;
 class ErroneousHandler implements IHandler
 {
 
-	public function handle(ApiRequest $request, ApiResponse $response): void
+	public function handle(ApiRequest $request, ApiResponse $response): mixed
 	{
 		throw new RuntimeException(sprintf('I am %s!', self::class));
 	}

@@ -20,7 +20,5 @@ Toolkit::test(function (): void {
 
 // Regex::replaceCallback
 Toolkit::test(function (): void {
-	Assert::equal('barfoo', Regex::replaceCallback('foo', '#(foo)#', function ($matches) {
-		return 'bar' . $matches[1];
-	}));
+	Assert::equal('barfoo', Regex::replaceCallback('foo', '#(foo)#', fn ($matches) => 'bar' . $matches[1]));
 });

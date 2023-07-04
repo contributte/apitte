@@ -7,9 +7,6 @@ use Apitte\Core\Schema\SchemaBuilder;
 interface ISerializator
 {
 
-	/**
-	 * @return mixed
-	 */
-	public function serialize(SchemaBuilder $builder);
+	public function serialize(SchemaBuilder $builder): mixed;
 
 }

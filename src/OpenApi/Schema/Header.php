@@ -7,8 +7,7 @@ class Header
 
 	private ?string $description = null;
 
-	/** @var Schema|Reference|null */
-	private $schema = null;
+	private Schema|Reference|null $schema = null;
 
 	/**
 	 * @param mixed[] $data
@@ -18,6 +17,7 @@ class Header
 		$header = new Header();
 		$header->setDescription($data['description'] ?? null);
 		$header->setSchema(isset($data['schema']) ? Schema::fromArray($data['schema']) : null);
+
 		return $header;
 	}
 
@@ -43,10 +43,7 @@ class Header
 		$this->description = $description;
 	}
 
-	/**
-	 * @param Schema|Reference|null $schema
-	 */
-	public function setSchema($schema): void
+	public function setSchema(Schema|Reference|null $schema): void
 	{
 		$this->schema = $schema;
 	}

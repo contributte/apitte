@@ -20,7 +20,7 @@ final class Responses
 	/**
 	 * @param Response[]|Response $responses
 	 */
-	public function __construct($responses)
+	public function __construct(array|Response $responses)
 	{
 		if (empty($responses)) {
 			throw new AnnotationException('Empty @Responses given');

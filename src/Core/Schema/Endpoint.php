@@ -141,9 +141,7 @@ final class Endpoint
 	 */
 	public function getParametersByIn(string $in): array
 	{
-		return array_filter($this->getParameters(), static function (EndpointParameter $parameter) use ($in): bool {
-			return $parameter->getIn() === $in;
-		});
+		return array_filter($this->getParameters(), static fn (EndpointParameter $parameter): bool => $parameter->getIn() === $in);
 	}
 
 	public function hasParameter(string $name): bool
@@ -249,10 +247,7 @@ final class Endpoint
 		return $this->tags;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getTag(string $name)
+	public function getTag(string $name): mixed
 	{
 		return $this->tags[$name] ?? null;
 	}
@@ -262,27 +257,17 @@ final class Endpoint
 		return array_key_exists($name, $this->tags);
 	}
 
-	/**
-	 * @param mixed $value
-	 */
-	public function addTag(string $name, $value = null): void
+	public function addTag(string $name, mixed $value = null): void
 	{
 		$this->tags[$name] = $value;
 	}
 
-	/**
-	 * @param mixed $value
-	 */
-	public function setAttribute(string $key, $value): void
+	public function setAttribute(string $key, mixed $value): void
 	{
 		$this->metadata[$key] = $value;
 	}
 
-	/**
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function getAttribute(string $key, $default = null)
+	public function getAttribute(string $key, mixed $default = null): mixed
 	{
 		return Arrays::get($this->metadata, $key, $default);
 	}

@@ -5,16 +5,13 @@ namespace Tests\Fixtures\ResponseEntity;
 class SelfReferencingEntity
 {
 
-	/** @var self */
-	public $selfReference;
+	public self $selfReference;
 
 	/** @var static */
 	public $staticReference;
 
-	/** @var SelfReferencingEntity */
-	public $classNameReference;
+	public SelfReferencingEntity $classNameReference;
 
-	/** @var string */
-	public $normalProperty;
+	public string $normalProperty;
 
 }

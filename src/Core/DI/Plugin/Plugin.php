@@ -18,19 +18,14 @@ abstract class Plugin
 	protected PluginCompiler $compiler;
 
 	/** @var stdClass|mixed[] */
-	protected $config;
-
-	abstract public static function getName(): string;
-
-	protected function getConfigSchema(): Schema
-	{
-		return Expect::structure([]);
-	}
+	protected stdClass|array $config;
 
 	public function __construct(PluginCompiler $compiler)
 	{
 		$this->compiler = $compiler;
 	}
+
+	abstract public static function getName(): string;
 
 	/**
 	 * Process and validate config
@@ -41,6 +36,26 @@ abstract class Plugin
 	{
 		$name = $this->compiler->getExtension()->getName() . ' > plugins > ' . static::class;
 		$this->setupConfig($this->getConfigSchema(), $config, $name);
+	}
+
+	public function loadPluginConfiguration(): void
+	{
+		// Override in child
+	}
+
+	public function beforePluginCompile(): void
+	{
+		// Override in child
+	}
+
+	public function afterPluginCompile(ClassType $class): void
+	{
+		// Override in child
+	}
+
+	protected function getConfigSchema(): Schema
+	{
+		return Expect::structure([]);
 	}
 
 	/**
@@ -55,20 +70,8 @@ abstract class Plugin
 		try {
 			$this->config = $processor->process($schema, $config);
 		} catch (ValidationException $exception) {
-			throw  new InvalidConfigurationException($exception->getMessage());
+			throw new InvalidConfigurationException($exception->getMessage());
 		}
-	}
-
-	public function loadPluginConfiguration(): void
-	{
-	}
-
-	public function beforePluginCompile(): void
-	{
-	}
-
-	public function afterPluginCompile(ClassType $class): void
-	{
 	}
 
 	protected function prefix(string $id): string

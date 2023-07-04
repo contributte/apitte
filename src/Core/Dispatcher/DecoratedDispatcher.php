@@ -28,6 +28,7 @@ class DecoratedDispatcher extends CoreDispatcher
 	public function __construct(IRouter $router, IHandler $handler, DecoratorManager $decoratorManager)
 	{
 		parent::__construct($router, $handler);
+
 		$this->decoratorManager = $decoratorManager;
 	}
 
@@ -115,10 +116,7 @@ class DecoratedDispatcher extends CoreDispatcher
 		return $response;
 	}
 
-	/**
-	 * @param mixed $result
-	 */
-	protected function negotiate($result, ApiResponse $response): ApiResponse
+	protected function negotiate(mixed $result, ApiResponse $response): ApiResponse
 	{
 		if (is_array($result)) {
 			$response = $response->withEntity(ArrayEntity::from($result));

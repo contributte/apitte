@@ -47,10 +47,7 @@ class RequestEntityMapping
 		return $request;
 	}
 
-	/**
-	 * @return IRequestEntity|object|null
-	 */
-	protected function createEntity(EndpointRequestBody $requestBody, ApiRequest $request)
+	protected function createEntity(EndpointRequestBody $requestBody, ApiRequest $request): object|null
 	{
 		$entityClass = $requestBody->getEntity();
 
@@ -75,11 +72,7 @@ class RequestEntityMapping
 		return $entity;
 	}
 
-	/**
-	 * @param IRequestEntity|object $entity
-	 * @return IRequestEntity|object|null
-	 */
-	protected function modify($entity, ApiRequest $request)
+	protected function modify(object $entity, ApiRequest $request): object|null
 	{
 		if ($entity instanceof IRequestEntity) {
 			return $entity->fromRequest($request);
@@ -89,10 +82,9 @@ class RequestEntityMapping
 	}
 
 	/**
-	 * @param object $entity
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	protected function validate($entity): void
+	protected function validate(object $entity): void
 	{
 		if ($this->validator === null) {
 			return;

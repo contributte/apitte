@@ -25,7 +25,9 @@ class RendererTransformer extends AbstractTransformer
 	public function transform(ApiRequest $request, ApiResponse $response, array $context = []): ApiResponse
 	{
 		// Return immediately if context hasn't defined renderer
-		if (!isset($context['renderer'])) return $response;
+		if (!isset($context['renderer']))
+
+		return $response;
 
 		// Fetch service
 		// @phpstan-ignore-next-line

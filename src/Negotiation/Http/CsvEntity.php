@@ -15,7 +15,7 @@ class CsvEntity extends AbstractEntity
 	 * @param string[] $header
 	 * @return static
 	 */
-	public function withHeader(array $header)
+	public function withHeader(array $header): static
 	{
 		$this->header = $header;
 		$this->update();
@@ -27,7 +27,7 @@ class CsvEntity extends AbstractEntity
 	 * @param string[] $rows
 	 * @return static
 	 */
-	public function withRows(array $rows)
+	public function withRows(array $rows): static
 	{
 		$this->rows = $rows;
 		$this->update();

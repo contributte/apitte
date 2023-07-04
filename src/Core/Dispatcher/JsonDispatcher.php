@@ -11,6 +11,15 @@ use Psr\Http\Message\ResponseInterface;
 class JsonDispatcher extends CoreDispatcher
 {
 
+	public function fallback(ApiRequest $request, ApiResponse $response): ApiResponse
+	{
+		$response = $response->withStatus(404)
+			->withHeader('Content-Type', 'application/json');
+		$response->getBody()->write(Json::encode(['error' => 'No matched route by given URL']));
+
+		return $response;
+	}
+
 	protected function handle(ApiRequest $request, ApiResponse $response): ApiResponse
 	{
 		$result = $this->handler->handle($request, $response);
@@ -33,15 +42,6 @@ class JsonDispatcher extends CoreDispatcher
 		if (!($response instanceof ApiResponse)) { //TODO - deprecation warning
 			$response = new ApiResponse($response);
 		}
-
-		return $response;
-	}
-
-	public function fallback(ApiRequest $request, ApiResponse $response): ApiResponse
-	{
-		$response = $response->withStatus(404)
-			->withHeader('Content-Type', 'application/json');
-		$response->getBody()->write(Json::encode(['error' => 'No matched route by given URL']));
 
 		return $response;
 	}

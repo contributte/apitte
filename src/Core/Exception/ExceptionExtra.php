@@ -12,13 +12,12 @@ use Throwable;
 trait ExceptionExtra
 {
 
-	/** @var mixed */
-	protected $context;
+	protected mixed $context = null;
 
 	/**
 	 * @return static
 	 */
-	public static function create()
+	public static function create(): static
 	{
 		return new static();
 	}
@@ -26,7 +25,7 @@ trait ExceptionExtra
 	/**
 	 * @return static
 	 */
-	public function withCode(int $code)
+	public function withCode(int $code): static
 	{
 		$this->code = $code;
 
@@ -37,7 +36,7 @@ trait ExceptionExtra
 	 * @param string|string[] $message
 	 * @return static
 	 */
-	public function withMessage($message)
+	public function withMessage(string|array $message): static
 	{
 		$this->message = $message;
 
@@ -47,8 +46,9 @@ trait ExceptionExtra
 	/**
 	 * @return static
 	 */
-	public function withPrevious(Throwable $exception)
+	public function withPrevious(Throwable $exception): static
 	{
+		// @phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
 		$reflection = new ReflectionClass(Exception::class);
 		$property = $reflection->getProperty('previous');
 		$property->setAccessible(true);
@@ -59,10 +59,9 @@ trait ExceptionExtra
 	}
 
 	/**
-	 * @param mixed $context
 	 * @return static
 	 */
-	public function withContext($context)
+	public function withContext(mixed $context): static
 	{
 		$this->context = $context;
 
@@ -70,20 +69,16 @@ trait ExceptionExtra
 	}
 
 	/**
-	 * @param mixed $context
 	 * @return static
 	 */
-	public function withTypedContext(string $type, $context)
+	public function withTypedContext(string $type, mixed $context): static
 	{
 		$this->context = [$type => $context];
 
 		return $this;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getContext()
+	public function getContext(): mixed
 	{
 		return $this->context;
 	}

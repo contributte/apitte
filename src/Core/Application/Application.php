@@ -16,6 +16,7 @@ class Application extends BaseApplication
 	public function __construct(IErrorHandler $errorHandler, IDispatcher $dispatcher)
 	{
 		parent::__construct($errorHandler);
+
 		$this->dispatcher = $dispatcher;
 	}
 

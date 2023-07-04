@@ -99,7 +99,7 @@ Toolkit::test(function (): void {
 	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
-		$compiler->addConfig(NeonLoader::load(<<<NEON
+		$compiler->addConfig(NeonLoader::load(<<<'NEON'
 			services:
 				validator:
 					factory: Apitte\Core\Mapping\Validator\SymfonyValidator(
@@ -129,7 +129,7 @@ Toolkit::test(function (): void {
 	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
-		$compiler->addConfig(NeonLoader::load(<<<NEON
+		$compiler->addConfig(NeonLoader::load(<<<'NEON'
 			api:
 				plugins:
 					Apitte\Core\DI\Plugin\CoreMappingPlugin:

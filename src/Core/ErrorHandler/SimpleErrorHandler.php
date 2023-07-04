@@ -62,6 +62,7 @@ class SimpleErrorHandler implements IErrorHandler
 		$body = Utils::streamFor(Json::encode($data));
 
 		$response = new ApiResponse(new Response());
+
 		return $response
 			->withStatus($code)
 			->withHeader('Content-Type', 'application/json')

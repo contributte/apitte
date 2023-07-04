@@ -7,11 +7,10 @@ use Apitte\Core\Exception\Logical\InvalidArgumentException;
 class SecurityScheme
 {
 
-	public const
-		TYPE_API_KEY = 'apiKey',
-		TYPE_HTTP = 'http',
-		TYPE_OAUTH2 = 'oauth2',
-		TYPE_OPEN_ID_CONNECT = 'openIdConnect';
+	public const TYPE_API_KEY = 'apiKey';
+	public const TYPE_HTTP = 'http';
+	public const TYPE_OAUTH2 = 'oauth2';
+	public const TYPE_OPEN_ID_CONNECT = 'openIdConnect';
 
 	public const TYPES = [
 		self::TYPE_API_KEY,
@@ -20,10 +19,9 @@ class SecurityScheme
 		self::TYPE_OPEN_ID_CONNECT,
 	];
 
-	public const
-		IN_COOKIE = 'cookie',
-		IN_HEADER = 'header',
-		IN_QUERY = 'query';
+	public const IN_COOKIE = 'cookie';
+	public const IN_HEADER = 'header';
+	public const IN_QUERY = 'query';
 
 	public const INS = [
 		self::IN_COOKIE,
@@ -61,6 +59,24 @@ class SecurityScheme
 	}
 
 	/**
+	 * @param mixed[] $data
+	 */
+	public static function fromArray(array $data): SecurityScheme
+	{
+		$type = $data['type'];
+		$securityScheme = new SecurityScheme($type);
+		$securityScheme->setName($data['name'] ?? null);
+		$securityScheme->setDescription($data['description'] ?? null);
+		$securityScheme->setIn($data['in'] ?? null);
+		$securityScheme->setScheme($data['scheme'] ?? null);
+		$securityScheme->setBearerFormat($data['bearerFormat'] ?? null);
+		$securityScheme->setFlows(array_map(static fn (array $flow): OAuthFlow => OAuthFlow::fromArray($flow), $data['flows'] ?? []));
+		$securityScheme->setOpenIdConnectUrl($data['openIdConnectUrl'] ?? null);
+
+		return $securityScheme;
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -88,7 +104,7 @@ class SecurityScheme
 		}
 
 		if ($this->flows !== []) {
-			$data['flows'] = array_map(static fn(OAuthFlow $flow): array => $flow->toArray(), $this->flows);
+			$data['flows'] = array_map(static fn (OAuthFlow $flow): array => $flow->toArray(), $this->flows);
 		}
 
 		if ($this->openIdConnectUrl !== null) {
@@ -96,23 +112,6 @@ class SecurityScheme
 		}
 
 		return $data;
-	}
-
-	/**
-	 * @param mixed[] $data
-	 */
-	public static function fromArray(array $data): SecurityScheme
-	{
-		$type = $data['type'];
-		$securityScheme = new SecurityScheme($type);
-		$securityScheme->setName($data['name'] ?? null);
-		$securityScheme->setDescription($data['description'] ?? null);
-		$securityScheme->setIn($data['in'] ?? null);
-		$securityScheme->setScheme($data['scheme'] ?? null);
-		$securityScheme->setBearerFormat($data['bearerFormat'] ?? null);
-		$securityScheme->setFlows(array_map(static fn(array $flow): OAuthFlow => OAuthFlow::fromArray($flow), $data['flows'] ?? []));
-		$securityScheme->setOpenIdConnectUrl($data['openIdConnectUrl'] ?? null);
-		return $securityScheme;
 	}
 
 	public function getType(): string
@@ -170,6 +169,7 @@ class SecurityScheme
 
 		if ($in === null || in_array($in, self::INS, true)) {
 			$this->in = $in;
+
 			return;
 		}
 

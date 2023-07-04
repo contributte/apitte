@@ -13,6 +13,7 @@ class FooRenderer
 	 */
 	public function __invoke(ApiRequest $request, ApiResponse $response, array $context): ApiResponse
 	{
+		// Tests
 	}
 
 }

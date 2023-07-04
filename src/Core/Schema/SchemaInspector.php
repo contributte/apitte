@@ -34,6 +34,7 @@ class SchemaInspector
 				// Early skip (cause value is null => optional)
 				if ($value === null) {
 					$items[] = $endpoint;
+
 					continue;
 				}
 

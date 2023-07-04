@@ -24,12 +24,17 @@ class ApiExtension extends CompilerExtension
 	public const NEGOTIATION_NEGOTIATOR_TAG = 'apitte.negotiation.negotiator';
 	public const NEGOTIATION_RESOLVER_TAG = 'apitte.negotiation.resolver';
 
-	/** @var PluginManager */
 	private PluginManager $pm;
+
+	public function __construct()
+	{
+		$this->pm = new PluginManager($this);
+	}
 
 	public function getConfigSchema(): Schema
 	{
 		$parameters = $this->getContainerBuilder()->parameters;
+
 		return Expect::structure([
 			'catchException' => Expect::bool(true),
 			'debug' => Expect::bool($parameters['debugMode'] ?? false),
@@ -38,11 +43,6 @@ class ApiExtension extends CompilerExtension
 				CoreSchemaPlugin::class => [],
 			]),
 		]);
-	}
-
-	public function __construct()
-	{
-		$this->pm = new PluginManager($this);
 	}
 
 	public function loadConfiguration(): void

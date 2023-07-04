@@ -9,10 +9,7 @@ use TypeError;
 class DateTimeTypeMapper implements ITypeMapper
 {
 
-	/**
-	 * @param mixed $value
-	 */
-	public function normalize($value): ?DateTimeImmutable
+	public function normalize(mixed $value): ?DateTimeImmutable
 	{
 		try {
 			$value = DateTimeImmutable::createFromFormat(DATE_ATOM, $value);

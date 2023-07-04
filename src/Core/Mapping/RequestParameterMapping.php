@@ -29,10 +29,7 @@ class RequestParameterMapping
 	/** @var array<string, ITypeMapper|class-string<ITypeMapper>> */
 	protected array $types = [];
 
-	/**
-	 * @param ITypeMapper|string $mapper
-	 */
-	public function addMapper(string $type, $mapper): void
+	public function addMapper(string $type, ITypeMapper|string $mapper): void
 	{
 		if (!is_subclass_of($mapper, ITypeMapper::class)) {
 			throw new InvalidArgumentException(sprintf('Mapper must be string representation or instance of %s.', ITypeMapper::class));
@@ -170,10 +167,21 @@ class RequestParameterMapping
 		return $request;
 	}
 
-	/**
-	 * @param mixed $value
-	 */
-	protected function checkParameterProvided(EndpointParameter $parameter, $value): void
+	public function getMapper(string $type): ?ITypeMapper
+	{
+		if (!isset($this->types[$type])) {
+			return null;
+		}
+
+		// Initialize mapper
+		if (!($this->types[$type] instanceof ITypeMapper)) {
+			$this->types[$type] = new $this->types[$type]();
+		}
+
+		return $this->types[$type];
+	}
+
+	protected function checkParameterProvided(EndpointParameter $parameter, mixed $value): void
 	{
 		if ($value === null && $parameter->isRequired()) {
 			throw new ClientErrorException(sprintf(
@@ -184,10 +192,7 @@ class RequestParameterMapping
 		}
 	}
 
-	/**
-	 * @param mixed $value
-	 */
-	protected function checkParameterNotEmpty(EndpointParameter $parameter, $value): void
+	protected function checkParameterNotEmpty(EndpointParameter $parameter, mixed $value): void
 	{
 		if ($value === '' && !$parameter->isAllowEmpty()) {
 			throw new ClientErrorException(sprintf(
@@ -198,11 +203,7 @@ class RequestParameterMapping
 		}
 	}
 
-	/**
-	 * @param mixed $value
-	 * @return mixed
-	 */
-	protected function normalize($value, EndpointParameter $parameter, ITypeMapper $mapper)
+	protected function normalize(mixed $value, EndpointParameter $parameter, ITypeMapper $mapper): mixed
 	{
 		if ($value === '' || $value === null) {
 			return null;
@@ -227,20 +228,6 @@ class RequestParameterMapping
 				));
 			}
 		}
-	}
-
-	public function getMapper(string $type): ?ITypeMapper
-	{
-		if (!isset($this->types[$type])) {
-			return null;
-		}
-
-		// Initialize mapper
-		if (!($this->types[$type] instanceof ITypeMapper)) {
-			$this->types[$type] = new $this->types[$type]();
-		}
-
-		return $this->types[$type];
 	}
 
 }

@@ -180,6 +180,7 @@ class CoreDefinition implements IDefinition
 	{
 		$tags = $endpoint->getTags();
 		unset($tags[Endpoint::TAG_ID]);
+
 		return $tags;
 	}
 

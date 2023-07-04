@@ -51,10 +51,7 @@ class Response
 		$this->content[$type] = $mediaType;
 	}
 
-	/**
-	 * @param Header|Reference $header
-	 */
-	public function setHeader(string $key, $header): void
+	public function setHeader(string $key, Header|Reference $header): void
 	{
 		$this->headers[$key] = $header;
 	}

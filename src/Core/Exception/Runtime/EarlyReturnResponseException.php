@@ -13,6 +13,7 @@ class EarlyReturnResponseException extends RuntimeException
 	public function __construct(ApiResponse $response)
 	{
 		parent::__construct();
+
 		$this->response = $response;
 	}
 

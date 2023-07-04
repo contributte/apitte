@@ -68,13 +68,10 @@ final class EndpointParameter
 			case self::TYPE_FLOAT:
 			case self::TYPE_DATETIME:
 				return $this->type;
-
 			case self::TYPE_BOOLEAN:
 				return 'boolean';
-
 			case self::TYPE_INTEGER:
 				return 'integer';
-
 			default:
 				// custom type
 				return 'string';

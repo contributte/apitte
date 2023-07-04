@@ -17,10 +17,8 @@ class TypedResponseEntity
 
 	public DateTime $datetime;
 
-	/** @var int */
-	public $phpdocInt;
+	public int $phpdocInt;
 
-	// phpcs:ignore
 	public $untypedProperty;
 
 	public array $untypedArray;

@@ -15,6 +15,17 @@ class License
 	}
 
 	/**
+	 * @param mixed[] $data
+	 */
+	public static function fromArray(array $data): License
+	{
+		$license = new License($data['name']);
+		$license->setUrl($data['url'] ?? null);
+
+		return $license;
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -28,16 +39,6 @@ class License
 		}
 
 		return $data;
-	}
-
-	/**
-	 * @param mixed[] $data
-	 */
-	public static function fromArray(array $data): License
-	{
-		$license = new License($data['name']);
-		$license->setUrl($data['url'] ?? null);
-		return $license;
 	}
 
 	public function setUrl(?string $url): void

@@ -26,6 +26,19 @@ class OAuthFlow
 	}
 
 	/**
+	 * @param mixed[] $data
+	 */
+	public static function fromArray(array $data): self
+	{
+		return new self(
+			$data['authorizationUrl'],
+			$data['tokenUrl'],
+			$data['refreshUrl'],
+			$data['scopes'],
+		);
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -36,20 +49,6 @@ class OAuthFlow
 			'refreshUrl' => $this->refreshUrl,
 			'scopes' => $this->scopes,
 		];
-	}
-
-	/**
-	 * @param mixed[] $data
-	 * @return self
-	 */
-	public static function fromArray(array $data): self
-	{
-		return new self(
-			$data['authorizationUrl'],
-			$data['tokenUrl'],
-			$data['refreshUrl'],
-			$data['scopes'],
-		);
 	}
 
 	public function getAuthorizationUrl(): string

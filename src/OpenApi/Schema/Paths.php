@@ -9,19 +9,6 @@ class Paths
 	private array $paths = [];
 
 	/**
-	 * @return mixed[]
-	 */
-	public function toArray(): array
-	{
-		$data = [];
-		foreach ($this->paths as $key => $pathItem) {
-			$data[$key] = $pathItem->toArray();
-		}
-
-		return $data;
-	}
-
-	/**
 	 * @param mixed[] $data
 	 */
 	public static function fromArray(array $data): Paths
@@ -32,6 +19,19 @@ class Paths
 		}
 
 		return $paths;
+	}
+
+	/**
+	 * @return mixed[]
+	 */
+	public function toArray(): array
+	{
+		$data = [];
+		foreach ($this->paths as $key => $pathItem) {
+			$data[$key] = $pathItem->toArray();
+		}
+
+		return $data;
 	}
 
 	public function setPathItem(string $path, PathItem $pathItem): void

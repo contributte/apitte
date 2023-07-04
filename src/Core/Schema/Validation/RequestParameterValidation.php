@@ -74,9 +74,7 @@ class RequestParameterValidation implements IValidation
 			foreach ($controller->getMethods() as $method) {
 				// Check if parameters in mask are in path
 				/** @var EndpointParameter[] $pathParameters */
-				$pathParameters = array_filter($method->getParameters(), static function (EndpointParameter $parameter): bool {
-					return $parameter->getIn() === EndpointParameter::IN_PATH;
-				});
+				$pathParameters = array_filter($method->getParameters(), static fn (EndpointParameter $parameter): bool => $parameter->getIn() === EndpointParameter::IN_PATH);
 
 				$maskParameters = [];
 				$maskp = array_merge(
@@ -90,7 +88,8 @@ class RequestParameterValidation implements IValidation
 				$mask = '/' . trim($mask, '/');
 
 				// Collect variable parameters from URL
-				$pattern = Regex::replaceCallback($mask, '#{([a-zA-Z0-9\-_]+)}#U', static function ($matches) use (&$maskParameters): string {
+				// @phpcs:ignore SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
+				Regex::replaceCallback($mask, '#{([a-zA-Z0-9\-_]+)}#U', static function ($matches) use (&$maskParameters): string {
 					[, $variableName] = $matches;
 
 					// Build parameter pattern

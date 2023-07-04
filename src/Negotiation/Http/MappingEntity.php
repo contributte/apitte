@@ -12,7 +12,16 @@ class MappingEntity extends AbstractEntity
 	public function __construct(IResponseEntity $entity)
 	{
 		parent::__construct();
+
 		$this->entity = $entity;
+	}
+
+	/**
+	 * @return static
+	 */
+	public static function from(IResponseEntity $entity): self
+	{
+		return new static($entity);
 	}
 
 	/**
@@ -26,14 +35,6 @@ class MappingEntity extends AbstractEntity
 	public function getEntity(): IResponseEntity
 	{
 		return $this->entity;
-	}
-
-	/**
-	 * @return static
-	 */
-	public static function from(IResponseEntity $entity): self
-	{
-		return new static($entity);
 	}
 
 }

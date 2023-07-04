@@ -8,9 +8,6 @@ use Apitte\Core\Http\ApiResponse;
 interface IHandler
 {
 
-	/**
-	 * @return mixed
-	 */
-	public function handle(ApiRequest $request, ApiResponse $response);
+	public function handle(ApiRequest $request, ApiResponse $response): mixed;
 
 }

@@ -3,7 +3,6 @@
 namespace Apitte\Core\Http;
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
-use Apitte\Core\Mapping\Request\IRequestEntity;
 use Contributte\Psr7\Extra\ExtraRequestTrait;
 use Contributte\Psr7\ProxyRequest;
 
@@ -17,28 +16,17 @@ class ApiRequest extends ProxyRequest
 		return array_key_exists($name, $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []));
 	}
 
-	/**
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function getParameter(string $name, $default = null)
+	public function getParameter(string $name, mixed $default = null): mixed
 	{
 		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, [])[$name] ?? $default;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getParameters()
+	public function getParameters(): mixed
 	{
 		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []);
 	}
 
-	/**
-	 * @param mixed $default
-	 * @return IRequestEntity|mixed
-	 */
-	public function getEntity($default = null)
+	public function getEntity(mixed $default = null): mixed
 	{
 		$entity = $this->getAttribute(RequestAttributes::ATTR_REQUEST_ENTITY, null);
 

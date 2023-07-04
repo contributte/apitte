@@ -9,14 +9,12 @@ class Example
 
 	private ?string $description = null;
 
-	/** @var mixed|null */
-	private $value = null;
+	private mixed $value = null;
 
 	private ?string $externalValue = null;
 
 	/**
 	 * @param mixed[] $data
-	 * @return self
 	 */
 	public static function fromArray(array $data): self
 	{
@@ -25,6 +23,7 @@ class Example
 		$example->description = $data['description'] ?? null;
 		$example->value = $data['value'] ?? null;
 		$example->externalValue = $data['externalValue'] ?? null;
+
 		return $example;
 	}
 
@@ -53,65 +52,41 @@ class Example
 		return $data;
 	}
 
-	/**
-	 * @return string|null
-	 */
 	public function getSummary(): ?string
 	{
 		return $this->summary;
 	}
 
-	/**
-	 * @param string|null $summary
-	 */
 	public function setSummary(?string $summary): void
 	{
 		$this->summary = $summary;
 	}
 
-	/**
-	 * @return string|null
-	 */
 	public function getDescription(): ?string
 	{
 		return $this->description;
 	}
 
-	/**
-	 * @param string|null $description
-	 */
 	public function setDescription(?string $description): void
 	{
 		$this->description = $description;
 	}
 
-	/**
-	 * @return mixed|null
-	 */
-	public function getValue()
+	public function getValue(): mixed
 	{
 		return $this->value;
 	}
 
-	/**
-	 * @param mixed|null $value
-	 */
-	public function setValue($value): void
+	public function setValue(mixed $value): void
 	{
 		$this->value = $value;
 	}
 
-	/**
-	 * @return string|null
-	 */
 	public function getExternalValue(): ?string
 	{
 		return $this->externalValue;
 	}
 
-	/**
-	 * @param string|null $externalValue
-	 */
 	public function setExternalValue(?string $externalValue): void
 	{
 		$this->externalValue = $externalValue;

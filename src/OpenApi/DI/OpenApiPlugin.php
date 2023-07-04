@@ -33,22 +33,6 @@ class OpenApiPlugin extends Plugin
 		return 'openapi';
 	}
 
-	protected function getConfigSchema(): Schema
-	{
-		return Expect::structure([
-			'definitions' => Expect::arrayOf(Expect::type('string|array|' . Statement::class)),
-			'definition' => Expect::array(),
-			'files' => Expect::arrayOf('string'),
-			'swaggerUi' => Expect::structure([
-				'url' => Expect::string()->nullable(),
-				'expansion' => Expect::anyOf(...SwaggerUIPanel::EXPANSIONS)->default(SwaggerUIPanel::EXPANSION_LIST),
-				'filter' => Expect::bool(true),
-				'title' => Expect::string('OpenAPI'),
-				'panel' => Expect::bool(false),
-			]),
-		]);
-	}
-
 	/**
 	 * Register services
 	 */
@@ -135,6 +119,22 @@ class OpenApiPlugin extends Plugin
 		$initialize->addBody('$this->getService(?)->addPanel($this->getService(?));', [
 			'tracy.bar',
 			$this->prefix('swaggerUi.panel'),
+		]);
+	}
+
+	protected function getConfigSchema(): Schema
+	{
+		return Expect::structure([
+			'definitions' => Expect::arrayOf(Expect::type('string|array|' . Statement::class)),
+			'definition' => Expect::array(),
+			'files' => Expect::arrayOf('string'),
+			'swaggerUi' => Expect::structure([
+				'url' => Expect::string()->nullable(),
+				'expansion' => Expect::anyOf(...SwaggerUIPanel::EXPANSIONS)->default(SwaggerUIPanel::EXPANSION_LIST),
+				'filter' => Expect::bool(true),
+				'title' => Expect::string('OpenAPI'),
+				'panel' => Expect::bool(false),
+			]),
 		]);
 	}
 

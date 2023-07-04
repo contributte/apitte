@@ -12,7 +12,6 @@ use Throwable;
 class ServerErrorException extends ApiException
 {
 
-	/** @var string */
 	public static string $defaultMessage = 'Application encountered an internal error. Please try again later.';
 
 	public function __construct(string $message = '', int $code = 500, ?Throwable $previous = null)

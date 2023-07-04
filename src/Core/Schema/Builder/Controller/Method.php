@@ -105,10 +105,7 @@ final class Method
 		return $this->tags;
 	}
 
-	/**
-	 * @param mixed $value
-	 */
-	public function addTag(string $name, $value = null): void
+	public function addTag(string $name, mixed $value = null): void
 	{
 		$this->tags[$name] = $value;
 	}
@@ -145,6 +142,7 @@ final class Method
 	{
 		$response = new EndpointResponse($code, $description);
 		$this->responses[$code] = $response;
+
 		return $response;
 	}
 

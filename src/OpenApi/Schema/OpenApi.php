@@ -32,40 +32,6 @@ class OpenApi
 	}
 
 	/**
-	 * @return mixed[]
-	 */
-	public function toArray(): array
-	{
-		$data = [];
-		$data['openapi'] = $this->openapi;
-		$data['info'] = $this->info->toArray();
-
-		foreach ($this->servers as $server) {
-			$data['servers'][] = $server->toArray();
-		}
-
-		$data['paths'] = $this->paths->toArray();
-
-		if ($this->components !== null) {
-			$data['components'] = $this->components->toArray();
-		}
-
-		foreach ($this->security as $requirement) {
-			$data['security'][] = $requirement->toArray();
-		}
-
-		foreach ($this->tags as $tag) {
-			$data['tags'][] = $tag->toArray();
-		}
-
-		if ($this->externalDocs !== null) {
-			$data['externalDocs'] = $this->externalDocs->toArray();
-		}
-
-		return $data;
-	}
-
-	/**
 	 * @param mixed[] $data
 	 */
 	public static function fromArray(array $data): OpenApi
@@ -102,6 +68,40 @@ class OpenApi
 		}
 
 		return $openApi;
+	}
+
+	/**
+	 * @return mixed[]
+	 */
+	public function toArray(): array
+	{
+		$data = [];
+		$data['openapi'] = $this->openapi;
+		$data['info'] = $this->info->toArray();
+
+		foreach ($this->servers as $server) {
+			$data['servers'][] = $server->toArray();
+		}
+
+		$data['paths'] = $this->paths->toArray();
+
+		if ($this->components !== null) {
+			$data['components'] = $this->components->toArray();
+		}
+
+		foreach ($this->security as $requirement) {
+			$data['security'][] = $requirement->toArray();
+		}
+
+		foreach ($this->tags as $tag) {
+			$data['tags'][] = $tag->toArray();
+		}
+
+		if ($this->externalDocs !== null) {
+			$data['externalDocs'] = $this->externalDocs->toArray();
+		}
+
+		return $data;
 	}
 
 	public function addTag(Tag $tag): void

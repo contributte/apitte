@@ -31,16 +31,6 @@ class DebugPlugin extends Plugin
 		return 'debug';
 	}
 
-	protected function getConfigSchema(): Schema
-	{
-		return Expect::structure([
-			'debug' => Expect::structure([
-				'panel' => Expect::bool(false),
-				'negotiation' => Expect::bool(true),
-			]),
-		]);
-	}
-
 	/**
 	 * Register services
 	 */
@@ -72,6 +62,31 @@ class DebugPlugin extends Plugin
 		ValidationBlueScreen::register(Debugger::getBlueScreen());
 	}
 
+	public function afterPluginCompile(ClassType $class): void
+	{
+		$global = $this->compiler->getExtension()->getConfig();
+		$config = $this->config;
+
+		$initialize = $class->getMethod('initialize');
+
+		$initialize->addBody('?::register($this->getService(?));', [ContainerBuilder::literal(ApiBlueScreen::class), 'tracy.blueScreen']);
+		$initialize->addBody('?::register($this->getService(?));', [ContainerBuilder::literal(ValidationBlueScreen::class), 'tracy.blueScreen']);
+
+		if ($global->debug && $config->debug->panel) {
+			$initialize->addBody('$this->getService(?)->addPanel($this->getService(?));', ['tracy.bar', $this->prefix('panel')]);
+		}
+	}
+
+	protected function getConfigSchema(): Schema
+	{
+		return Expect::structure([
+			'debug' => Expect::structure([
+				'panel' => Expect::bool(false),
+				'negotiation' => Expect::bool(true),
+			]),
+		]);
+	}
+
 	protected function loadNegotiationDebugConfiguration(): void
 	{
 		// Skip if plugin apitte/negotiation is not loaded
@@ -91,21 +106,6 @@ class DebugPlugin extends Plugin
 
 		// Setup debug schema decorator
 		CoreSchemaPlugin::$decorators['debug'] = new DebugSchemaDecorator();
-	}
-
-	public function afterPluginCompile(ClassType $class): void
-	{
-		$global = $this->compiler->getExtension()->getConfig();
-		$config = $this->config;
-
-		$initialize = $class->getMethod('initialize');
-
-		$initialize->addBody('?::register($this->getService(?));', [ContainerBuilder::literal(ApiBlueScreen::class), 'tracy.blueScreen']);
-		$initialize->addBody('?::register($this->getService(?));', [ContainerBuilder::literal(ValidationBlueScreen::class), 'tracy.blueScreen']);
-
-		if ($global->debug && $config->debug->panel) {
-			$initialize->addBody('$this->getService(?)->addPanel($this->getService(?));', ['tracy.bar', $this->prefix('panel')]);
-		}
 	}
 
 }

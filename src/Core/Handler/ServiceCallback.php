@@ -30,10 +30,7 @@ class ServiceCallback
 		return $this->method;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
+	public function __invoke(ServerRequestInterface $request, ResponseInterface $response): mixed
 	{
 		return call_user_func(Helpers::callback([$this->service, $this->method]), $request, $response);
 	}

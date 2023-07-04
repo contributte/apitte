@@ -16,9 +16,10 @@ class MessageException extends ClientErrorException
 	 * @param string|string[] $message
 	 * @return static
 	 */
-	public function withMessage($message)
+	public function withMessage(string|array $message): static
 	{
 		parent::withMessage($message);
+
 		$message = is_array($message) ? $message : [$message];
 
 		return $this->withTypedContext('message', $message);

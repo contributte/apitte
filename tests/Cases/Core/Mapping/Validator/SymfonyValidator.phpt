@@ -23,13 +23,13 @@ Toolkit::test(function (): void {
 
 	$entity = (new SimpleEntity())->factory(['id' => 'foo', 'typedId' => 1]);
 
-	Assert::exception(static function () use ($entity, $validator) {
+	Assert::exception(static function () use ($entity, $validator): void {
 		$validator->validate($entity);
 	}, ValidationException::class);
 
 	$entity = (new SimpleEntity())->factory(['id' => 1, 'typedId' => 'foo']);
 
-	Assert::exception(static function () use ($entity, $validator) {
+	Assert::exception(static function () use ($entity, $validator): void {
 		$validator->validate($entity);
 	}, ValidationException::class);
 });
@@ -40,13 +40,13 @@ Toolkit::test(function (): void {
 
 	$entity = (new SimpleEntity())->factory(['id' => null, 'typedId' => 'foo']);
 
-	Assert::exception(static function () use ($entity, $validator) {
+	Assert::exception(static function () use ($entity, $validator): void {
 		$validator->validate($entity);
 	}, ValidationException::class);
 
 	$entity = (new SimpleEntity())->factory(['id' => null, 'typedId' => 1]);
 
-	Assert::noError(static function () use ($entity, $validator) {
+	Assert::noError(static function () use ($entity, $validator): void {
 		$validator->validate($entity);
 	});
 });

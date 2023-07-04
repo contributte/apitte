@@ -5,11 +5,9 @@ namespace Apitte\OpenApi\Schema;
 class MediaType
 {
 
-	/** @var Schema|Reference|null */
-	private $schema;
+	private Schema|Reference|null $schema = null;
 
-	/** @var mixed */
-	private $example;
+	private mixed $example = null;
 
 	/** @var string[]|Example[]|Reference[] */
 	private array $examples = [];
@@ -42,42 +40,27 @@ class MediaType
 		return $mediaType;
 	}
 
-	/**
-	 * @return Schema|Reference|null
-	 */
-	public function getSchema()
+	public function getSchema(): Schema|Reference|null
 	{
 		return $this->schema;
 	}
 
-	/**
-	 * @param Schema|Reference|null $schema
-	 */
-	public function setSchema($schema): void
+	public function setSchema(Schema|Reference|null $schema): void
 	{
 		$this->schema = $schema;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getExample()
+	public function getExample(): mixed
 	{
 		return $this->example;
 	}
 
-	/**
-	 * @param mixed $example
-	 */
-	public function setExample($example): void
+	public function setExample(mixed $example): void
 	{
 		$this->example = $example;
 	}
 
-	/**
-	 * @param Example|Reference|string $example
-	 */
-	public function addExample(string $name, $example): void
+	public function addExample(string $name, Example|Reference|string $example): void
 	{
 		$this->examples[$name] = $example;
 	}
@@ -97,9 +80,7 @@ class MediaType
 		}
 
 		if ($this->examples !== []) {
-			$data['examples'] = array_map(static function ($example) {
-				return is_string($example) ? $example : $example->toArray();
-			}, $this->examples);
+			$data['examples'] = array_map(static fn ($example) => is_string($example) ? $example : $example->toArray(), $this->examples);
 		}
 
 		return $data;

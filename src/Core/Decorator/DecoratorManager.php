@@ -24,6 +24,7 @@ class DecoratorManager
 	public function addRequestDecorator(IRequestDecorator $decorator): self
 	{
 		$this->requestDecorators[] = $decorator;
+
 		return $this;
 	}
 
@@ -42,6 +43,7 @@ class DecoratorManager
 	public function addResponseDecorator(IResponseDecorator $decorator): self
 	{
 		$this->responseDecorators[] = $decorator;
+
 		return $this;
 	}
 
@@ -60,6 +62,7 @@ class DecoratorManager
 	public function addErrorDecorator(IErrorDecorator $decorator): self
 	{
 		$this->errorDecorators[] = $decorator;
+
 		return $this;
 	}
 

@@ -40,16 +40,6 @@ class CoreMappingPlugin extends Plugin
 		return 'mapping';
 	}
 
-	protected function getConfigSchema(): Schema
-	{
-		return Expect::structure([
-			'types' => Expect::arrayOf('string', 'string'),
-			'request' => Expect::structure([
-				'validator' => Expect::type('string|array|' . Statement::class)->default(NullValidator::class),
-			]),
-		]);
-	}
-
 	/**
 	 * Register services
 	 */
@@ -95,7 +85,18 @@ class CoreMappingPlugin extends Plugin
 	{
 		/** @var array<string> $configuredTypes */
 		$configuredTypes = array_keys($this->config->types);
+
 		return array_merge(EndpointParameter::TYPES, $configuredTypes);
+	}
+
+	protected function getConfigSchema(): Schema
+	{
+		return Expect::structure([
+			'types' => Expect::arrayOf('string', 'string'),
+			'request' => Expect::structure([
+				'validator' => Expect::type('string|array|' . Statement::class)->default(NullValidator::class),
+			]),
+		]);
 	}
 
 }

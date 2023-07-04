@@ -17,8 +17,9 @@ final class PathAndRequestParamsController extends ApiV1Controller
 	 * })
 	 */
 	#[Path(path: '/user/{userId}/verification-photo/{photoId}')]
-	public function run()
+	public function run(): void
 	{
+		// Tests
 	}
 
 }

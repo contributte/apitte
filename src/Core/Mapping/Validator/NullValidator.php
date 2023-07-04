@@ -6,10 +6,9 @@ class NullValidator implements IEntityValidator
 {
 
 	/**
-	 * @param object $entity
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function validate($entity): void
+	public function validate(object $entity): void
 	{
 		// Hell nothing..
 	}

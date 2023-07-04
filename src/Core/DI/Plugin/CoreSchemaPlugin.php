@@ -40,6 +40,23 @@ class CoreSchemaPlugin extends Plugin
 		return 'schema';
 	}
 
+	/**
+	 * Decorate services
+	 */
+	public function beforePluginCompile(): void
+	{
+		// Receive container builder
+		$builder = $this->getContainerBuilder();
+
+		// Register services
+		$builder->addDefinition($this->extensionPrefix('core.schema.hydrator'))
+			->setFactory(ArrayHydrator::class);
+
+		$schemaDefinition = $builder->getDefinition($this->extensionPrefix('core.schema'));
+		assert($schemaDefinition instanceof ServiceDefinition);
+		$schemaDefinition->setFactory('@' . $this->extensionPrefix('core.schema.hydrator') . '::hydrate', [$this->compileSchema()]);
+	}
+
 	protected function getConfigSchema(): Schema
 	{
 		return Expect::structure([
@@ -67,23 +84,6 @@ class CoreSchemaPlugin extends Plugin
 	}
 
 	/**
-	 * Decorate services
-	 */
-	public function beforePluginCompile(): void
-	{
-		// Receive container builder
-		$builder = $this->getContainerBuilder();
-
-		// Register services
-		$builder->addDefinition($this->extensionPrefix('core.schema.hydrator'))
-			->setFactory(ArrayHydrator::class);
-
-		$schemaDefinition = $builder->getDefinition($this->extensionPrefix('core.schema'));
-		assert($schemaDefinition instanceof ServiceDefinition);
-		$schemaDefinition->setFactory('@' . $this->extensionPrefix('core.schema.hydrator') . '::hydrate', [$this->compileSchema()]);
-	}
-
-	/**
 	 * @return mixed[]
 	 */
 	protected function compileSchema(): array
@@ -104,6 +104,7 @@ class CoreSchemaPlugin extends Plugin
 
 		// Convert schema to array (for DI)
 		$generator = new ArraySerializator();
+
 		return $generator->serialize($builder);
 	}
 

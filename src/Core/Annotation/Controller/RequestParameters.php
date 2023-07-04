@@ -20,7 +20,7 @@ class RequestParameters
 	/**
 	 * @param RequestParameter[]|RequestParameter $parameters
 	 */
-	public function __construct($parameters)
+	public function __construct(array|RequestParameter $parameters)
 	{
 		if (empty($parameters)) {
 			throw new AnnotationException('Empty @RequestParameters given');

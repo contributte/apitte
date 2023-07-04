@@ -25,6 +25,7 @@ final class AnnotationMultiController extends ApiV1Controller
 	 */
 	public function responses(): void
 	{
+		// Tests
 	}
 
 	/**
@@ -35,6 +36,7 @@ final class AnnotationMultiController extends ApiV1Controller
 	 */
 	public function requestParameters(): void
 	{
+		// Tests
 	}
 
 	/**
@@ -45,6 +47,7 @@ final class AnnotationMultiController extends ApiV1Controller
 	 */
 	public function negotiations(): void
 	{
+		// Tests
 	}
 
 }

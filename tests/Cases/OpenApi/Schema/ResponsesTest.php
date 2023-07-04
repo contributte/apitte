@@ -13,8 +13,6 @@ require_once __DIR__ . '/../../../bootstrap.php';
 class ResponsesTest extends TestCase
 {
 
-	private Responses $responses;
-
 	private const ARRAY = [
 		'200' => ['description' => self::S200_DESCRIPTION],
 		'401' => ['$ref' => self::S401_REFERENCE],
@@ -24,12 +22,7 @@ class ResponsesTest extends TestCase
 
 	private const S401_REFERENCE = '#/components/responses/UnauthorizedError';
 
-	protected function setUp(): void
-	{
-		$this->responses = new Responses();
-		$this->responses->setResponse('200', new Response(self::S200_DESCRIPTION));
-		$this->responses->setResponse('401', new Reference(self::S401_REFERENCE));
-	}
+	private Responses $responses;
 
 	public function testFromArray(): void
 	{
@@ -40,6 +33,13 @@ class ResponsesTest extends TestCase
 	public function testToArray(): void
 	{
 		Assert::equal(self::ARRAY, $this->responses->toArray());
+	}
+
+	protected function setUp(): void
+	{
+		$this->responses = new Responses();
+		$this->responses->setResponse('200', new Response(self::S200_DESCRIPTION));
+		$this->responses->setResponse('401', new Reference(self::S401_REFERENCE));
 	}
 
 }

@@ -8,10 +8,8 @@ interface ITypeMapper
 {
 
 	/**
-	 * @param mixed $value
-	 * @return mixed
 	 * @throws InvalidArgumentTypeException
 	 */
-	public function normalize($value);
+	public function normalize(mixed $value): mixed;
 
 }

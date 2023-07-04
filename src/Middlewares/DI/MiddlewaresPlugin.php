@@ -22,14 +22,6 @@ class MiddlewaresPlugin extends Plugin
 		return 'middlewares';
 	}
 
-	protected function getConfigSchema(): Schema
-	{
-		return Expect::structure([
-			'tracy' => Expect::bool(true),
-			'autobasepath' => Expect::bool(true),
-		]);
-	}
-
 	/**
 	 * Register services (middlewares wrappers)
 	 */
@@ -54,6 +46,14 @@ class MiddlewaresPlugin extends Plugin
 		$builder->addDefinition($this->prefix('api'))
 			->setFactory(ApiMiddleware::class)
 			->addTag(MiddlewaresExtension::MIDDLEWARE_TAG, ['priority' => 500]);
+	}
+
+	protected function getConfigSchema(): Schema
+	{
+		return Expect::structure([
+			'tracy' => Expect::bool(true),
+			'autobasepath' => Expect::bool(true),
+		]);
 	}
 
 }

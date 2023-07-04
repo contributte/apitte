@@ -9,14 +9,6 @@ class Responses
 	private array $responses = [];
 
 	/**
-	 * @param Response|Reference $response
-	 */
-	public function setResponse(string $key, $response): void
-	{
-		$this->responses[$key] = $response;
-	}
-
-	/**
 	 * @param mixed[] $data
 	 */
 	public static function fromArray(array $data): Responses
@@ -31,6 +23,11 @@ class Responses
 		}
 
 		return $responses;
+	}
+
+	public function setResponse(string $key, Response|Reference $response): void
+	{
+		$this->responses[$key] = $response;
 	}
 
 	/**

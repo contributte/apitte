@@ -5,7 +5,6 @@ namespace Tests\Fixtures\ResponseEntity;
 class SinglePropertyEntity
 {
 
-	/** @var string */
 	public string $name;
 
 }

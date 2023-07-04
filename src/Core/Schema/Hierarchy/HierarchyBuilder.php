@@ -21,18 +21,6 @@ class HierarchyBuilder
 		$this->controllers = $controllers;
 	}
 
-	/**
-	 * Hierarchical node is representation of one path part without / (e.g. users/{id} is considered to be two nodes)
-	 */
-	private function addNode(string $path): HierarchicalNode
-	{
-		if (!isset($this->nodes[$path])) {
-			$this->nodes[$path] = new HierarchicalNode($path);
-		}
-
-		return $this->nodes[$path];
-	}
-
 	public function getHierarchy(): HierarchicalNode
 	{
 		$rootNode = $this->addNode('');
@@ -69,12 +57,20 @@ class HierarchyBuilder
 	}
 
 	/**
+	 * @return ControllerMethodPair[]
+	 */
+	public function getSortedEndpoints(): array
+	{
+		return $this->getSortedEndpointsFromNode($this->getHierarchy());
+	}
+
+	/**
 	 * Creates ['api', 'v1', 'users', '{id}'] from /api/v1/users/{id}
 	 *
 	 * @param string|string[] $paths
 	 * @return string[]
 	 */
-	protected function splitPathParts($paths): array
+	protected function splitPathParts(string|array $paths): array
 	{
 		$parts = [];
 
@@ -87,11 +83,21 @@ class HierarchyBuilder
 		}
 
 		// Remove empty indexes created during split
-		$parts = array_filter($parts, static function ($value): bool {
-			return $value !== '';
-		});
+		$parts = array_filter($parts, static fn ($value): bool => $value !== '');
 
 		return $parts;
+	}
+
+	/**
+	 * Hierarchical node is representation of one path part without / (e.g. users/{id} is considered to be two nodes)
+	 */
+	private function addNode(string $path): HierarchicalNode
+	{
+		if (!isset($this->nodes[$path])) {
+			$this->nodes[$path] = new HierarchicalNode($path);
+		}
+
+		return $this->nodes[$path];
 	}
 
 	/**
@@ -106,14 +112,6 @@ class HierarchyBuilder
 		}
 
 		return array_merge($endpoints, $node->getSortedEndpoints());
-	}
-
-	/**
-	 * @return ControllerMethodPair[]
-	 */
-	public function getSortedEndpoints(): array
-	{
-		return $this->getSortedEndpointsFromNode($this->getHierarchy());
 	}
 
 }

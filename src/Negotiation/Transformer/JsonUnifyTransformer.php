@@ -14,9 +14,8 @@ class JsonUnifyTransformer extends AbstractTransformer
 {
 
 	// Statuses
-	public const
-		STATUS_SUCCESS = 'success',
-		STATUS_ERROR = 'error';
+	public const STATUS_SUCCESS = 'success';
+	public const STATUS_ERROR = 'error';
 
 	/**
 	 * Encode given data for response
@@ -25,11 +24,7 @@ class JsonUnifyTransformer extends AbstractTransformer
 	 */
 	public function transform(ApiRequest $request, ApiResponse $response, array $context = []): ApiResponse
 	{
-		if (isset($context['exception'])) {
-			$response = $this->transformException($context['exception'], $request, $response);
-		} else {
-			$response = $this->transformResponse($request, $response);
-		}
+		$response = isset($context['exception']) ? $this->transformException($context['exception'], $request, $response) : $this->transformResponse($request, $response);
 
 		// Convert data to array to json
 		$content = Json::encode($this->getEntity($response)->getData());

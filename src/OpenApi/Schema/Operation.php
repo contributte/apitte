@@ -21,8 +21,7 @@ class Operation
 	/** @var Parameter[]|Reference[] */
 	private array $parameters = [];
 
-	/** @var RequestBody|Reference|null */
-	private $requestBody = null;
+	private RequestBody|Reference|null $requestBody = null;
 
 	private Responses $responses;
 
@@ -64,6 +63,7 @@ class Operation
 		foreach ($data['parameters'] ?? [] as $parameterData) {
 			if (isset($parameterData['$ref'])) {
 				$operation->addParameter(new Reference($parameterData['$ref']));
+
 				continue;
 			}
 
@@ -130,10 +130,7 @@ class Operation
 		$this->externalDocs = $externalDocs;
 	}
 
-	/**
-	 * @param Parameter|Reference $parameter
-	 */
-	public function addParameter($parameter): void
+	public function addParameter(Parameter|Reference $parameter): void
 	{
 		if ($parameter instanceof Parameter) {
 			$this->parameters[$this->getParameterKey($parameter)] = $parameter;
@@ -144,18 +141,11 @@ class Operation
 		$this->parameters[] = $parameter;
 	}
 
-	/**
-	 * @param Parameter $parameter
-	 * @return bool
-	 */
 	public function hasParameter(Parameter $parameter): bool
 	{
 		return array_key_exists($this->getParameterKey($parameter), $this->parameters);
 	}
 
-	/**
-	 * @param Parameter $parameter
-	 */
 	public function mergeParameter(Parameter $parameter): void
 	{
 		$originalParameter = $this->parameters[$this->getParameterKey($parameter)];
@@ -166,27 +156,12 @@ class Operation
 		$this->parameters[$this->getParameterKey($parameter)] = $parameter;
 	}
 
-	/**
-	 * @param Parameter $parameter
-	 * @return string
-	 */
-	private function getParameterKey(Parameter $parameter): string
-	{
-		return $parameter->getIn() . '-' . $parameter->getName();
-	}
-
-	/**
-	 * @param RequestBody|Reference|null $requestBody
-	 */
-	public function setRequestBody($requestBody): void
+	public function setRequestBody(RequestBody|Reference|null $requestBody): void
 	{
 		$this->requestBody = $requestBody;
 	}
 
-	/**
-	 * @param Callback|Reference $callback
-	 */
-	public function addCallback($callback): void
+	public function addCallback(Callback|Reference $callback): void
 	{
 		$this->callbacks[] = $callback;
 	}
@@ -296,10 +271,7 @@ class Operation
 		return $this->parameters;
 	}
 
-	/**
-	 * @return RequestBody|Reference|null
-	 */
-	public function getRequestBody()
+	public function getRequestBody(): RequestBody|Reference|null
 	{
 		return $this->requestBody;
 	}
@@ -336,6 +308,11 @@ class Operation
 	public function getServers(): array
 	{
 		return $this->servers;
+	}
+
+	private function getParameterKey(Parameter $parameter): string
+	{
+		return $parameter->getIn() . '-' . $parameter->getName();
 	}
 
 }

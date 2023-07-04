@@ -7,7 +7,6 @@ use Apitte\Core\Mapping\Request\BasicEntity;
 class NotEmptyEntity extends BasicEntity
 {
 
-	/** @var int */
-	public $foo;
+	public int $foo;
 
 }

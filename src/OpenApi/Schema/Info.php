@@ -24,6 +24,20 @@ class Info
 	}
 
 	/**
+	 * @param mixed[] $data
+	 */
+	public static function fromArray(array $data): Info
+	{
+		$info = new Info($data['title'], $data['version']);
+		$info->setDescription($data['description'] ?? null);
+		$info->setTermsOfService($data['termsOfService'] ?? null);
+		$info->setLicense(isset($data['license']) ? License::fromArray($data['license']) : null);
+		$info->setContact(isset($data['contact']) ? Contact::fromArray($data['contact']) : null);
+
+		return $info;
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -50,19 +64,6 @@ class Info
 		$data['version'] = $this->version;
 
 		return $data;
-	}
-
-	/**
-	 * @param mixed[] $data
-	 */
-	public static function fromArray(array $data): Info
-	{
-		$info = new Info($data['title'], $data['version']);
-		$info->setDescription($data['description'] ?? null);
-		$info->setTermsOfService($data['termsOfService'] ?? null);
-		$info->setLicense(isset($data['license']) ? License::fromArray($data['license']) : null);
-		$info->setContact(isset($data['contact']) ? Contact::fromArray($data['contact']) : null);
-		return $info;
 	}
 
 	public function setDescription(?string $description): void

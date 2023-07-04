@@ -5,15 +5,14 @@ namespace Apitte\OpenApi\Schema;
 class PathItem
 {
 
-	public const
-		OPERATION_GET = 'get',
-		OPERATION_PUT = 'put',
-		OPERATION_POST = 'post',
-		OPERATION_DELETE = 'delete',
-		OPERATION_OPTIONS = 'options',
-		OPERATION_HEAD = 'head',
-		OPERATION_PATCH = 'patch',
-		OPERATION_TRACE = 'trace';
+	public const OPERATION_GET = 'get';
+	public const OPERATION_PUT = 'put';
+	public const OPERATION_POST = 'post';
+	public const OPERATION_DELETE = 'delete';
+	public const OPERATION_OPTIONS = 'options';
+	public const OPERATION_HEAD = 'head';
+	public const OPERATION_PATCH = 'patch';
+	public const OPERATION_TRACE = 'trace';
 
 	/** @var string[] */
 	private static array $allowedOperations = [
@@ -39,8 +38,7 @@ class PathItem
 	/** @var Server[] */
 	private array $servers = [];
 
-	/** @var Parameter|Reference */
-	private $params;
+	private Parameter|Reference $params;
 
 	/**
 	 * @param mixed[] $pathItemData

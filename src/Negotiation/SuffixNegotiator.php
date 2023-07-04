@@ -22,21 +22,6 @@ class SuffixNegotiator implements INegotiator
 	}
 
 	/**
-	 * @param ITransformer[] $transformers
-	 */
-	private function addTransformers(array $transformers): void
-	{
-		foreach ($transformers as $suffix => $transformer) {
-			$this->addTransformer($suffix, $transformer);
-		}
-	}
-
-	private function addTransformer(string $suffix, ITransformer $transformer): void
-	{
-		$this->transformers[$suffix] = $transformer;
-	}
-
-	/**
 	 * @param mixed[] $context
 	 */
 	public function negotiate(ApiRequest $request, ApiResponse $response, array $context = []): ?ApiResponse
@@ -47,7 +32,9 @@ class SuffixNegotiator implements INegotiator
 
 		// Early return if there's no endpoint
 		$endpoint = $response->getEndpoint();
-		if ($endpoint === null) return null;
+		if ($endpoint === null)
+
+		return null;
 
 		// Get negotiations
 		$negotiations = $endpoint->getNegotiations();
@@ -76,6 +63,21 @@ class SuffixNegotiator implements INegotiator
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param ITransformer[] $transformers
+	 */
+	private function addTransformers(array $transformers): void
+	{
+		foreach ($transformers as $suffix => $transformer) {
+			$this->addTransformer($suffix, $transformer);
+		}
+	}
+
+	private function addTransformer(string $suffix, ITransformer $transformer): void
+	{
+		$this->transformers[$suffix] = $transformer;
 	}
 
 	/**

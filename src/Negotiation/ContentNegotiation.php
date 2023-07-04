@@ -44,7 +44,9 @@ class ContentNegotiation
 	public function negotiate(ApiRequest $request, ApiResponse $response, array $context = []): ApiResponse
 	{
 		// Should we skip negotiation?
-		if ($request->getAttribute(self::ATTR_SKIP, false) === true) return $response;
+		if ($request->getAttribute(self::ATTR_SKIP, false) === true)
+
+		return $response;
 
 		// Validation
 		if ($this->negotiators === []) {
@@ -56,7 +58,9 @@ class ContentNegotiation
 			$negotiated = $negotiator->negotiate($request, $response, $context);
 
 			// If it's not NULL, we have an ApiResponse
-			if ($negotiated !== null) return $negotiated;
+			if ($negotiated !== null)
+
+			return $negotiated;
 		}
 
 		return $response;

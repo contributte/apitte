@@ -17,7 +17,6 @@ final class BaseSchemaType implements ISchemaType
 						'type' => 'string',
 					]
 				);
-
 			case EndpointParameter::TYPE_INTEGER:
 				return new Schema(
 					[
@@ -25,7 +24,6 @@ final class BaseSchemaType implements ISchemaType
 						'format' => 'int32',
 					]
 				);
-
 			case EndpointParameter::TYPE_FLOAT:
 				return new Schema(
 					[
@@ -33,14 +31,12 @@ final class BaseSchemaType implements ISchemaType
 						'format' => 'float64',
 					]
 				);
-
 			case EndpointParameter::TYPE_BOOLEAN:
 				return new Schema(
 					[
 						'type' => 'boolean',
 					]
 				);
-
 			case EndpointParameter::TYPE_DATETIME:
 				return new Schema(
 					[
@@ -48,7 +44,6 @@ final class BaseSchemaType implements ISchemaType
 						'format' => 'date-time',
 					]
 				);
-
 			default:
 				throw new UnknownSchemaType('Unknown endpoint parameter type ' . $endpointParameter->getType());
 		}

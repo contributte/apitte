@@ -2,6 +2,8 @@
 
 namespace Apitte\OpenApi\Schema;
 
+use Apitte\OpenApi\Utils\Helpers;
+
 class Operation
 {
 
@@ -65,7 +67,12 @@ class Operation
 				continue;
 			}
 
-			$operation->addParameter(Parameter::fromArray($parameterData));
+			$parameter = Parameter::fromArray($parameterData);
+			if ($operation->hasParameter($parameter)) {
+				$operation->mergeParameter($parameter);
+			} else {
+				$operation->addParameter(Parameter::fromArray($parameterData));
+			}
 		}
 
 		if (isset($data['requestBody'])) {
@@ -128,7 +135,44 @@ class Operation
 	 */
 	public function addParameter($parameter): void
 	{
+		if ($parameter instanceof Parameter) {
+			$this->parameters[$this->getParameterKey($parameter)] = $parameter;
+
+			return;
+		}
+
 		$this->parameters[] = $parameter;
+	}
+
+	/**
+	 * @param Parameter $parameter
+	 * @return bool
+	 */
+	public function hasParameter(Parameter $parameter): bool
+	{
+		return array_key_exists($this->getParameterKey($parameter), $this->parameters);
+	}
+
+	/**
+	 * @param Parameter $parameter
+	 */
+	public function mergeParameter(Parameter $parameter): void
+	{
+		$originalParameter = $this->parameters[$this->getParameterKey($parameter)];
+
+		$merged = Helpers::merge($parameter->toArray(), $originalParameter->toArray());
+		$parameter = Parameter::fromArray($merged);
+
+		$this->parameters[$this->getParameterKey($parameter)] = $parameter;
+	}
+
+	/**
+	 * @param Parameter $parameter
+	 * @return string
+	 */
+	private function getParameterKey(Parameter $parameter): string
+	{
+		return $parameter->getIn() . '-' . $parameter->getName();
 	}
 
 	/**

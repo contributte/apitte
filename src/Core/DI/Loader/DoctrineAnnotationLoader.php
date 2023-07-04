@@ -298,7 +298,7 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 		}
 	}
 
-	private function getReader(): Reader
+	protected function getReader(): Reader
 	{
 		if ($this->reader === null) {
 			$dualReaderFactory = new DualReaderFactory();

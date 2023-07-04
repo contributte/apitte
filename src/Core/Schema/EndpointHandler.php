@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema;
 
-final class EndpointHandler
+class EndpointHandler
 {
 
 	/** @var class-string */

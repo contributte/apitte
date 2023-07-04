@@ -6,7 +6,7 @@ use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Nette\PhpGenerator\ClassType;
 
-final class PluginManager
+class PluginManager
 {
 
 	private PluginCompiler $compiler;

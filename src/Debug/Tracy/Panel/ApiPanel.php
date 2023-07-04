@@ -5,7 +5,7 @@ namespace Apitte\Debug\Tracy\Panel;
 use Apitte\Core\Schema\Schema;
 use Tracy\IBarPanel;
 
-final class ApiPanel implements IBarPanel
+class ApiPanel implements IBarPanel
 {
 
 	private Schema $schema;

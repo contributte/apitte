@@ -13,7 +13,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-final class Method
+class Method
 {
 
 	/** @var string[] */

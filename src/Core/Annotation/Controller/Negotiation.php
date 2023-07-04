@@ -12,7 +12,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class Negotiation
+class Negotiation
 {
 
 	private string $suffix;

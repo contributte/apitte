@@ -12,7 +12,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-final class OpenApi
+class OpenApi
 {
 
 	private string $data;

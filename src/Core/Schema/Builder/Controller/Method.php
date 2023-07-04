@@ -7,7 +7,7 @@ use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\EndpointResponse;
 
-final class Method
+class Method
 {
 
 	private string $name;

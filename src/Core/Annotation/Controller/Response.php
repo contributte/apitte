@@ -13,7 +13,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class Response
+class Response
 {
 
 	private string $code;

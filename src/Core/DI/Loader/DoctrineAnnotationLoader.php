@@ -26,7 +26,7 @@ use Nette\Neon\Neon;
 use ReflectionClass;
 use ReflectionMethod;
 
-final class DoctrineAnnotationLoader extends AbstractContainerLoader
+class DoctrineAnnotationLoader extends AbstractContainerLoader
 {
 
 	private ?Reader $reader = null;

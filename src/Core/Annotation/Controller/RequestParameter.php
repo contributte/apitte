@@ -14,7 +14,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class RequestParameter
+class RequestParameter
 {
 
 	private string $name;

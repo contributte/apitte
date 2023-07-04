@@ -6,7 +6,7 @@ use Apitte\Core\Exception\ApiException;
 use Tracy\BlueScreen;
 use Tracy\Dumper;
 
-final class ApiBlueScreen
+class ApiBlueScreen
 {
 
 	public static function register(BlueScreen $blueScreen): void

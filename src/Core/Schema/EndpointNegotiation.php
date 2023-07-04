@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema;
 
-final class EndpointNegotiation
+class EndpointNegotiation
 {
 
 	private string $suffix;

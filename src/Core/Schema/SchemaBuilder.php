@@ -4,7 +4,7 @@ namespace Apitte\Core\Schema;
 
 use Apitte\Core\Schema\Builder\Controller\Controller;
 
-final class SchemaBuilder
+class SchemaBuilder
 {
 
 	/** @var Controller[] */

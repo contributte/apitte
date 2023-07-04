@@ -12,7 +12,7 @@ use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\EndpointResponse;
 use Apitte\Core\Schema\Schema;
 
-final class ArrayHydrator implements IHydrator
+class ArrayHydrator implements IHydrator
 {
 
 	public function hydrate(mixed $data): Schema

@@ -5,7 +5,7 @@ namespace Apitte\Debug\Schema\Serialization;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\IDecorator;
 
-final class DebugSchemaDecorator implements IDecorator
+class DebugSchemaDecorator implements IDecorator
 {
 
 	public function decorate(SchemaBuilder $builder): SchemaBuilder

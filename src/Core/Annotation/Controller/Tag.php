@@ -13,7 +13,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-final class Tag
+class Tag
 {
 
 	private string $name;

@@ -6,7 +6,7 @@ use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Nette\Utils\Arrays;
 
-final class Endpoint
+class Endpoint
 {
 
 	// Methods

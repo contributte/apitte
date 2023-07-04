@@ -11,7 +11,7 @@ use Koriym\Attributes\DualReader;
 /**
  * @see https://github.com/koriym/Koriym.Attributes
  */
-final class DualReaderFactory
+class DualReaderFactory
 {
 
 	public function create(): Reader

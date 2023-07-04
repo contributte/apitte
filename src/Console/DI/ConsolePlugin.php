@@ -5,7 +5,7 @@ namespace Apitte\Console\DI;
 use Apitte\Console\Command\RouteDumpCommand;
 use Apitte\Core\DI\Plugin\Plugin;
 
-final class ConsolePlugin extends Plugin
+class ConsolePlugin extends Plugin
 {
 
 	public static function getName(): string

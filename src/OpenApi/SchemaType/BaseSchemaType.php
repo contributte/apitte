@@ -5,7 +5,7 @@ namespace Apitte\OpenApi\SchemaType;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\OpenApi\Schema\Schema;
 
-final class BaseSchemaType implements ISchemaType
+class BaseSchemaType implements ISchemaType
 {
 
 	public function createSchema(EndpointParameter $endpointParameter): Schema

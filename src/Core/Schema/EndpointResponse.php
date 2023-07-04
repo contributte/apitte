@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema;
 
-final class EndpointResponse
+class EndpointResponse
 {
 
 	private string $code;

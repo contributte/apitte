@@ -7,7 +7,7 @@ use ReflectionClass;
 use Tracy\BlueScreen;
 use Tracy\Helpers;
 
-final class ValidationBlueScreen
+class ValidationBlueScreen
 {
 
 	public static function register(BlueScreen $blueScreen): void

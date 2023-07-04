@@ -11,7 +11,7 @@ use Doctrine\Common\Annotations\AnnotationException;
  * @Target("METHOD")
  * @NamedArgumentConstructor()
  */
-final class Responses
+class Responses
 {
 
 	/** @var Response[] */

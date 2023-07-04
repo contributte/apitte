@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema;
 
-final class EndpointParameter
+class EndpointParameter
 {
 
 	public const TYPE_STRING = 'string';

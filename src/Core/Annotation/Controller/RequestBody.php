@@ -12,7 +12,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @NamedArgumentConstructor()
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-final class RequestBody
+class RequestBody
 {
 
 	private ?string $description;

@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(self::NAME)]
-final class RouteDumpCommand extends Command
+class RouteDumpCommand extends Command
 {
 
 	public const NAME = 'apitte:route:dump';

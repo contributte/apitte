@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema\Builder\Controller;
 
-final class Controller
+class Controller
 {
 
 	private string $class;

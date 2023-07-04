@@ -11,7 +11,7 @@ use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Utils\Helpers;
 use Apitte\Core\Utils\Regex;
 
-final class ArraySerializator implements ISerializator
+class ArraySerializator implements ISerializator
 {
 
 	/**

@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\Schema;
 
-final class EndpointRequestBody
+class EndpointRequestBody
 {
 
 	private ?string $description = null;

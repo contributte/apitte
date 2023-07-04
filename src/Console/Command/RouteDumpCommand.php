@@ -5,6 +5,7 @@ namespace Apitte\Console\Command;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Schema;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
@@ -12,13 +13,13 @@ use Symfony\Component\Console\Helper\TableStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(self::NAME)]
 final class RouteDumpCommand extends Command
 {
 
-	private const TABLE_HEADER = ['Method', 'Path', 'Handler', ' ', 'Parameters'];
+	public const NAME = 'apitte:route:dump';
 
-	/** @var string */
-	protected static $defaultName = 'apitte:route:dump';
+	private const TABLE_HEADER = ['Method', 'Path', 'Handler', ' ', 'Parameters'];
 
 	private Schema $schema;
 
@@ -31,7 +32,7 @@ final class RouteDumpCommand extends Command
 
 	protected function configure(): void
 	{
-		$this->setName(self::$defaultName);
+		$this->setName(self::NAME);
 		$this->setDescription('Lists all endpoints registered in application');
 	}
 

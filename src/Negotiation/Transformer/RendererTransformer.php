@@ -28,6 +28,7 @@ class RendererTransformer extends AbstractTransformer
 		if (!isset($context['renderer'])) return $response;
 
 		// Fetch service
+		// @phpstan-ignore-next-line
 		$service = $this->container->getByType($context['renderer'], false);
 
 		if (!$service) {

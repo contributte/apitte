@@ -1,19 +1,16 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\Validation\RequestParameterValidation
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\RequestParameterValidation;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // Not defined, no error
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new RequestParameterValidation();
 
@@ -28,7 +25,7 @@ test(function (): void {
 });
 
 // No error
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new RequestParameterValidation();
 
@@ -45,7 +42,7 @@ test(function (): void {
 });
 
 // Invalid type
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new RequestParameterValidation();
 
@@ -72,7 +69,7 @@ test(function (): void {
 });
 
 // Custom type
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new RequestParameterValidation(array_merge(EndpointParameter::TYPES, ['bar']));
 
@@ -89,7 +86,7 @@ test(function (): void {
 });
 
 // Default type with custom types
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new RequestParameterValidation(array_merge(EndpointParameter::TYPES, ['bar']));
 
@@ -106,7 +103,7 @@ test(function (): void {
 });
 
 // Invalid in
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new RequestParameterValidation();
 
@@ -134,7 +131,7 @@ test(function (): void {
 });
 
 // Parameter in path is not defined in mask
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new RequestParameterValidation();
 

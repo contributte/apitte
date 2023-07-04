@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Handler\ServiceHandler
- */
-
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Handler\ServiceHandler;
 use Apitte\Core\Http\ApiRequest;
@@ -14,6 +10,7 @@ use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\UI\Controller\IController;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Nette\DI\Container;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +19,7 @@ use Tester\Assert;
 require_once __DIR__ . '/../../../bootstrap.php';
 
 // Missing endpoint
-test(function (): void {
+Toolkit::test(function (): void {
 	$container = new Container();
 	$sh = new ServiceHandler($container);
 
@@ -35,7 +32,7 @@ test(function (): void {
 });
 
 // Missing endpoint
-test(function (): void {
+Toolkit::test(function (): void {
 	$controller = new class() implements IController
 	{
 

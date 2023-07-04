@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Dispatcher\CoreDispatcher
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Dispatcher\CoreDispatcher;
@@ -13,6 +9,7 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Psr\Http\Message\ResponseInterface;
 use Tester\Assert;
 use Tests\Fixtures\Handler\FakeNullHandler;
@@ -20,7 +17,7 @@ use Tests\Fixtures\Handler\FakeResponseHandler;
 use Tests\Fixtures\Router\FakeRouter;
 
 // Request matched, use handler, return response
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -29,7 +26,7 @@ test(function (): void {
 });
 
 // Request matched, use invalid handler, throw exception
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -41,7 +38,7 @@ test(function (): void {
 });
 
 // Request not matched, throw exception
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 

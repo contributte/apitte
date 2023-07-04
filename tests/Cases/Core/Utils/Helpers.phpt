@@ -1,17 +1,14 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Utils\Helpers
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Utils\Helpers;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // Helpers::slashless
-test(function (): void {
+Toolkit::test(function (): void {
 	Assert::equal('/', Helpers::slashless('/'));
 	Assert::equal('/', Helpers::slashless('//'));
 	Assert::equal('/', Helpers::slashless('/////'));
@@ -22,7 +19,7 @@ test(function (): void {
 });
 
 // Helpers::callback
-test(function (): void {
+Toolkit::test(function (): void {
 	Assert::type('callable', Helpers::callback([Helpers::class, 'callback']));
 
 	Assert::exception(static function (): void {

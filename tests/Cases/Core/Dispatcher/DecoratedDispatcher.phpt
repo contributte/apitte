@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Dispatcher\DecoratedDispatcher
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Decorator\DecoratorManager;
@@ -18,6 +14,7 @@ use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Psr\Http\Message\ResponseInterface;
 use Tester\Assert;
 use Tests\Fixtures\Decorator\EarlyReturnResponseExceptionDecorator;
@@ -33,7 +30,7 @@ use Tests\Fixtures\Router\FakeRouter;
 //		- decorateError
 
 // Match request, use handler and be happy, everything is ok!
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -42,7 +39,7 @@ test(function (): void {
 });
 
 // Match request, add endpoint, use handler and be happy, everything is ok!
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -56,7 +53,7 @@ test(function (): void {
 });
 
 // Match request, use invalid handler, throw exception
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -68,7 +65,7 @@ test(function (): void {
 });
 
 // Match request, decorate request, throw exception, return response from exception
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -81,7 +78,7 @@ test(function (): void {
 });
 
 // Match request, use handler, decorate response, throw exception, return response from exception
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -94,7 +91,7 @@ test(function (): void {
 });
 
 // Match request, use handler, throw and catch exception, decorate response with exception in context and then (for tests) throw exception again
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -109,7 +106,7 @@ test(function (): void {
 });
 
 // Match request, use handler, throw and catch exception then trow it again because DecoratorManager doesn't have any decorators so returned null
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -120,7 +117,7 @@ test(function (): void {
 });
 
 // No match, throw exception
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 

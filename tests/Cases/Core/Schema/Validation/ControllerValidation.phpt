@@ -1,19 +1,16 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\Validation\ControllerValidation
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\ControllerValidation;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\AnnotationFoobarController;
 
 // Validate: success
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new ControllerValidation();
 	$builder = new SchemaBuilder();
 
@@ -25,7 +22,7 @@ test(function (): void {
 });
 
 // Validate: not an IController
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new ControllerValidation();
 	$builder = new SchemaBuilder();
 

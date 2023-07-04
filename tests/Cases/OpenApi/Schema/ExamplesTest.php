@@ -2,10 +2,6 @@
 
 namespace Tests\Cases\OpenApi\Cases\Schema;
 
-/**
- * Test: SchemaType\BaseSchemaType
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\OpenApi\Schema\OpenApi;

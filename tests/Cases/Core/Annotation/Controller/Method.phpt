@@ -1,17 +1,14 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Annotation\Controller\Method
- */
-
 use Apitte\Core\Annotation\Controller\Method;
+use Contributte\Tester\Toolkit;
 use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 // Ok
-test(function (): void {
+Toolkit::test(function (): void {
 	$method = new Method(['GET']);
 	Assert::equal(['GET'], $method->getMethods());
 
@@ -20,7 +17,7 @@ test(function (): void {
 });
 
 // Empty method
-test(function (): void {
+Toolkit::test(function (): void {
 	Assert::exception(function (): void {
 		new Method([]);
 	}, AnnotationException::class, 'Empty @Method given');

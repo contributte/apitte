@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: ApiMiddleware
- */
-
 use Apitte\Core\Dispatcher\IDispatcher;
 use Apitte\Core\ErrorHandler\SimpleErrorHandler;
 use Apitte\Core\Exception\Api\ClientErrorException;
@@ -13,7 +9,7 @@ use Apitte\Middlewares\ApiMiddleware;
 use Contributte\Middlewares\Utils\Lambda;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
-use Ninjify\Nunjuck\Toolkit;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';

@@ -1,11 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: DI\ApiExtension
- *
- * @phpVersion > 7.3
- */
-
 use Apitte\Core\Application\Application;
 use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\Dispatcher\JsonDispatcher;
@@ -16,6 +10,8 @@ use Apitte\Core\Mapping\RequestParameterMapping;
 use Apitte\Core\Mapping\Validator\IEntityValidator;
 use Apitte\Core\Mapping\Validator\SymfonyValidator;
 use Apitte\Core\Schema\Schema;
+use Contributte\Tester\Environment;
+use Contributte\Tester\Toolkit;
 use Nette\DI\Compiler;
 use Nette\DI\Container;
 use Nette\DI\ContainerLoader;
@@ -27,8 +23,8 @@ use Tests\Toolkit\NeonLoader;
 require_once __DIR__ . '/../../../bootstrap.php';
 
 // Default
-test(function (): void {
-	$loader = new ContainerLoader(TEMP_DIR, true);
+Toolkit::test(function (): void {
+	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
 		$compiler->addConfig([
@@ -47,8 +43,8 @@ test(function (): void {
 });
 
 // Annotations
-test(function (): void {
-	$loader = new ContainerLoader(TEMP_DIR, true);
+Toolkit::test(function (): void {
+	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
 		$compiler->addConfig([
@@ -76,8 +72,8 @@ test(function (): void {
 });
 
 // PsrErrorHandler
-test(function (): void {
-	$loader = new ContainerLoader(TEMP_DIR, true);
+Toolkit::test(function (): void {
+	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
 		$compiler->addConfig([
@@ -99,8 +95,8 @@ test(function (): void {
 });
 
 // Mapping > SymfonyValidator
-test(function (): void {
-	$loader = new ContainerLoader(TEMP_DIR, true);
+Toolkit::test(function (): void {
+	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
 		$compiler->addConfig(NeonLoader::load(<<<NEON
@@ -129,8 +125,8 @@ test(function (): void {
 });
 
 // Mapping - custom type
-test(function (): void {
-	$loader = new ContainerLoader(TEMP_DIR, true);
+Toolkit::test(function (): void {
+	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
 		$compiler->addConfig(NeonLoader::load(<<<NEON

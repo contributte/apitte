@@ -1,19 +1,16 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\SchemaInspector
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\Schema;
 use Apitte\Core\Schema\SchemaInspector;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // GetEndpointsByTag: empty
-test(function (): void {
+Toolkit::test(function (): void {
 	$schema = new Schema();
 
 	$handler = new EndpointHandler('class', 'method');
@@ -28,7 +25,7 @@ test(function (): void {
 });
 
 // GetEndpointsByTag: by name
-test(function (): void {
+Toolkit::test(function (): void {
 	$schema = new Schema();
 
 	$handler = new EndpointHandler('class', 'method');
@@ -55,7 +52,7 @@ test(function (): void {
 });
 
 // GetEndpointsByTag: by name and value
-test(function (): void {
+Toolkit::test(function (): void {
 	$schema = new Schema();
 
 	$handler = new EndpointHandler('class', 'method');

@@ -1,17 +1,14 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Annotation\Controller\RequestBody
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Annotation\Controller\RequestBody;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 use Tests\Fixtures\Mapping\Request\FooEntity;
 
 // OK
-test(function (): void {
+Toolkit::test(function (): void {
 	$requestBody1 = new RequestBody();
 	Assert::same(null, $requestBody1->getEntity());
 	Assert::same(true, $requestBody1->isValidation());

@@ -1,10 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Tests\Cases\OpenApi\Cases;
-
-/**
- * Test: SchemaType\SchemaBuilderTest
- */
+namespace Tests\Cases\OpenApi;
 
 require_once __DIR__ . '/../../bootstrap.php';
 

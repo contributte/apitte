@@ -1,22 +1,19 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: DI\Loader\DoctrineAnnotationLoader for multiple annotations of one type
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\SchemaBuilder;
+use Contributte\Tester\Toolkit;
 use Nette\DI\ContainerBuilder;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\AnnotationMultiController;
 use Tests\Fixtures\Controllers\AttributeMultiController;
 
 // Parse annotations
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new ContainerBuilder();
 	$builder->addDefinition('annotation_multi_controller')
 		->setType(AnnotationMultiController::class);

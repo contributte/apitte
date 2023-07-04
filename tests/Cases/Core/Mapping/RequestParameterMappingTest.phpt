@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Mapping\RequestParameterMapping
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Api\ClientErrorException;
@@ -25,7 +21,7 @@ use Tester\Assert;
 use Tester\TestCase;
 use Tests\Fixtures\Mapping\Parameter\MyEmailTypeMapper;
 
-final class TestRequestParameterMapping extends TestCase
+final class RequestParameterMappingTest extends TestCase
 {
 
 	/** @var RequestParameterMapping */
@@ -415,4 +411,4 @@ final class TestRequestParameterMapping extends TestCase
 
 }
 
-(new TestRequestParameterMapping())->run();
+(new RequestParameterMappingTest())->run();

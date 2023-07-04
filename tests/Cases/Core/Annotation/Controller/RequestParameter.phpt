@@ -1,18 +1,15 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Annotation\Controller\RequestParameter
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Schema\EndpointParameter;
+use Contributte\Tester\Toolkit;
 use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
 // OK
-test(function (): void {
+Toolkit::test(function (): void {
 	$requestParameter = new RequestParameter(
 		'Parameter',
 		EndpointParameter::TYPE_STRING,
@@ -33,7 +30,7 @@ test(function (): void {
 });
 
 // OK - short
-test(function (): void {
+Toolkit::test(function (): void {
 	$requestParameter = new RequestParameter(
 		'Parameter',
 		EndpointParameter::TYPE_STRING
@@ -49,14 +46,14 @@ test(function (): void {
 });
 
 // Exception - no type
-test(function (): void {
+Toolkit::test(function (): void {
 	Assert::exception(function (): void {
 		new RequestParameter('Param', '', EndpointParameter::IN_PATH);
 	}, AnnotationException::class, 'Empty @RequestParameter type given');
 });
 
 // Exception - invalid parameter location
-test(function (): void {
+Toolkit::test(function (): void {
 	Assert::exception(function (): void {
 		new RequestParameter('Param', EndpointParameter::TYPE_STRING, 'invalid');
 	}, AnnotationException::class, 'Invalid @RequestParameter in given');

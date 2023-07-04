@@ -1,18 +1,15 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Http\ApiRequest
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\RequestAttributes;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // Entity
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$apiRequest = new ApiRequest($request);
 	$apiRequest = $apiRequest->withAttribute(RequestAttributes::ATTR_REQUEST_ENTITY, new stdClass());
@@ -21,7 +18,7 @@ test(function (): void {
 });
 
 // Parameters
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$apiRequest = new ApiRequest($request);
 
@@ -33,7 +30,7 @@ test(function (): void {
 });
 
 // Parameters > withAttribute
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = Psr7ServerRequestFactory::fromSuperGlobal();
 	$request = $request->withAttribute(RequestAttributes::ATTR_PARAMETERS, ['name' => 'John Doe', 'title' => null]);
 	$apiRequest = new ApiRequest($request);

@@ -1,20 +1,17 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\Validation\RequestBodyValidation
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\RequestBodyValidation;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 use Tests\Fixtures\Mapping\Request\FooEntity;
 
 // Validate: no request, no error
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
@@ -27,7 +24,7 @@ test(function (): void {
 });
 
 // Validate: entity is empty, no error
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
@@ -41,7 +38,7 @@ test(function (): void {
 });
 
 // Validate: entity exists, no error
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
@@ -57,7 +54,7 @@ test(function (): void {
 });
 
 // Validate: entity does not exist
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');

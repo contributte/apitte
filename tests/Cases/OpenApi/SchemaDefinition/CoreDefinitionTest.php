@@ -1,10 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Tests\Cases\OpenApi\Cases\SchemaDefinition;
-
-/**
- * Test: SchemaDefinition\CoreSchemaDefinition
- */
+namespace Tests\Cases\OpenApi\SchemaDefinition;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 

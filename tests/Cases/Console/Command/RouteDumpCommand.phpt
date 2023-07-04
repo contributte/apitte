@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Command/RouteDumpCommand
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Console\Command\RouteDumpCommand;
@@ -11,12 +7,13 @@ use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Schema;
+use Contributte\Tester\Toolkit;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Tester\Assert;
 
 // No endpoints
-test(function (): void {
+Toolkit::test(function (): void {
 	$schema = new Schema();
 	$command = new RouteDumpCommand($schema);
 
@@ -29,7 +26,7 @@ test(function (): void {
 });
 
 // Some endpoints
-test(function (): void {
+Toolkit::test(function (): void {
 	$schema = new Schema();
 
 	$handler1 = new EndpointHandler('class1', 'method1');

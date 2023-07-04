@@ -1,18 +1,15 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\Serialization\ArrayHydrator
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // AddMethod: success
-test(function (): void {
+Toolkit::test(function (): void {
 	$hydrator = new ArrayHydrator();
 
 	$data = [

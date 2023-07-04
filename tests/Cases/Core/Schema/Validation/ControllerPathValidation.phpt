@@ -1,18 +1,15 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\Validation\ControllerPathValidation
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\ControllerPathValidation;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // Validate: success
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new ControllerPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -25,7 +22,7 @@ test(function (): void {
 });
 
 // Validate: no path
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new ControllerPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -37,7 +34,7 @@ test(function (): void {
 });
 
 // Validate: start with /
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new ControllerPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -50,7 +47,7 @@ test(function (): void {
 });
 
 // Validate: end with /
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new ControllerPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -63,7 +60,7 @@ test(function (): void {
 });
 
 // Validate: invalid characters
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new ControllerPathValidation();
 	$builder = new SchemaBuilder();
 

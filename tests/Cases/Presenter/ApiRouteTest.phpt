@@ -1,17 +1,14 @@
 <?php declare(strict_types = 1);
 
-namespace Tests;
+namespace Tests\Cases\Presenter;
 
 use Apitte\Presenter\ApiRoute;
-use Ninjify\Nunjuck\TestCase\BaseTestCase;
 use Tester\Assert;
+use Tester\TestCase;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-/**
- * @testCase
- */
-class ApiRouteTest extends BaseTestCase
+class ApiRouteTest extends TestCase
 {
 
 	public function testConstruct(): void

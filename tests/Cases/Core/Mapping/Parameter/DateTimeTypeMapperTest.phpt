@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Mapping\Parameter\DateTimeTypeMapper
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
@@ -11,7 +7,7 @@ use Apitte\Core\Mapping\Parameter\DateTimeTypeMapper;
 use Tester\Assert;
 use Tester\TestCase;
 
-final class TestDateTimeTypeMapper extends TestCase
+final class DateTimeTypeMapperTest extends TestCase
 {
 
 	public function testOk(): void
@@ -64,4 +60,4 @@ final class TestDateTimeTypeMapper extends TestCase
 
 }
 
-(new TestDateTimeTypeMapper())->run();
+(new DateTimeTypeMapperTest())->run();

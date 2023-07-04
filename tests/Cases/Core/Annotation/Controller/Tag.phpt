@@ -1,17 +1,14 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Annotation\Controller\Tag
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Annotation\Controller\Tag;
+use Contributte\Tester\Toolkit;
 use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
 // OK
-test(function (): void {
+Toolkit::test(function (): void {
 	$tag = new Tag('name', null);
 
 	Assert::same('name', $tag->getName());
@@ -19,7 +16,7 @@ test(function (): void {
 });
 
 // Exception - empty name
-test(function (): void {
+Toolkit::test(function (): void {
 	Assert::exception(function (): void {
 		new Tag('', null);
 	}, AnnotationException::class, 'Empty @Tag name given');

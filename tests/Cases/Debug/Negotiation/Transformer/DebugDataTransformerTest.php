@@ -1,16 +1,12 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Debig/Negotiation/Transformer/DebugDataTransformer
- */
-
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Debug\Negotiation\Transformer\DebugDataTransformer;
 use Apitte\Negotiation\Http\ArrayEntity;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
-use Ninjify\Nunjuck\Toolkit;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 use Tracy\Debugger;
 

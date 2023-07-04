@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Mapping\RequestEntityMapping
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Api\ClientErrorException;
@@ -17,13 +13,14 @@ use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointRequestBody;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use GuzzleHttp\Psr7\Utils;
 use Tester\Assert;
 use Tests\Fixtures\Mapping\Request\FooEntity;
 use Tests\Fixtures\Mapping\Request\NotEmptyEntity;
 
 // Add entity to request
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$mapping = new RequestEntityMapping();
@@ -43,7 +40,7 @@ test(function (): void {
 });
 
 // Don't modify request by entity - method foo is not supported
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$mapping = new RequestEntityMapping();
@@ -61,7 +58,7 @@ test(function (): void {
 });
 
 // No request mapper, return request
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$mapping = new RequestEntityMapping();
@@ -73,7 +70,7 @@ test(function (): void {
 });
 
 // Exception - missing attribute
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 	$mapping = new RequestEntityMapping();
@@ -84,7 +81,7 @@ test(function (): void {
 });
 
 // Mapping from query or body
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$entity = new NotEmptyEntity();
 
@@ -110,7 +107,7 @@ test(function (): void {
 });
 
 // Try mapping invalid json body
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$entity = new NotEmptyEntity();
 

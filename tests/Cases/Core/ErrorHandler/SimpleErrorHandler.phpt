@@ -9,12 +9,13 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
 // Error conversion - api exception
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$handler = new SimpleErrorHandler();
 	$response = $handler->handle(new DispatchError(
@@ -34,7 +35,7 @@ test(function (): void {
 });
 
 // Error conversion - generic exception
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$handler = new SimpleErrorHandler();
 	$response = $handler->handle(new DispatchError(new Exception('test', 400), $request));
@@ -50,7 +51,7 @@ test(function (): void {
 });
 
 // Snapshot
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$handler = new SimpleErrorHandler();
 	$originalResponse = new ApiResponse(Psr7ResponseFactory::fromGlobal());
@@ -68,7 +69,7 @@ test(function (): void {
 });
 
 // Exception catching disabled
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new SimpleErrorHandler();
 	$handler->setCatchException(false);
 
@@ -79,7 +80,7 @@ test(function (): void {
 });
 
 // Exception catching disabled - snapshot
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new SimpleErrorHandler();
 	$handler->setCatchException(false);
 

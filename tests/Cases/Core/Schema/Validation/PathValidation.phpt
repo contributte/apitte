@@ -1,18 +1,15 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\Validation\PathValidation
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\PathValidation;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // Validate: start slash
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
@@ -26,7 +23,7 @@ test(function (): void {
 });
 
 // Validate: end slash
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
@@ -40,7 +37,7 @@ test(function (): void {
 });
 
 // Validate: invalid parameter (ends)
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
@@ -55,7 +52,7 @@ test(function (): void {
 });
 
 // Validate: invalid parameter (starts)
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
@@ -70,7 +67,7 @@ test(function (): void {
 });
 
 // Validate: invalid parameter (contains)
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');
@@ -85,7 +82,7 @@ test(function (): void {
 });
 
 // Validate: multiple parameters
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 
 	$c1 = $builder->addController('c1');

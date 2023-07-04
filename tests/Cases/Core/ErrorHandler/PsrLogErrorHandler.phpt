@@ -9,13 +9,14 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 use Tests\Fixtures\Psr\DummyLogger;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
 // Log - generic exception
-test(function (): void {
+Toolkit::test(static function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$logger = new DummyLogger();
 	$handler = new PsrLogErrorHandler($logger);
@@ -37,7 +38,7 @@ test(function (): void {
 });
 
 // Log - api exception
-test(function (): void {
+Toolkit::test(static function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$logger = new DummyLogger();
 	$handler = new PsrLogErrorHandler($logger);
@@ -50,7 +51,7 @@ test(function (): void {
 });
 
 // Log - api exception with previous exception
-test(function (): void {
+Toolkit::test(static function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$logger = new DummyLogger();
 	$handler = new PsrLogErrorHandler($logger);
@@ -84,7 +85,7 @@ test(function (): void {
 });
 
 // Log - snapshot exception
-test(function (): void {
+Toolkit::test(static function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$logger = new DummyLogger();
 	$handler = new PsrLogErrorHandler($logger);

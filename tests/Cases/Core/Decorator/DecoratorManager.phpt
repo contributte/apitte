@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Decorator\DecoratorManager
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Decorator\DecoratorManager;
@@ -12,12 +8,13 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 use Tests\Fixtures\Decorator\ReturnRequestDecorator;
 use Tests\Fixtures\Decorator\ReturnResponseDecorator;
 
 // Decorate request
-test(function (): void {
+Toolkit::test(function (): void {
 	$manager = new DecoratorManager();
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
@@ -29,7 +26,7 @@ test(function (): void {
 });
 
 // Decorate request - no decorators
-test(function (): void {
+Toolkit::test(function (): void {
 	$manager = new DecoratorManager();
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
@@ -38,7 +35,7 @@ test(function (): void {
 });
 
 // Decorate response
-test(function (): void {
+Toolkit::test(function (): void {
 	$manager = new DecoratorManager();
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
@@ -50,7 +47,7 @@ test(function (): void {
 });
 
 // Decorate response - no decorators
-test(function (): void {
+Toolkit::test(function (): void {
 	$manager = new DecoratorManager();
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
@@ -59,7 +56,7 @@ test(function (): void {
 });
 
 // Decorate error
-test(function (): void {
+Toolkit::test(function (): void {
 	$manager = new DecoratorManager();
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
@@ -73,7 +70,7 @@ test(function (): void {
 });
 
 // Decorate error - no decorators
-test(function (): void {
+Toolkit::test(function (): void {
 	$manager = new DecoratorManager();
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());

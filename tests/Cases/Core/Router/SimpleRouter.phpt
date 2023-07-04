@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Router\SimpleRouter
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Api\ClientErrorException;
@@ -15,10 +11,11 @@ use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Schema;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // Match parameter {id}
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -45,7 +42,7 @@ test(function (): void {
 });
 
 // Match parameters {foo}/{bar}
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -74,7 +71,7 @@ test(function (): void {
 });
 
 // Matched second endpoint, first have invalid method
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$schema = new Schema();
@@ -99,7 +96,7 @@ test(function (): void {
 });
 
 // Not matched, invalid method
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -121,7 +118,7 @@ test(function (): void {
 });
 
 // Not matched, invalid url
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);

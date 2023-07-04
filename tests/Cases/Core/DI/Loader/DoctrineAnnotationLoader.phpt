@@ -1,15 +1,12 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: DI\Loader\DoctrineAnnotationLoader
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\UI\Controller\IController;
+use Contributte\Tester\Toolkit;
 use Nette\DI\ContainerBuilder;
 use Nette\DI\Definitions\ServiceDefinition;
 use Tester\Assert;
@@ -18,7 +15,7 @@ use Tests\Fixtures\Controllers\ApiV1Controller;
 use Tests\Fixtures\Controllers\AttributeFoobarController;
 
 // Check if controller is found
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = Mockery::mock(ContainerBuilder::class);
 	$builder->shouldReceive('findByType')
 		->once()
@@ -40,7 +37,7 @@ test(function (): void {
 });
 
 // Parse annotations
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new ContainerBuilder();
 	$builder->addDefinition('annotation_controller')
 		->setType(AnnotationFoobarController::class);

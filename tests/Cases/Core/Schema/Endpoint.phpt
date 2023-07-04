@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\Endpoint
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
@@ -13,10 +9,11 @@ use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointNegotiation;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Utils\Regex;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // AddMethod: success
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -28,7 +25,7 @@ test(function (): void {
 });
 
 // AddMethod: fail
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -43,7 +40,7 @@ test(function (): void {
 });
 
 // HasMethod: success
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -55,7 +52,7 @@ test(function (): void {
 });
 
 // HasMethod: fail
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -64,7 +61,7 @@ test(function (): void {
 });
 
 // GetPattern: fail, empty
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -75,7 +72,7 @@ test(function (): void {
 });
 
 // GetPattern: test pattern - without suffixes, without variables
-test(function (): void {
+Toolkit::test(function (): void {
 	$data = [
 		[
 			'rawPattern' => '/path/to/users',
@@ -106,7 +103,7 @@ test(function (): void {
 });
 
 // GetPattern: test pattern - with suffixes, without variables
-test(function (): void {
+Toolkit::test(function (): void {
 	$data = [
 		[
 			'rawPattern' => '/path/to/users',
@@ -145,7 +142,7 @@ test(function (): void {
 });
 
 // GetPattern: test pattern - without suffixes, with variables
-test(function (): void {
+Toolkit::test(function (): void {
 	$data = [
 		[
 			'rawPattern' => '/path/to/users/(?P<id>[^/]+)',
@@ -176,7 +173,7 @@ test(function (): void {
 });
 
 // GetPattern: test pattern - with suffixes, with variables
-test(function (): void {
+Toolkit::test(function (): void {
 	$data = [
 		[
 			'rawPattern' => '/path/to/users/(?P<id>[^/]+)',
@@ -215,7 +212,7 @@ test(function (): void {
 });
 
 // GetParametersByIn: empty
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -224,7 +221,7 @@ test(function (): void {
 });
 
 // GetParametersByIn: success, in cookie
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);
@@ -244,7 +241,7 @@ test(function (): void {
 	Assert::same(['p1' => $p1, 'p2' => $p2], $endpoint->getParametersByIn(EndpointParameter::IN_COOKIE));
 });
 
-test(function (): void {
+Toolkit::test(function (): void {
 	$handler = new EndpointHandler('class', 'method');
 
 	$endpoint = new Endpoint($handler);

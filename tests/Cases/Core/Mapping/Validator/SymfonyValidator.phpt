@@ -4,12 +4,13 @@ require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Api\ValidationException;
 use Apitte\Core\Mapping\Validator\SymfonyValidator;
+use Contributte\Tester\Toolkit;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Tester\Assert;
 use Tests\Fixtures\Mapping\Validator\SimpleEntity;
 
 // Happy case
-test(function (): void {
+Toolkit::test(function (): void {
 	$validator = new SymfonyValidator(new AnnotationReader());
 
 	$entity = (new SimpleEntity())->factory(['id' => 1, 'typedId' => 1]);
@@ -17,7 +18,7 @@ test(function (): void {
 });
 
 // Invalid value
-test(function (): void {
+Toolkit::test(function (): void {
 	$validator = new SymfonyValidator(new AnnotationReader());
 
 	$entity = (new SimpleEntity())->factory(['id' => 'foo', 'typedId' => 1]);
@@ -34,7 +35,7 @@ test(function (): void {
 });
 
 // Without annotation reader
-test(function (): void {
+Toolkit::test(function (): void {
 	$validator = new SymfonyValidator();
 
 	$entity = (new SimpleEntity())->factory(['id' => null, 'typedId' => 'foo']);

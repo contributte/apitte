@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: SuffixNegotiator
- */
-
 require_once __DIR__ . '/../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidStateException;
@@ -17,10 +13,11 @@ use Apitte\Negotiation\SuffixNegotiator;
 use Apitte\Negotiation\Transformer\JsonTransformer;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // No transformer
-test(function (): void {
+Toolkit::test(function (): void {
 	Assert::exception(function (): void {
 		$negotiation = new SuffixNegotiator([]);
 		$negotiation->negotiate(
@@ -31,7 +28,7 @@ test(function (): void {
 });
 
 // Null response (no suitable transformer)
-test(function (): void {
+Toolkit::test(function (): void {
 	$negotiation = new SuffixNegotiator(['.json' => new JsonTransformer()]);
 
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal()->withNewUri('https://contributte.org'));
@@ -41,7 +38,7 @@ test(function (): void {
 });
 
 // JSON negotiation (according to .json suffix in URL)
-test(function (): void {
+Toolkit::test(function (): void {
 	$negotiation = new SuffixNegotiator(['json' => new JsonTransformer()]);
 
 	$handler = new EndpointHandler('class', 'method');

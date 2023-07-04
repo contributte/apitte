@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Dispatcher\JsonDispatcher
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Dispatcher\JsonDispatcher;
@@ -12,6 +8,7 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Nette\Utils\Json;
 use Psr\Http\Message\ResponseInterface;
 use Tester\Assert;
@@ -21,7 +18,7 @@ use Tests\Fixtures\Handler\ReturnFooBarHandler;
 use Tests\Fixtures\Router\FakeRouter;
 
 // Matched, use handle
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -30,7 +27,7 @@ test(function (): void {
 });
 
 // Matched, use handle, write to response body result from handle
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -42,7 +39,7 @@ test(function (): void {
 });
 
 // Matched, use invalid handle, throw exception
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 
@@ -53,7 +50,7 @@ test(function (): void {
 });
 
 // Not matched, use fallback, write error to response body
-test(function (): void {
+Toolkit::test(function (): void {
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
 

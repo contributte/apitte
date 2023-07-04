@@ -1,32 +1,28 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Mapping\Parameter\IntegerTypeMapper
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
-use Apitte\Core\Mapping\Parameter\IntegerTypeMapper;
+use Apitte\Core\Mapping\Parameter\BooleanTypeMapper;
 use Tester\Assert;
 use Tester\TestCase;
 
-final class TestIntegerTypeMapper extends TestCase
+final class BooleanTypeMapperTest extends TestCase
 {
 
 	public function testOk(): void
 	{
-		$mapper = new IntegerTypeMapper();
+		$mapper = new BooleanTypeMapper();
 
-		Assert::same(0, $mapper->normalize(0));
-		Assert::same(13, $mapper->normalize('13'));
-		Assert::same(13, $mapper->normalize('+13'));
-		Assert::same(-10, $mapper->normalize('-10'));
+		Assert::same(true, $mapper->normalize(true));
+		Assert::same(true, $mapper->normalize('true'));
+		Assert::same(false, $mapper->normalize(false));
+		Assert::same(false, $mapper->normalize('false'));
 	}
 
 	public function testFail(): void
 	{
-		$mapper = new IntegerTypeMapper();
+		$mapper = new BooleanTypeMapper();
 
 		Assert::exception(function () use ($mapper): void {
 			$mapper->normalize('');
@@ -41,10 +37,14 @@ final class TestIntegerTypeMapper extends TestCase
 		}, InvalidArgumentTypeException::class);
 
 		Assert::exception(function () use ($mapper): void {
-			$mapper->normalize('1.99');
+			$mapper->normalize('0');
+		}, InvalidArgumentTypeException::class);
+
+		Assert::exception(function () use ($mapper): void {
+			$mapper->normalize('1');
 		}, InvalidArgumentTypeException::class);
 	}
 
 }
 
-(new TestIntegerTypeMapper())->run();
+(new BooleanTypeMapperTest())->run();

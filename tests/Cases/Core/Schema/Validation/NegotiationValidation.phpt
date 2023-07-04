@@ -1,20 +1,17 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\Validation\NegotiationValidation
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\NegotiationValidation;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 use Tests\Fixtures\Negotiation\FooRenderer;
 use Tests\Fixtures\Negotiation\InvalidRenderer;
 
 // Not defined, no error
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new NegotiationValidation();
 
@@ -29,7 +26,7 @@ test(function (): void {
 });
 
 // No error
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new NegotiationValidation();
 
@@ -48,7 +45,7 @@ test(function (): void {
 });
 
 // Renderer does not exist
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new NegotiationValidation();
 
@@ -76,7 +73,7 @@ test(function (): void {
 });
 
 // Renderer does not exist
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new NegotiationValidation();
 
@@ -104,7 +101,7 @@ test(function (): void {
 });
 
 // Multiple defaults
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new NegotiationValidation();
 
@@ -133,7 +130,7 @@ test(function (): void {
 });
 
 // Multiple negotiations with same suffix
-test(function (): void {
+Toolkit::test(function (): void {
 	$builder = new SchemaBuilder();
 	$validation = new NegotiationValidation();
 

@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Mapping\Parameter\StringTypeMapper
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Mapping\Parameter\StringTypeMapper;
@@ -11,7 +7,7 @@ use Apitte\Core\Schema\EndpointParameter;
 use Tester\Assert;
 use Tester\TestCase;
 
-final class TestStringTypeMapper extends TestCase
+final class StringTypeMapperTest extends TestCase
 {
 
 	public function testOk(): void
@@ -27,4 +23,4 @@ final class TestStringTypeMapper extends TestCase
 
 }
 
-(new TestStringTypeMapper())->run();
+(new StringTypeMapperTest())->run();

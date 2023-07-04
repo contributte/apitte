@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Transformer\CsvTransformer
- */
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Http\ApiRequest;
@@ -12,10 +8,11 @@ use Apitte\Negotiation\Http\CsvEntity;
 use Apitte\Negotiation\Transformer\CsvTransformer;
 use Contributte\Psr7\Psr7ResponseFactory;
 use Contributte\Psr7\Psr7ServerRequestFactory;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // Encode
-test(function (): void {
+Toolkit::test(function (): void {
 	$transformer = new CsvTransformer();
 	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
 	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());

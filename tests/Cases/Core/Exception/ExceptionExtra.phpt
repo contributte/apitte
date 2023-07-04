@@ -2,11 +2,12 @@
 
 use Apitte\Core\Exception\Api\ClientErrorException;
 use Apitte\Core\Http\ApiResponse;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
-test(static function (): void {
+Toolkit::test(static function (): void {
 	$previous = new Exception('previous');
 
 	$exception = ClientErrorException::create()

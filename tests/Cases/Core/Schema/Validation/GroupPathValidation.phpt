@@ -1,18 +1,15 @@
 <?php declare(strict_types = 1);
 
-/**
- * Test: Schema\Validation\GroupPathValidation
- */
-
 require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Exception\Logical\InvalidSchemaException;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\GroupPathValidation;
+use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // Validate: success
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new GroupPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -25,7 +22,7 @@ test(function (): void {
 });
 
 // Validate: success with parameter
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new GroupPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -38,7 +35,7 @@ test(function (): void {
 });
 
 // Validate: only /
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new GroupPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -51,7 +48,7 @@ test(function (): void {
 });
 
 // Validate: starts with /
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new GroupPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -64,7 +61,7 @@ test(function (): void {
 });
 
 // Validate: end with /
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new GroupPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -77,7 +74,7 @@ test(function (): void {
 });
 
 // Validate: invalid characters
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new GroupPathValidation();
 	$builder = new SchemaBuilder();
 
@@ -90,7 +87,7 @@ test(function (): void {
 });
 
 // Validate: invalid parameter (contains)
-test(function (): void {
+Toolkit::test(function (): void {
 	$validation = new GroupPathValidation();
 	$builder = new SchemaBuilder();
 

@@ -29,7 +29,7 @@
   },
   "require-dev": {
     "contributte/qa": "^0.4",
-    "contributte/dev": "^0.4",
+    "contributte/dev": "^0.3",
     "contributte/tester": "^0.3",
     "contributte/phpstan": "^0.1",
     "mockery/mockery": "^1.5.1",

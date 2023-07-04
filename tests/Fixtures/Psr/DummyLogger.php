@@ -3,7 +3,6 @@
 namespace Tests\Fixtures\Psr;
 
 use Psr\Log\AbstractLogger;
-use Stringable;
 
 class DummyLogger extends AbstractLogger
 {
@@ -13,8 +12,9 @@ class DummyLogger extends AbstractLogger
 
 	/**
 	 * @param mixed[] $context
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint
 	 */
-	public function log(mixed $level, string|Stringable $message, array $context = []): void
+	public function log($level, $message, array $context = []): void
 	{
 		$record = [
 			'level' => $level,

@@ -20,7 +20,7 @@ class MediaType
 		$mediaType = new MediaType();
 		if (isset($data['schema'])) {
 			if (isset($data['schema']['$ref'])) {
-				$mediaType->setSchema(new Reference($data['schema']['$ref']));
+				$mediaType->setSchema(Reference::fromArray($data['schema']));
 			} else {
 				$mediaType->setSchema(Schema::fromArray($data['schema']));
 			}
@@ -30,7 +30,7 @@ class MediaType
 		if (isset($data['examples'])) {
 			foreach ($data['examples'] as $name => $example) {
 				if (isset($example['$ref'])) {
-					$mediaType->addExample($name, new Reference($example['$ref']));
+					$mediaType->addExample($name, Reference::fromArray($example));
 				} else {
 					$mediaType->addExample($name, Example::fromArray($example));
 				}

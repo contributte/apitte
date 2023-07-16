@@ -14,14 +14,17 @@ class LicenseTest extends TestCase
 	public function testOptional(): void
 	{
 		$license = new License('Apache 2.0');
+		$license->setIdentifier('Apache-2.0');
 		$license->setUrl('https://www.apache.org/licenses/LICENSE-2.0.html');
 
 		Assert::same('Apache 2.0', $license->getName());
+		Assert::same('Apache-2.0', $license->getIdentifier());
 		Assert::same('https://www.apache.org/licenses/LICENSE-2.0.html', $license->getUrl());
 
 		$realData = $license->toArray();
 		$expectedData = [
 			'name' => 'Apache 2.0',
+			'identifier' => 'Apache-2.0',
 			'url' => 'https://www.apache.org/licenses/LICENSE-2.0.html',
 		];
 

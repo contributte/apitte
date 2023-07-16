@@ -62,7 +62,7 @@ class Operation
 
 		foreach ($data['parameters'] ?? [] as $parameterData) {
 			if (isset($parameterData['$ref'])) {
-				$operation->addParameter(new Reference($parameterData['$ref']));
+				$operation->addParameter(Reference::fromArray($parameterData));
 
 				continue;
 			}
@@ -77,7 +77,7 @@ class Operation
 
 		if (isset($data['requestBody'])) {
 			if (isset($data['requestBody']['$ref'])) {
-				$operation->setRequestBody(new Reference($data['requestBody']['$ref']));
+				$operation->setRequestBody(Reference::fromArray($data['requestBody']));
 			} else {
 				$operation->setRequestBody(RequestBody::fromArray($data['requestBody']));
 			}
@@ -93,7 +93,7 @@ class Operation
 
 		foreach ($data['callbacks'] ?? [] as $callback) {
 			if (isset($callback['$ref'])) {
-				$operation->addCallback(new Reference($callback['$ref']));
+				$operation->addCallback(Reference::fromArray($callback));
 			} else {
 				$operation->addCallback(Callback::fromArray($callback));
 			}

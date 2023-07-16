@@ -24,10 +24,8 @@ class Server
 	{
 		$server = new Server($data['url']);
 		$server->setDescription($data['description'] ?? null);
-		if (isset($data['variables'])) {
-			foreach ($data['variables'] as $key => $variable) {
-				$server->addVariable($key, ServerVariable::fromArray($variable));
-			}
+		foreach ($data['variables'] ?? [] as $key => $variable) {
+			$server->addVariable($key, ServerVariable::fromArray($variable));
 		}
 
 		return $server;

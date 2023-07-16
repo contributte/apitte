@@ -25,15 +25,18 @@ class Parameter
 
 	private ?string $description = null;
 
-	private bool $required = false;
+	private ?bool $required = null;
 
-	private bool $deprecated = false;
+	private ?bool $deprecated = null;
 
-	private bool $allowEmptyValue = false;
+	private ?bool $allowEmptyValue = null;
 
 	private Schema|Reference|null $schema = null;
 
 	private mixed $example = null;
+
+	/** @var mixed[] */
+	private array $examples = [];
 
 	private ?string $style = null;
 
@@ -58,16 +61,19 @@ class Parameter
 	{
 		$parameter = new Parameter($data['name'], $data['in']);
 		$parameter->setDescription($data['description'] ?? null);
-		$parameter->setRequired($data['required'] ?? false);
+		$parameter->setRequired($data['required'] ?? null);
+		$parameter->setDeprecated($data['deprecated'] ?? null);
+		$parameter->setAllowEmptyValue($data['allowEmptyValue'] ?? null);
 		if (isset($data['schema'])) {
 			if (isset($data['schema']['$ref'])) {
-				$parameter->setSchema(new Reference($data['schema']['$ref']));
+				$parameter->setSchema(Reference::fromArray($data['schema']));
 			} else {
 				$parameter->setSchema(Schema::fromArray($data['schema']));
 			}
 		}
 
 		$parameter->setExample($data['example'] ?? null);
+		$parameter->setExamples($data['examples'] ?? []);
 		$parameter->setStyle($data['style'] ?? null);
 
 		return $parameter;
@@ -78,17 +84,17 @@ class Parameter
 		$this->description = $description;
 	}
 
-	public function setRequired(bool $required): void
+	public function setRequired(?bool $required): void
 	{
 		$this->required = $required;
 	}
 
-	public function setDeprecated(bool $deprecated): void
+	public function setDeprecated(?bool $deprecated): void
 	{
 		$this->deprecated = $deprecated;
 	}
 
-	public function setAllowEmptyValue(bool $allowEmptyValue): void
+	public function setAllowEmptyValue(?bool $allowEmptyValue): void
 	{
 		$this->allowEmptyValue = $allowEmptyValue;
 	}
@@ -104,6 +110,14 @@ class Parameter
 	}
 
 	/**
+	 * @param mixed[] $examples
+	 */
+	public function setExamples(array $examples): void
+	{
+		$this->examples = $examples;
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function toArray(): array
@@ -115,8 +129,16 @@ class Parameter
 			$data['description'] = $this->description;
 		}
 
-		if ($this->required) {
+		if ($this->required !== null) {
 			$data['required'] = $this->required;
+		}
+
+		if ($this->deprecated !== null) {
+			$data['deprecated'] = $this->deprecated;
+		}
+
+		if ($this->allowEmptyValue !== null) {
+			$data['allowEmptyValue'] = $this->allowEmptyValue;
 		}
 
 		if ($this->schema !== null) {
@@ -125,6 +147,10 @@ class Parameter
 
 		if ($this->example !== null) {
 			$data['example'] = $this->example;
+		}
+
+		if ($this->examples !== []) {
+			$data['examples'] = $this->examples;
 		}
 
 		if ($this->style !== null) {
@@ -149,17 +175,17 @@ class Parameter
 		return $this->description;
 	}
 
-	public function isRequired(): bool
+	public function isRequired(): ?bool
 	{
 		return $this->required;
 	}
 
-	public function isDeprecated(): bool
+	public function isDeprecated(): ?bool
 	{
 		return $this->deprecated;
 	}
 
-	public function isAllowEmptyValue(): bool
+	public function isAllowEmptyValue(): ?bool
 	{
 		return $this->allowEmptyValue;
 	}

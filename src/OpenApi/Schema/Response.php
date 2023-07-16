@@ -27,19 +27,23 @@ class Response
 	public static function fromArray(array $data): Response
 	{
 		$response = new Response($data['description']);
-		if (isset($data['headers'])) {
-			foreach ($data['headers'] as $key => $headerData) {
-				if (isset($headerData['$ref'])) {
-					$response->setHeader($key, new Reference($headerData['$ref']));
-				} else {
-					$response->setHeader($key, Header::fromArray($headerData));
-				}
+		foreach ($data['headers'] ?? [] as $key => $headerData) {
+			if (isset($headerData['$ref'])) {
+				$response->setHeader($key, Reference::fromArray($headerData));
+			} else {
+				$response->setHeader($key, Header::fromArray($headerData));
 			}
 		}
 
-		if (isset($data['content'])) {
-			foreach ($data['content'] as $key => $contentData) {
-				$response->setContent($key, MediaType::fromArray($contentData));
+		foreach ($data['content'] ?? [] as $key => $contentData) {
+			$response->setContent($key, MediaType::fromArray($contentData));
+		}
+
+		foreach ($data['links'] ?? [] as $key => $linkData) {
+			if (isset($linkData['$ref'])) {
+				$response->setLink($key, Reference::fromArray($linkData));
+			} else {
+				$response->setLink($key, Link::fromArray($linkData));
 			}
 		}
 
@@ -56,6 +60,11 @@ class Response
 		$this->headers[$key] = $header;
 	}
 
+	public function setLink(string $key, Link|Reference $link): void
+	{
+		$this->links[$key] = $link;
+	}
+
 	/**
 	 * @return mixed[]
 	 */
@@ -69,6 +78,10 @@ class Response
 
 		foreach ($this->content as $key => $mediaType) {
 			$data['content'][$key] = $mediaType->toArray();
+		}
+
+		foreach ($this->links as $key => $link) {
+			$data['links'][$key] = $link->toArray();
 		}
 
 		return $data;

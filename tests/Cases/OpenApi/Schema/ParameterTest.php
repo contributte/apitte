@@ -47,6 +47,8 @@ class ParameterTest extends TestCase
 			'in' => 'cookie',
 			'description' => 'description',
 			'required' => true,
+			'deprecated' => true,
+			'allowEmptyValue' => true,
 			'schema' => [],
 			'example' => 'whatever',
 			'style' => 'whatever',
@@ -64,9 +66,9 @@ class ParameterTest extends TestCase
 		Assert::same(Parameter::IN_PATH, $parameter->getIn());
 		Assert::null($parameter->getDescription());
 
-		Assert::false($parameter->isRequired());
-		Assert::false($parameter->isDeprecated());
-		Assert::false($parameter->isAllowEmptyValue());
+		Assert::null($parameter->isRequired());
+		Assert::null($parameter->isDeprecated());
+		Assert::null($parameter->isAllowEmptyValue());
 
 		Assert::null($parameter->getStyle());
 		Assert::null($parameter->getExample());

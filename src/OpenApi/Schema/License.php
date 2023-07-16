@@ -7,6 +7,8 @@ class License
 
 	private string $name;
 
+	private ?string $identifier = null;
+
 	private ?string $url = null;
 
 	public function __construct(string $name)
@@ -20,6 +22,7 @@ class License
 	public static function fromArray(array $data): License
 	{
 		$license = new License($data['name']);
+		$license->setIdentifier($data['identifier'] ?? null);
 		$license->setUrl($data['url'] ?? null);
 
 		return $license;
@@ -33,12 +36,22 @@ class License
 		$data = [];
 		$data['name'] = $this->name;
 
+		// Optional SPDX identifier
+		if ($this->identifier !== null) {
+			$data['identifier'] = $this->identifier;
+		}
+
 		// Optional url
 		if ($this->url !== null) {
 			$data['url'] = $this->url;
 		}
 
 		return $data;
+	}
+
+	public function setIdentifier(?string $identifier): void
+	{
+		$this->identifier = $identifier;
 	}
 
 	public function setUrl(?string $url): void
@@ -49,6 +62,11 @@ class License
 	public function getName(): string
 	{
 		return $this->name;
+	}
+
+	public function getIdentifier(): ?string
+	{
+		return $this->identifier;
 	}
 
 	public function getUrl(): ?string

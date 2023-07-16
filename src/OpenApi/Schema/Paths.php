@@ -5,7 +5,7 @@ namespace Apitte\OpenApi\Schema;
 class Paths
 {
 
-	/** @var PathItem[] */
+	/** @var PathItem[]|Reference[] */
 	private array $paths = [];
 
 	/**
@@ -15,6 +15,12 @@ class Paths
 	{
 		$paths = new Paths();
 		foreach ($data as $path => $pathItemData) {
+			if (isset($pathItemData['$ref'])) {
+				$paths->setPathItem($path, Reference::fromArray($pathItemData));
+
+				continue;
+			}
+
 			$paths->setPathItem($path, PathItem::fromArray($pathItemData));
 		}
 
@@ -34,12 +40,12 @@ class Paths
 		return $data;
 	}
 
-	public function setPathItem(string $path, PathItem $pathItem): void
+	public function setPathItem(string $path, PathItem|Reference $pathItem): void
 	{
 		$this->paths[$path] = $pathItem;
 	}
 
-	public function getPath(string $path): ?PathItem
+	public function getPath(string $path): PathItem|Reference|null
 	{
 		return $this->paths[$path] ?? null;
 	}

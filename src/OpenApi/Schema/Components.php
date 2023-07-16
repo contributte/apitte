@@ -46,7 +46,7 @@ class Components
 
 		if (isset($data['responses'])) {
 			foreach ($data['responses'] as $responseKey => $responseData) {
-				$components->setResponse($responseKey, Response::fromArray($responseData));
+				$components->setResponse((string) $responseKey, Response::fromArray($responseData));
 			}
 		}
 
@@ -62,22 +62,20 @@ class Components
 			}
 		}
 
-		if (isset($data['requestBodies'])) {
-			foreach ($data['requestBodies'] as $requestBodyKey => $requestBodyData) {
-				$components->setRequestBody($requestBodyKey, RequestBody::fromArray($requestBodyData));
-			}
+		foreach ($data['requestBodies'] ?? [] as $requestBodyKey => $requestBodyData) {
+			$components->setRequestBody($requestBodyKey, RequestBody::fromArray($requestBodyData));
 		}
 
-		if (isset($data['headers'])) {
-			foreach ($data['headers'] as $headerKey => $headerData) {
-				$components->setHeader($headerKey, Header::fromArray($headerData));
-			}
+		foreach ($data['headers'] ?? [] as $headerKey => $headerData) {
+			$components->setHeader($headerKey, Header::fromArray($headerData));
 		}
 
-		if (isset($data['securitySchemes'])) {
-			foreach ($data['securitySchemes'] as $securitySchemeKey => $securitySchemeData) {
-				$components->setSecurityScheme($securitySchemeKey, SecurityScheme::fromArray($securitySchemeData));
-			}
+		foreach ($data['securitySchemes'] ?? [] as $securitySchemeKey => $securitySchemeData) {
+			$components->setSecurityScheme($securitySchemeKey, SecurityScheme::fromArray($securitySchemeData));
+		}
+
+		foreach ($data['links'] ?? [] as $linkKey => $linkData) {
+			$components->setLink($linkKey, Link::fromArray($linkData));
 		}
 
 		return $components;
@@ -118,6 +116,11 @@ class Components
 		$this->securitySchemes[$name] = $securityScheme;
 	}
 
+	public function setLink(string $name, Link|Reference $link): void
+	{
+		$this->links[$name] = $link;
+	}
+
 	/**
 	 * @return mixed[]
 	 */
@@ -150,6 +153,10 @@ class Components
 
 		foreach ($this->securitySchemes as $securitySchemeKey => $securityScheme) {
 			$data['securitySchemes'][$securitySchemeKey] = $securityScheme->toArray();
+		}
+
+		foreach ($this->links as $linkKey => $link) {
+			$data['links'][$linkKey] = $link->toArray();
 		}
 
 		return $data;

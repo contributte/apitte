@@ -34,11 +34,18 @@ final class ExamplesTest extends TestCase
 
 	public function testLinkExample(): void
 	{
-		// TODO links
-		//$rawData = Yaml::parseFile(__DIR__ . '/examples/link-example.yaml');
-		//$openApi = OpenApi::fromArray($rawData);
-		//$openApiData = $openApi->toArray();
-		//self::assertSameDataStructure($rawData, $openApiData);
+		$rawData = Yaml::parseFile(__DIR__ . '/examples/link-example.yaml');
+		$openApi = OpenApi::fromArray($rawData);
+		$openApiData = $openApi->toArray();
+		self::assertSameDataStructure($rawData, $openApiData);
+	}
+
+	public function testGitLab(): void
+	{
+		$rawData = Yaml::parseFile(__DIR__ . '/examples/gitlab.yaml');
+		$openApi = OpenApi::fromArray($rawData);
+		$openApiData = $openApi->toArray();
+		self::assertSameDataStructure($rawData, $openApiData);
 	}
 
 	public function testPetstore(): void

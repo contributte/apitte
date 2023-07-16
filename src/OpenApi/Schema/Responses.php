@@ -16,7 +16,7 @@ class Responses
 		$responses = new Responses();
 		foreach ($data as $key => $responseData) {
 			if (isset($responseData['$ref'])) {
-				$responses->setResponse((string) $key, new Reference($responseData['$ref']));
+				$responses->setResponse((string) $key, Reference::fromArray($responseData));
 			} else {
 				$responses->setResponse((string) $key, Response::fromArray($responseData));
 			}

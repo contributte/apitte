@@ -2,7 +2,7 @@
 
 <p align=center>
   <a href="https://github.com/contributte/apitte/actions"><img src="https://badgen.net/github/checks/contributte/apitte/master?cache=300"></a>
-  <a href="https://coveralls.io/r/contributte/apitte"> <img src="https://badgen.net/coveralls/c/github/contributte/apitte?cache=300"> </a>
+  <a href="https://coveralls.io/r/contributte/apitte"><img src="https://badgen.net/coveralls/c/github/contributte/apitte"></a>
   <a href="https://packagist.org/packages/contributte/apitte"> <img src="https://badgen.net/packagist/dm/contributte/apitte"> </a>
   <a href="https://packagist.org/packages/contributte/apitte"> <img src="https://badgen.net/packagist/v/contributte/apitte"> </a>
 </p>

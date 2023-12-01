@@ -12,13 +12,13 @@ use Apitte\Core\Mapping\Validator\SymfonyValidator;
 use Apitte\Core\Schema\Schema;
 use Contributte\Tester\Environment;
 use Contributte\Tester\Toolkit;
+use Contributte\Tester\Utils\Neonkit;
 use Nette\DI\Compiler;
 use Nette\DI\Container;
 use Nette\DI\ContainerLoader;
 use Tester\Assert;
 use Tests\Fixtures\Controllers\AnnotationFoobarController;
 use Tests\Fixtures\Psr\DummyLogger;
-use Tests\Toolkit\NeonLoader;
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
@@ -99,7 +99,7 @@ Toolkit::test(function (): void {
 	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
-		$compiler->addConfig(NeonLoader::load(<<<'NEON'
+		$compiler->addConfig(Neonkit::load(<<<'NEON'
 			services:
 				validator:
 					factory: Apitte\Core\Mapping\Validator\SymfonyValidator(
@@ -129,7 +129,7 @@ Toolkit::test(function (): void {
 	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
 		$compiler->addExtension('api', new ApiExtension());
-		$compiler->addConfig(NeonLoader::load(<<<'NEON'
+		$compiler->addConfig(Neonkit::load(<<<'NEON'
 			api:
 				plugins:
 					Apitte\Core\DI\Plugin\CoreMappingPlugin:

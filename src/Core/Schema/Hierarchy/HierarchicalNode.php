@@ -2,8 +2,6 @@
 
 namespace Apitte\Core\Schema\Hierarchy;
 
-use Nette\Utils\Strings;
-
 class HierarchicalNode
 {
 
@@ -66,7 +64,7 @@ class HierarchicalNode
 		// Divide static and variable nodes
 		foreach ($this->nodes as $node) {
 			$path = $node->getPath();
-			if (Strings::contains($path, '{') && Strings::contains($path, '}')) {
+			if (str_contains($path, '{') && str_contains($path, '}')) {
 				$variableNodes[] = $node;
 			} else {
 				$staticNodes[] = $node;

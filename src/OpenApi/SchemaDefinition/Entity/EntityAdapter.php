@@ -29,8 +29,8 @@ class EntityAdapter implements IEntityAdapter
 		// Normalize null type
 		$type = str_replace('?', 'null|', $type);
 
-		$usesUnionType = Strings::contains($type, '|');
-		$usesIntersectionType = Strings::contains($type, '&');
+		$usesUnionType = str_contains($type, '|');
+		$usesIntersectionType = str_contains($type, '&');
 
 		// Get schema for all possible types
 		if ($usesUnionType || $usesIntersectionType) {
@@ -73,7 +73,7 @@ class EntityAdapter implements IEntityAdapter
 		}
 
 		// Get schema for array
-		if (Strings::endsWith($type, '[]')) {
+		if (str_ends_with($type, '[]')) {
 			$subType = Strings::replace($type, '#\\[\\]#', '');
 
 			return [

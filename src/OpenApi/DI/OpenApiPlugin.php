@@ -19,7 +19,6 @@ use Nette\DI\Definitions\Statement;
 use Nette\PhpGenerator\ClassType;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
-use Nette\Utils\Strings;
 use stdClass;
 
 /**
@@ -57,11 +56,11 @@ class OpenApiPlugin extends Plugin
 				->addSetup('addDefinition', [new BaseDefinition()])
 				->addSetup('addDefinition', [$coreDefinition]);
 			foreach ($config->files as $file) {
-				if (Strings::endsWith($file, '.neon')) {
+				if (str_ends_with($file, '.neon')) {
 					$schemaBuilder->addSetup('addDefinition', [new NeonDefinition($file)]);
-				} elseif (Strings::endsWith($file, '.yaml') || Strings::endsWith($file, '.yml')) {
+				} elseif (str_ends_with($file, '.yaml') || str_ends_with($file, '.yml')) {
 					$schemaBuilder->addSetup('addDefinition', [new YamlDefinition($file)]);
-				} elseif (Strings::endsWith($file, '.json')) {
+				} elseif (str_ends_with($file, '.json')) {
 					$schemaBuilder->addSetup('addDefinition', [new JsonDefinition($file)]);
 				} else {
 					throw new InvalidArgumentException(sprintf(

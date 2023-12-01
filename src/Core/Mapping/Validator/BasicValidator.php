@@ -4,7 +4,6 @@ namespace Apitte\Core\Mapping\Validator;
 
 use Apitte\Core\Exception\Api\ValidationException;
 use Apitte\Core\Mapping\Request\BasicEntity;
-use Nette\Utils\Strings;
 use ReflectionObject;
 
 class BasicValidator implements IEntityValidator
@@ -46,9 +45,9 @@ class BasicValidator implements IEntityValidator
 
 		foreach (array_keys($properties) as $propertyName) {
 			$propertyRf = $rf->getProperty($propertyName);
-			$doc = $propertyRf->getDocComment();
+			$doc = (string) $propertyRf->getDocComment();
 
-			if (Strings::contains($doc, '@required') && $entity->{$propertyName} === null) {
+			if (str_contains($doc, '@required') && $entity->{$propertyName} === null) {
 				$violations[$propertyName][] = 'This value should not be null.';
 			}
 		}

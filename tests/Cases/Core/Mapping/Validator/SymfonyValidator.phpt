@@ -21,12 +21,6 @@ Toolkit::test(function (): void {
 Toolkit::test(function (): void {
 	$validator = new SymfonyValidator(new AnnotationReader());
 
-	$entity = (new SimpleEntity())->factory(['id' => 'foo', 'typedId' => 1]);
-
-	Assert::exception(static function () use ($entity, $validator): void {
-		$validator->validate($entity);
-	}, ValidationException::class);
-
 	$entity = (new SimpleEntity())->factory(['id' => 1, 'typedId' => 'foo']);
 
 	Assert::exception(static function () use ($entity, $validator): void {

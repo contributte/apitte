@@ -21,30 +21,27 @@
   "require": {
     "php": ">=8.1",
     "ext-json": "*",
-    "contributte/psr7-http-message": "^0.9.0",
+    "contributte/psr7-http-message": "^0.9.0 || ^0.10.0",
     "contributte/middlewares": "^0.11.0",
-    "doctrine/annotations": "^1.13",
-    "koriym/attributes": "^1.0.2",
-    "nette/utils": "^3.2.7 || ^4.0.0"
+    "doctrine/annotations": "^1.14.3",
+    "koriym/attributes": "^1.0.5",
+    "nette/utils": "^4.0.0"
   },
   "require-dev": {
     "contributte/qa": "^0.4",
-    "contributte/dev": "^0.3",
+    "contributte/dev": "^0.4",
     "contributte/tester": "^0.3",
     "contributte/phpstan": "^0.1",
-    "mockery/mockery": "^1.5.1",
-    "nette/application": "^3.0.0",
-    "nette/di": "^3.0.0",
-    "nette/http": "^3.0.1",
+    "mockery/mockery": "^1.6.6",
+    "nette/application": "^3.1.4",
+    "nette/di": "^3.1.8",
+    "nette/http": "^3.2.3",
     "nettrine/annotations": "^0.7.0",
-    "psr/log": "^1.1|^2.0|^3.0",
-    "symfony/console": "^5.4.3 || ^6.0.0",
-    "symfony/validator": "^5.4.3 || ^6.0",
-    "symfony/yaml": "^5.4.3 || ^6.0.0",
-    "tracy/tracy": "^2.6.0"
-  },
-  "conflict": {
-    "nette/tester": "<2.4.1"
+    "psr/log": "^2.0.0 || ^3.0.0",
+    "symfony/console": "^6.0.0 || ^7.0.0",
+    "symfony/validator": "^6.0.0 || ^7.0.0",
+    "symfony/yaml": "^6.0.0 || ^7.0.0",
+    "tracy/tracy": "^2.10.5"
   },
   "provide": {
     "psr/http-message-implementation": "1.0"

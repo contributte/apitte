@@ -5,9 +5,9 @@ namespace Tests\Cases\OpenApi\SchemaType;
 require_once __DIR__ . '/../../../bootstrap.php';
 
 use Apitte\Core\Schema\EndpointParameter;
-use Apitte\OpenApi\Schema\Schema;
 use Apitte\OpenApi\SchemaType\BaseSchemaType;
 use Apitte\OpenApi\SchemaType\ISchemaType;
+use Contributte\OpenApi\Schema\Schema;
 use Tester\Assert;
 use Tester\TestCase;
 

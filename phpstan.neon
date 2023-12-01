@@ -45,8 +45,6 @@ parameters:
 		- message: '#.+(int|string|string\>)\|false.+#'
 		  path: %currentWorkingDirectory%/src/OpenApi/SchemaDefinition/Entity/EntityAdapter.php
 
-		- '#Property Apitte\\OpenApi\\Schema\\(\w+)::\$(\w+) is never read, only written.#'
-
 		# This should not happen because null is returned on error
 		- '#Method Apitte\\Core\\Utils\\Helpers::slashless\(\) should return string but returns string\|null\.#'
 

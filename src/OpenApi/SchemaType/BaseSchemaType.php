@@ -3,7 +3,7 @@
 namespace Apitte\OpenApi\SchemaType;
 
 use Apitte\Core\Schema\EndpointParameter;
-use Apitte\OpenApi\Schema\Schema;
+use Contributte\OpenApi\Schema\Schema;
 
 class BaseSchemaType implements ISchemaType
 {

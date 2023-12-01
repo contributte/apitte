@@ -12,8 +12,8 @@ use Apitte\OpenApi\SchemaDefinition\Entity\EntityAdapter;
 use Apitte\OpenApi\SchemaDefinition\JsonDefinition;
 use Apitte\OpenApi\SchemaDefinition\NeonDefinition;
 use Apitte\OpenApi\SchemaDefinition\YamlDefinition;
-use Apitte\OpenApi\Tracy\SwaggerUIPanel;
 use Contributte\DI\Helper\ExtensionDefinitionsHelper;
+use Contributte\OpenApi\Tracy\SwaggerPanel;
 use Nette\DI\Definitions\Definition;
 use Nette\DI\Definitions\Statement;
 use Nette\PhpGenerator\ClassType;
@@ -93,8 +93,9 @@ class OpenApiPlugin extends Plugin
 		}
 
 		$builder->addDefinition($this->prefix('swaggerUi.panel'))
-			->setFactory(SwaggerUIPanel::class)
+			->setFactory(SwaggerPanel::class)
 			->addSetup('setUrl', [$config->swaggerUi->url])
+			->addSetup('?->setSpecCallback(fn() => ?)', ['@self', new Statement('@' . $this->prefix('schemaBuilder') . '::build')])
 			->addSetup('setExpansion', [$config->swaggerUi->expansion])
 			->addSetup('setFilter', [$config->swaggerUi->filter])
 			->addSetup('setTitle', [$config->swaggerUi->title])
@@ -129,7 +130,7 @@ class OpenApiPlugin extends Plugin
 			'files' => Expect::arrayOf('string'),
 			'swaggerUi' => Expect::structure([
 				'url' => Expect::string()->nullable(),
-				'expansion' => Expect::anyOf(...SwaggerUIPanel::EXPANSIONS)->default(SwaggerUIPanel::EXPANSION_LIST),
+				'expansion' => Expect::anyOf(...SwaggerPanel::EXPANSIONS)->default(SwaggerPanel::EXPANSION_LIST),
 				'filter' => Expect::bool(true),
 				'title' => Expect::string('OpenAPI'),
 				'panel' => Expect::bool(false),

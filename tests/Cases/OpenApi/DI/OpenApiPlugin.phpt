@@ -33,6 +33,9 @@ Toolkit::test(function (): void {
 							],
 							'paths' => [],
 						],
+						'swaggerUi' => [
+							'panel' => true,
+						],
 					],
 				],
 			],

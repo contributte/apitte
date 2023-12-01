@@ -8,7 +8,7 @@ use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\EndpointResponse;
 use Apitte\Core\Schema\Schema as ApiSchema;
 use Apitte\OpenApi\SchemaDefinition\Entity\IEntityAdapter;
-use Apitte\OpenApi\Utils\Helpers;
+use Contributte\OpenApi\Utils\Helpers;
 
 class CoreDefinition implements IDefinition
 {

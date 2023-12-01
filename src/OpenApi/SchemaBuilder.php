@@ -2,9 +2,9 @@
 
 namespace Apitte\OpenApi;
 
-use Apitte\OpenApi\Schema\OpenApi;
 use Apitte\OpenApi\SchemaDefinition\IDefinition;
-use Apitte\OpenApi\Utils\Helpers;
+use Contributte\OpenApi\Schema\OpenApi;
+use Contributte\OpenApi\Utils\Helpers;
 
 class SchemaBuilder implements ISchemaBuilder
 {

@@ -2,7 +2,7 @@
 
 namespace Apitte\OpenApi;
 
-use Apitte\OpenApi\Schema\OpenApi;
+use Contributte\OpenApi\Schema\OpenApi;
 
 interface ISchemaBuilder
 {

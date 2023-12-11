@@ -23,9 +23,19 @@ Toolkit::test(function (): void {
 
 	$entity = (new SimpleEntity())->factory(['id' => 1, 'typedId' => 'foo']);
 
-	Assert::exception(static function () use ($entity, $validator): void {
+	$e = Assert::exception(static function () use ($entity, $validator): void {
 		$validator->validate($entity);
 	}, ValidationException::class);
+
+	assert($e instanceof ValidationException);
+
+	Assert::same([
+		'validation' => [
+			'typedId' => [
+				'This value should be of type integer.',
+			],
+		],
+	], $e->getContext());
 });
 
 // Without annotation reader
@@ -34,9 +44,19 @@ Toolkit::test(function (): void {
 
 	$entity = (new SimpleEntity())->factory(['id' => null, 'typedId' => 'foo']);
 
-	Assert::exception(static function () use ($entity, $validator): void {
+	$e = Assert::exception(static function () use ($entity, $validator): void {
 		$validator->validate($entity);
 	}, ValidationException::class);
+
+	assert($e instanceof ValidationException);
+
+	Assert::same([
+		'validation' => [
+			'typedId' => [
+				'This value should be of type integer.',
+			],
+		],
+	], $e->getContext());
 
 	$entity = (new SimpleEntity())->factory(['id' => null, 'typedId' => 1]);
 

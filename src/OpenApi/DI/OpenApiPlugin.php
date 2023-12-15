@@ -12,9 +12,7 @@ use Apitte\OpenApi\SchemaDefinition\Entity\EntityAdapter;
 use Apitte\OpenApi\SchemaDefinition\JsonDefinition;
 use Apitte\OpenApi\SchemaDefinition\NeonDefinition;
 use Apitte\OpenApi\SchemaDefinition\YamlDefinition;
-use Contributte\DI\Helper\ExtensionDefinitionsHelper;
 use Contributte\OpenApi\Tracy\SwaggerPanel;
-use Nette\DI\Definitions\Definition;
 use Nette\DI\Definitions\Statement;
 use Nette\PhpGenerator\ClassType;
 use Nette\Schema\Expect;
@@ -40,7 +38,6 @@ class OpenApiPlugin extends Plugin
 		$builder = $this->getContainerBuilder();
 		$global = $this->compiler->getExtension()->getConfig();
 		$config = $this->config;
-		$definitionHelper = new ExtensionDefinitionsHelper($this->compiler->getExtension()->getCompiler());
 
 		$builder->addDefinition($this->prefix('entityAdapter'))
 			->setFactory(EntityAdapter::class);
@@ -73,14 +70,11 @@ class OpenApiPlugin extends Plugin
 			$schemaBuilder->addSetup('addDefinition', [new ArrayDefinition($config->definition)]);
 		} else {
 			foreach ($config->definitions as $definitionName => $definitionConfig) {
-				$definitionPrefix = $this->prefix('definition.' . $definitionName);
-				$definition = $definitionHelper->getDefinitionFromConfig($definitionConfig, $definitionPrefix);
+				$definitionDef = $builder->addDefinition($this->prefix('definition.' . $definitionName))
+					->setFactory($definitionConfig)
+					->setAutowired(false);
 
-				if ($definition instanceof Definition) {
-					$definition->setAutowired(false);
-				}
-
-				$schemaBuilder->addSetup('addDefinition', [$definition]);
+				$schemaBuilder->addSetup('addDefinition', [$definitionDef]);
 			}
 		}
 
@@ -125,7 +119,7 @@ class OpenApiPlugin extends Plugin
 	protected function getConfigSchema(): Schema
 	{
 		return Expect::structure([
-			'definitions' => Expect::arrayOf(Expect::type('string|array|' . Statement::class)),
+			'definitions' => Expect::arrayOf(Expect::anyOf(Expect::string(), Expect::type(Statement::class))),
 			'definition' => Expect::array(),
 			'files' => Expect::arrayOf('string'),
 			'swaggerUi' => Expect::structure([

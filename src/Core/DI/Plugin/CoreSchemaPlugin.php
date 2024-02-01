@@ -3,6 +3,7 @@
 namespace Apitte\Core\DI\Plugin;
 
 use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
+use Apitte\Core\DI\Loader\ILoader;
 use Apitte\Core\DI\Loader\NeonLoader;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
@@ -63,6 +64,7 @@ class CoreSchemaPlugin extends Plugin
 			'loaders' => Expect::structure([
 				'annotations' => Expect::structure([
 					'enable' => Expect::bool(true),
+					'loader' => Expect::string(DoctrineAnnotationLoader::class),
 				]),
 				'neon' => Expect::structure([
 					'enable' => Expect::bool(false),
@@ -112,10 +114,17 @@ class CoreSchemaPlugin extends Plugin
 	{
 		$loaders = $this->config->loaders;
 
-		//TODO - resolve limitation - Controller defined by one of loaders cannot be modified by other loaders
-
 		if ($loaders->annotations->enable) {
-			$loader = new DoctrineAnnotationLoader($this->getContainerBuilder());
+
+			if (!class_exists($loaders->annotations->loader)) {
+				throw new \RuntimeException(sprintf('Annotation loader class %s does not exist', $loaders->annotations->loader));
+			}
+
+			if (!is_subclass_of($loaders->annotations->loader, ILoader::class)) {
+				throw new \RuntimeException(sprintf('Annotation loader class %s must be subclass of %s', $loaders->annotations->loader, ILoader::class));
+			}
+
+			$loader = new $loaders->annotations->loader($this->getContainerBuilder());
 			$builder = $loader->load($builder);
 		}
 

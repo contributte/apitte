@@ -13,32 +13,77 @@ use Tests\Fixtures\Mapping\Validator\SimpleEntity;
 Toolkit::test(function (): void {
 	$validator = new SymfonyValidator(new AnnotationReader());
 
-	$entity = (new SimpleEntity())->factory(['id' => 1, 'typedId' => 1]);
-	$validator->validate($entity);
+	$entity = (new SimpleEntity())->factory([
+		'id' => 1,
+		'typedId1' => 1,
+		'typedId2' => 1,
+		'typedId3' => 1,
+		'typedId4' => 1,
+	]);
+
+	try {
+		$validator->validate($entity);
+		Assert::true(true);
+	} catch (ValidationException $e) {
+		Assert::fail('Validation should pass', null, null, $e);
+	}
 });
 
 // Invalid value
 Toolkit::test(function (): void {
 	$validator = new SymfonyValidator(new AnnotationReader());
 
-	$entity = (new SimpleEntity())->factory(['id' => 1, 'typedId' => 'foo']);
+	$entity = (new SimpleEntity())->factory([
+		'id' => 1,
+		'typedId1' => 'foo',
+		'typedId2' => 'foo',
+		'typedId3' => 1,
+		'typedId4' => 1,
+	]);
 
-	Assert::exception(static function () use ($entity, $validator): void {
+	try {
 		$validator->validate($entity);
-	}, ValidationException::class);
+		Assert::fail('Validation should fail');
+	} catch (ValidationException $e) {
+		Assert::equal([
+			'validation' => [
+				'typedId1' => ['This value should be of type integer.'],
+				'typedId2' => ['This value should not be null.'],
+			],
+		], $e->getContext());
+	}
 });
 
 // Without annotation reader
 Toolkit::test(function (): void {
 	$validator = new SymfonyValidator();
 
-	$entity = (new SimpleEntity())->factory(['id' => null, 'typedId' => 'foo']);
+	$entity = (new SimpleEntity())->factory([
+		'id' => null,
+		'typedId1' => 1,
+		'typedId2' => 'foo',
+		'typedId3' => 1,
+		'typedId4' => 1,
+	]);
 
-	Assert::exception(static function () use ($entity, $validator): void {
+	try {
 		$validator->validate($entity);
-	}, ValidationException::class);
+		Assert::fail('Validation should fail');
+	} catch (ValidationException $e) {
+		Assert::equal([
+			'validation' => [
+				'typedId2' => ['This value should not be null.'],
+			],
+		], $e->getContext());
+	}
 
-	$entity = (new SimpleEntity())->factory(['id' => null, 'typedId' => 1]);
+	$entity = (new SimpleEntity())->factory([
+		'id' => null,
+		'typedId1' => 1,
+		'typedId2' => 1,
+		'typedId3' => 1,
+		'typedId4' => 1,
+	]);
 
 	Assert::noError(static function () use ($entity, $validator): void {
 		$validator->validate($entity);

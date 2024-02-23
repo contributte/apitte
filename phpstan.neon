@@ -34,6 +34,9 @@ parameters:
 		# Allow empty()
 		- '#Construct empty\(\) is not allowed. Use more strict comparison.$#'
 
+		# ApiRoute optional flag
+		- '#Constructor of class Apitte\\Presenter\\ApiRoute has an unused parameter \$flags.$#'
+
 		# Ignore bad php behavior - should not happen
 		- message: '#\|false given\.$#'
 		  path: %currentWorkingDirectory%/src/Debug/Tracy/BlueScreen/ValidationBlueScreen.php

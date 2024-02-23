@@ -18,7 +18,7 @@ class ApiRoute extends Route
 			$metadata['presenter'] = self::APITTE_MODULE;
 		}
 
-		parent::__construct(rtrim($prefix, '/') . '/<path .*>', $metadata, $flags);
+		parent::__construct(rtrim($prefix, '/') . '/<path .*>', $metadata);
 	}
 
 }

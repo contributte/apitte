@@ -50,15 +50,15 @@ class OpenApiPlugin extends Plugin
 
 		if ($config->definitions === []) {
 			$schemaBuilder
-				->addSetup('addDefinition', [new BaseDefinition()])
+				->addSetup('addDefinition', [new Statement(BaseDefinition::class)])
 				->addSetup('addDefinition', [$coreDefinition]);
 			foreach ($config->files as $file) {
 				if (str_ends_with($file, '.neon')) {
-					$schemaBuilder->addSetup('addDefinition', [new NeonDefinition($file)]);
+					$schemaBuilder->addSetup('addDefinition', [new Statement(NeonDefinition::class, [$file])]);
 				} elseif (str_ends_with($file, '.yaml') || str_ends_with($file, '.yml')) {
-					$schemaBuilder->addSetup('addDefinition', [new YamlDefinition($file)]);
+					$schemaBuilder->addSetup('addDefinition', [new Statement(YamlDefinition::class, [$file])]);
 				} elseif (str_ends_with($file, '.json')) {
-					$schemaBuilder->addSetup('addDefinition', [new JsonDefinition($file)]);
+					$schemaBuilder->addSetup('addDefinition', [new Statement(JsonDefinition::class, [$file])]);
 				} else {
 					throw new InvalidArgumentException(sprintf(
 						'We cant parse file "%s" - unsupported file type',
@@ -67,7 +67,7 @@ class OpenApiPlugin extends Plugin
 				}
 			}
 
-			$schemaBuilder->addSetup('addDefinition', [new ArrayDefinition($config->definition)]);
+			$schemaBuilder->addSetup('addDefinition', [new Statement(ArrayDefinition::class, [$config->definition])]);
 		} else {
 			foreach ($config->definitions as $definitionName => $definitionConfig) {
 				$definitionDef = $builder->addDefinition($this->prefix('definition.' . $definitionName))

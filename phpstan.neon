@@ -62,3 +62,7 @@ parameters:
 		# Nette changed return typehint
 		- message: "#^Parameter \\#2 \\$array of function implode expects array\\<string\\>, array\\<int, array\\<string\\>\\|string\\> given\\.$#"
 		  path: %currentWorkingDirectory%/src/OpenApi/SchemaDefinition/Entity/EntityAdapter.php
+
+		# Support for doctrine/annotations ^1
+		- message: "#^Call to function method_exists\\(\\) with 'Doctrine\\\\\\\\Common\\\\\\\\Annotations\\\\\\\\AnnotationRegistry' and 'registerUniqueLoader' will always evaluate to false\\.$#"
+		  path: src/Core/DI/LoaderFactory/DualReaderFactory.php

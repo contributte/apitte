@@ -94,7 +94,7 @@ use Apitte\Core\Decorator\IRequestDecorator;
 use Apitte\Core\Exception\Runtime\EarlyReturnResponseException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
-use function GuzzleHttp\Psr7\stream_for;
+use GuzzleHttp\Psr7\Utils;
 
 class RequestAuthenticationDecorator implements IRequestDecorator
 {
@@ -105,7 +105,7 @@ class RequestAuthenticationDecorator implements IRequestDecorator
     public function decorateRequest(ApiRequest $request, ApiResponse $response): ApiRequest
     {
         if ($userAuthenticationFailed) {
-            $body = stream_for(json_encode([
+            $body = Utils::streamFor(json_encode([
                 'status' => 'error',
                 'code' => 403,
                 'message' => 'Invalid credentials, authentication failed.'

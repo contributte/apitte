@@ -8,6 +8,7 @@ use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SymfonyValidator implements IEntityValidator
 {
@@ -15,6 +16,10 @@ class SymfonyValidator implements IEntityValidator
 	private ?Reader $reader;
 
 	private ?ConstraintValidatorFactoryInterface $constraintValidatorFactory = null;
+
+	private ?TranslatorInterface $translator = null;
+
+	private ?string $translationDomain = null;
 
 	public function __construct(?Reader $reader = null)
 	{
@@ -25,6 +30,16 @@ class SymfonyValidator implements IEntityValidator
 	public function setConstraintValidatorFactory(ConstraintValidatorFactoryInterface $constraintValidatorFactory): void
 	{
 		$this->constraintValidatorFactory = $constraintValidatorFactory;
+	}
+
+	public function setTranslator(TranslatorInterface $translator): void
+	{
+		$this->translator = $translator;
+	}
+
+	public function setTranslationDomain(string $translationDomain): void
+	{
+		$this->translationDomain = $translationDomain;
 	}
 
 	/**
@@ -42,6 +57,11 @@ class SymfonyValidator implements IEntityValidator
 
 		if ($this->constraintValidatorFactory !== null) {
 			$validatorBuilder->setConstraintValidatorFactory($this->constraintValidatorFactory);
+		}
+
+		if ($this->translator !== null) {
+			$validatorBuilder->setTranslator($this->translator);
+			$validatorBuilder->setTranslationDomain($this->translationDomain);
 		}
 
 		$validator = $validatorBuilder->getValidator();

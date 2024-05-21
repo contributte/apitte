@@ -236,7 +236,9 @@ final class UserFilter extends BasicEntity
 ```
 
 You can override `ConstraintValidatorFactory` on `SymfonyValidator`. If you want to use [custom validation contstraints](https://symfony.com/doc/current/validation/custom_constraint.html) with support of Nette DI,
-you should also install [contributte/validator](https://github.com/contributte/validator). Take a look at example.
+you should also install [contributte/validator](https://github.com/contributte/validator).
+If you want to use translated constraint messages, you can use [contributte/translation](https://github.com/contributte/translation).
+Take a look at example.
 
 ```yaml
 services:
@@ -244,6 +246,8 @@ services:
         factory: Apitte\Core\Mapping\Validator\SymfonyValidator
         setup:
             - setConstraintValidatorFactory(Contributte\Validator\ContainerConstraintValidatorFactory())
+            - setTranslator(@Contributte\Translation\Translator)
+            - setTranslationDomain('validators')
 api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:

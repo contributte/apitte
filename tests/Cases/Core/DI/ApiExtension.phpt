@@ -107,6 +107,8 @@ Toolkit::test(function (): void {
 					)
 					setup:
 						- setConstraintValidatorFactory(Symfony\Component\Validator\ConstraintValidatorFactory())
+						- setTranslator(Symfony\Component\Translation\Translator(en))
+						- setTranslationDomain(validators)
 			api:
 				plugins:
 					Apitte\Core\DI\Plugin\CoreMappingPlugin:

@@ -21,6 +21,8 @@ class SymfonyValidator implements IEntityValidator
 
 	private ?string $translationDomain = null;
 
+	private ?array $groups = null;
+
 	public function __construct(?Reader $reader = null)
 	{
 		$this->reader = $reader;
@@ -40,6 +42,11 @@ class SymfonyValidator implements IEntityValidator
 	public function setTranslationDomain(string $translationDomain): void
 	{
 		$this->translationDomain = $translationDomain;
+	}
+
+	public function setGroups(array $groups): void
+	{
+		$this->groups = $groups;
 	}
 
 	/**
@@ -67,7 +74,7 @@ class SymfonyValidator implements IEntityValidator
 		$validator = $validatorBuilder->getValidator();
 
 		/** @var ConstraintViolationListInterface $violations */
-		$violations = $validator->validate($entity);
+		$violations = $validator->validate($entity, null, $this->groups);
 
 		if (count($violations) > 0) {
 			$fields = [];

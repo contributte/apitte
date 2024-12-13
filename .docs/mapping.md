@@ -248,6 +248,7 @@ services:
             - setConstraintValidatorFactory(Contributte\Validator\ContainerConstraintValidatorFactory())
             - setTranslator(@Contributte\Translation\Translator)
             - setTranslationDomain('validators')
+            - setGroups(['input'])
 api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:

@@ -317,6 +317,7 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 		$endpointParameter->setRequired($requestParameter->isRequired());
 		$endpointParameter->setDeprecated($requestParameter->isDeprecated());
 		$endpointParameter->setAllowEmpty($requestParameter->isAllowEmpty());
+		$endpointParameter->setEnum($requestParameter->getEnum());
 	}
 
 	private function addNegotiationToSchemaMethod(SchemaMethod $schemaMethod, Negotiation $negotiation): void

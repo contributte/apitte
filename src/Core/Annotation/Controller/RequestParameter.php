@@ -31,6 +31,8 @@ class RequestParameter
 
 	private bool $allowEmpty;
 
+	private ?array $enum;
+
 	public function __construct(
 		string $name,
 		string $type,
@@ -38,7 +40,8 @@ class RequestParameter
 		bool $required = true,
 		bool $allowEmpty = false,
 		bool $deprecated = false,
-		?string $description = null
+		?string $description = null,
+		?array $enum = null
 	)
 	{
 		if ($name === '') {
@@ -60,6 +63,7 @@ class RequestParameter
 		$this->deprecated = $deprecated;
 		$this->description = $description;
 		$this->in = $in;
+		$this->enum = $enum;
 	}
 
 	public function getName(): string
@@ -95,6 +99,11 @@ class RequestParameter
 	public function isAllowEmpty(): bool
 	{
 		return $this->allowEmpty;
+	}
+
+	public function getEnum(): ?array
+	{
+		return $this->enum;
 	}
 
 }

@@ -11,6 +11,7 @@ class InvalidArgumentTypeException extends RuntimeException
 	public const TYPE_FLOAT = 'float';
 	public const TYPE_BOOLEAN = 'bool';
 	public const TYPE_DATETIME = 'datetime';
+	public const TYPE_ENUM = 'enum';
 
 	private string $type;
 

@@ -157,6 +157,10 @@ class CoreDefinition implements IDefinition
 		$parameter['required'] = $endpointParameter->isRequired();
 		$parameter['schema'] = ['type' => $endpointParameter->getSchemaType()];
 
+		if ($enum = $endpointParameter->getEnum()) {
+			$parameter['schema']['enum'] = $enum;
+		}
+
 		// $param->setAllowEmptyValue($endpointParam->isAllowEmpty());
 		// $param->setDeprecated($endpointParam->isDeprecated());
 		// TODO types should be bool but now are strings

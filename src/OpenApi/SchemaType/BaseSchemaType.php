@@ -44,6 +44,12 @@ class BaseSchemaType implements ISchemaType
 						'format' => 'date-time',
 					]
 				);
+			case EndpointParameter::TYPE_ENUM:
+				return new Schema(
+					[
+						'type' => 'string',
+					]
+				);
 			default:
 				throw new UnknownSchemaType('Unknown endpoint parameter type ' . $endpointParameter->getType());
 		}

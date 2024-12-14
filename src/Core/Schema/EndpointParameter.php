@@ -10,6 +10,7 @@ class EndpointParameter
 	public const TYPE_FLOAT = 'float';
 	public const TYPE_BOOLEAN = 'bool';
 	public const TYPE_DATETIME = 'datetime';
+	public const TYPE_ENUM = 'enum';
 
 	public const TYPES = [
 		self::TYPE_STRING,
@@ -17,6 +18,7 @@ class EndpointParameter
 		self::TYPE_FLOAT,
 		self::TYPE_BOOLEAN,
 		self::TYPE_DATETIME,
+		self::TYPE_ENUM,
 	];
 
 	public const IN_QUERY = 'query';
@@ -45,6 +47,8 @@ class EndpointParameter
 
 	private bool $allowEmpty = false;
 
+	private ?array $enum = null;
+
 	public function __construct(string $name, string $type = self::TYPE_STRING)
 	{
 		$this->name = $name;
@@ -72,6 +76,8 @@ class EndpointParameter
 				return 'boolean';
 			case self::TYPE_INTEGER:
 				return 'integer';
+			case self::TYPE_ENUM:
+				return 'string';
 			default:
 				// custom type
 				return 'string';
@@ -126,6 +132,16 @@ class EndpointParameter
 	public function setAllowEmpty(bool $allowEmpty): void
 	{
 		$this->allowEmpty = $allowEmpty;
+	}
+
+	public function getEnum(): ?array
+	{
+		return $this->enum;
+	}
+
+	public function setEnum(?array $enum): void
+	{
+		$this->enum = $enum;
 	}
 
 }

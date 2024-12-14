@@ -203,6 +203,7 @@ class ArraySerializator implements ISerializator
 			'required' => true,
 			'allowEmpty' => false,
 			'deprecated' => false,
+			'enum' => null,
 		];
 
 		// Update endpoint parameter by defined annotation
@@ -214,6 +215,7 @@ class ArraySerializator implements ISerializator
 			$p['required'] = $param->isRequired();
 			$p['allowEmpty'] = $param->isAllowEmpty();
 			$p['deprecated'] = $param->isDeprecated();
+			$p['enum'] = $param->getEnum();
 		}
 
 		// Update endpoint

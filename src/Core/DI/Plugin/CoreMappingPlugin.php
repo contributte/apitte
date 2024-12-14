@@ -7,6 +7,7 @@ use Apitte\Core\Decorator\RequestParametersDecorator;
 use Apitte\Core\DI\ApiExtension;
 use Apitte\Core\Mapping\Parameter\BooleanTypeMapper;
 use Apitte\Core\Mapping\Parameter\DateTimeTypeMapper;
+use Apitte\Core\Mapping\Parameter\EnumTypeMapper;
 use Apitte\Core\Mapping\Parameter\FloatTypeMapper;
 use Apitte\Core\Mapping\Parameter\IntegerTypeMapper;
 use Apitte\Core\Mapping\Parameter\StringTypeMapper;
@@ -33,6 +34,7 @@ class CoreMappingPlugin extends Plugin
 		'float' => FloatTypeMapper::class,
 		'bool' => BooleanTypeMapper::class,
 		'datetime' => DateTimeTypeMapper::class,
+		'enum' => EnumTypeMapper::class,
 	];
 
 	public static function getName(): string

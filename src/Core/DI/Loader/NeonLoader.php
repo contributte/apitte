@@ -69,6 +69,7 @@ class NeonLoader implements ILoader
 			$parameter->setRequired($settings['required'] ?? true);
 			$parameter->setAllowEmpty($settings['allowEmpty'] ?? false);
 			$parameter->setDeprecated($settings['deprecated'] ?? false);
+			$parameter->setEnum($settings['enum'] ?? null);
 		}
 	}
 

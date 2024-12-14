@@ -10,6 +10,6 @@ interface ITypeMapper
 	/**
 	 * @throws InvalidArgumentTypeException
 	 */
-	public function normalize(mixed $value): mixed;
+	public function normalize(mixed $value/*, ?array $enumValues = null*/): mixed;
 
 }

@@ -147,6 +147,13 @@ class EntityAdapter implements IEntityAdapter
 			if ($propertyType === $type) {
 				$propertyType = 'object';
 			}
+			if (str_ends_with($propertyType, '[]')) {
+				$subType = Strings::replace($propertyType, '#\\[\\]#', '');
+
+				if ($subType === $type) {
+					$propertyType = 'object';
+				}
+			}
 
 			$data[$property->getName()] = $this->getMetadata($propertyType);
 		}

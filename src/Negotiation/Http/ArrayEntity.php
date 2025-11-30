@@ -23,9 +23,9 @@ class ArrayEntity extends AbstractEntity implements IteratorAggregate, Countable
 
 	/**
 	 * @param mixed[] $data
-	 * @return static
+	 * @phpstan-return static<int|string>
 	 */
-	public static function from(array $data): self
+	public static function from(array $data): static
 	{
 		return new static($data);
 	}

@@ -47,6 +47,7 @@ class EndpointParameter
 
 	private bool $allowEmpty = false;
 
+	/** @var list<string|int>|null */
 	private ?array $enum = null;
 
 	public function __construct(string $name, string $type = self::TYPE_STRING)
@@ -134,11 +135,17 @@ class EndpointParameter
 		$this->allowEmpty = $allowEmpty;
 	}
 
+	/**
+	 * @return list<string|int>|null
+	 */
 	public function getEnum(): ?array
 	{
 		return $this->enum;
 	}
 
+	/**
+	 * @param list<string|int>|null $enum
+	 */
 	public function setEnum(?array $enum): void
 	{
 		$this->enum = $enum;

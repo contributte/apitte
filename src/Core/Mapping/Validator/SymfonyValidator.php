@@ -21,6 +21,7 @@ class SymfonyValidator implements IEntityValidator
 
 	private ?string $translationDomain = null;
 
+	/** @var list<string>|null */
 	private ?array $groups = null;
 
 	public function __construct(?Reader $reader = null)
@@ -44,6 +45,9 @@ class SymfonyValidator implements IEntityValidator
 		$this->translationDomain = $translationDomain;
 	}
 
+	/**
+	 * @param list<string> $groups
+	 */
 	public function setGroups(array $groups): void
 	{
 		$this->groups = $groups;

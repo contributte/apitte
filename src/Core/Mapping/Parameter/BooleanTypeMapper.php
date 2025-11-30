@@ -7,7 +7,10 @@ use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 class BooleanTypeMapper implements ITypeMapper
 {
 
-	public function normalize(mixed $value): ?bool
+	/**
+	 * @inheritDoc
+	 */
+	public function normalize(mixed $value, array $options = []): ?bool
 	{
 		if ($value === 'true' || $value === true) {
 			return true;

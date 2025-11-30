@@ -8,8 +8,9 @@ interface ITypeMapper
 {
 
 	/**
+	 * @param array<string, mixed> $options
 	 * @throws InvalidArgumentTypeException
 	 */
-	public function normalize(mixed $value/*, ?array $enumValues = null*/): mixed;
+	public function normalize(mixed $value, array $options = []): mixed;
 
 }

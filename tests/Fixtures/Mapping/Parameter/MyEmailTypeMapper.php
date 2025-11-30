@@ -8,7 +8,10 @@ use Apitte\Core\Mapping\Parameter\ITypeMapper;
 class MyEmailTypeMapper implements ITypeMapper
 {
 
-	public function normalize(mixed $value): string
+	/**
+	 * @inheritDoc
+	 */
+	public function normalize(mixed $value, array $options = []): string
 	{
 		if (is_string($value) && filter_var($value, FILTER_VALIDATE_EMAIL)) {
 			return $value;

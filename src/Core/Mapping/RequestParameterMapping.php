@@ -22,7 +22,7 @@ class RequestParameterMapping
 		InvalidArgumentTypeException::TYPE_FLOAT => '%s request parameter "%s" should be of type float or integer.',
 		InvalidArgumentTypeException::TYPE_BOOLEAN => '%s request parameter "%s" should be of type boolean. Pass "true" for true or "false" for false.',
 		InvalidArgumentTypeException::TYPE_DATETIME => '%s request parameter "%s" should be of type datetime in format ISO 8601 (Y-m-d\TH:i:sP).',
-		InvalidArgumentTypeException::TYPE_ENUM => '%s request parameter "%s" is not in the allowed values `[%s]`.',
+		InvalidArgumentTypeException::TYPE_ENUM => '%s request parameter "%s" is not in the allowed values.',
 	];
 
 	protected static string $customException = '%s request parameter "%s" should be of type %s.%s';
@@ -211,14 +211,13 @@ class RequestParameterMapping
 		}
 
 		try {
-			return $mapper->normalize($value, $parameter->getEnum());
+			return $mapper->normalize($value, ['endpoint' => $parameter]);
 		} catch (InvalidArgumentTypeException $e) {
 			if (array_key_exists($e->getType(), self::$exceptions)) {
 				throw new ClientErrorException(sprintf(
 					self::$exceptions[$e->getType()],
 					ucfirst($parameter->getIn()),
-					$parameter->getName(),
-					$parameter->getEnum() ? implode(', ', $parameter->getEnum()) : ''
+					$parameter->getName()
 				));
 			} else {
 				throw new ClientErrorException(sprintf(

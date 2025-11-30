@@ -7,7 +7,10 @@ use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 class FloatTypeMapper implements ITypeMapper
 {
 
-	public function normalize(mixed $value): ?float
+	/**
+	 * @inheritDoc
+	 */
+	public function normalize(mixed $value, array $options = []): ?float
 	{
 		if (is_string($value)) {
 			$value = str_replace(',', '.', $value); // Accept also comma as decimal separator

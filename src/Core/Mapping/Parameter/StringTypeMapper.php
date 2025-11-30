@@ -7,7 +7,10 @@ use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 class StringTypeMapper implements ITypeMapper
 {
 
-	public function normalize(mixed $value): ?string
+	/**
+	 * @inheritDoc
+	 */
+	public function normalize(mixed $value, array $options = []): ?string
 	{
 		if (!is_scalar($value)) {
 			throw new InvalidArgumentTypeException('string');

@@ -48,7 +48,7 @@ class CsvTransformer extends AbstractTransformer
 	/**
 	 * @param mixed[][] $rows
 	 */
-	private function convert(array $rows, string $delimiter = ',', string $enclosure = '"'): string
+	private function convert(array $rows, string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): string
 	{
 		$fp = fopen('php://temp', 'r+');
 
@@ -63,7 +63,7 @@ class CsvTransformer extends AbstractTransformer
 				}
 			}
 
-			fputcsv($fp, $row, $delimiter, $enclosure);
+			fputcsv($fp, $row, $delimiter, $enclosure, $escape);
 		}
 
 		rewind($fp);

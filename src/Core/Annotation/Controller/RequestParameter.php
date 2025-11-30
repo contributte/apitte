@@ -31,8 +31,12 @@ class RequestParameter
 
 	private bool $allowEmpty;
 
+	/** @var list<string|int>|null */
 	private ?array $enum;
 
+	/**
+	 * @param list<string|int>|null $enum
+	 */
 	public function __construct(
 		string $name,
 		string $type,
@@ -101,6 +105,9 @@ class RequestParameter
 		return $this->allowEmpty;
 	}
 
+	/**
+	 * @return list<string|int>|null
+	 */
 	public function getEnum(): ?array
 	{
 		return $this->enum;

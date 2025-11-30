@@ -51,9 +51,7 @@ trait ExceptionExtra
 		// @phpcs:ignore SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException
 		$reflection = new ReflectionClass(Exception::class);
 		$property = $reflection->getProperty('previous');
-		$property->setAccessible(true);
 		$property->setValue($this, $exception);
-		$property->setAccessible(false);
 
 		return $this;
 	}

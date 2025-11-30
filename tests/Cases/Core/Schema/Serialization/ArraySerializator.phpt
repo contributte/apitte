@@ -102,6 +102,7 @@ Toolkit::test(function (): void {
 					'required' => true,
 					'allowEmpty' => true,
 					'deprecated' => true,
+					'enum' => null,
 				],
 				'm3-p2' => [
 					'name' => 'm3-p2',
@@ -111,6 +112,7 @@ Toolkit::test(function (): void {
 					'required' => true,
 					'allowEmpty' => false,
 					'deprecated' => false,
+					'enum' => null,
 				],
 			],
 			'responses' => [

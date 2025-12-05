@@ -88,4 +88,18 @@ class ExampleMiddleware implements IMiddleware
 }
 ```
 
-See [contributte/middlewares](https://github.com/contributte/middlewares) documentation for more info and useful middlewares
+See [contributte/middlewares](https://github.com/contributte/middlewares) documentation for more info and useful middlewares.
+
+## Exception Handling
+
+**Important note about `TryCatchMiddleware`:**
+
+If you use `TryCatchMiddleware` from [contributte/middlewares](https://github.com/contributte/middlewares), be aware that it only catches exceptions thrown in **other middleware**, not exceptions thrown in controllers.
+
+Exceptions thrown during controller execution are handled internally by `ApiMiddleware`, which wraps the dispatcher call in its own try-catch block. This means:
+
+- `TryCatchMiddleware` catches exceptions from middleware running before or after `ApiMiddleware`
+- `ApiMiddleware` catches and handles exceptions from the dispatcher (controller execution)
+- Controller exceptions are processed by the internal [error handler](errors.md) or [exception decorators](decorators.md#exception-decorators)
+
+If you need custom exception handling for controller errors, use [exception decorators](decorators.md#exception-decorators) or implement a custom [error handler](errors.md#error-handler)

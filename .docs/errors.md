@@ -26,7 +26,7 @@ Default error handler
 
 - Transforms error into json response
   - ApiException (and inherited errors like ClientErrorException) message, context and code are used directly in response
-  - For other (non-api) errors is used generic message described bellow
+  - For other (non-api) errors is used generic message described below
   - Context is send only if is not empty
 
     ```json

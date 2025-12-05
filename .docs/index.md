@@ -80,7 +80,7 @@ if ($isApi) {
 - Console plugin
   - Console commands for your api.
   - Based on [symfony/console](https://github.com/symfony/console)
-  - See [console](console.md) chpater for more info.
+  - See [console](console.md) chapter for more info.
 - Presenter plugin
   - Route into your api through a single nette route and presenter.
   - See [presenter](presenter.md) chapter for more info.

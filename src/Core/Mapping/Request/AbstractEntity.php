@@ -5,16 +5,21 @@ namespace Apitte\Core\Mapping\Request;
 use ArrayIterator;
 use IteratorAggregate;
 
+/**
+ * @template TKey of string|int
+ * @template TValue of mixed
+ * @implements IteratorAggregate<TKey, TValue>
+ */
 abstract class AbstractEntity implements IRequestEntity, IteratorAggregate
 {
 
 	/**
-	 * @return mixed[]
+	 * @return array<TKey, TValue>
 	 */
 	abstract public function toArray(): array;
 
 	/**
-	 * @return ArrayIterator<int|string, mixed>
+	 * @return ArrayIterator<TKey, TValue>
 	 */
 	public function getIterator(): ArrayIterator
 	{

@@ -55,6 +55,7 @@ class EntityAdapter implements IEntityAdapter
 			}
 
 			$resolvedTypes = [];
+
 			foreach ($types as $subType) {
 				$resolvedTypes[] = $this->getMetadata($subType);
 			}
@@ -203,8 +204,10 @@ class EntityAdapter implements IEntityAdapter
 	private function getPropertyType(ReflectionProperty $property): ?string
 	{
 		$nativeType = null;
+
 		if (PHP_VERSION_ID >= 70400 && ($type = Type::fromReflection($property)) !== null) {
 			$nativeType = $this->getNativePropertyType($type, $property);
+
 			// If type is array/mixed or union/intersection of it, try to get more information from annotations
 			if (!preg_match('#[|&]?(array|mixed)[|&]?#', $nativeType)) {
 				return $nativeType;
@@ -249,7 +252,7 @@ class EntityAdapter implements IEntityAdapter
 	}
 
 	/**
-	 * @param ReflectionClass|ReflectionClassConstant|ReflectionProperty|ReflectionFunctionAbstract $ref
+	 * @param ReflectionClass<object>|ReflectionClassConstant|ReflectionProperty|ReflectionFunctionAbstract $ref
 	 */
 	private function parseAnnotation(Reflector $ref, string $name): ?string
 	{
@@ -258,6 +261,7 @@ class EntityAdapter implements IEntityAdapter
 		}
 
 		$re = '#[\s*]@' . preg_quote($name, '#') . '(?=\s|$)(?:[ \t]+([^@\s]\S*))?#';
+
 		if ($ref->getDocComment() && preg_match($re, trim($ref->getDocComment(), '/*'), $m)) {
 			return $m[1] ?? null;
 		}
@@ -267,11 +271,11 @@ class EntityAdapter implements IEntityAdapter
 
 	private function getNativePropertyType(Type $type, ReflectionProperty $property): string
 	{
-		if ($type->isSingle() && count($type->getNames()) === 1) {
+		if ($type->isSimple() && count($type->getNames()) === 1) {
 			return $type->getNames()[0];
 		}
 
-		if ($type->isUnion() || ($type->isSingle() && count($type->getNames()) === 2) // nullable type is single but returns name of type and null in names
+		if ($type->isUnion() || ($type->isSimple() && count($type->getNames()) === 2) // nullable type is single but returns name of type and null in names
 		) {
 			return implode('|', $type->getNames());
 		}

@@ -43,6 +43,7 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 
 		// Iterate over all controllers
 		foreach ($controllers as $def) {
+			/** @var class-string|null $type */
 			$type = $def->getType();
 
 			if ($type === null) {
@@ -71,6 +72,10 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 		return $builder;
 	}
 
+	/**
+	 * @param class-string $class
+	 * @return ReflectionClass<object>
+	 */
 	protected function analyseClass(string $class): ReflectionClass
 	{
 		// Analyse only new-ones
@@ -88,7 +93,7 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 		];
 
 		// Get all parents
-		/** @var string[] $parents */
+		/** @var class-string[] $parents */
 		$parents = class_parents($class);
 		$reflections = [];
 
@@ -122,11 +127,17 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 		return $classRef;
 	}
 
+	/**
+	 * @param ReflectionClass<object> $class
+	 */
 	protected function acceptController(ReflectionClass $class): bool
 	{
 		return is_subclass_of($class->getName(), IController::class);
 	}
 
+	/**
+	 * @param ReflectionClass<object> $class
+	 */
 	protected function parseControllerClassAnnotations(Controller $controller, ReflectionClass $class): void
 	{
 		// Read class annotations
@@ -187,6 +198,9 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 		}
 	}
 
+	/**
+	 * @param ReflectionClass<object> $reflectionClass
+	 */
 	protected function parseControllerMethodsAnnotations(Controller $controller, ReflectionClass $reflectionClass): void
 	{
 		// Iterate over all methods in class

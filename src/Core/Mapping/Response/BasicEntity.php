@@ -4,13 +4,18 @@ namespace Apitte\Core\Mapping\Response;
 
 use Apitte\Core\Mapping\TReflectionProperties;
 
+/**
+ * @template TKey of string|int
+ * @template TValue of mixed
+ * @extends AbstractEntity<TKey, TValue>
+ */
 abstract class BasicEntity extends AbstractEntity
 {
 
 	use TReflectionProperties;
 
 	/**
-	 * @return mixed[]
+	 * @return array<TKey, array<string, mixed>>
 	 */
 	public function getResponseProperties(): array
 	{
@@ -18,7 +23,7 @@ abstract class BasicEntity extends AbstractEntity
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return array<TKey, TValue>
 	 */
 	public function toResponse(): array
 	{

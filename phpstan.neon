@@ -10,17 +10,8 @@ parameters:
 		- .docs
 
 	reportMaybesInPropertyPhpDocTypes: false
-	checkGenericClassInNonGenericObjectType: false
 
 	ignoreErrors:
-		# Intended property access - required for reflection
-		- '#^Variable property access on (\$this|static)\(Apitte\\Core\\Mapping\\(Request|Response)\\BasicEntity\)\.$#'
-		- '#^Variable property access on Apitte\\Core\\Mapping\\Request\\BasicEntity\.$#'
-
-		# Phpstan bug
-		- message: '#^Parameter \#1 \$argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given\.$#'
-		  path: %currentWorkingDirectory%/src/Core/DI/Loader/DoctrineAnnotationLoader.php
-
 		# Missing strict comparison
 		- '#^Only booleans are allowed in#'
 
@@ -47,13 +38,6 @@ parameters:
 
 		# This should not happen because null is returned on error
 		- '#Method Apitte\\Core\\Utils\\Helpers::slashless\(\) should return string but returns string\|null\.#'
-
-		# To pass php8.0 tests where library doesn't have isSingle()
-		- message: """
-				#^Call to deprecated method isSingle\\(\\) of class Nette\\\\Utils\\\\Type\\:
-				use isSimple\\(\\)$#
-			"""
-		  path: %currentWorkingDirectory%/src/OpenApi/SchemaDefinition/Entity/EntityAdapter.php
 
 		# Nette changed return typehint
 		- message: "#^Method Apitte\\\\OpenApi\\\\SchemaDefinition\\\\Entity\\\\EntityAdapter\\:\\:getNativePropertyType\\(\\) should return string but returns array\\<string\\>\\|string\\.$#"

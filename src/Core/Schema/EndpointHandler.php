@@ -5,18 +5,14 @@ namespace Apitte\Core\Schema;
 class EndpointHandler
 {
 
-	/** @var class-string */
-	private string $class;
-
-	private string $method;
-
 	/**
 	 * @param class-string $class
 	 */
-	public function __construct(string $class, string $method)
+	public function __construct(
+		private readonly string $class,
+		private readonly string $method,
+	)
 	{
-		$this->class = $class;
-		$this->method = $method;
 	}
 
 	/**

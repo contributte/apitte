@@ -10,14 +10,11 @@ use Psr\Http\Message\ServerRequestInterface;
 class ServiceCallback
 {
 
-	private IController $service;
-
-	private string $method;
-
-	public function __construct(IController $service, string $method)
+	public function __construct(
+		private readonly IController $service,
+		private readonly string $method,
+	)
 	{
-		$this->service = $service;
-		$this->method = $method;
 	}
 
 	public function getService(): IController

@@ -32,6 +32,7 @@ class RequestEntityMapping
 		}
 
 		$requestBody = $endpoint->getRequestBody();
+
 		// If there's no request mapper, then skip it
 		if ($requestBody === null) {
 			return $request;

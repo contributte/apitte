@@ -13,11 +13,10 @@ use Apitte\Core\Utils\Regex;
 class SimpleRouter implements IRouter
 {
 
-	private Schema $schema;
-
-	public function __construct(Schema $schema)
+	public function __construct(
+		private readonly Schema $schema,
+	)
 	{
-		$this->schema = $schema;
 	}
 
 	public function match(ApiRequest $request): ?ApiRequest
@@ -26,6 +25,7 @@ class SimpleRouter implements IRouter
 
 		$exception = null;
 		$matched = null;
+
 		// Iterate over all endpoints
 		foreach ($endpoints as $endpoint) {
 			try {
@@ -42,10 +42,8 @@ class SimpleRouter implements IRouter
 			// If matched is not null, returns given ServerRequestInterface
 			// with all parsed arguments and data,
 			// also append given Endpoint
-			$matched = $matched
+			return $matched
 				->withAttribute(RequestAttributes::ATTR_ENDPOINT, $endpoint);
-
-			return $matched;
 		}
 
 		if ($exception !== null) {
@@ -95,17 +93,16 @@ class SimpleRouter implements IRouter
 
 		// Fill query parameters with query params
 		$queryParams = $request->getQueryParams();
+
 		foreach ($endpoint->getParametersByIn(EndpointParameter::IN_QUERY) as $param) {
 			$name = $param->getName();
 			$parameters[$name] = $queryParams[$name] ?? null;
 		}
 
 		// Set attributes to request
-		$request = $request
+		return $request
 			->withAttribute(RequestAttributes::ATTR_ROUTER, $match)
 			->withAttribute(RequestAttributes::ATTR_PARAMETERS, $parameters);
-
-		return $request;
 	}
 
 }

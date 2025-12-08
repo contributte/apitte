@@ -15,7 +15,7 @@ class Responses
 {
 
 	/** @var Response[] */
-	private array $responses = [];
+	private readonly array $responses;
 
 	/**
 	 * @param Response[]|Response $responses

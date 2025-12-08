@@ -47,15 +47,18 @@ abstract class BasicEntity extends AbstractEntity
 	 * @param array<TKey, TValue> $data
 	 * @return static<TKey, TValue>
 	 */
-	public function factory(array $data): self
+	public function factory(array $data): static
 	{
+		/** @var static<TKey, TValue> $inst */
 		$inst = new static();
 
 		// Fill properties with real data
 		$properties = $inst->getRequestProperties();
+
 		foreach ($properties as $property) {
 			/** @var TKey $propName */
 			$propName = $property['name'];
+
 			if (!array_key_exists($propName, $data)) {
 				continue;
 			}
@@ -70,13 +73,17 @@ abstract class BasicEntity extends AbstractEntity
 			// Fill single property
 			try {
 				$propNameStr = (string) $propName;
+
 				if (property_exists($inst, $propNameStr)) {
 					$ref = new \ReflectionProperty($inst, $propNameStr);
 					$wasAccessible = $ref->isPublic();
+
 					if (!$wasAccessible) {
 						$ref->setAccessible(true);
 					}
+
 					$ref->setValue($inst, $value);
+
 					if (!$wasAccessible) {
 						$ref->setAccessible(false);
 					}

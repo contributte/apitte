@@ -93,9 +93,12 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 		];
 
 		// Get all parents
-		/** @var class-string[] $parents */
 		$parents = class_parents($class);
 		$reflections = [];
+
+		if ($parents === false) {
+			$parents = [];
+		}
 
 		// Iterate over all parents and analyse them
 		foreach ($parents as $parentClass) {

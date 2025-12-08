@@ -5,11 +5,10 @@ namespace Apitte\Negotiation\Http;
 abstract class AbstractEntity
 {
 
-	protected mixed $data;
-
-	public function __construct(mixed $data = null)
+	public function __construct(
+		protected mixed $data = null,
+	)
 	{
-		$this->data = $data;
 	}
 
 	public function getData(): mixed

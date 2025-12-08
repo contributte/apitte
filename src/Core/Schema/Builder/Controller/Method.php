@@ -10,8 +10,6 @@ use Apitte\Core\Schema\EndpointResponse;
 class Method
 {
 
-	private string $name;
-
 	private string $path = '';
 
 	private ?string $id = null;
@@ -36,9 +34,10 @@ class Method
 	/** @var mixed[] */
 	private array $openApi = [];
 
-	public function __construct(string $name)
+	public function __construct(
+		private readonly string $name,
+	)
 	{
-		$this->name = $name;
 	}
 
 	public function getName(): string

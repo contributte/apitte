@@ -11,13 +11,12 @@ use Contributte\Psr7\Psr7Response;
 class Application extends BaseApplication
 {
 
-	private IDispatcher $dispatcher;
-
-	public function __construct(IErrorHandler $errorHandler, IDispatcher $dispatcher)
+	public function __construct(
+		IErrorHandler $errorHandler,
+		private readonly IDispatcher $dispatcher,
+	)
 	{
 		parent::__construct($errorHandler);
-
-		$this->dispatcher = $dispatcher;
 	}
 
 	protected function dispatch(ApiRequest $request): ApiResponse

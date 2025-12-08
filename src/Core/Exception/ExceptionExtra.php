@@ -38,7 +38,7 @@ trait ExceptionExtra
 	 */
 	public function withMessage(string|array $message): static
 	{
-		$this->message = $message;
+		$this->message = is_array($message) ? implode(';', $message) : $message;
 
 		return $this;
 	}

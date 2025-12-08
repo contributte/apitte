@@ -48,6 +48,7 @@ class JsonUnifyTransformer extends AbstractTransformer
 			];
 
 			$context = $exception->getContext();
+
 			if ($context !== null) {
 				$entityData['data']['context'] = $context;
 			}

@@ -22,7 +22,7 @@ Toolkit::test(static function (): void {
 	$response = $transformer->transform($request, $response);
 
 	$response->getBody()->rewind();
-	$expected = version_compare(Debugger::VERSION, '2.8.0', '<') ? '
+	$expected = version_compare(Debugger::Version, '2.8.0', '<') ? '
 Apitte\Negotiation\Http\ArrayEntity %a%
    data protected => array (1)
    |  foo => "bar" (3)

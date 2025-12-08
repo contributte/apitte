@@ -7,7 +7,7 @@ use Apitte\Core\DI\Loader\ILoader;
 use Apitte\Core\DI\Loader\NeonLoader;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Serialization\ArrayHydrator;
-use Apitte\Core\Schema\Serialization\ArraySerializator;
+use Apitte\Core\Schema\Serialization\ArraySerializer;
 use Apitte\Core\Schema\Serialization\IDecorator;
 use Apitte\Core\Schema\Validation\ControllerPathValidation;
 use Apitte\Core\Schema\Validation\ControllerValidation;
@@ -105,7 +105,7 @@ class CoreSchemaPlugin extends Plugin
 		}
 
 		// Convert schema to array (for DI)
-		$generator = new ArraySerializator();
+		$generator = new ArraySerializer();
 
 		return $generator->serialize($builder);
 	}
@@ -115,7 +115,6 @@ class CoreSchemaPlugin extends Plugin
 		$loaders = $this->config->loaders;
 
 		if ($loaders->annotations->enable) {
-
 			if (!class_exists($loaders->annotations->loader)) {
 				throw new \RuntimeException(sprintf('Annotation loader class %s does not exist', $loaders->annotations->loader));
 			}
@@ -134,6 +133,7 @@ class CoreSchemaPlugin extends Plugin
 			// Load schema from files
 			$adapter = new NeonAdapter();
 			$schema = [];
+
 			foreach ($files as $file) {
 				$schema = Arrays::mergeTree($schema, $adapter->load($file));
 			}
@@ -147,18 +147,19 @@ class CoreSchemaPlugin extends Plugin
 
 	protected function validateSchema(SchemaBuilder $builder): SchemaBuilder
 	{
+		/** @var class-string<IValidation>[] $validations */
 		$validations = $this->config->validations;
 
 		$validator = new SchemaBuilderValidator();
 
 		// Add all validators at compile-time
-		/** @var class-string<IValidation> $validation */
 		foreach ($validations as $validation) {
 			$validator->add(new $validation());
 		}
 
 		/** @var ?CoreMappingPlugin $coreMappingPlugin */
 		$coreMappingPlugin = $this->compiler->getPlugin(CoreMappingPlugin::getName());
+
 		if ($coreMappingPlugin !== null) {
 			$validator->add(new RequestParameterValidation($coreMappingPlugin->getAllowedTypes()));
 		}

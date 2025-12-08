@@ -19,7 +19,7 @@
     }
   ],
   "require": {
-    "php": ">=8.1",
+    "php": ">=8.2",
     "ext-json": "*",
     "nette/di": "^3.1.8",
     "contributte/psr7-http-message": "^0.9.0 || ^0.10.0",
@@ -33,16 +33,16 @@
     "contributte/qa": "^0.4",
     "contributte/dev": "^0.4",
     "contributte/tester": "^0.3",
-    "contributte/phpstan": "^0.1",
+    "contributte/phpstan": "^0.2",
     "mockery/mockery": "^1.6.6",
     "nette/application": "^3.1.4",
     "nette/di": "^3.1.8",
     "nette/http": "^3.2.3",
     "psr/log": "^2.0.0 || ^3.0.0",
-    "symfony/console": "^6.4.0 || ^7.0.0",
-    "symfony/translation": "^6.4.0 | ^7.0.0",
-    "symfony/validator": "^6.4.0 || ^7.0.0",
-    "symfony/yaml": "^6.4.0 || ^7.0.0",
+    "symfony/console": "^6.4.0 || ^7.0.0 || ^8.0.0",
+    "symfony/translation": "^6.4.0 | ^7.0.0 || ^8.0.0",
+    "symfony/validator": "^6.4.0 || ^7.0.0 || ^8.0.0",
+    "symfony/yaml": "^6.4.0 || ^7.0.0 || ^8.0.0",
     "tracy/tracy": "^2.10.5"
   },
   "provide": {

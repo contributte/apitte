@@ -16,6 +16,7 @@ class NegotiationValidation implements IValidation
 
 				$haveDefault = null;
 				$takenSuffixes = [];
+
 				foreach ($method->getNegotiations() as $negotiation) {
 					if ($negotiation->isDefault()) {
 						if ($haveDefault !== null) {
@@ -41,6 +42,7 @@ class NegotiationValidation implements IValidation
 					}
 
 					$renderer = $negotiation->getRenderer();
+
 					if ($renderer !== null) {
 						if (!class_exists($renderer)) {
 							throw new InvalidSchemaException(sprintf(
@@ -52,6 +54,7 @@ class NegotiationValidation implements IValidation
 						}
 
 						$reflection = new ReflectionClass($renderer);
+
 						if (!$reflection->hasMethod('__invoke')) {
 							throw new InvalidSchemaException(sprintf(
 								'Negotiation renderer "%s" in "%s::%s()" does not implement __invoke(ApiRequest $request, ApiResponse $response, array $context): ApiResponse',

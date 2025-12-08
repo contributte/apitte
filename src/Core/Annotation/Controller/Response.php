@@ -16,21 +16,15 @@ use Doctrine\Common\Annotations\AnnotationException;
 class Response
 {
 
-	private string $code;
-
-	private string $description;
-
-	private ?string $entity;
-
-	public function __construct(string $description, string $code = 'default', ?string $entity = null)
+	public function __construct(
+		private readonly string $description,
+		private readonly string $code = 'default',
+		private readonly ?string $entity = null,
+	)
 	{
 		if (empty($description)) {
 			throw new AnnotationException('Empty @Response description given');
 		}
-
-		$this->code = $code;
-		$this->entity = $entity;
-		$this->description = $description;
 	}
 
 	public function getDescription(): string

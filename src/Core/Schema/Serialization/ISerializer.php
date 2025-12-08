@@ -4,7 +4,7 @@ namespace Apitte\Core\Schema\Serialization;
 
 use Apitte\Core\Schema\SchemaBuilder;
 
-interface ISerializator
+interface ISerializer
 {
 
 	public function serialize(SchemaBuilder $builder): mixed;

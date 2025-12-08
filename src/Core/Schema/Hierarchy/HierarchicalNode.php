@@ -5,17 +5,16 @@ namespace Apitte\Core\Schema\Hierarchy;
 class HierarchicalNode
 {
 
-	private string $path;
-
 	/** @var HierarchicalNode[] */
 	private array $nodes = [];
 
 	/** @var ControllerMethodPair[] */
 	private array $endpoints = [];
 
-	public function __construct(string $path)
+	public function __construct(
+		private readonly string $path,
+	)
 	{
-		$this->path = $path;
 	}
 
 	public function getPath(): string
@@ -64,6 +63,7 @@ class HierarchicalNode
 		// Divide static and variable nodes
 		foreach ($this->nodes as $node) {
 			$path = $node->getPath();
+
 			if (str_contains($path, '{') && str_contains($path, '}')) {
 				$variableNodes[] = $node;
 			} else {

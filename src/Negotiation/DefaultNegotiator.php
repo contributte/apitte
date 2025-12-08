@@ -32,9 +32,10 @@ class DefaultNegotiator implements INegotiator
 
 		// Early return if there's no endpoint
 		$endpoint = $response->getEndpoint();
-		if ($endpoint === null)
 
-		return null;
+		if ($endpoint === null) {
+			return null;
+		}
 
 		// Get negotiations
 		$negotiations = $endpoint->getNegotiations();
@@ -42,9 +43,9 @@ class DefaultNegotiator implements INegotiator
 		// Try default
 		foreach ($negotiations as $negotiation) {
 			// Skip non default negotiations
-			if (!$negotiation->isDefault())
-
-			continue;
+			if (!$negotiation->isDefault()) {
+				continue;
+			}
 
 			// Normalize suffix for transformer
 			$transformer = ltrim($negotiation->getSuffix(), '.');

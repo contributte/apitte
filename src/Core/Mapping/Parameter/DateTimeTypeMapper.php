@@ -5,6 +5,7 @@ namespace Apitte\Core\Mapping\Parameter;
 use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 use DateTimeImmutable;
 use TypeError;
+use ValueError;
 
 class DateTimeTypeMapper implements ITypeMapper
 {
@@ -16,7 +17,7 @@ class DateTimeTypeMapper implements ITypeMapper
 	{
 		try {
 			$value = DateTimeImmutable::createFromFormat(DATE_ATOM, $value);
-		} catch (TypeError $e) {
+		} catch (ValueError | TypeError) {
 			throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_DATETIME);
 		}
 

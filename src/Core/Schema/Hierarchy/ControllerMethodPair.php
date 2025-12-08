@@ -8,14 +8,11 @@ use Apitte\Core\Schema\Builder\Controller\Method;
 class ControllerMethodPair
 {
 
-	private Controller $controller;
-
-	private Method $method;
-
-	public function __construct(Controller $controller, Method $method)
+	public function __construct(
+		private readonly Controller $controller,
+		private readonly Method $method,
+	)
 	{
-		$this->controller = $controller;
-		$this->method = $method;
 	}
 
 	public function getController(): Controller

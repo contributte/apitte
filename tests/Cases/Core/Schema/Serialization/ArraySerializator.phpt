@@ -7,13 +7,13 @@ use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\SchemaBuilder;
-use Apitte\Core\Schema\Serialization\ArraySerializator;
+use Apitte\Core\Schema\Serialization\ArraySerializer;
 use Contributte\Tester\Toolkit;
 use Tester\Assert;
 
 // Serialize: success
 Toolkit::test(function (): void {
-	$serializator = new ArraySerializator();
+	$serializator = new ArraySerializer();
 
 	$builder = new SchemaBuilder();
 
@@ -153,7 +153,7 @@ Toolkit::test(function (): void {
 
 // Serialize: Exception - duplicate mask parameter - in controller
 Toolkit::test(function (): void {
-	$serializator = new ArraySerializator();
+	$serializator = new ArraySerializer();
 
 	$builder = new SchemaBuilder();
 
@@ -174,7 +174,7 @@ Toolkit::test(function (): void {
 
 // Serialize: Exception - duplicate mask parameter - in method
 Toolkit::test(function (): void {
-	$serializator = new ArraySerializator();
+	$serializator = new ArraySerializer();
 
 	$builder = new SchemaBuilder();
 
@@ -192,7 +192,7 @@ Toolkit::test(function (): void {
 
 // Serialize: Exception - Parameter in mask is not defined in path
 Toolkit::test(function (): void {
-	$serializator = new ArraySerializator();
+	$serializator = new ArraySerializer();
 
 	$builder = new SchemaBuilder();
 

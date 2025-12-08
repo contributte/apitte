@@ -29,14 +29,14 @@ class GroupPathValidation implements IValidation
 				}
 
 				// MUST: Starts with slash (/)
-				if (substr($groupPath, 0, 1) !== '/') {
+				if (!str_starts_with($groupPath, '/')) {
 					throw new InvalidSchemaException(
 						sprintf('@Path "%s" in "%s" must starts with "/" (slash).', $groupPath, $controller->getClass())
 					);
 				}
 
 				// MUST NOT: Ends with slash (/)
-				if (substr($groupPath, -1, 1) === '/') {
+				if (str_ends_with($groupPath, '/')) {
 					throw new InvalidSchemaException(
 						sprintf('@Path "%s" in "%s" must not ends with "/" (slash).', $groupPath, $controller->getClass())
 					);
@@ -78,6 +78,7 @@ class GroupPathValidation implements IValidation
 				// -> -_
 				// @regex https://regex101.com/r/APckUJ/3
 				$matches = Regex::matchAll($path, '#\{(.+)\}#U');
+
 				if ($matches !== null) {
 					foreach ($matches as $item) {
 						$match = Regex::match($item[1], '#.*([^a-zA-Z0-9\-_]+).*#');

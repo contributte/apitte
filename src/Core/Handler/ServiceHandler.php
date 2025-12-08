@@ -14,11 +14,10 @@ use Nette\DI\Container;
 class ServiceHandler implements IHandler
 {
 
-	protected Container $container;
-
-	public function __construct(Container $container)
+	public function __construct(
+		protected Container $container,
+	)
 	{
-		$this->container = $container;
 	}
 
 	public function handle(ApiRequest $request, ApiResponse $response): mixed

@@ -15,7 +15,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
 class OpenApi
 {
 
-	private string $data;
+	private readonly string $data;
 
 	public function __construct(string $data)
 	{

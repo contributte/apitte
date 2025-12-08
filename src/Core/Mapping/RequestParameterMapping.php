@@ -133,6 +133,7 @@ class RequestParameterMapping
 
 				case $parameter::IN_HEADER:
 					$headerParameterName = strtolower($parameter->getName());
+
 					// Logical check
 					if (!array_key_exists($headerParameterName, $headerParameters)) {
 						if (!$parameter->isRequired()) {

@@ -98,6 +98,7 @@ class ArrayHydrator implements IHydrator
 					$res['code'],
 					$res['description']
 				);
+
 				if (isset($res['entity'])) {
 					$response->setEntity($res['entity']);
 				}

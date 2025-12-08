@@ -9,11 +9,10 @@ use Apitte\Negotiation\Transformer\ITransformer;
 class FallbackNegotiator implements INegotiator
 {
 
-	protected ITransformer $transformer;
-
-	public function __construct(ITransformer $transformer)
+	public function __construct(
+		protected ITransformer $transformer,
+	)
 	{
-		$this->transformer = $transformer;
 	}
 
 	/**

@@ -5,15 +5,14 @@ namespace Apitte\Core\Schema;
 class EndpointNegotiation
 {
 
-	private string $suffix;
-
 	private bool $default = false;
 
 	private ?string $renderer = null;
 
-	public function __construct(string $suffix)
+	public function __construct(
+		private readonly string $suffix,
+	)
 	{
-		$this->suffix = $suffix;
 	}
 
 	public function getSuffix(): string

@@ -50,18 +50,21 @@ class CoreDecoratorPlugin extends Plugin
 
 		$requestDecoratorDefinitions = $builder->findByType(IRequestDecorator::class);
 		$requestDecoratorDefinitions = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $requestDecoratorDefinitions);
+
 		foreach ($requestDecoratorDefinitions as $decoratorDefinition) {
 			$managerDefinition->addSetup('addRequestDecorator', [$decoratorDefinition]);
 		}
 
 		$responseDecoratorDefinitions = $builder->findByType(IResponseDecorator::class);
 		$responseDecoratorDefinitions = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $responseDecoratorDefinitions);
+
 		foreach ($responseDecoratorDefinitions as $decoratorDefinition) {
 			$managerDefinition->addSetup('addResponseDecorator', [$decoratorDefinition]);
 		}
 
 		$errorDecoratorDefinitions = $builder->findByType(IErrorDecorator::class);
 		$errorDecoratorDefinitions = Helpers::sortByPriorityInTag(ApiExtension::CORE_DECORATOR_TAG, $errorDecoratorDefinitions);
+
 		foreach ($errorDecoratorDefinitions as $decoratorDefinition) {
 			$managerDefinition->addSetup('addErrorDecorator', [$decoratorDefinition]);
 		}

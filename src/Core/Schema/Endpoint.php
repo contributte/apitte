@@ -38,8 +38,6 @@ class Endpoint
 
 	private ?string $pattern = null;
 
-	private EndpointHandler $handler;
-
 	/** @var EndpointParameter[] */
 	private array $parameters = [];
 
@@ -60,9 +58,10 @@ class Endpoint
 	/** @var mixed[] */
 	private array $openApi = [];
 
-	public function __construct(EndpointHandler $handler)
+	public function __construct(
+		private readonly EndpointHandler $handler,
+	)
 	{
-		$this->handler = $handler;
 	}
 
 	/**
@@ -281,6 +280,7 @@ class Endpoint
 		}
 
 		$suffixes = [];
+
 		foreach ($this->getNegotiations() as $negotiation) {
 			$suffix = $negotiation->getSuffix();
 

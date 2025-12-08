@@ -16,11 +16,10 @@ abstract class BaseApplication implements IApplication
 		'content-type',
 	];
 
-	private IErrorHandler $errorHandler;
-
-	public function __construct(IErrorHandler $errorHandler)
+	public function __construct(
+		private readonly IErrorHandler $errorHandler,
+	)
 	{
-		$this->errorHandler = $errorHandler;
 	}
 
 	public function run(): void
@@ -55,6 +54,7 @@ abstract class BaseApplication implements IApplication
 
 		foreach ($response->getHeaders() as $name => $values) {
 			$replace = in_array(strtolower($name), self::UNIQUE_HEADERS, true);
+
 			foreach ($values as $value) {
 				header(sprintf('%s: %s', $name, $value), $replace);
 			}

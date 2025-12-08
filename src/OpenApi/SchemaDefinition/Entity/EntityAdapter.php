@@ -36,6 +36,10 @@ class EntityAdapter implements IEntityAdapter
 		if ($usesUnionType || $usesIntersectionType) {
 			$types = preg_split('#([&|])#', $type, -1, PREG_SPLIT_NO_EMPTY);
 
+			if ($types === false) {
+				throw new RuntimeException('Could not parse type ' . $type);
+			}
+
 			// Filter out duplicate definitions
 			$types = array_map(fn (string $type): string => $this->normalizeType($type), $types);
 			$types = array_unique($types);
@@ -144,7 +148,7 @@ class EntityAdapter implements IEntityAdapter
 		foreach ($properties as $property) {
 			$propertyType = $this->getPropertyType($property) ?? 'string';
 
-			// Self-reference not supported
+			// Self-reference isn't supported
 			if ($propertyType === $type) {
 				$propertyType = 'object';
 			}
@@ -205,7 +209,7 @@ class EntityAdapter implements IEntityAdapter
 	{
 		$nativeType = null;
 
-		if (PHP_VERSION_ID >= 70400 && ($type = Type::fromReflection($property)) !== null) {
+		if (($type = Type::fromReflection($property)) !== null) {
 			$nativeType = $this->getNativePropertyType($type, $property);
 
 			// If type is array/mixed or union/intersection of it, try to get more information from annotations

@@ -32,9 +32,10 @@ class SuffixNegotiator implements INegotiator
 
 		// Early return if there's no endpoint
 		$endpoint = $response->getEndpoint();
-		if ($endpoint === null)
 
-		return null;
+		if ($endpoint === null) {
+			return null;
+		}
 
 		// Get negotiations
 		$negotiations = $endpoint->getNegotiations();
@@ -85,7 +86,7 @@ class SuffixNegotiator implements INegotiator
 	 */
 	private function match(string $path, string $suffix): bool
 	{
-		return substr($path, -strlen($suffix)) === $suffix;
+		return str_ends_with($path, $suffix);
 	}
 
 }

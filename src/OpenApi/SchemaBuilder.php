@@ -30,6 +30,7 @@ class SchemaBuilder implements ISchemaBuilder
 	protected function loadDefinitions(): array
 	{
 		$data = [];
+
 		foreach ($this->definitions as $definition) {
 			$data = Helpers::merge($definition->load(), $data);
 		}

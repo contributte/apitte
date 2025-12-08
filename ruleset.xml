@@ -3,7 +3,7 @@
 	<description>Contributte</description>
 
 	<!-- Extending rulesets -->
-	<rule ref="./vendor/contributte/qa/ruleset-8.0.xml"/>
+	<rule ref="./vendor/contributte/qa/ruleset-8.2.xml"/>
 
 	<!-- Specific rules -->
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
@@ -26,7 +26,7 @@
 	</rule>
 
 	<rule ref="SlevomatCodingStandard.PHP.DisallowReference">
-		<exclude-pattern>src/Core/Schema/Serialization/ArraySerializator.php</exclude-pattern>
+		<exclude-pattern>src/Core/Schema/Serialization/ArraySerializer.php</exclude-pattern>
 		<exclude-pattern>tests/Cases/OpenApi/Schema/ExamplesTest.php</exclude-pattern>
 	</rule>
 

@@ -52,6 +52,7 @@ class OpenApiPlugin extends Plugin
 			$schemaBuilder
 				->addSetup('addDefinition', [new Statement(BaseDefinition::class)])
 				->addSetup('addDefinition', [$coreDefinition]);
+
 			foreach ($config->files as $file) {
 				if (str_ends_with($file, '.neon')) {
 					$schemaBuilder->addSetup('addDefinition', [new Statement(NeonDefinition::class, [$file])]);
@@ -99,6 +100,7 @@ class OpenApiPlugin extends Plugin
 	public function afterPluginCompile(ClassType $class): void
 	{
 		$global = $this->compiler->getExtension()->getConfig();
+
 		if (!$global->debug) {
 			return;
 		}
@@ -106,6 +108,7 @@ class OpenApiPlugin extends Plugin
 		$config = $this->config;
 
 		$initialize = $class->getMethod('initialize');
+
 		if (!$config->swaggerUi->panel) {
 			return;
 		}

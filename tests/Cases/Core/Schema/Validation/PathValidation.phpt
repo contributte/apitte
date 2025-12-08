@@ -89,10 +89,11 @@ Toolkit::test(function (): void {
 	$c1m1 = $c1->addMethod('foo1');
 	$c1m1->setPath('/{foo}/{bar}');
 	$c1m1->addHttpMethod('GET');
+
 	try {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	} catch (Throwable $e) {
+	} catch (Throwable) {
 		Assert::fail('This is fail. Parameters are OK.');
 	}
 });

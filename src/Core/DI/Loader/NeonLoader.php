@@ -11,15 +11,13 @@ use Apitte\Core\Schema\SchemaBuilder;
 class NeonLoader implements ILoader
 {
 
-	/** @var mixed[] */
-	private array $schema;
-
 	/**
 	 * @param mixed[] $schema
 	 */
-	public function __construct(array $schema)
+	public function __construct(
+		private readonly array $schema,
+	)
 	{
-		$this->schema = $schema;
 	}
 
 	public function load(SchemaBuilder $builder): SchemaBuilder

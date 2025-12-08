@@ -15,14 +15,13 @@ use stdClass;
 abstract class Plugin
 {
 
-	protected PluginCompiler $compiler;
-
 	/** @var stdClass|mixed[] */
 	protected stdClass|array $config;
 
-	public function __construct(PluginCompiler $compiler)
+	public function __construct(
+		protected PluginCompiler $compiler,
+	)
 	{
-		$this->compiler = $compiler;
 	}
 
 	abstract public static function getName(): string;
@@ -67,6 +66,7 @@ abstract class Plugin
 		$processor->onNewContext[] = static function (Context $context) use ($name): void {
 			$context->path = [$name];
 		};
+
 		try {
 			$this->config = $processor->process($schema, $config);
 		} catch (ValidationException $exception) {

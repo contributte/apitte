@@ -58,7 +58,7 @@ class CsvTransformer extends AbstractTransformer
 
 		foreach ($rows as $row) {
 			foreach ($row as $item) {
-				if (is_array($item) || !is_scalar($item)) {
+				if (!is_scalar($item)) {
 					return 'CSV need flat array';
 				}
 			}

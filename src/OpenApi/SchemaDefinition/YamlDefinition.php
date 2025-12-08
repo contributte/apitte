@@ -7,11 +7,10 @@ use Symfony\Component\Yaml\Yaml;
 class YamlDefinition implements IDefinition
 {
 
-	private string $file;
-
-	public function __construct(string $file)
+	public function __construct(
+		private readonly string $file,
+	)
 	{
-		$this->file = $file;
 	}
 
 	/**
@@ -20,6 +19,7 @@ class YamlDefinition implements IDefinition
 	public function load(): array
 	{
 		$decode = Yaml::parseFile($this->file);
+
 		if ($decode === false || $decode === null) {
 			return [];
 		}

@@ -16,15 +16,13 @@ use Doctrine\Common\Annotations\AnnotationException;
 class Path
 {
 
-	private string $path;
-
-	public function __construct(string $path)
+	public function __construct(
+		private readonly string $path,
+	)
 	{
 		if ($path === '') {
 			throw new AnnotationException('Empty @Path given');
 		}
-
-		$this->path = $path;
 	}
 
 	public function getPath(): string

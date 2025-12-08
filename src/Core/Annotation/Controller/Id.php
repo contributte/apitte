@@ -16,15 +16,13 @@ use Doctrine\Common\Annotations\AnnotationException;
 class Id
 {
 
-	private string $name;
-
-	public function __construct(string $name)
+	public function __construct(
+		private readonly string $name,
+	)
 	{
 		if ($name === '') {
 			throw new AnnotationException('Empty @Id given');
 		}
-
-		$this->name = $name;
 	}
 
 	public function getName(): string

@@ -24,11 +24,11 @@ class BasicValidator implements IEntityValidator
 		$violations = $this->validateProperties($entity);
 
 		if ($violations !== []) {
-			$fields = [];
 
-			foreach ($violations as $property => $messages) {
-				$fields[$property] = count($messages) > 1 ? $messages : $messages[0];
-			}
+			$fields = array_map(
+				static fn ($messages) => count($messages) > 1 ? $messages : $messages[0],
+				$violations,
+			);
 
 			throw ValidationException::create()
 				->withFields($fields);

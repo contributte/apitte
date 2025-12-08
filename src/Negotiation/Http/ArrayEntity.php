@@ -24,7 +24,7 @@ class ArrayEntity extends AbstractEntity implements IteratorAggregate, Countable
 
 	/**
 	 * @param array<TKey, TValue> $data
-	 * @return static<TKey>
+	 * @return static<TKey, TValue>
 	 */
 	public static function from(array $data): static
 	{

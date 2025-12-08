@@ -5,8 +5,6 @@ namespace Apitte\Core\Schema\Builder\Controller;
 class Controller
 {
 
-	private string $class;
-
 	/** @var Method[] */
 	private array $methods = [];
 
@@ -26,9 +24,10 @@ class Controller
 	/** @var mixed[] */
 	private array $openApi = [];
 
-	public function __construct(string $class)
+	public function __construct(
+		private readonly string $class,
+	)
 	{
-		$this->class = $class;
 	}
 
 	public function getClass(): string

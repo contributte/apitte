@@ -9,11 +9,10 @@ use Apitte\Core\Mapping\RequestParameterMapping;
 class RequestParametersDecorator implements IRequestDecorator
 {
 
-	protected RequestParameterMapping $mapping;
-
-	public function __construct(RequestParameterMapping $mapping)
+	public function __construct(
+		protected RequestParameterMapping $mapping,
+	)
 	{
-		$this->mapping = $mapping;
 	}
 
 	public function decorateRequest(ApiRequest $request, ApiResponse $response): ApiRequest

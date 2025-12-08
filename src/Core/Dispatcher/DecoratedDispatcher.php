@@ -23,13 +23,13 @@ use Throwable;
 class DecoratedDispatcher extends CoreDispatcher
 {
 
-	protected DecoratorManager $decoratorManager;
-
-	public function __construct(IRouter $router, IHandler $handler, DecoratorManager $decoratorManager)
+	public function __construct(
+		IRouter $router,
+		IHandler $handler,
+		protected DecoratorManager $decoratorManager,
+	)
 	{
 		parent::__construct($router, $handler);
-
-		$this->decoratorManager = $decoratorManager;
 	}
 
 	public function dispatch(ApiRequest $request, ApiResponse $response): ApiResponse
@@ -67,6 +67,7 @@ class DecoratedDispatcher extends CoreDispatcher
 	{
 		// Pass endpoint to response
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, null);
+
 		if ($endpoint !== null) {
 			$response = $response->withEndpoint($endpoint);
 		}

@@ -17,6 +17,7 @@ class DualReaderFactory
 	public function create(): Reader
 	{
 		$annotationReader = new AnnotationReader();
+
 		if (method_exists(AnnotationRegistry::class, 'registerUniqueLoader')) {
 			AnnotationRegistry::registerUniqueLoader('class_exists');
 		}

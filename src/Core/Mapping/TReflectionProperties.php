@@ -21,6 +21,7 @@ trait TReflectionProperties
 			$class = static::class;
 
 			$defaultProperties = $rf->getDefaultProperties();
+
 			foreach ($rf->getProperties() as $property) {
 				// If property is not from the latest child, then skip it.
 				if ($property->getDeclaringClass()->getName() !== $class) {

@@ -11,7 +11,7 @@ use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Utils\Helpers;
 use Apitte\Core\Utils\Regex;
 
-class ArraySerializator implements ISerializator
+class ArraySerializer implements ISerializer
 {
 
 	/**
@@ -115,10 +115,8 @@ class ArraySerializator implements ISerializator
 		$mask = $endpoint['mask'];
 		$maskParameters = [];
 
-		/** @var EndpointParameter[] $pathParameters */
 		$pathParameters = array_filter($method->getParameters(), static fn (EndpointParameter $parameter): bool => $parameter->getIn() === EndpointParameter::IN_PATH);
 
-		/** @var EndpointParameter[] $notPathParameters */
 		$notPathParameters = array_filter($method->getParameters(), static fn (EndpointParameter $parameter): bool => $parameter->getIn() !== EndpointParameter::IN_PATH);
 
 		// Collect variable parameters from URL
@@ -251,6 +249,7 @@ class ArraySerializator implements ISerializator
 				'code' => $response->getCode(),
 				'description' => $response->getDescription(),
 			];
+
 			if ($response->getEntity() !== null) {
 				$responseData['entity'] = $response->getEntity();
 			}

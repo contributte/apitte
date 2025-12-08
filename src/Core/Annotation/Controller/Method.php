@@ -17,7 +17,7 @@ class Method
 {
 
 	/** @var string[] */
-	private array $methods = [];
+	private readonly array $methods;
 
 	/**
 	 * @param string[]|string $methods
@@ -29,7 +29,7 @@ class Method
 		}
 
 		// Wrap single given method into array
-		if (! is_array($methods)) {
+		if (!is_array($methods)) {
 			$methods = [$methods];
 		}
 

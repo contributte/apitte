@@ -8,11 +8,10 @@ use Nette\Neon\Neon;
 class NeonDefinition implements IDefinition
 {
 
-	private string $file;
-
-	public function __construct(string $file)
+	public function __construct(
+		private readonly string $file,
+	)
 	{
-		$this->file = $file;
 	}
 
 	/**
@@ -21,11 +20,13 @@ class NeonDefinition implements IDefinition
 	public function load(): array
 	{
 		$input = file_get_contents($this->file);
+
 		if ($input === false) {
 			throw new InvalidStateException('Cant read file ' . $this->file);
 		}
 
 		$decode = Neon::decode($input);
+
 		if ($decode === false || $decode === null) {
 			return [];
 		}

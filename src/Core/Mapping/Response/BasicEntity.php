@@ -15,7 +15,7 @@ abstract class BasicEntity extends AbstractEntity
 	use TReflectionProperties;
 
 	/**
-	 * @return array<TKey, array<string, mixed>>
+	 * @return array<string, array<string, mixed>>
 	 */
 	public function getResponseProperties(): array
 	{

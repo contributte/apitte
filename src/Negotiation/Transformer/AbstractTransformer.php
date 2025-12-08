@@ -12,6 +12,7 @@ abstract class AbstractTransformer implements ITransformer
 	protected function getEntity(ApiResponse $response): AbstractEntity
 	{
 		$entity = $response->getEntity();
+
 		if ($entity === null) {
 			throw new InvalidStateException('Entity is required');
 		}

@@ -33,10 +33,6 @@ class EndpointParameter
 		self::IN_PATH,
 	];
 
-	private string $name;
-
-	private string $type;
-
 	private ?string $description = null;
 
 	private string $in = self::IN_PATH;
@@ -50,10 +46,11 @@ class EndpointParameter
 	/** @var list<string|int>|null */
 	private ?array $enum = null;
 
-	public function __construct(string $name, string $type = self::TYPE_STRING)
+	public function __construct(
+		private readonly string $name,
+		private readonly string $type = self::TYPE_STRING,
+	)
 	{
-		$this->name = $name;
-		$this->type = $type;
 	}
 
 	public function getName(): string
@@ -68,21 +65,13 @@ class EndpointParameter
 
 	public function getSchemaType(): string
 	{
-		switch ($this->type) {
-			case self::TYPE_STRING:
-			case self::TYPE_FLOAT:
-			case self::TYPE_DATETIME:
-				return $this->type;
-			case self::TYPE_BOOLEAN:
-				return 'boolean';
-			case self::TYPE_INTEGER:
-				return 'integer';
-			case self::TYPE_ENUM:
-				return 'string';
-			default:
-				// custom type
-				return 'string';
-		}
+		return match ($this->type) {
+			self::TYPE_STRING, self::TYPE_FLOAT, self::TYPE_DATETIME => $this->type,
+			self::TYPE_BOOLEAN => 'boolean',
+			self::TYPE_INTEGER => 'integer',
+			self::TYPE_ENUM => 'string',
+			default => 'string',
+		};
 	}
 
 	public function getDescription(): ?string

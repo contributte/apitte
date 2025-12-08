@@ -13,16 +13,13 @@ use Throwable;
 class SnapshotException extends RuntimeException
 {
 
-	protected ApiRequest $request;
-
-	protected ApiResponse $response;
-
-	public function __construct(Throwable $exception, ApiRequest $request, ApiResponse $response)
+	public function __construct(
+		Throwable $exception,
+		protected ApiRequest $request,
+		protected ApiResponse $response,
+	)
 	{
 		parent::__construct($exception->getMessage(), is_string($exception->getCode()) ? -1 : $exception->getCode(), $exception);
-
-		$this->request = $request;
-		$this->response = $response;
 	}
 
 	public function getRequest(): ApiRequest

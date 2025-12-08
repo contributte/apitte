@@ -15,14 +15,11 @@ use Throwable;
 class ApiMiddleware implements IMiddleware
 {
 
-	protected IDispatcher $dispatcher;
-
-	protected IErrorHandler $errorHandler;
-
-	public function __construct(IDispatcher $dispatcher, IErrorHandler $errorHandler)
+	public function __construct(
+		protected IDispatcher $dispatcher,
+		protected IErrorHandler $errorHandler,
+	)
 	{
-		$this->dispatcher = $dispatcher;
-		$this->errorHandler = $errorHandler;
 	}
 
 	public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
@@ -43,9 +40,7 @@ class ApiMiddleware implements IMiddleware
 		}
 
 		// Pass response to next middleware
-		$response = $next($request, $response);
-
-		return $response;
+		return $next($request, $response);
 	}
 
 }

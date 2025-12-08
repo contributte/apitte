@@ -15,7 +15,7 @@ class Negotiations
 {
 
 	/** @var Negotiation[] */
-	private array $negotiations = [];
+	private readonly array $negotiations;
 
 	/**
 	 * @param Negotiation[]|Negotiation $negotiations

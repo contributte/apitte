@@ -17,35 +17,18 @@ use Doctrine\Common\Annotations\AnnotationException;
 class RequestParameter
 {
 
-	private string $name;
-
-	private string $type;
-
-	private ?string $description;
-
-	private string $in;
-
-	private bool $required;
-
-	private bool $deprecated;
-
-	private bool $allowEmpty;
-
-	/** @var list<string|int>|null */
-	private ?array $enum;
-
 	/**
 	 * @param list<string|int>|null $enum
 	 */
 	public function __construct(
-		string $name,
-		string $type,
-		string $in = EndpointParameter::IN_PATH,
-		bool $required = true,
-		bool $allowEmpty = false,
-		bool $deprecated = false,
-		?string $description = null,
-		?array $enum = null
+		private readonly string $name,
+		private readonly string $type,
+		private readonly string $in = EndpointParameter::IN_PATH,
+		private readonly bool $required = true,
+		private readonly bool $allowEmpty = false,
+		private readonly bool $deprecated = false,
+		private readonly ?string $description = null,
+		private readonly ?array $enum = null
 	)
 	{
 		if ($name === '') {
@@ -59,15 +42,6 @@ class RequestParameter
 		if (!in_array($in, EndpointParameter::IN, true)) {
 			throw new AnnotationException('Invalid @RequestParameter in given');
 		}
-
-		$this->name = $name;
-		$this->type = $type;
-		$this->required = $required;
-		$this->allowEmpty = $allowEmpty;
-		$this->deprecated = $deprecated;
-		$this->description = $description;
-		$this->in = $in;
-		$this->enum = $enum;
 	}
 
 	public function getName(): string

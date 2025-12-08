@@ -13,14 +13,11 @@ use Psr\Http\Message\ResponseInterface;
 class CoreDispatcher implements IDispatcher
 {
 
-	protected IRouter $router;
-
-	protected IHandler $handler;
-
-	public function __construct(IRouter $router, IHandler $handler)
+	public function __construct(
+		protected IRouter $router,
+		protected IHandler $handler,
+	)
 	{
-		$this->router = $router;
-		$this->handler = $handler;
 	}
 
 	public function dispatch(ApiRequest $request, ApiResponse $response): ApiResponse

@@ -8,11 +8,10 @@ use Nette\Utils\Json;
 class JsonDefinition implements IDefinition
 {
 
-	private string $file;
-
-	public function __construct(string $file)
+	public function __construct(
+		private readonly string $file,
+	)
 	{
-		$this->file = $file;
 	}
 
 	/**
@@ -21,11 +20,13 @@ class JsonDefinition implements IDefinition
 	public function load(): array
 	{
 		$content = file_get_contents($this->file);
+
 		if ($content === false) {
 			throw new InvalidStateException('Cant read file ' . $this->file);
 		}
 
 		$decode = Json::decode($content, forceArrays: true);
+
 		if ($decode === false || $decode === null) {
 			return [];
 		}

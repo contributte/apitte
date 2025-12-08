@@ -8,11 +8,10 @@ use Tracy\IBarPanel;
 class ApiPanel implements IBarPanel
 {
 
-	private Schema $schema;
-
-	public function __construct(Schema $schema)
+	public function __construct(
+		private readonly Schema $schema,
+	)
 	{
-		$this->schema = $schema;
 	}
 
 	/**

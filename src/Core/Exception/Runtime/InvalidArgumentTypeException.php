@@ -13,16 +13,12 @@ class InvalidArgumentTypeException extends RuntimeException
 	public const TYPE_DATETIME = 'datetime';
 	public const TYPE_ENUM = 'enum';
 
-	private string $type;
-
-	private ?string $description;
-
-	public function __construct(string $type, ?string $description = null)
+	public function __construct(
+		private readonly string $type,
+		private readonly ?string $description = null,
+	)
 	{
 		parent::__construct();
-
-		$this->type = $type;
-		$this->description = $description;
 	}
 
 	public function getType(): string

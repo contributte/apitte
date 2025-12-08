@@ -7,18 +7,16 @@ use Apitte\Core\Schema\Builder\Controller\Controller;
 class HierarchyBuilder
 {
 
-	/** @var Controller[] */
-	private array $controllers;
-
 	/** @var HierarchicalNode[] */
 	private array $nodes = [];
 
 	/**
 	 * @param Controller[] $controllers
 	 */
-	public function __construct(array $controllers)
+	public function __construct(
+		private readonly array $controllers,
+	)
 	{
-		$this->controllers = $controllers;
 	}
 
 	public function getHierarchy(): HierarchicalNode
@@ -33,6 +31,7 @@ class HierarchyBuilder
 			foreach ($controller->getMethods() as $method) {
 				$methodPathParts = $this->splitPathParts($method->getPath());
 				$allPathParts = array_merge($controllerPathParts, $methodPathParts);
+
 				if ($allPathParts === []) {
 					// Full path to endpoint is just /, it's a root node
 					$rootNode->addEndpoint(new ControllerMethodPair($controller, $method));
@@ -40,6 +39,7 @@ class HierarchyBuilder
 					$lastPathPartKey = array_keys($allPathParts)[count($allPathParts) - 1]; // array_key_last for php < 7.3.0
 
 					$previousNode = $rootNode;
+
 					foreach ($allPathParts as $key => $part) {
 						$node = $previousNode->addNode($part);
 

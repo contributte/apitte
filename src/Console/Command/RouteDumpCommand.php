@@ -21,13 +21,11 @@ class RouteDumpCommand extends Command
 
 	private const TABLE_HEADER = ['Method', 'Path', 'Handler', ' ', 'Parameters'];
 
-	private Schema $schema;
-
-	public function __construct(Schema $schema)
+	public function __construct(
+		private readonly Schema $schema,
+	)
 	{
 		parent::__construct();
-
-		$this->schema = $schema;
 	}
 
 	protected function configure(): void
@@ -59,6 +57,7 @@ class RouteDumpCommand extends Command
 
 		/** @var Endpoint[][] $endpointsByHandler */
 		$endpointsByHandler = [];
+
 		foreach ($endpoints as $endpoint) {
 			$endpointsByHandler[$endpoint->getHandler()->getClass()][] = $endpoint;
 		}
@@ -115,6 +114,7 @@ class RouteDumpCommand extends Command
 
 		foreach ($paramsByIn as $in => $params) {
 			$result .= sprintf('<fg=cyan>%s</>', $in) . ': ' . implode(', ', $params);
+
 			if ($params !== end($paramsByIn)) {
 				$result .= ' | ';
 			}

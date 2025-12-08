@@ -12,11 +12,10 @@ use Apitte\Negotiation\ContentNegotiation;
 class ResponseEntityDecorator implements IResponseDecorator, IErrorDecorator
 {
 
-	private ContentNegotiation $negotiation;
-
-	public function __construct(ContentNegotiation $negotiation)
+	public function __construct(
+		private readonly ContentNegotiation $negotiation,
+	)
 	{
-		$this->negotiation = $negotiation;
 	}
 
 	public function decorateError(ApiRequest $request, ApiResponse $response, ApiException $error): ApiResponse

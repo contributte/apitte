@@ -5,16 +5,13 @@ namespace Apitte\Core\Schema;
 class EndpointResponse
 {
 
-	private string $code;
-
-	private string $description;
-
 	private ?string $entity = null;
 
-	public function __construct(string $code, string $description)
+	public function __construct(
+		private readonly string $code,
+		private readonly string $description,
+	)
 	{
-		$this->code = $code;
-		$this->description = $description;
 	}
 
 	public function setEntity(?string $entity): void

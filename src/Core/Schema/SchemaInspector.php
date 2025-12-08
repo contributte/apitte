@@ -5,14 +5,13 @@ namespace Apitte\Core\Schema;
 class SchemaInspector
 {
 
-	private Schema $schema;
-
 	/** @var Endpoint[][] */
 	private array $cache = [];
 
-	public function __construct(Schema $schema)
+	public function __construct(
+		private readonly Schema $schema,
+	)
 	{
-		$this->schema = $schema;
 	}
 
 	/**
@@ -25,8 +24,9 @@ class SchemaInspector
 
 		if (!isset($this->cache[$key])) {
 			$items = [];
+
 			foreach ($endpoints as $endpoint) {
-				// Skip if endpoint does not have a tag
+				// Skip if the endpoint does not have a tag
 				if (!$endpoint->hasTag($name)) {
 					continue;
 				}

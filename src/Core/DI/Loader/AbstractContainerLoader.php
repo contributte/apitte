@@ -9,11 +9,10 @@ use Nette\DI\Definitions\Definition;
 abstract class AbstractContainerLoader implements ILoader
 {
 
-	private ContainerBuilder $builder;
-
-	public function __construct(ContainerBuilder $builder)
+	public function __construct(
+		private readonly ContainerBuilder $builder,
+	)
 	{
-		$this->builder = $builder;
 	}
 
 	/**

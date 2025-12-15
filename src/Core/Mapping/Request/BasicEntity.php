@@ -15,7 +15,7 @@ abstract class BasicEntity extends AbstractEntity
 	use TReflectionProperties;
 
 	/**
-	 * @return mixed[]
+	 * @return array<string, array{name: string, type: mixed, defaultValue: mixed}>
 	 */
 	public function getRequestProperties(): array
 	{
@@ -82,6 +82,7 @@ abstract class BasicEntity extends AbstractEntity
 	protected function fromBodyRequest(ApiRequest $request): self
 	{
 		try {
+			/** @var array<string, mixed> $body */
 			$body = (array) $request->getJsonBodyCopy(true);
 		} catch (JsonException $ex) {
 			throw new ClientErrorException('Invalid json data', 400, $ex);

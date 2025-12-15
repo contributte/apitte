@@ -20,6 +20,7 @@ This knowledge could make your life easier
 - [Decorators](decorators.md)
 - [Dispatcher](dispatcher.md)
 - [Errors](errors.md)
+- [Link Generator](link-generator.md)
 - [Request and response](request-and-response.md)
 - [Router](router.md)
 - [Schema](schema.md)

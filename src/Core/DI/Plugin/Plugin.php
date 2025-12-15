@@ -68,7 +68,9 @@ abstract class Plugin
 			$context->path = [$name];
 		};
 		try {
-			$this->config = $processor->process($schema, $config);
+			/** @var stdClass|mixed[] $processedConfig */
+			$processedConfig = $processor->process($schema, $config);
+			$this->config = $processedConfig;
 		} catch (ValidationException $exception) {
 			throw new InvalidConfigurationException($exception->getMessage());
 		}

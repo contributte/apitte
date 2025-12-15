@@ -14,6 +14,7 @@ use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Mapping\Response\IResponseEntity;
 use Apitte\Core\Router\IRouter;
+use Apitte\Core\Schema\Endpoint;
 use Apitte\Negotiation\Http\ArrayEntity;
 use Apitte\Negotiation\Http\MappingEntity;
 use Apitte\Negotiation\Http\ScalarEntity;
@@ -67,7 +68,7 @@ class DecoratedDispatcher extends CoreDispatcher
 	{
 		// Pass endpoint to response
 		$endpoint = $request->getAttribute(RequestAttributes::ATTR_ENDPOINT, null);
-		if ($endpoint !== null) {
+		if ($endpoint instanceof Endpoint) {
 			$response = $response->withEndpoint($endpoint);
 		}
 

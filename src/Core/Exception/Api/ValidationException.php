@@ -33,11 +33,11 @@ class ValidationException extends ClientErrorException
 	{
 		foreach ($fields as $key => $value) {
 			if (is_numeric($key)) {
-				throw new InvalidArgumentException(sprintf('Field key must be string "%s" give.', $key));
+				throw new InvalidArgumentException(sprintf('Field key must be string "%s" given.', (string) $key));
 			}
 
 			if (!is_array($value)) {
-				throw new InvalidArgumentException(sprintf('Field values must be array "%s" give.', $value));
+				throw new InvalidArgumentException(sprintf('Field values must be array, %s given.', get_debug_type($value)));
 			}
 		}
 

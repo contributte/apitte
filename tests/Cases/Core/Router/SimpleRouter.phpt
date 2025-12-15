@@ -136,3 +136,139 @@ Toolkit::test(function (): void {
 
 	Assert::null($matched);
 });
+
+// Match JSON:API style query parameters with bracket notation (page[number], page[size])
+Toolkit::test(function (): void {
+	$handler = new EndpointHandler('class', 'method');
+
+	$endpoint = new Endpoint($handler);
+	$endpoint->addMethod('GET');
+	$endpoint->setPattern('#^/users#');
+
+	// JSON:API style pagination parameters
+	$pageNumber = new EndpointParameter('page[number]', EndpointParameter::TYPE_STRING);
+	$pageNumber->setIn(EndpointParameter::IN_QUERY);
+	$endpoint->addParameter($pageNumber);
+
+	$pageSize = new EndpointParameter('page[size]', EndpointParameter::TYPE_STRING);
+	$pageSize->setIn(EndpointParameter::IN_QUERY);
+	$endpoint->addParameter($pageSize);
+
+	$schema = new Schema();
+	$schema->addEndpoint($endpoint);
+
+	// Simulate PHP parsing of ?page[number]=5&page[size]=10
+	// PHP parses this into nested array: ['page' => ['number' => '5', 'size' => '10']]
+	$request = Psr7ServerRequestFactory::fromSuperGlobal()
+		->withNewUri('http://example.com/users')
+		->withQueryParams(['page' => ['number' => '5', 'size' => '10']]);
+	$request = new ApiRequest($request);
+
+	$router = new SimpleRouter($schema);
+	$matched = $router->match($request);
+
+	Assert::type($request, $matched);
+	$params = $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS);
+	Assert::equal('5', $params['page[number]']);
+	Assert::equal('10', $params['page[size]']);
+});
+
+// Match JSON:API style filter parameters (filter[status], filter[user][id])
+Toolkit::test(function (): void {
+	$handler = new EndpointHandler('class', 'method');
+
+	$endpoint = new Endpoint($handler);
+	$endpoint->addMethod('GET');
+	$endpoint->setPattern('#^/orders#');
+
+	// JSON:API style filter parameters
+	$filterStatus = new EndpointParameter('filter[status]', EndpointParameter::TYPE_STRING);
+	$filterStatus->setIn(EndpointParameter::IN_QUERY);
+	$endpoint->addParameter($filterStatus);
+
+	$filterUserId = new EndpointParameter('filter[user][id]', EndpointParameter::TYPE_STRING);
+	$filterUserId->setIn(EndpointParameter::IN_QUERY);
+	$endpoint->addParameter($filterUserId);
+
+	$schema = new Schema();
+	$schema->addEndpoint($endpoint);
+
+	// Simulate PHP parsing of ?filter[status]=active&filter[user][id]=123
+	$request = Psr7ServerRequestFactory::fromSuperGlobal()
+		->withNewUri('http://example.com/orders')
+		->withQueryParams([
+			'filter' => [
+				'status' => 'active',
+				'user' => ['id' => '123'],
+			],
+		]);
+	$request = new ApiRequest($request);
+
+	$router = new SimpleRouter($schema);
+	$matched = $router->match($request);
+
+	Assert::type($request, $matched);
+	$params = $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS);
+	Assert::equal('active', $params['filter[status]']);
+	Assert::equal('123', $params['filter[user][id]']);
+});
+
+// Match colon notation query parameters (page:number)
+Toolkit::test(function (): void {
+	$handler = new EndpointHandler('class', 'method');
+
+	$endpoint = new Endpoint($handler);
+	$endpoint->addMethod('GET');
+	$endpoint->setPattern('#^/items#');
+
+	// Colon notation parameters
+	$pageNumber = new EndpointParameter('page:number', EndpointParameter::TYPE_STRING);
+	$pageNumber->setIn(EndpointParameter::IN_QUERY);
+	$endpoint->addParameter($pageNumber);
+
+	$schema = new Schema();
+	$schema->addEndpoint($endpoint);
+
+	// For colon notation, the data is still nested (application-specific parsing)
+	$request = Psr7ServerRequestFactory::fromSuperGlobal()
+		->withNewUri('http://example.com/items')
+		->withQueryParams(['page' => ['number' => '3']]);
+	$request = new ApiRequest($request);
+
+	$router = new SimpleRouter($schema);
+	$matched = $router->match($request);
+
+	Assert::type($request, $matched);
+	$params = $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS);
+	Assert::equal('3', $params['page:number']);
+});
+
+// Missing optional JSON:API parameter returns null
+Toolkit::test(function (): void {
+	$handler = new EndpointHandler('class', 'method');
+
+	$endpoint = new Endpoint($handler);
+	$endpoint->addMethod('GET');
+	$endpoint->setPattern('#^/users#');
+
+	$pageNumber = new EndpointParameter('page[number]', EndpointParameter::TYPE_STRING);
+	$pageNumber->setIn(EndpointParameter::IN_QUERY);
+	$pageNumber->setRequired(false);
+	$endpoint->addParameter($pageNumber);
+
+	$schema = new Schema();
+	$schema->addEndpoint($endpoint);
+
+	// No query params provided
+	$request = Psr7ServerRequestFactory::fromSuperGlobal()
+		->withNewUri('http://example.com/users')
+		->withQueryParams([]);
+	$request = new ApiRequest($request);
+
+	$router = new SimpleRouter($schema);
+	$matched = $router->match($request);
+
+	Assert::type($request, $matched);
+	$params = $matched->getAttribute(RequestAttributes::ATTR_PARAMETERS);
+	Assert::null($params['page[number]']);
+});

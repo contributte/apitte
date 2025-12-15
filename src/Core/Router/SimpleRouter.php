@@ -8,6 +8,7 @@ use Apitte\Core\Http\RequestAttributes;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\Schema;
+use Apitte\Core\Utils\NestedParameterResolver;
 use Apitte\Core\Utils\Regex;
 
 class SimpleRouter implements IRouter
@@ -78,6 +79,7 @@ class SimpleRouter implements IRouter
 		$url = '/' . trim($url, '/');
 
 		// Try to match against the pattern
+		/** @var array<string, string>|null $match */
 		$match = Regex::match($url, $endpoint->getPattern());
 
 		// Skip if there's no match
@@ -90,14 +92,16 @@ class SimpleRouter implements IRouter
 		// Fill path parameters with matched variables
 		foreach ($endpoint->getParametersByIn(EndpointParameter::IN_PATH) as $param) {
 			$name = $param->getName();
-			$parameters[$name] = $match[$name];
+			$parameters[$name] = $match[$name] ?? null;
 		}
 
 		// Fill query parameters with query params
+		// Supports JSON:API style nested parameters (e.g., page[number], filter[status], page:number)
 		$queryParams = $request->getQueryParams();
 		foreach ($endpoint->getParametersByIn(EndpointParameter::IN_QUERY) as $param) {
 			$name = $param->getName();
-			$parameters[$name] = $queryParams[$name] ?? null;
+			// Use NestedParameterResolver for bracket/colon notation support
+			$parameters[$name] = NestedParameterResolver::getValue($queryParams, $name);
 		}
 
 		// Set attributes to request

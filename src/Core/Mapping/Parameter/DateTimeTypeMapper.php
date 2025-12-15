@@ -14,14 +14,18 @@ class DateTimeTypeMapper implements ITypeMapper
 	 */
 	public function normalize(mixed $value, array $options = []): ?DateTimeImmutable
 	{
+		if (!is_string($value)) {
+			throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_DATETIME);
+		}
+
 		try {
-			$value = DateTimeImmutable::createFromFormat(DATE_ATOM, $value);
+			$result = DateTimeImmutable::createFromFormat(DATE_ATOM, $value);
 		} catch (TypeError $e) {
 			throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_DATETIME);
 		}
 
-		if ($value !== false) {
-			return $value;
+		if ($result !== false) {
+			return $result;
 		}
 
 		throw new InvalidArgumentTypeException(InvalidArgumentTypeException::TYPE_DATETIME);

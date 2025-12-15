@@ -3,7 +3,6 @@
 namespace Apitte\Core\Schema\Serialization;
 
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
-use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Endpoint;
 use Apitte\Core\Schema\EndpointHandler;
 use Apitte\Core\Schema\EndpointNegotiation;
@@ -32,14 +31,23 @@ class ArrayHydrator implements IHydrator
 	}
 
 	/**
-	 * @param mixed[] $data
+	 * @param array<string, mixed> $data
+	 * @phpstan-param array{
+	 *     handler: array{class: class-string, method: string},
+	 *     methods: string[],
+	 *     mask: string,
+	 *     id?: string,
+	 *     tags?: array<string, mixed>,
+	 *     attributes?: array{pattern?: string},
+	 *     parameters?: array<int, array{name: string, type: string, description: ?string, in: string, required: bool, deprecated: bool, allowEmpty: bool, enum?: list<string|int>|null}>,
+	 *     requestBody?: array{description: ?string, entity: ?string, required: bool, validation: bool},
+	 *     responses?: array<int, array{code: string, description: string, entity?: string}>,
+	 *     openApi?: mixed[],
+	 *     negotiations?: array<int, array{suffix: string, default: bool, renderer: ?string}>
+	 * } $data
 	 */
 	private function hydrateEndpoint(array $data): Endpoint
 	{
-		if (!isset($data['handler'])) {
-			throw new InvalidStateException("Schema route 'handler' is required");
-		}
-
 		$handler = new EndpointHandler(
 			$data['handler']['class'],
 			$data['handler']['method']

@@ -13,17 +13,29 @@ class ApiRequest extends ProxyRequest
 
 	public function hasParameter(string $name): bool
 	{
-		return array_key_exists($name, $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []));
+		/** @var array<string, mixed> $params */
+		$params = $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []);
+
+		return array_key_exists($name, $params);
 	}
 
 	public function getParameter(string $name, mixed $default = null): mixed
 	{
-		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, [])[$name] ?? $default;
+		/** @var array<string, mixed> $params */
+		$params = $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []);
+
+		return $params[$name] ?? $default;
 	}
 
-	public function getParameters(): mixed
+	/**
+	 * @return array<string, mixed>
+	 */
+	public function getParameters(): array
 	{
-		return $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []);
+		/** @var array<string, mixed> $params */
+		$params = $this->getAttribute(RequestAttributes::ATTR_PARAMETERS, []);
+
+		return $params;
 	}
 
 	public function getEntity(mixed $default = null): mixed

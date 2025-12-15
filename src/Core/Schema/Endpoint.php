@@ -276,7 +276,7 @@ class Endpoint
 	{
 		$rawPattern = $this->getAttribute('pattern');
 
-		if ($rawPattern === null) {
+		if (!is_string($rawPattern)) {
 			throw new InvalidStateException('Pattern attribute is required');
 		}
 

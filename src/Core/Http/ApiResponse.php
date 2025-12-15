@@ -116,7 +116,9 @@ class ApiResponse extends ProxyResponse
 
 	public function getEntity(): ?AbstractEntity
 	{
-		return $this->getAttribute(ResponseAttributes::ATTR_ENTITY, null);
+		$entity = $this->getAttribute(ResponseAttributes::ATTR_ENTITY, null);
+
+		return $entity instanceof AbstractEntity ? $entity : null;
 	}
 
 	/**
@@ -129,7 +131,9 @@ class ApiResponse extends ProxyResponse
 
 	public function getEndpoint(): ?Endpoint
 	{
-		return $this->getAttribute(ResponseAttributes::ATTR_ENDPOINT, null);
+		$endpoint = $this->getAttribute(ResponseAttributes::ATTR_ENDPOINT, null);
+
+		return $endpoint instanceof Endpoint ? $endpoint : null;
 	}
 
 	/**

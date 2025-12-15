@@ -112,6 +112,7 @@ class ArraySerializator implements ISerializator
 	 */
 	private function serializePattern(array &$endpoint, Controller $controller, Method $method): void
 	{
+		/** @var string $mask */
 		$mask = $endpoint['mask'];
 		$maskParameters = [];
 

@@ -16,16 +16,12 @@ class Helpers
 		// Sort by priority
 		uasort($definitions, static function (Definition $a, Definition $b) use ($tagname, $default): int {
 			$tag1 = $a->getTag($tagname);
-			$p1 = $tag1 !== null && isset($tag1['priority']) ? $tag1['priority'] : $default;
+			$p1 = is_array($tag1) && isset($tag1['priority']) ? (int) $tag1['priority'] : $default;
 
 			$tag2 = $b->getTag($tagname);
-			$p2 = $tag2 !== null && isset($tag2['priority']) ? $tag2['priority'] : $default;
+			$p2 = is_array($tag2) && isset($tag2['priority']) ? (int) $tag2['priority'] : $default;
 
-			if ($p1 === $p2) {
-				return 0;
-			}
-
-			return ($p1 < $p2) ? -1 : 1;
+			return $p1 <=> $p2;
 		});
 
 		return $definitions;

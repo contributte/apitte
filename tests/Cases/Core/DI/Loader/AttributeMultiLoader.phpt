@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
-use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
+use Apitte\Core\DI\Loader\AttributeLoader;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\EndpointParameter;
 use Apitte\Core\Schema\SchemaBuilder;
@@ -12,19 +12,16 @@ use Tester\Assert;
 use Tests\Fixtures\Controllers\AnnotationMultiController;
 use Tests\Fixtures\Controllers\AttributeMultiController;
 
-// Parse annotations
+// Parse attributes
 Toolkit::test(function (): void {
 	$builder = new ContainerBuilder();
 	$builder->addDefinition('annotation_multi_controller')
 		->setType(AnnotationMultiController::class);
 
-	// include attribute controller only on PHP 8.0 and up
-	if (PHP_VERSION_ID >= 80000) {
-		$builder->addDefinition('attribute_multi_controller')
-			->setType(AttributeMultiController::class);
-	}
+	$builder->addDefinition('attribute_multi_controller')
+		->setType(AttributeMultiController::class);
 
-	$loader = new DoctrineAnnotationLoader($builder);
+	$loader = new AttributeLoader($builder);
 	$schemaBuilder = $loader->load(new SchemaBuilder());
 
 	Assert::type(SchemaBuilder::class, $schemaBuilder);

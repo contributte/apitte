@@ -1,13 +1,13 @@
 {
   "name": "contributte/apitte",
-  "description": "An opinionated and enjoyable API framework based on Nette Framework. Supporting content negotiation, debugging, middlewares, attributes, annotations and loving openapi/swagger.",
+  "description": "An opinionated and enjoyable API framework based on Nette Framework. Supporting content negotiation, debugging, middlewares, attributes and loving openapi/swagger.",
   "keywords": [
     "api",
     "apitte",
     "http",
     "rest",
     "nette",
-    "annotation"
+    "attribute"
   ],
   "type": "library",
   "license": "MIT",
@@ -25,9 +25,7 @@
     "contributte/psr7-http-message": "^0.9.0 || ^0.10.0",
     "contributte/middlewares": "^0.11.0 || ^0.12.0",
     "contributte/openapi": "^0.1.0",
-    "doctrine/annotations": "^1.14.3 || ^2.0.0",
-    "koriym/attributes": "^1.0.5",
-    "nette/utils": "^4.0.0"
+    "nette/utils": "^4.1.0"
   },
   "require-dev": {
     "contributte/qa": "^0.4",

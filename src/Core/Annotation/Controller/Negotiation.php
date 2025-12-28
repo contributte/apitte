@@ -3,14 +3,7 @@
 namespace Apitte\Core\Annotation\Controller;
 
 use Attribute;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\Common\Annotations\Annotation\Target;
 
-/**
- * @Annotation
- * @Target("ANNOTATION")
- * @NamedArgumentConstructor()
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Negotiation
 {

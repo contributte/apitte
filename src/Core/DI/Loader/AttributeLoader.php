@@ -5,31 +5,24 @@ namespace Apitte\Core\DI\Loader;
 use Apitte\Core\Annotation\Controller\Id;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Negotiation;
-use Apitte\Core\Annotation\Controller\Negotiations;
 use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Annotation\Controller\RequestBody;
 use Apitte\Core\Annotation\Controller\RequestParameter;
-use Apitte\Core\Annotation\Controller\RequestParameters;
 use Apitte\Core\Annotation\Controller\Response;
-use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Tag;
-use Apitte\Core\DI\LoaderFactory\DualReaderFactory;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\Builder\Controller\Method as SchemaMethod;
 use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\UI\Controller\IController;
-use Doctrine\Common\Annotations\Reader;
 use Nette\Neon\Neon;
 use ReflectionClass;
 use ReflectionMethod;
 
-class DoctrineAnnotationLoader extends AbstractContainerLoader
+class AttributeLoader extends AbstractContainerLoader
 {
-
-	private ?Reader $reader = null;
 
 	/** @var mixed[] */
 	private array $meta = [
@@ -62,11 +55,11 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 			// Create scheme endpoint
 			$schemeController = $builder->addController($type);
 
-			// Parse @Path, @ControllerId
-			$this->parseControllerClassAnnotations($schemeController, $class);
+			// Parse #[Path], #[Id]
+			$this->parseControllerClassAttributes($schemeController, $class);
 
-			// Parse @Method, @Path
-			$this->parseControllerMethodsAnnotations($schemeController, $class);
+			// Parse #[Method], #[Path]
+			$this->parseControllerMethodsAttributes($schemeController, $class);
 		}
 
 		return $builder;
@@ -141,33 +134,33 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 	/**
 	 * @param ReflectionClass<object> $class
 	 */
-	protected function parseControllerClassAnnotations(Controller $controller, ReflectionClass $class): void
+	protected function parseControllerClassAttributes(Controller $controller, ReflectionClass $class): void
 	{
-		// Read class annotations
-		$annotations = $this->getReader()->getClassAnnotations($class);
+		// Read class attributes
+		$attributes = $this->getClassAttributes($class);
 
-		// Iterate over all class annotations in controller
-		foreach ($annotations as $annotation) {
-			// Parse @Path =======================
-			if ($annotation instanceof Path) {
-				$controller->setPath($annotation->getPath());
+		// Iterate over all class attributes in controller
+		foreach ($attributes as $attribute) {
+			// Parse #[Path] =======================
+			if ($attribute instanceof Path) {
+				$controller->setPath($attribute->getPath());
 
 				continue;
 			}
 
-			// Parse @ControllerId =========================
-			if ($annotation instanceof Id) {
-				$controller->setId($annotation->getName());
+			// Parse #[Id] =========================
+			if ($attribute instanceof Id) {
+				$controller->setId($attribute->getName());
 			}
 
-			// Parse @Tag ==================================
-			if ($annotation instanceof Tag) {
-				$controller->addTag($annotation->getName(), $annotation->getValue());
+			// Parse #[Tag] ==================================
+			if ($attribute instanceof Tag) {
+				$controller->addTag($attribute->getName(), $attribute->getValue());
 			}
 
-			// Parse @OpenApi ============================
-			if ($annotation instanceof OpenApi) {
-				$controller->setOpenApi(Neon::decode($annotation->getData()) ?? []);
+			// Parse #[OpenApi] ============================
+			if ($attribute instanceof OpenApi) {
+				$controller->setOpenApi(Neon::decode($attribute->getData()) ?? []);
 
 				continue;
 			}
@@ -176,26 +169,26 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 		// Reverse order
 		$reversed = array_reverse($this->meta['services'][$class->getName()]['parents']);
 
-		// Iterate over all class annotations in controller's parents
+		// Iterate over all class attributes in controller's parents
 		foreach ($reversed as $parent) {
-			// Read parent class annotations
-			$parentAnnotations = $this->getReader()->getClassAnnotations($parent);
+			// Read parent class attributes
+			$parentAttributes = $this->getClassAttributes($parent);
 
-			// Iterate over all parent class annotations
-			foreach ($parentAnnotations as $annotation) {
-				// Parse @GroupId ==========================
-				if ($annotation instanceof Id) {
-					$controller->addGroupId($annotation->getName());
+			// Iterate over all parent class attributes
+			foreach ($parentAttributes as $attribute) {
+				// Parse #[Id] ==========================
+				if ($attribute instanceof Id) {
+					$controller->addGroupId($attribute->getName());
 				}
 
-				// Parse @Path ========================
-				if ($annotation instanceof Path) {
-					$controller->addGroupPath($annotation->getPath());
+				// Parse #[Path] ========================
+				if ($attribute instanceof Path) {
+					$controller->addGroupPath($attribute->getPath());
 				}
 
-				// Parse @Tag ==============================
-				if ($annotation instanceof Tag) {
-					$controller->addTag($annotation->getName(), $annotation->getValue());
+				// Parse #[Tag] ==============================
+				if ($attribute instanceof Tag) {
+					$controller->addTag($attribute->getName(), $attribute->getValue());
 				}
 			}
 		}
@@ -204,125 +197,119 @@ class DoctrineAnnotationLoader extends AbstractContainerLoader
 	/**
 	 * @param ReflectionClass<object> $reflectionClass
 	 */
-	protected function parseControllerMethodsAnnotations(Controller $controller, ReflectionClass $reflectionClass): void
+	protected function parseControllerMethodsAttributes(Controller $controller, ReflectionClass $reflectionClass): void
 	{
 		// Iterate over all methods in class
 		foreach ($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-			// Read method annotations
-			$annotations = $this->getReader()->getMethodAnnotations($method);
+			// Read method attributes
+			$attributes = $this->getMethodAttributes($method);
 
-			// Skip if method has no @Path/@Method annotations
-			if (count($annotations) <= 0) {
+			// Skip if method has no #[Path]/#[Method] attributes
+			if (count($attributes) <= 0) {
 				continue;
 			}
 
 			// Append method to scheme
 			$schemaMethod = $controller->addMethod($method->getName());
 
-			// Iterate over all method annotations
-			foreach ($annotations as $annotation) {
-				// Parse @Path =============================
-				if ($annotation instanceof Path) {
-					$schemaMethod->setPath($annotation->getPath());
+			// Iterate over all method attributes
+			foreach ($attributes as $attribute) {
+				// Parse #[Path] =============================
+				if ($attribute instanceof Path) {
+					$schemaMethod->setPath($attribute->getPath());
 
 					continue;
 				}
 
-				// Parse @Method ===========================
-				if ($annotation instanceof Method) {
-					$schemaMethod->addHttpMethods($annotation->getMethods());
+				// Parse #[Method] ===========================
+				if ($attribute instanceof Method) {
+					$schemaMethod->addHttpMethods($attribute->getMethods());
 
 					continue;
 				}
 
-				// Parse @Tag ==============================
-				if ($annotation instanceof Tag) {
-					$schemaMethod->addTag($annotation->getName(), $annotation->getValue());
+				// Parse #[Tag] ==============================
+				if ($attribute instanceof Tag) {
+					$schemaMethod->addTag($attribute->getName(), $attribute->getValue());
 
 					continue;
 				}
 
-				// Parse @Id ===============================
-				if ($annotation instanceof Id) {
-					$schemaMethod->setId($annotation->getName());
-
-					continue;
-				}
-
-				// Parse @RequestParameters ================
-				if ($annotation instanceof RequestParameters) {
-					foreach ($annotation->getParameters() as $parameter) {
-						$this->addEndpointParameterToSchemaMethod($schemaMethod, $parameter);
-					}
+				// Parse #[Id] ===============================
+				if ($attribute instanceof Id) {
+					$schemaMethod->setId($attribute->getName());
 
 					continue;
 				}
 
 				// Parse #[RequestParameter] ================
-				if ($annotation instanceof RequestParameter) {
-					$this->addEndpointParameterToSchemaMethod($schemaMethod, $annotation);
+				if ($attribute instanceof RequestParameter) {
+					$this->addEndpointParameterToSchemaMethod($schemaMethod, $attribute);
 
 					continue;
 				}
 
-				// Parse @Responses ================
-				if ($annotation instanceof Responses) {
-					foreach ($annotation->getResponses() as $response) {
-						$this->addResponseToSchemaMethod($schemaMethod, $response);
-					}
+				// Parse #[Response] ================
+				if ($attribute instanceof Response) {
+					$this->addResponseToSchemaMethod($schemaMethod, $attribute);
 
 					continue;
 				}
 
-				// Parse #[Response] attribute
-				if ($annotation instanceof Response) {
-					$this->addResponseToSchemaMethod($schemaMethod, $annotation);
-
-					continue;
-				}
-
-				// Parse @Request ================
-				if ($annotation instanceof RequestBody) {
+				// Parse #[RequestBody] ================
+				if ($attribute instanceof RequestBody) {
 					$requestBody = new EndpointRequestBody();
-					$requestBody->setDescription($annotation->getDescription());
-					$requestBody->setEntity($annotation->getEntity());
-					$requestBody->setRequired($annotation->isRequired());
-					$requestBody->setValidation($annotation->isValidation());
+					$requestBody->setDescription($attribute->getDescription());
+					$requestBody->setEntity($attribute->getEntity());
+					$requestBody->setRequired($attribute->isRequired());
+					$requestBody->setValidation($attribute->isValidation());
 					$schemaMethod->setRequestBody($requestBody);
 
 					continue;
 				}
 
-				// Parse @OpenApi ================
-				if ($annotation instanceof OpenApi) {
-					$schemaMethod->setOpenApi(Neon::decode($annotation->getData()) ?? []);
+				// Parse #[OpenApi] ================
+				if ($attribute instanceof OpenApi) {
+					$schemaMethod->setOpenApi(Neon::decode($attribute->getData()) ?? []);
 
 					continue;
 				}
 
-				// Parse @Negotiations =====================
-				if ($annotation instanceof Negotiations) {
-					foreach ($annotation->getNegotiations() as $negotiation) {
-						$this->addNegotiationToSchemaMethod($schemaMethod, $negotiation);
-					}
-				}
-
 				// Parse #[Negotiation] =====================
-				if ($annotation instanceof Negotiation) {
-					$this->addNegotiationToSchemaMethod($schemaMethod, $annotation);
+				if ($attribute instanceof Negotiation) {
+					$this->addNegotiationToSchemaMethod($schemaMethod, $attribute);
 				}
 			}
 		}
 	}
 
-	protected function getReader(): Reader
+	/**
+	 * @param ReflectionClass<object> $class
+	 * @return object[]
+	 */
+	protected function getClassAttributes(ReflectionClass $class): array
 	{
-		if ($this->reader === null) {
-			$dualReaderFactory = new DualReaderFactory();
-			$this->reader = $dualReaderFactory->create();
+		$attributes = [];
+
+		foreach ($class->getAttributes() as $attribute) {
+			$attributes[] = $attribute->newInstance();
 		}
 
-		return $this->reader;
+		return $attributes;
+	}
+
+	/**
+	 * @return object[]
+	 */
+	protected function getMethodAttributes(ReflectionMethod $method): array
+	{
+		$attributes = [];
+
+		foreach ($method->getAttributes() as $attribute) {
+			$attributes[] = $attribute->newInstance();
+		}
+
+		return $attributes;
 	}
 
 	private function addEndpointParameterToSchemaMethod(SchemaMethod $schemaMethod, RequestParameter $requestParameter): void

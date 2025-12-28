@@ -3,15 +3,8 @@
 namespace Apitte\Core\Annotation\Controller;
 
 use Attribute;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\Common\Annotations\AnnotationException;
+use InvalidArgumentException;
 
-/**
- * @Annotation
- * @Target({"CLASS","METHOD"})
- * @NamedArgumentConstructor()
- */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class Path
 {
@@ -21,7 +14,7 @@ class Path
 	)
 	{
 		if ($path === '') {
-			throw new AnnotationException('Empty @Path given');
+			throw new InvalidArgumentException('Empty #[Path] given');
 		}
 	}
 

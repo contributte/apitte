@@ -3,14 +3,7 @@
 namespace Apitte\Core\Annotation\Controller;
 
 use Attribute;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\Common\Annotations\Annotation\Target;
 
-/**
- * @Annotation
- * @Target("METHOD")
- * @NamedArgumentConstructor()
- */
 #[Attribute(Attribute::TARGET_METHOD)]
 class RequestBody
 {

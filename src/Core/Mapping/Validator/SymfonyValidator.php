@@ -3,8 +3,6 @@
 namespace Apitte\Core\Mapping\Validator;
 
 use Apitte\Core\Exception\Api\ValidationException;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -20,13 +18,6 @@ class SymfonyValidator implements IEntityValidator
 
 	/** @var list<string>|null */
 	private ?array $groups = null;
-
-	public function __construct(
-		private ?Reader $reader = null,
-	)
-	{
-		AnnotationReader::addGlobalIgnoredName('mapping');
-	}
 
 	public function setConstraintValidatorFactory(ConstraintValidatorFactoryInterface $constraintValidatorFactory): void
 	{
@@ -59,10 +50,6 @@ class SymfonyValidator implements IEntityValidator
 	{
 		$validatorBuilder = Validation::createValidatorBuilder();
 		$validatorBuilder->enableAttributeMapping();
-
-		if (method_exists($validatorBuilder, 'setDoctrineAnnotationReader')) {
-			$validatorBuilder->setDoctrineAnnotationReader($this->reader);
-		}
 
 		if ($this->constraintValidatorFactory !== null) {
 			$validatorBuilder->setConstraintValidatorFactory($this->constraintValidatorFactory);

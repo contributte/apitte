@@ -5,7 +5,6 @@ require_once __DIR__ . '/../../../../bootstrap.php';
 use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Schema\EndpointParameter;
 use Contributte\Tester\Toolkit;
-use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
 // OK
@@ -49,12 +48,12 @@ Toolkit::test(function (): void {
 Toolkit::test(function (): void {
 	Assert::exception(function (): void {
 		new RequestParameter('Param', '', EndpointParameter::IN_PATH);
-	}, AnnotationException::class, 'Empty @RequestParameter type given');
+	}, InvalidArgumentException::class, 'Empty #[RequestParameter] type given');
 });
 
 // Exception - invalid parameter location
 Toolkit::test(function (): void {
 	Assert::exception(function (): void {
 		new RequestParameter('Param', EndpointParameter::TYPE_STRING, 'invalid');
-	}, AnnotationException::class, 'Invalid @RequestParameter in given');
+	}, InvalidArgumentException::class, 'Invalid #[RequestParameter] in given');
 });

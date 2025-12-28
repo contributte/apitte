@@ -3,15 +3,8 @@
 namespace Apitte\Core\Annotation\Controller;
 
 use Attribute;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\Common\Annotations\AnnotationException;
+use InvalidArgumentException;
 
-/**
- * @Annotation
- * @Target("ANNOTATION")
- * @NamedArgumentConstructor()
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Response
 {
@@ -23,7 +16,7 @@ class Response
 	)
 	{
 		if (empty($description)) {
-			throw new AnnotationException('Empty @Response description given');
+			throw new InvalidArgumentException('Empty #[Response] description given');
 		}
 	}
 

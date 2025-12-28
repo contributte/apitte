@@ -3,15 +3,8 @@
 namespace Apitte\Core\Annotation\Controller;
 
 use Attribute;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\Common\Annotations\AnnotationException;
+use InvalidArgumentException;
 
-/**
- * @Annotation
- * @Target({"CLASS","METHOD"})
- * @NamedArgumentConstructor()
- */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class Id
 {
@@ -21,7 +14,7 @@ class Id
 	)
 	{
 		if ($name === '') {
-			throw new AnnotationException('Empty @Id given');
+			throw new InvalidArgumentException('Empty #[Id] given');
 		}
 	}
 

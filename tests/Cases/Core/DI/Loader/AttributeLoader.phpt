@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
-use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
+use Apitte\Core\DI\Loader\AttributeLoader;
 use Apitte\Core\Schema\Builder\Controller\Controller;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\UI\Controller\IController;
@@ -28,7 +28,7 @@ Toolkit::test(function (): void {
 			return $controllers;
 		});
 
-	$loader = new DoctrineAnnotationLoader($builder);
+	$loader = new AttributeLoader($builder);
 	$schemaBuilder = $loader->load(new SchemaBuilder());
 
 	Assert::type(SchemaBuilder::class, $schemaBuilder);
@@ -36,19 +36,16 @@ Toolkit::test(function (): void {
 	Mockery::close();
 });
 
-// Parse annotations
+// Parse attributes
 Toolkit::test(function (): void {
 	$builder = new ContainerBuilder();
 	$builder->addDefinition('annotation_controller')
 		->setType(AnnotationFoobarController::class);
 
-	// include attribute controller only on PHP 8.0 and up
-	if (PHP_VERSION_ID >= 80000) {
-		$builder->addDefinition('attribute_controller')
-			->setType(AttributeFoobarController::class);
-	}
+	$builder->addDefinition('attribute_controller')
+		->setType(AttributeFoobarController::class);
 
-	$loader = new DoctrineAnnotationLoader($builder);
+	$loader = new AttributeLoader($builder);
 	$schemaBuilder = $loader->load(new SchemaBuilder());
 
 	Assert::type(SchemaBuilder::class, $schemaBuilder);

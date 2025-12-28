@@ -4,7 +4,6 @@ require_once __DIR__ . '/../../../../bootstrap.php';
 
 use Apitte\Core\Annotation\Controller\Id;
 use Contributte\Tester\Toolkit;
-use Doctrine\Common\Annotations\AnnotationException;
 use Tester\Assert;
 
 // Value
@@ -17,5 +16,5 @@ Toolkit::test(function (): void {
 Toolkit::test(function (): void {
 	Assert::exception(function (): void {
 		new Id('');
-	}, AnnotationException::class, 'Empty @Id given');
+	}, InvalidArgumentException::class, 'Empty #[Id] given');
 });

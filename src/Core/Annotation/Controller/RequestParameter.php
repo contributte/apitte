@@ -4,15 +4,8 @@ namespace Apitte\Core\Annotation\Controller;
 
 use Apitte\Core\Schema\EndpointParameter;
 use Attribute;
-use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
-use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\Common\Annotations\AnnotationException;
+use InvalidArgumentException;
 
-/**
- * @Annotation
- * @Target("ANNOTATION")
- * @NamedArgumentConstructor()
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class RequestParameter
 {
@@ -32,15 +25,15 @@ class RequestParameter
 	)
 	{
 		if ($name === '') {
-			throw new AnnotationException('Empty @RequestParameter name given');
+			throw new InvalidArgumentException('Empty #[RequestParameter] name given');
 		}
 
 		if ($type === '') {
-			throw new AnnotationException('Empty @RequestParameter type given');
+			throw new InvalidArgumentException('Empty #[RequestParameter] type given');
 		}
 
 		if (!in_array($in, EndpointParameter::IN, true)) {
-			throw new AnnotationException('Invalid @RequestParameter in given');
+			throw new InvalidArgumentException('Invalid #[RequestParameter] in given');
 		}
 	}
 

@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../../../bootstrap.php';
 
-use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
+use Apitte\Core\DI\Loader\AttributeLoader;
 use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\RequestParameterValidation;
 use Contributte\Tester\Toolkit;
@@ -12,7 +12,7 @@ use Tests\Fixtures\Controllers\Mixed\AnnotationAttributeController;
 use Tests\Fixtures\Controllers\Mixed\AttributesOnlyController;
 use Tests\Fixtures\Controllers\Mixed\PathAndRequestParamsController;
 
-// Parse annotations
+// Parse attributes
 Toolkit::test(function (): void {
 	$builder = new ContainerBuilder();
 	$builder->addDefinition('first_controller')
@@ -24,7 +24,7 @@ Toolkit::test(function (): void {
 	$builder->addDefinition('third_controller')
 		->setType(AttributesOnlyController::class);
 
-	$loader = new DoctrineAnnotationLoader($builder);
+	$loader = new AttributeLoader($builder);
 	$schemaBuilder = $loader->load(new SchemaBuilder());
 	Assert::type(SchemaBuilder::class, $schemaBuilder);
 

@@ -42,7 +42,7 @@ Toolkit::test(function (): void {
 	Assert::type(Application::class, $container->getService('api.core.application'));
 });
 
-// Annotations
+// Attributes
 Toolkit::test(function (): void {
 	$loader = new ContainerLoader(Environment::getTestDir(), true);
 	$class = $loader->load(function (Compiler $compiler): void {
@@ -102,9 +102,7 @@ Toolkit::test(function (): void {
 		$compiler->addConfig(Neonkit::load(<<<'NEON'
 			services:
 				validator:
-					factory: Apitte\Core\Mapping\Validator\SymfonyValidator(
-						Doctrine\Common\Annotations\AnnotationReader()
-					)
+					factory: Apitte\Core\Mapping\Validator\SymfonyValidator()
 					setup:
 						- setConstraintValidatorFactory(Symfony\Component\Validator\ConstraintValidatorFactory())
 						- setTranslator(Symfony\Component\Translation\Translator(en))

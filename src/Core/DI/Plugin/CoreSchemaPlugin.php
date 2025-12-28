@@ -2,7 +2,7 @@
 
 namespace Apitte\Core\DI\Plugin;
 
-use Apitte\Core\DI\Loader\DoctrineAnnotationLoader;
+use Apitte\Core\DI\Loader\AttributeLoader;
 use Apitte\Core\DI\Loader\ILoader;
 use Apitte\Core\DI\Loader\NeonLoader;
 use Apitte\Core\Schema\SchemaBuilder;
@@ -64,7 +64,7 @@ class CoreSchemaPlugin extends Plugin
 			'loaders' => Expect::structure([
 				'annotations' => Expect::structure([
 					'enable' => Expect::bool(true),
-					'loader' => Expect::string(DoctrineAnnotationLoader::class),
+					'loader' => Expect::string(AttributeLoader::class),
 				]),
 				'neon' => Expect::structure([
 					'enable' => Expect::bool(false),

@@ -40,7 +40,7 @@ api:
 ```
 
 > Known limitation:
-> Schema for endpoint could be defined only by annotations or by neon, so you cannot e.g. define endpoint in annotations and modify it in neon.
+> Schema for endpoint could be defined only by attributes or by NEON, so you cannot e.g. define endpoint in attributes and modify it in neon.
 
 ## Validation
 

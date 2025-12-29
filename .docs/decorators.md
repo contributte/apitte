@@ -125,7 +125,7 @@ class RequestAuthenticationDecorator implements IRequestDecorator
 
 **Tip**
 
-You could also authenticate only some endpoints thanks to [tags](endpoints.md#list-of-annotations) and [metadata](router.md#request-attributes) from `SimpleRouter`.
+You could also authenticate only some endpoints thanks to [tags](endpoints.md#list-of-attributes) and [metadata](router.md#request-attributes) from `SimpleRouter`.
 
 ```php
 use Apitte\Core\Http\RequestAttributes;

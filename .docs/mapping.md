@@ -26,24 +26,17 @@ namespace App\Api\V1\Controllers;
 
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
-use Apitte\Core\Annotation\Controller\RequestParameters;
 use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 
-/**
- * @Path("/users")
- */
+#[Path("/users")]
 class UsersController extends BaseV1Controller
 {
 
-    /**
-     * @Path("/{id}")
-     * @Method("GET")
-     * @RequestParameters({
-     *      @RequestParameter(name="id", type="int", description="My favourite user ID")
-     * })
-     */
+    #[Path("/{id}")]
+    #[Method("GET")]
+    #[RequestParameter(name: "id", type: "int", description: "My favourite user ID")]
     public function detail(ApiRequest $request): ApiResponse
     {
         /** @var int $id Perfectly valid integer */
@@ -57,7 +50,7 @@ class UsersController extends BaseV1Controller
 
 ### Options
 
-`@RequestParameter()` have few available options.
+`#[RequestParameter()]` have few available options.
 
 - `name="nameOfParameter"` - same as name of parameter in path, query...
 - `type="string|int|float|bool|datetime"` - data type, see [data types](#data-types)
@@ -144,7 +137,7 @@ class MyEmailTypeMapper implements ITypeMapper
 ## RequestBody
 
 Imagine you have a data grid with many filter options. You can describe all options manually or
-use value object, entity, for it. And it leads us to `@RequestBody`.
+use value object, entity, for it. And it leads us to `#[RequestBody]`.
 
 We have an entity with described fields.
 
@@ -165,15 +158,17 @@ final class UserFilter extends BasicEntity
 }
 ```
 
-And some endpoint with `@RequestBody` annotation. There's a method `ApiRequest::getEntity()`, it gets
+And some endpoint with `#[RequestBody]` attribute. There's a method `ApiRequest::getEntity()`, it gets
 the entity from request attributes. So simple, right?
 
 ```php
-/**
- * @Path("/filter")
- * @Method("GET")
- * @RequestBody(entity="App\Api\Entity\Request\UserFilter")
- */
+use Apitte\Core\Annotation\Controller\Method;
+use Apitte\Core\Annotation\Controller\Path;
+use Apitte\Core\Annotation\Controller\RequestParameter;
+
+#[Path("/filter")]
+#[Method("GET")]
+#[RequestBody(entity: App\Api\Entity\Request\UserFilter::class)]
 public function filter(ApiRequest $request)
 {
     /** @var UserFilter $entity */

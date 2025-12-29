@@ -16,9 +16,7 @@ namespace App\Api\V1\Controllers;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\UI\Controller\IController;
 
-/**
- * @Path("/api/v1")
- */
+#[Path("/api/v1")]
 abstract class BaseV1Controller implements IController
 {
 }
@@ -26,8 +24,8 @@ abstract class BaseV1Controller implements IController
 
 Create an endpoint
 
-- Controller must have annotation `@Path()` and be registered as service
-- Method must have annotations `@Path()` and `@Method()`
+- Controller must have attribute `#[Path()]` and be registered as service
+- Method must have attributess `#[Path()]` and `#[Method()]`
 
 ```yaml
 services:
@@ -43,16 +41,12 @@ use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Nette\Utils\Json;
 
-/**
- * @Path("/users")
- */
+#[Path("/users")]
 class UsersController extends BaseV1Controller
 {
 
-    /**
-     * @Path("/")
-     * @Method("GET")
-     */
+    #[Path("/")]
+    #[Method("GET")]
     public function index(ApiRequest $request, ApiResponse $response): ApiResponse
     {
         // This is an endpoint
@@ -80,48 +74,46 @@ class UsersController extends BaseV1Controller
 }
 ```
 
-**Tip** Use the `@Path("/")` annotation on a Controller and its method to target the homepage, e.q. `example.com/`.
+**Tip** Use the `#[Path("/")]` attribute on a Controller and its method to target the homepage, e.q. `example.com/`.
 
-### List of annotations / attributes
+### List of attributes
 
-> You can use seamless PHP 8 attributes.
-
-`@Id`
+`#[Id]`
   - Must consist only of following characters: `a-z`, `A-Z`, `0-9`, `_`
   - Not used by Apitte for anything, it may just help you identify, group, etc. your endpoints
 
-`@Path`
+`#[Path]`
   - See example controllers above
   - Must consist only of following characters: `a-z`, `A-Z`, `0-9`, `-_/`
-  - The `@Path` annotation can be used on:
+  - The `#[Path]` attribute can be used on:
     - abstract controller to define a group path for multiple controllers (e.g. `example.com/v1/...`)
     - final controller to define a path for that particular controller (e.g. `example.com/v1/users`)
     - method to define a path for a specific endpoint
   - This hierarchy is then used to build the schema and make routing possible.
 
-`@Method`
+`#[Method]`
   - Allowed HTTP method for endpoint
   - GET, POST, PUT, OPTION, DELETE, HEAD
-  - `@Method("GET")`
-  - `@Method({"POST", "PUT"})`
+  - `#[Method("GET")]`
+  - `#[Method({"POST", "PUT"})]`
   - Defined on method
 
-`@Tag`
+`#[Tag]`
   - Used by [OpenApi](schema.md#openapi)
   - Could by also used by your custom logic
-  - `@Tag(name="name")`
-  - `@Tag(name="string", value="string|null")`
+  - `#[Tag(name="name")]`
+  - `#[Tag(name="string", value="string|null")]`
   - Defined on class and method
 
 Mapping
   - Validate and map data from request and map data to response
-  - `@RequestParameter`, `@RequestParameters`
-  - `@RequestBody`
+  - `#[RequestParameter]`
+  - `#[RequestBody]`
   - See [mapping](mapping.md) chapter for more info.
 
 Negotiations
   - Response transformations
-  - `@Negotiation`, `@Negotiations`
+  - `#[Negotiation]`
   - See [negotiation](negotiation.md) chapter for details.
 
 ### Automatic controllers registration

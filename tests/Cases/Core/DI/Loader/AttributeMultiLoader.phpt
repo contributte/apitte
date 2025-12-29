@@ -9,14 +9,11 @@ use Apitte\Core\Schema\SchemaBuilder;
 use Contributte\Tester\Toolkit;
 use Nette\DI\ContainerBuilder;
 use Tester\Assert;
-use Tests\Fixtures\Controllers\AnnotationMultiController;
 use Tests\Fixtures\Controllers\AttributeMultiController;
 
 // Parse attributes
 Toolkit::test(function (): void {
 	$builder = new ContainerBuilder();
-	$builder->addDefinition('annotation_multi_controller')
-		->setType(AnnotationMultiController::class);
 
 	$builder->addDefinition('attribute_multi_controller')
 		->setType(AttributeMultiController::class);

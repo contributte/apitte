@@ -7,14 +7,14 @@ use Apitte\Core\Schema\SchemaBuilder;
 use Apitte\Core\Schema\Validation\ControllerValidation;
 use Contributte\Tester\Toolkit;
 use Tester\Assert;
-use Tests\Fixtures\Controllers\AnnotationFoobarController;
+use Tests\Fixtures\Controllers\AttributeFoobarController;
 
 // Validate: success
 Toolkit::test(function (): void {
 	$validation = new ControllerValidation();
 	$builder = new SchemaBuilder();
 
-	$builder->addController(AnnotationFoobarController::class);
+	$builder->addController(AttributeFoobarController::class);
 
 	Assert::noError(function () use ($validation, $builder): void {
 		$validation->validate($builder);

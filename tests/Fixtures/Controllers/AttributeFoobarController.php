@@ -8,12 +8,14 @@ use Apitte\Core\Http\ApiResponse;
 
 #[Apitte\Path('/foobar')]
 #[Apitte\Id('foobar')]
+#[Apitte\Tag('Foobar')]
 final class AttributeFoobarController extends ApiV1Controller
 {
 
 	#[Apitte\Path('/baz1')]
 	#[Apitte\Method(['GET'])]
 	#[Apitte\Id('baz1')]
+	#[Apitte\Tag('Baz')]
 	public function baz1(ApiRequest $request, ApiResponse $response): void
 	{
 		// Tests
@@ -21,6 +23,7 @@ final class AttributeFoobarController extends ApiV1Controller
 
 	#[Apitte\Path('/baz2')]
 	#[Apitte\Method(['GET', 'POST'])]
+	#[Apitte\Tag('Baz')]
 	public function baz2(ApiRequest $request, ApiResponse $response): void
 	{
 		// Tests
@@ -28,6 +31,7 @@ final class AttributeFoobarController extends ApiV1Controller
 
 	#[Apitte\Path('/baz2')]
 	#[Apitte\Method(['PUT'])]
+	#[Apitte\Tag('Baz')]
 	public function baz3(ApiRequest $request, ApiResponse $response): void
 	{
 		// Tests

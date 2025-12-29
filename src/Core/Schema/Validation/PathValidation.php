@@ -25,7 +25,7 @@ class PathValidation implements IValidation
 				if ($method->getPath() === '') {
 					throw (new InvalidSchemaException(
 						sprintf(
-							'"%s::%s()" has empty @Path.',
+							'"%s::%s()" has empty #[Path].',
 							$controller->getClass(),
 							$method->getName()
 						)
@@ -49,7 +49,7 @@ class PathValidation implements IValidation
 				if (!str_starts_with($path, '/')) {
 					throw (new InvalidSchemaException(
 						sprintf(
-							'@Path "%s" in "%s::%s()" must starts with "/" (slash).',
+							'#[Path] "%s" in "%s::%s()" must starts with "/" (slash).',
 							$path,
 							$controller->getClass(),
 							$method->getName()
@@ -63,7 +63,7 @@ class PathValidation implements IValidation
 				if (str_ends_with($path, '/') && strlen($path) > 1) {
 					throw (new InvalidSchemaException(
 						sprintf(
-							'@Path "%s" in "%s::%s()" must not ends with "/" (slash).',
+							'#[Path] "%s" in "%s::%s()" must not ends with "/" (slash).',
 							$path,
 							$controller->getClass(),
 							$method->getName()
@@ -95,7 +95,7 @@ class PathValidation implements IValidation
 				if ($match !== null) {
 					throw (new InvalidSchemaException(
 						sprintf(
-							'@Path "%s" in "%s::%s()" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9-_/{}].',
+							'#[Path] "%s" in "%s::%s()" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9-_/{}].',
 							$path,
 							$controller->getClass(),
 							$method->getName(),
@@ -121,7 +121,7 @@ class PathValidation implements IValidation
 						if ($match !== null) {
 							throw (new InvalidSchemaException(
 								sprintf(
-									'@Path "%s" in "%s::%s()" contains illegal characters "%s" in parameter. Allowed characters in parameter are only {[a-z-A-Z0-9-_]+}',
+									'#[Path] "%s" in "%s::%s()" contains illegal characters "%s" in parameter. Allowed characters in parameter are only {[a-z-A-Z0-9-_]+}',
 									$path,
 									$controller->getClass(),
 									$method->getName(),

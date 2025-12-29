@@ -58,7 +58,7 @@ class ArraySerializer implements ISerializer
 	 */
 	private function serializeInit(Controller $controller, Method $method): array
 	{
-		// Build full mask (Group @Path(s) + Controller @Path + Endpoint @Path)
+		// Build full mask (Group #[Path](s) + Controller #[Path] + Endpoint #[Path])
 		// without duplicated slashes (//)
 		// and without trailing slash at the end
 		// but with slash at the beginning
@@ -71,8 +71,8 @@ class ArraySerializer implements ISerializer
 		$mask = Helpers::slashless($mask);
 		$mask = '/' . trim($mask, '/');
 
-		// Build full id (@GroupId(s) + @ControllerId + @Id)
-		// If @Id is empty, then fullid is also empty
+		// Build full id (Group #[Id](s) + Controller #[Id] + #[Id])
+		// If #[Id] is empty, then full id is also empty
 		if ($method->getId() === null || $method->getId() === '') {
 			$id = null;
 		} else {
@@ -142,7 +142,7 @@ class ArraySerializer implements ISerializer
 			return $pattern;
 		});
 
-		// Check if @RequestParameter(in=path) is also defined in mask
+		// Check if #[RequestParameter(in=path)] is also defined in mask
 		foreach ($pathParameters as $parameter) {
 			foreach ($maskParameters as $maskParameter) {
 				if ($maskParameter['name'] === $parameter->getName()) {
@@ -150,7 +150,7 @@ class ArraySerializer implements ISerializer
 				}
 			}
 
-			throw new InvalidStateException(sprintf('@RequestParameter(name="%s", in=path) is not defined in mask (@Path annotations)', $parameter->getName()));
+			throw new InvalidStateException(sprintf('#[RequestParameter(name="%s", in=path)] is not defined in mask (#[Path] annotations)', $parameter->getName()));
 		}
 
 		// Fulfill endpoint parameters (in path)

@@ -19,7 +19,7 @@ Toolkit::test(function (): void {
 	Assert::exception(function () use ($builder): void {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, InvalidSchemaException::class, '@Path "foobar" in "c1::foo()" must starts with "/" (slash).');
+	}, InvalidSchemaException::class, '#[Path] "foobar" in "c1::foo()" must starts with "/" (slash).');
 });
 
 // Validate: end slash
@@ -33,7 +33,22 @@ Toolkit::test(function (): void {
 	Assert::exception(function () use ($builder): void {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, InvalidSchemaException::class, '@Path "/foobar/" in "c1::foo()" must not ends with "/" (slash).');
+	}, InvalidSchemaException::class, '#[Path] "/foobar/" in "c1::foo()" must not ends with "/" (slash).');
+});
+
+// Validate: empty path
+Toolkit::test(function (): void {
+	$builder = new SchemaBuilder();
+
+	$c1 = $builder->addController('c1');
+	$c1m1 = $c1->addMethod('foo1');
+	$c1m1->setPath('');
+	$c1m1->addHttpMethod('GET');
+
+	Assert::exception(function () use ($builder): void {
+		$validator = new PathValidation();
+		$validator->validate($builder);
+	}, InvalidSchemaException::class, '"c1::foo1()" has empty #[Path].');
 });
 
 // Validate: invalid parameter (ends)
@@ -48,7 +63,7 @@ Toolkit::test(function (): void {
 	Assert::exception(function () use ($builder): void {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, InvalidSchemaException::class, '@Path "/{foo$}" in "c1::foo1()" contains illegal characters "$". Allowed characters are only [a-zA-Z0-9-_/{}].');
+	}, InvalidSchemaException::class, '#[Path] "/{foo$}" in "c1::foo1()" contains illegal characters "$". Allowed characters are only [a-zA-Z0-9-_/{}].');
 });
 
 // Validate: invalid parameter (starts)
@@ -63,7 +78,7 @@ Toolkit::test(function (): void {
 	Assert::exception(function () use ($builder): void {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, InvalidSchemaException::class, '@Path "/{%foo}" in "c1::foo1()" contains illegal characters "%". Allowed characters are only [a-zA-Z0-9-_/{}].');
+	}, InvalidSchemaException::class, '#[Path] "/{%foo}" in "c1::foo1()" contains illegal characters "%". Allowed characters are only [a-zA-Z0-9-_/{}].');
 });
 
 // Validate: invalid parameter (contains)
@@ -78,7 +93,22 @@ Toolkit::test(function (): void {
 	Assert::exception(function () use ($builder): void {
 		$validator = new PathValidation();
 		$validator->validate($builder);
-	}, InvalidSchemaException::class, '@Path "/{foo&&&bar}" in "c1::foo1()" contains illegal characters "&&&". Allowed characters are only [a-zA-Z0-9-_/{}].');
+	}, InvalidSchemaException::class, '#[Path] "/{foo&&&bar}" in "c1::foo1()" contains illegal characters "&&&". Allowed characters are only [a-zA-Z0-9-_/{}].');
+});
+
+// Validate: parameter containing slash (allowed in path, disallowed in parameter)
+Toolkit::test(function (): void {
+	$builder = new SchemaBuilder();
+
+	$c1 = $builder->addController('c1');
+	$c1m1 = $c1->addMethod('foo1');
+	$c1m1->setPath('/{foo/bar}');
+	$c1m1->addHttpMethod('GET');
+
+	Assert::exception(function () use ($builder): void {
+		$validator = new PathValidation();
+		$validator->validate($builder);
+	}, InvalidSchemaException::class, '#[Path] "/{foo/bar}" in "c1::foo1()" contains illegal characters "/" in parameter. Allowed characters in parameter are only {[a-z-A-Z0-9-_]+}');
 });
 
 // Validate: multiple parameters

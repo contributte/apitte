@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
+use Apitte\Core\Exception\Api\ServerErrorException;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Negotiation\Http\ArrayEntity;
@@ -22,4 +23,17 @@ Toolkit::test(function (): void {
 	$response->getBody()->rewind();
 
 	Assert::equal('{"foo":"bar"}', $response->getContents());
+});
+
+// Encode exception
+Toolkit::test(function (): void {
+	$transformer = new JsonTransformer();
+	$request = new ApiRequest(Psr7ServerRequestFactory::fromSuperGlobal());
+	$response = new ApiResponse(Psr7ResponseFactory::fromGlobal());
+	$context = ['exception' => (new ServerErrorException('Test exception'))->withContext('foo')];
+
+	$response = $transformer->transform($request, $response, $context);
+	$response->getBody()->rewind();
+
+	Assert::equal('{"exception":"Test exception","context":"foo"}', $response->getContents());
 });

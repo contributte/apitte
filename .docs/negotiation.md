@@ -21,23 +21,18 @@ Instead of writing data into response body use `$response->withEntity($entity)` 
 ```php
 namespace App\Api\V1\Controllers;
 
-use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Negotiation\Http\ArrayEntity;
 
-/**
- * @ControllerPath("/users")
- */
+#[Path("/users")]
 class UsersController extends BaseV1Controller
 {
 
-    /**
-     * @Path("/")
-     * @Method("GET")
-     */
+    #[Path("/")]
+    #[Method("GET")]
     public function index(ApiRequest $request, ApiResponse $response): ApiResponse
     {
         $entity = ArrayEntity::from([
@@ -87,7 +82,7 @@ Handle request and based on path suffix or request headers call appropriate tran
 `DefaultNegotiator`
 
 - called when none other transform
-- require annotation `@Negotiation(default = true, suffix = "json")` defined on endpoint - transformer for given suffix is looked for
+- require attribute `#[Negotiation(default = true, suffix = "json")]` defined on endpoint - transformer for given suffix is looked for
 
 `FallbackNegotiator`
 

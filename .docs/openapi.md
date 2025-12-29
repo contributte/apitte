@@ -34,12 +34,12 @@ You can write **raw** OpenApi.
 
 - [Config](#config)
 - [External Files](#external-files)
-- [OpenApi Annotations](#openapi-annotations-experimental)
+- [OpenApi Attributes](#openapi-attributes)
 
 Or you can let the plugin do for you in **dynamic** way.
 
-- [Core Annotations](#core-annotations)
-- [Entity Annotations](#entity-annotations)
+- [Core Attributes](#core-attributes)
+- [Entity Attributes](#entity-attributes)
 
 Also you can write your **own** definition.
 
@@ -77,70 +77,65 @@ api:
 
 Supported types are `neon`, `yaml` and `json`.
 
-#### OpenApi-Annotations
+#### OpenApi-Attributes
 
-This definition comes from core, but use only `OpenApi` annotation.
+This definition comes from core, but use only `OpenApi` attribute.
 
 ```php
-use Apitte\Core\Annotation\Controller\Controller;
-use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\OpenApi;
 use Apitte\Core\Annotation\Controller\Path;
+use Apitte\Core\Annotation\Controller\RequestParameter;
 use Apitte\Core\Http\ApiRequest;
 use Apitte\Core\Http\ApiResponse;
 use Apitte\Negotiation\Http\ArrayEntity;
 
-/**
- * @Controller
- * @ControllerPath("/")
- * @OpenApi("
- *    openapi: '4.0.3'
- *    info:
- *       title: Defined by controller annotation
- *       version: '1.0.0'"
- *)
- */
+#[Path("/")]
+#[OpenApi(<<<'EOT'
+    openapi: '4.0.3'
+    info:
+       title: Defined by controller attribute
+       version: '1.0.0'
+EOT)]
 final class HomeController extends BaseV1Controller
 {
 
-    /**
-     * @Path("/")
-     * @Method("GET")
-     * @OpenApi("
-     *    summary: Defined specific endpoint
-     *    operationId: listPets
-     *    tags:
-     *       - pets
-     *    parameters:
-     *       -
-     *           name: limit
-     *           in: query
-     *           description: 'How many items to return at one time (max 100)'
-     *           required: false
-     *           schema:
-     *               type: integer
-     *               format: int32
-     *    responses:
-     *       '200':
-     *           description: A paged array of pets
-     *           headers:
-     *               x-next:
-     *                   description: A link to the next page of responses
-     *                   schema:
-     *                       type: string
-     *           content:
-     *               application/json:
-     *                   schema:
-     *                       $ref: '#/components/schemas/Pets'
-     *       default:
-     *           description: unexpected error
-     *           content:
-     *               application/json:
-     *                   schema:
-     *                       $ref: '#/components/schemas/Error'
-     * ")
-     */
+    #[Path("/")]
+    #[Method("GET")]
+    #[OpenApi(<<<'EOT'
+        summary: Defined specific endpoint
+        operationId: listPets
+        tags:
+           - pets
+        parameters:
+            -
+                name: limit
+                in: query
+                description: 'How many items to return at one time (max 100)'
+                required: false
+                schema:
+                    type: integer
+                    format: int32
+        responses:
+            '200':
+                description: A paged array of pets
+                headers:
+                    x-next:
+                        description: A link to the next page of responses
+                        schema:
+                            type: string
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Pets'
+            default:
+                description: unexpected error
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+    EOT)]
+
     public function index(ApiRequest $request, ApiResponse $response): ApiResponse
     {
         return $response->withEntity(ArrayEntity::from(['data' => ['Welcome']]));
@@ -149,38 +144,28 @@ final class HomeController extends BaseV1Controller
 }
 ```
 
-#### Core-Annotations
+#### Core-Attributes
 
-This definition is based on Doctrine Annotation, which are parts of core.
+This definition is based on PHP attributes, which are parts of core.
 
 ```php
-use Apitte\Core\Annotation\Controller\Controller;
-use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
-use Apitte\Core\Annotation\Controller\Request;
-use Apitte\Core\Annotation\Controller\Responses;
+use Apitte\Core\Annotation\Controller\RequestBody;
 use Apitte\Core\Annotation\Controller\Response;
 use Apitte\Core\Annotation\Controller\Tag;
 use Apitte\Core\Http\ApiRequest;
 
-/**
- * @Controller
- * @ControllerPath("/users")
- * @Tag(value="User")
- */
+#[Path("/users")]
+#[Tag("User")]
 final class UserDetailController extends BaseV1Controller
 {
 
-    /**
-     * @Path("/create")
-     * @Method("POST")
-     * @Request(required="true", description="Sample request")
-     * @Responses({
-     *     @Response(code="200", description="Success"),
-     *     @Response(code="404", description="Not found")
-     * })
-     */
+    #[Path("/create")]
+    #[Method("POST")]
+    #[RequestBody(required: true, description: "Sample request")]
+    #[Response(code: "200", description: "Success")]
+    #[Response(code: "404", description: "Not found")]
     public function detail(ApiRequest $request): array
     {
         return [];
@@ -189,36 +174,27 @@ final class UserDetailController extends BaseV1Controller
 }
 ```
 
-#### Entity-Annotations
+#### Entity-Attributes
 
-Same as CoreDefinition but it use `entity` in `RequestBody` & `Response` annotation.
+Same as CoreDefinition but it use `entity` in `RequestBody` & `Response` attribute.
 
 ```php
-use Apitte\Core\Annotation\Controller\Controller;
-use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
-use Apitte\Core\Annotation\Controller\Request;
+use Apitte\Core\Annotation\Controller\RequestBody;
 use Apitte\Core\Annotation\Controller\Responses;
 use Apitte\Core\Annotation\Controller\Response;
 use Apitte\Core\Http\ApiRequest;
 
-/**
- * @Controller
- * @ControllerPath("/users")
- */
+#[Path("/users")]
 final class UserDetailController extends BaseV1Controller
 {
 
-    /**
-     * @Path("/create")
-     * @Method("POST")
-     * @Request(required="true", description="Sample request", entity="App\Controllers\Entity\User")
-     * @Responses({
-     *     @Response(code="200", description="Success", entity="App\Controllers\Entity\User"),
-     *     @Response(code="404", description="Not found")
-     * })
-     */
+    #[Path("/create")]
+    #[Method("POST")]
+    #[RequestBody(required: true, description: "Sample request", entity: App\Controllers\Entity\User::class)]
+    #[Response(code: "200", description: "Success", entity: App\Controllers\Entity\User::class)]
+    #[Response(code: "404", description: "Not found")]
     public function detail(ApiRequest $request): array
     {
         return [];
@@ -259,8 +235,6 @@ You will probably need to provide your open api schema outside from your app.
 Create controller for this case.
 
 ```php
-use Apitte\Core\Annotation\Controller\Controller;
-use Apitte\Core\Annotation\Controller\ControllerPath;
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
 use Apitte\Core\Http\ApiRequest;
@@ -268,25 +242,18 @@ use Apitte\Core\Http\ApiResponse;
 use Apitte\Core\UI\Controller\IController;
 use Apitte\OpenApi\ISchemaBuilder;
 
-/**
- * @Controller
- * @ControllerPath("/openapi")
- */
+#[Path("/openapi")]
 final class OpenApiController implements IController
 {
 
-    /** @var ISchemaBuilder */
-    private $schemaBuilder;
-
-    public function __construct(ISchemaBuilder $schemaBuilder)
+    public function __construct(
+        private readonly ISchemaBuilder $schemaBuilder,
+    )
     {
-        $this->schemaBuilder = $schemaBuilder;
     }
 
-    /**
-     * @Path("/")
-     * @Method("GET")
-     */
+    #[Path("/")]
+    #[Method("GET")]
     public function index(ApiRequest $request, ApiResponse $response): ApiResponse
     {
         $openApi = $this->schemaBuilder->build();

@@ -1,6 +1,6 @@
 # Apitte
 
-An opinionated and enjoyable API framework based on Nette Framework. Supporting content negotiation, debugging, middlewares, attributes, annotations and loving openapi/swagger.
+An opinionated and enjoyable API framework based on Nette Framework. Supporting content negotiation, debugging, middlewares, attributes and loving openapi/swagger.
 
 Need to start with Apitte
 - [Setup](index.md)

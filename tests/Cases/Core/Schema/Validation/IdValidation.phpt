@@ -45,7 +45,7 @@ Toolkit::test(function (): void {
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);
-	}, InvalidSchemaException::class, 'Duplicate @Id "foo.bar" in "c2::method()" and "c1::method()"');
+	}, InvalidSchemaException::class, 'Duplicate #[Id] "foo.bar" in "c2::method()" and "c1::method()"');
 });
 
 // Validate: invalid characters
@@ -59,5 +59,5 @@ Toolkit::test(function (): void {
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);
-	}, InvalidSchemaException::class, '@Id "{$bar}" in "c1::method()" contains illegal characters "{$". Allowed characters are only [a-zA-Z0-9_].');
+	}, InvalidSchemaException::class, '#[Id] "{$bar}" in "c1::method()" contains illegal characters "{$". Allowed characters are only [a-zA-Z0-9_].');
 });

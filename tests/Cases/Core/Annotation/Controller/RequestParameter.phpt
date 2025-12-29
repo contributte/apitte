@@ -44,6 +44,14 @@ Toolkit::test(function (): void {
 	Assert::null($requestParameter->getDescription());
 });
 
+// Exception - empty name
+Toolkit::test(function (): void {
+	Assert::exception(function (): void {
+		new RequestParameter('', EndpointParameter::TYPE_STRING, EndpointParameter::IN_PATH);
+	}, InvalidArgumentException::class, 'Empty #[RequestParameter] name given');
+});
+
+
 // Exception - no type
 Toolkit::test(function (): void {
 	Assert::exception(function (): void {

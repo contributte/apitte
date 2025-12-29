@@ -8,6 +8,9 @@ require_once __DIR__ . '/../../../../bootstrap.php';
 
 // Ok
 Toolkit::test(function (): void {
+	$method = new Method('GET');
+	Assert::equal(['GET'], $method->getMethods());
+
 	$method = new Method(['GET']);
 	Assert::equal(['GET'], $method->getMethods());
 

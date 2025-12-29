@@ -10,7 +10,6 @@ use Contributte\Tester\Toolkit;
 use Nette\DI\ContainerBuilder;
 use Nette\DI\Definitions\ServiceDefinition;
 use Tester\Assert;
-use Tests\Fixtures\Controllers\AnnotationFoobarController;
 use Tests\Fixtures\Controllers\ApiV1Controller;
 use Tests\Fixtures\Controllers\AttributeFoobarController;
 
@@ -23,7 +22,7 @@ Toolkit::test(function (): void {
 		->andReturnUsing(function (): array {
 			$controllers = [];
 			$controllers[] = $c1 = new ServiceDefinition();
-			$c1->setType(AnnotationFoobarController::class);
+			$c1->setType(AttributeFoobarController::class);
 
 			return $controllers;
 		});
@@ -39,8 +38,6 @@ Toolkit::test(function (): void {
 // Parse attributes
 Toolkit::test(function (): void {
 	$builder = new ContainerBuilder();
-	$builder->addDefinition('annotation_controller')
-		->setType(AnnotationFoobarController::class);
 
 	$builder->addDefinition('attribute_controller')
 		->setType(AttributeFoobarController::class);
@@ -62,6 +59,7 @@ function testController(Controller $controller): void
 {
 	Assert::equal('/foobar', $controller->getPath());
 	Assert::equal('foobar', $controller->getId());
+	Assert::equal(['Foobar' => null], $controller->getTags());
 
 	Assert::count(4, $controller->getMethods());
 
@@ -73,6 +71,7 @@ function testController(Controller $controller): void
 	Assert::equal('baz2', $controller->getMethods()['baz2']->getName());
 	Assert::equal('/baz2', $controller->getMethods()['baz2']->getPath());
 	Assert::equal(['GET', 'POST'], $controller->getMethods()['baz2']->getHttpMethods());
+	Assert::equal(['Baz' => null], $controller->getMethods()['baz2']->getTags());
 
 	Assert::equal(
 		[

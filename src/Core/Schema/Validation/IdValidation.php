@@ -22,7 +22,7 @@ class IdValidation implements IValidation
 
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
-				// Skip if @Id is not set
+				// Skip if #[Id] is not set
 				if ($method->getId() === null || $method->getId() === '') {
 					continue;
 				}
@@ -33,11 +33,11 @@ class IdValidation implements IValidation
 					[$method->getId()]
 				));
 
-				// If this @GroupId(s).@ControllerId.@Id exists, throw an exception
+				// If this Group #[Id](s).Controller #[Id].#[Id] exists, throw an exception
 				if (isset($ids[$fullid])) {
 					throw new InvalidSchemaException(
 						sprintf(
-							'Duplicate @Id "%s" in "%s::%s()" and "%s::%s()"',
+							'Duplicate #[Id] "%s" in "%s::%s()" and "%s::%s()"',
 							$fullid,
 							$controller->getClass(),
 							$method->getName(),
@@ -58,7 +58,7 @@ class IdValidation implements IValidation
 
 		foreach ($controllers as $controller) {
 			foreach ($controller->getMethods() as $method) {
-				// Skip if @Id is not set
+				// Skip if #[Id] is not set
 				if ($method->getId() === null || $method->getId() === '') {
 					continue;
 				}
@@ -75,7 +75,7 @@ class IdValidation implements IValidation
 				if ($match !== null) {
 					throw new InvalidSchemaException(
 						sprintf(
-							'@Id "%s" in "%s::%s()" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9_].',
+							'#[Id] "%s" in "%s::%s()" contains illegal characters "%s". Allowed characters are only [a-zA-Z0-9_].',
 							$id,
 							$controller->getClass(),
 							$method->getName(),

@@ -184,10 +184,6 @@ final class EntityAdapterTest extends TestCase
 	 */
 	public function testTypedEntity(): void
 	{
-		if (PHP_VERSION_ID < 70400) {
-			$this->skip();
-		}
-
 		$adapter = new EntityAdapter();
 
 		Assert::same(
@@ -242,10 +238,6 @@ final class EntityAdapterTest extends TestCase
 
 	public function testNativeUnionEntity(): void
 	{
-		if (PHP_VERSION_ID < 80000) {
-			$this->skip();
-		}
-
 		$adapter = new EntityAdapter();
 
 		Assert::same(
@@ -285,10 +277,6 @@ final class EntityAdapterTest extends TestCase
 
 	public function testNativeIntersectionEntity(): void
 	{
-		if (PHP_VERSION_ID < 80100) {
-			$this->skip();
-		}
-
 		$adapter = new EntityAdapter();
 
 		Assert::same(
@@ -309,10 +297,6 @@ final class EntityAdapterTest extends TestCase
 
 	public function testMixedEntity(): void
 	{
-		if (PHP_VERSION_ID < 80000) {
-			$this->skip();
-		}
-
 		$adapter = new EntityAdapter();
 		Assert::same(
 			[

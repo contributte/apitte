@@ -17,7 +17,7 @@ use Nette\DI\Compiler;
 use Nette\DI\Container;
 use Nette\DI\ContainerLoader;
 use Tester\Assert;
-use Tests\Fixtures\Controllers\AnnotationFoobarController;
+use Tests\Fixtures\Controllers\AttributeFoobarController;
 use Tests\Fixtures\Psr\DummyLogger;
 
 require_once __DIR__ . '/../../../bootstrap.php';
@@ -52,7 +52,7 @@ Toolkit::test(function (): void {
 				'debugMode' => true,
 			],
 			'services' => [
-				AnnotationFoobarController::class,
+				AttributeFoobarController::class,
 			],
 		]);
 	}, 2);
@@ -67,7 +67,7 @@ Toolkit::test(function (): void {
 	Assert::equal('/api/v1/foobar/baz1', $schema->getEndpoints()[0]->getMask());
 	Assert::equal('#^/api/v1/foobar/baz1$#', $schema->getEndpoints()[0]->getPattern());
 	Assert::equal([], $schema->getEndpoints()[0]->getParameters());
-	Assert::equal(AnnotationFoobarController::class, $schema->getEndpoints()[0]->getHandler()->getClass());
+	Assert::equal(AttributeFoobarController::class, $schema->getEndpoints()[0]->getHandler()->getClass());
 	Assert::equal('baz1', $schema->getEndpoints()[0]->getHandler()->getMethod());
 });
 

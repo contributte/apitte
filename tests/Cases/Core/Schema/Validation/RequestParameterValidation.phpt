@@ -143,5 +143,5 @@ Toolkit::test(function (): void {
 
 	Assert::exception(function () use ($validation, $builder): void {
 		$validation->validate($builder);
-	}, InvalidSchemaException::class, 'Mask parameter "m1-p1" is not defined as @RequestParameter(in=path) in "c1-class"');
+	}, InvalidSchemaException::class, 'Mask parameter "m1-p1" is not defined as #[RequestParameter(in=path)] in "c1-class"');
 });

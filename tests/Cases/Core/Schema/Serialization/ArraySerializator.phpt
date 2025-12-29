@@ -13,7 +13,7 @@ use Tester\Assert;
 
 // Serialize: success
 Toolkit::test(function (): void {
-	$serializator = new ArraySerializer();
+	$serializer = new ArraySerializer();
 
 	$builder = new SchemaBuilder();
 
@@ -148,12 +148,12 @@ Toolkit::test(function (): void {
 		],
 	];
 
-	Assert::same($expected, $serializator->serialize($builder));
+	Assert::same($expected, $serializer->serialize($builder));
 });
 
 // Serialize: Exception - duplicate mask parameter - in controller
 Toolkit::test(function (): void {
-	$serializator = new ArraySerializer();
+	$serializer = new ArraySerializer();
 
 	$builder = new SchemaBuilder();
 
@@ -167,14 +167,14 @@ Toolkit::test(function (): void {
 
 	$m1->addParameter('m1-p1', EndpointParameter::IN_PATH);
 
-	Assert::exception(function () use ($serializator, $builder): void {
-		$serializator->serialize($builder);
+	Assert::exception(function () use ($serializer, $builder): void {
+		$serializer->serialize($builder);
 	}, InvalidStateException::class, 'Duplicate mask parameter "c1-p1" in path "/{c1-p1}/{c1-p1}/{m1-p1}"');
 });
 
 // Serialize: Exception - duplicate mask parameter - in method
 Toolkit::test(function (): void {
-	$serializator = new ArraySerializer();
+	$serializer = new ArraySerializer();
 
 	$builder = new SchemaBuilder();
 
@@ -185,14 +185,14 @@ Toolkit::test(function (): void {
 	$m1 = $c1->addMethod('m1');
 	$m1->setPath('{m1-p1}/{m1-p1}');
 
-	Assert::exception(function () use ($serializator, $builder): void {
-		$serializator->serialize($builder);
+	Assert::exception(function () use ($serializer, $builder): void {
+		$serializer->serialize($builder);
 	}, InvalidStateException::class, 'Duplicate mask parameter "m1-p1" in path "/{c1-p1}/{m1-p1}/{m1-p1}"');
 });
 
 // Serialize: Exception - Parameter in mask is not defined in path
 Toolkit::test(function (): void {
-	$serializator = new ArraySerializer();
+	$serializer = new ArraySerializer();
 
 	$builder = new SchemaBuilder();
 
@@ -204,7 +204,7 @@ Toolkit::test(function (): void {
 
 	$m1->addParameter('m1-p1', EndpointParameter::IN_PATH);
 
-	Assert::exception(function () use ($serializator, $builder): void {
-		$serializator->serialize($builder);
-	}, InvalidStateException::class, '@RequestParameter(name="m1-p1", in=path) is not defined in mask (@Path annotations)');
+	Assert::exception(function () use ($serializer, $builder): void {
+		$serializer->serialize($builder);
+	}, InvalidStateException::class, '#[RequestParameter(name="m1-p1", in=path)] is not defined in mask (#[Path] annotations)');
 });

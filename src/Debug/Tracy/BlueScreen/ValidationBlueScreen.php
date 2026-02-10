@@ -12,14 +12,19 @@ class ValidationBlueScreen
 
 	public static function register(BlueScreen $blueScreen): void
 	{
-		$blueScreen->addPanel(static function ($e): ?array {
+		$blueScreen->addPanel(static function (?\Throwable $e): ?array {
 			if (!($e instanceof InvalidSchemaException)) {
+				return null;
+			}
+
+			$panel = self::renderPanel($e);
+			if ($panel === null) {
 				return null;
 			}
 
 			return [
 				'tab' => self::renderTab($e),
-				'panel' => self::renderPanel($e),
+				'panel' => $panel,
 			];
 		});
 	}

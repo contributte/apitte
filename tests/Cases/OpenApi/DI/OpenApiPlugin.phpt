@@ -4,6 +4,7 @@ use Apitte\Core\DI\ApiExtension;
 use Apitte\OpenApi\DI\OpenApiPlugin;
 use Apitte\OpenApi\ISchemaBuilder;
 use Apitte\OpenApi\SchemaBuilder;
+use Apitte\OpenApi\SchemaType\BaseSchemaType;
 use Contributte\Tester\Environment;
 use Contributte\Tester\Toolkit;
 use Nette\DI\Compiler;
@@ -54,3 +55,27 @@ Toolkit::test(function (): void {
 		'paths' => [],
 	], $schemaBuilder->build()->toArray());
 });
+
+// Schema type is registered as a service of the expected type
+Toolkit::test(function (): void {
+	$loader = new ContainerLoader(Environment::getTestDir(), true);
+	$class = $loader->load(function (Compiler $compiler): void {
+		$compiler->addExtension('api', new ApiExtension());
+		$compiler->addConfig([
+			'parameters' => [
+				'debugMode' => false,
+			],
+			'api' => [
+				'plugins' => [
+					OpenApiPlugin::class => [],
+				],
+			],
+		]);
+	}, 2);
+
+	/** @var Container $container */
+	$container = new $class();
+
+	Assert::type(BaseSchemaType::class, $container->getService('api.openapi.schemaType'));
+});
+

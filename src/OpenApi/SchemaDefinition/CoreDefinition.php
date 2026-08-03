@@ -8,16 +8,22 @@ use Apitte\Core\Schema\EndpointRequestBody;
 use Apitte\Core\Schema\EndpointResponse;
 use Apitte\Core\Schema\Schema as ApiSchema;
 use Apitte\OpenApi\SchemaDefinition\Entity\IEntityAdapter;
+use Apitte\OpenApi\SchemaType\BaseSchemaType;
+use Apitte\OpenApi\SchemaType\ISchemaType;
 use Contributte\OpenApi\Utils\Helpers;
 
 class CoreDefinition implements IDefinition
 {
 
+	private readonly ISchemaType $schemaType;
+
 	public function __construct(
 		protected ApiSchema $schema,
 		private readonly IEntityAdapter $entityAdapter,
+		?ISchemaType $schemaType = null,
 	)
 	{
+		$this->schemaType = $schemaType ?? new BaseSchemaType();
 	}
 
 	/**
@@ -158,7 +164,7 @@ class CoreDefinition implements IDefinition
 		}
 
 		$parameter['required'] = $endpointParameter->isRequired();
-		$parameter['schema'] = ['type' => $endpointParameter->getSchemaType()];
+		$parameter['schema'] = $this->schemaType->createSchema($endpointParameter)->toArray();
 
 		if ($enum = $endpointParameter->getEnum()) {
 			$parameter['schema']['enum'] = $enum;

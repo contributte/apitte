@@ -41,7 +41,6 @@ final class BaseSchemaTypeTest extends TestCase
 		Assert::same(
 			[
 				'type' => 'integer',
-				'format' => 'int32',
 			],
 			$scalarSchema->toArray()
 		);
@@ -56,8 +55,7 @@ final class BaseSchemaTypeTest extends TestCase
 		Assert::type(Schema::class, $scalarSchema);
 		Assert::same(
 			[
-				'type' => 'float',
-				'format' => 'float64',
+				'type' => 'number',
 			],
 			$scalarSchema->toArray()
 		);
@@ -89,6 +87,23 @@ final class BaseSchemaTypeTest extends TestCase
 			[
 				'type' => 'string',
 				'format' => 'date-time',
+			],
+			$scalarSchema->toArray()
+		);
+	}
+
+	public function testUnknownTypeFallsBackToString(): void
+	{
+		// CoreMappingPlugin allows configuring custom parameter types, which pass
+		// validation but have no schema mapping of their own.
+		$endpointParameter = new EndpointParameter('foo', 'uuid');
+
+		$scalarSchema = $this->baseSchemaType->createSchema($endpointParameter);
+
+		Assert::type(Schema::class, $scalarSchema);
+		Assert::same(
+			[
+				'type' => 'string',
 			],
 			$scalarSchema->toArray()
 		);

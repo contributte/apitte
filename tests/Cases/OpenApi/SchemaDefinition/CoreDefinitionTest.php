@@ -170,6 +170,38 @@ final class CoreDefinitionTest extends TestCase
 		);
 	}
 
+	public function testParameterSchemaTypes(): void
+	{
+		$schema = new Schema();
+
+		$endpoint = new Endpoint(new EndpointHandler('class', 'method'));
+		$endpoint->setMask('/foo');
+		$endpoint->setMethods(['GET']);
+
+		$endpoint->addParameter(new EndpointParameter('date', EndpointParameter::TYPE_DATETIME));
+		$endpoint->addParameter(new EndpointParameter('ratio', EndpointParameter::TYPE_FLOAT));
+		$endpoint->addParameter(new EndpointParameter('count', EndpointParameter::TYPE_INTEGER));
+
+		// Custom types come from CoreMappingPlugin and have no mapping of their own
+		$endpoint->addParameter(new EndpointParameter('id', 'uuid'));
+
+		$enumParameter = new EndpointParameter('state', EndpointParameter::TYPE_ENUM);
+		$enumParameter->setEnum(['on', 'off']);
+		$endpoint->addParameter($enumParameter);
+
+		$schema->addEndpoint($endpoint);
+
+		$definition = new CoreDefinition($schema, new EntityAdapter());
+
+		$parameters = $definition->load()['paths']['/foo']['get']['parameters'];
+
+		Assert::same(['type' => 'string', 'format' => 'date-time'], $parameters[0]['schema']);
+		Assert::same(['type' => 'number'], $parameters[1]['schema']);
+		Assert::same(['type' => 'integer'], $parameters[2]['schema']);
+		Assert::same(['type' => 'string'], $parameters[3]['schema']);
+		Assert::same(['type' => 'string', 'enum' => ['on', 'off']], $parameters[4]['schema']);
+	}
+
 }
 
 (new CoreDefinitionTest())->run();

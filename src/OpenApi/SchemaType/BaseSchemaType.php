@@ -20,13 +20,11 @@ class BaseSchemaType implements ISchemaType
 			EndpointParameter::TYPE_INTEGER => new Schema(
 				[
 					'type' => 'integer',
-					'format' => 'int32',
 				]
 			),
 			EndpointParameter::TYPE_FLOAT => new Schema(
 				[
-					'type' => 'float',
-					'format' => 'float64',
+					'type' => 'number',
 				]
 			),
 			EndpointParameter::TYPE_BOOLEAN => new Schema(
@@ -40,7 +38,13 @@ class BaseSchemaType implements ISchemaType
 					'format' => 'date-time',
 				]
 			),
-			default => throw new UnknownSchemaType('Unknown endpoint parameter type ' . $endpointParameter->getType()),
+			// Custom parameter types (see CoreMappingPlugin) have no mapping of their own.
+			// Implement ISchemaType to describe them differently.
+			default => new Schema(
+				[
+					'type' => 'string',
+				]
+			),
 		};
 	}
 

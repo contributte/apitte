@@ -207,6 +207,9 @@ Entity is loaded by reflection, it loads all public properties using `EntityAdap
 
 You can redefine entity adapter by interface.
 
+Parameter schemas are created by `ISchemaType`. Custom parameter types registered through
+`CoreMappingPlugin` fall back to `type: string`; implement `ISchemaType` to describe them
+differently.
 
 #### Custom Definition
 

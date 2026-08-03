@@ -12,6 +12,7 @@ use Apitte\OpenApi\SchemaDefinition\Entity\EntityAdapter;
 use Apitte\OpenApi\SchemaDefinition\JsonDefinition;
 use Apitte\OpenApi\SchemaDefinition\NeonDefinition;
 use Apitte\OpenApi\SchemaDefinition\YamlDefinition;
+use Apitte\OpenApi\SchemaType\BaseSchemaType;
 use Contributte\OpenApi\Tracy\SwaggerPanel;
 use Nette\DI\Definitions\Statement;
 use Nette\PhpGenerator\ClassType;
@@ -41,6 +42,9 @@ class OpenApiPlugin extends Plugin
 
 		$builder->addDefinition($this->prefix('entityAdapter'))
 			->setFactory(EntityAdapter::class);
+
+		$builder->addDefinition($this->prefix('schemaType'))
+			->setFactory(BaseSchemaType::class);
 
 		$coreDefinition = $builder->addDefinition($this->prefix('coreDefinition'))
 			->setFactory(CoreDefinition::class);

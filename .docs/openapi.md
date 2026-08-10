@@ -45,8 +45,8 @@ attribute on a controller does **not** affect schema generation — controller a
 merged while schemas are already being generated.
 
 Note that 3.1 document features (`webhooks`, `jsonSchemaDialect`, `info.summary`,
-`license.identifier`, `components.pathItems`) are not available yet; they need a newer
-`contributte/openapi` release.
+`components.pathItems`) need `contributte/openapi` `^0.2.0`. Older releases silently drop
+them from the built document.
 
 ## Usage
 

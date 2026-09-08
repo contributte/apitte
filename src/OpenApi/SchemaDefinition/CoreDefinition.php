@@ -12,10 +12,12 @@ use Apitte\OpenApi\SchemaType\BaseSchemaType;
 use Apitte\OpenApi\SchemaType\ISchemaType;
 use Contributte\OpenApi\Utils\Helpers;
 
-class CoreDefinition implements IDefinition
+class CoreDefinition implements IVersionAwareDefinition
 {
 
 	private readonly ISchemaType $schemaType;
+
+	private string $version = BaseDefinition::DEFAULT_VERSION;
 
 	public function __construct(
 		protected ApiSchema $schema,
@@ -24,6 +26,11 @@ class CoreDefinition implements IDefinition
 	)
 	{
 		$this->schemaType = $schemaType ?? new BaseSchemaType();
+	}
+
+	public function setVersion(string $version): void
+	{
+		$this->version = $version;
 	}
 
 	/**
@@ -101,7 +108,7 @@ class CoreDefinition implements IDefinition
 				// TODO resolve content types
 				'application/json' =>
 					[
-						'schema' => $this->entityAdapter->getMetadata($entity),
+						'schema' => $this->entityAdapter->getMetadata($entity, $this->version),
 					],
 			];
 		}
@@ -139,7 +146,7 @@ class CoreDefinition implements IDefinition
 				// TODO resolve content types
 				'application/json' =>
 					[
-						'schema' => $this->entityAdapter->getMetadata($entity),
+						'schema' => $this->entityAdapter->getMetadata($entity, $this->version),
 					],
 			];
 		}

@@ -12,10 +12,12 @@ use Apitte\Core\Schema\EndpointResponse;
 use Apitte\Core\Schema\Schema;
 use Apitte\OpenApi\SchemaDefinition\CoreDefinition;
 use Apitte\OpenApi\SchemaDefinition\Entity\EntityAdapter;
+use Apitte\OpenApi\SchemaDefinition\IVersionAwareDefinition;
 use Tester\Assert;
 use Tester\TestCase;
 use Tests\Fixtures\RequestBody\SimpleRequestBody;
 use Tests\Fixtures\ResponseEntity\EmptyResponseEntity;
+use Tests\Fixtures\ResponseEntity\NullableCompoundEntity;
 
 final class CoreDefinitionTest extends TestCase
 {
@@ -200,6 +202,37 @@ final class CoreDefinitionTest extends TestCase
 		Assert::same(['type' => 'integer'], $parameters[2]['schema']);
 		Assert::same(['type' => 'string'], $parameters[3]['schema']);
 		Assert::same(['type' => 'string', 'enum' => ['on', 'off']], $parameters[4]['schema']);
+	}
+
+	public function testVersionReachesEntitySchemas(): void
+	{
+		$schema = new Schema();
+
+		$endpoint = new Endpoint(new EndpointHandler('class', 'method'));
+		$endpoint->setMask('/nullable');
+		$endpoint->setMethods(['GET']);
+
+		$response = new EndpointResponse('200', 'description');
+		$response->setEntity(NullableCompoundEntity::class);
+		$endpoint->addResponse($response);
+
+		$schema->addEndpoint($endpoint);
+
+		$definition = new CoreDefinition($schema, new EntityAdapter());
+		Assert::type(IVersionAwareDefinition::class, $definition);
+
+		// Without setVersion(), the default 3.0 shape is generated
+		$data = $definition->load();
+		$properties = $data['paths']['/nullable']['get']['responses'][200]['content']['application/json']['schema']['properties'];
+		Assert::true(isset($properties['nullableUnion']['nullable']));
+
+		// After setVersion(), the 3.1 shape is generated
+		$definition = new CoreDefinition($schema, new EntityAdapter());
+		$definition->setVersion('3.1.1');
+		$data = $definition->load();
+		$properties = $data['paths']['/nullable']['get']['responses'][200]['content']['application/json']['schema']['properties'];
+		Assert::false(isset($properties['nullableUnion']['nullable']));
+		Assert::same(['type' => 'null'], end($properties['nullableUnion']['oneOf']));
 	}
 
 }

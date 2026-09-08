@@ -10,9 +10,11 @@ use Tester\Assert;
 use Tester\TestCase;
 use Tests\Fixtures\ResponseEntity\ArrayShapeEntity;
 use Tests\Fixtures\ResponseEntity\CompoundResponseEntity;
+use Tests\Fixtures\ResponseEntity\EmptyResponseEntity;
 use Tests\Fixtures\ResponseEntity\MixedEntity;
 use Tests\Fixtures\ResponseEntity\NativeIntersectionEntity;
 use Tests\Fixtures\ResponseEntity\NativeUnionEntity;
+use Tests\Fixtures\ResponseEntity\NullableCompoundEntity;
 use Tests\Fixtures\ResponseEntity\SelfReferencingEntity;
 use Tests\Fixtures\ResponseEntity\TypedResponseEntity;
 
@@ -314,6 +316,135 @@ final class EntityAdapterTest extends TestCase
 			],
 			$adapter->getMetadata(MixedEntity::class)
 		);
+	}
+
+	public function testNullableScalarIn31(): void
+	{
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			['type' => ['string', 'null']],
+			$adapter->getMetadata('?string', '3.1.1')
+		);
+
+		Assert::same(
+			['type' => ['number', 'null']],
+			$adapter->getMetadata('float|null', '3.1.1')
+		);
+	}
+
+	public function testNullableArrayAndObjectIn31(): void
+	{
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			['type' => ['array', 'null'], 'items' => ['type' => 'string']],
+			$adapter->getMetadata('string[]|null', '3.1.1')
+		);
+
+		Assert::same(
+			['type' => ['object', 'null'], 'properties' => []],
+			$adapter->getMetadata('?' . EmptyResponseEntity::class, '3.1.1')
+		);
+	}
+
+	public function testMixedIn31(): void
+	{
+		$adapter = new EntityAdapter();
+
+		// An empty array would serialize as [], which is not a valid Schema Object.
+		// Enumerating all the types is functionally equivalent to a schema accepting anything.
+		Assert::same(
+			['type' => ['null', 'boolean', 'object', 'array', 'number', 'string']],
+			$adapter->getMetadata('mixed', '3.1.1')
+		);
+	}
+
+	public function testNonNullableSchemaIsSameIn31(): void
+	{
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			['type' => 'string'],
+			$adapter->getMetadata('string', '3.1.1')
+		);
+
+		Assert::same(
+			['oneOf' => [['type' => 'integer'], ['type' => 'number']]],
+			$adapter->getMetadata('int|float', '3.1.1')
+		);
+
+		Assert::same(
+			['allOf' => [['type' => 'string', 'format' => 'date-time'], ['type' => 'object']]],
+			$adapter->getMetadata('DateTime&ArrayAccess', '3.1.1')
+		);
+	}
+
+	public function testNullableCombinatorsIn30(): void
+	{
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			[
+				'type' => 'object',
+				'properties' => [
+					'nullableUnion' => [
+						'nullable' => true,
+						'oneOf' => [
+							['type' => 'array', 'items' => ['type' => 'string']],
+							['type' => 'array', 'items' => ['type' => 'integer']],
+						],
+					],
+					'nullableIntersection' => [
+						'nullable' => true,
+						'anyOf' => [
+							['type' => 'string', 'format' => 'date-time'],
+							['type' => 'object'],
+						],
+					],
+				],
+			],
+			$adapter->getMetadata(NullableCompoundEntity::class)
+		);
+	}
+
+	public function testNullableCombinatorsIn31(): void
+	{
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			[
+				'type' => 'object',
+				'properties' => [
+					'nullableUnion' => [
+						'oneOf' => [
+							['type' => 'array', 'items' => ['type' => 'string']],
+							['type' => 'array', 'items' => ['type' => 'integer']],
+							['type' => 'null'],
+						],
+					],
+					'nullableIntersection' => [
+						'anyOf' => [
+							['type' => 'string', 'format' => 'date-time'],
+							['type' => 'object'],
+							['type' => 'null'],
+						],
+					],
+				],
+			],
+			$adapter->getMetadata(NullableCompoundEntity::class, '3.1.1')
+		);
+	}
+
+	public function testMixedIn31SerializesAsObject(): void
+	{
+		$adapter = new EntityAdapter();
+
+		$schema = $adapter->getMetadata('mixed', '3.1.1');
+
+		// A Schema Object must not be an array — [] would be rejected by every validator
+		Assert::notSame('[]', json_encode($schema));
+		Assert::contains('"type"', (string) json_encode($schema));
 	}
 
 }

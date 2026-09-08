@@ -79,3 +79,35 @@ Toolkit::test(function (): void {
 	Assert::type(BaseSchemaType::class, $container->getService('api.openapi.schemaType'));
 });
 
+// Version declared in the definition reaches the built document
+Toolkit::test(function (): void {
+	$loader = new ContainerLoader(Environment::getTestDir(), true);
+	$class = $loader->load(function (Compiler $compiler): void {
+		$compiler->addExtension('api', new ApiExtension());
+		$compiler->addConfig([
+			'parameters' => [
+				'debugMode' => false,
+			],
+			'api' => [
+				'plugins' => [
+					OpenApiPlugin::class => [
+						'definition' => [
+							'openapi' => '3.1.1',
+							'info' => [
+								'title' => 'Nullable demo',
+								'version' => '1.0.0',
+							],
+						],
+					],
+				],
+			],
+		]);
+	}, 3);
+
+	/** @var Container $container */
+	$container = new $class();
+
+	/** @var SchemaBuilder $schemaBuilder */
+	$schemaBuilder = $container->getByType(ISchemaBuilder::class);
+	Assert::same('3.1.1', $schemaBuilder->build()->toArray()['openapi']);
+});

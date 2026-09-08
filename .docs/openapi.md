@@ -1,6 +1,6 @@
 # OpenApi
 
-Convert Apitte schema to [OpenApi Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
+Convert Apitte schema to [OpenApi Schema](https://spec.openapis.org/oas/latest.html)
 and add [Swagger UI](https://petstore.swagger.io) as [Tracy](https://github.com/nette/tracy) panel
 
 ## Setup
@@ -12,6 +12,41 @@ api:
     plugins:
         Apitte\OpenApi\DI\OpenApiPlugin:
 ```
+
+## OpenApi version
+
+Apitte generates OpenAPI 3.0 documents by default. Declare the version in your definition
+to generate 3.1:
+
+```neon
+api:
+    plugins:
+        Apitte\OpenApi\DI\OpenApiPlugin:
+            definition:
+                openapi: '3.1.1'
+```
+
+The declared version drives both the `openapi` field of the document and the shape of
+generated entity schemas, because 3.1 dropped the `nullable` keyword in favour of
+JSON Schema 2020-12:
+
+| PHP type | 3.0 | 3.1 |
+|---|---|---|
+| `?string` | `{nullable: true, type: string}` | `{type: [string, null]}` |
+| `?Foo` | `{nullable: true, type: object, properties: …}` | `{type: [object, null], properties: …}` |
+| `string[]\|null` | `{nullable: true, type: array, items: …}` | `{type: [array, null], items: …}` |
+| `int\|float\|null` | `{nullable: true, oneOf: […]}` | `{oneOf: […, {type: null}]}` |
+| `(A&B)\|null` | `{nullable: true, anyOf: […]}` | `{anyOf: […, {type: null}]}` |
+| `mixed` | `{nullable: true}` | `{type: [null, boolean, object, array, number, string]}` |
+
+The version is read from definitions before entity schemas are generated, so declaring it
+in `definition` or in a file listed under `files` both work. Declaring it in an `OpenApi`
+attribute on a controller does **not** affect schema generation — controller attributes are
+merged while schemas are already being generated.
+
+Note that 3.1 document features (`webhooks`, `jsonSchemaDialect`, `info.summary`,
+`components.pathItems`) need `contributte/openapi` `^0.2.0`. Older releases silently drop
+them from the built document.
 
 ## Usage
 
@@ -92,7 +127,6 @@ use Apitte\Negotiation\Http\ArrayEntity;
 
 #[Path("/")]
 #[OpenApi(<<<'EOT'
-    openapi: '4.0.3'
     info:
        title: Defined by controller attribute
        version: '1.0.0'
@@ -205,7 +239,9 @@ final class UserDetailController extends BaseV1Controller
 
 Entity is loaded by reflection, it loads all public properties using `EntityAdapter`.
 
-You can redefine entity adapter by interface.
+You can redefine entity adapter by interface. `getMetadata()` receives the document's
+OpenAPI version as its second argument — a custom implementation is responsible for
+emitting nullability in the shape that version expects.
 
 Parameter schemas are created by `ISchemaType`. Custom parameter types registered through
 `CoreMappingPlugin` fall back to `type: string`; implement `ISchemaType` to describe them

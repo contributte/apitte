@@ -4,6 +4,7 @@ namespace Apitte\OpenApi\SchemaDefinition\Entity;
 
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
+use Apitte\OpenApi\SchemaDefinition\BaseDefinition;
 use DateTimeInterface;
 use Nette\Utils\Reflection;
 use Nette\Utils\Strings;
@@ -21,7 +22,7 @@ class EntityAdapter implements IEntityAdapter
 	/**
 	 * @return mixed[]
 	 */
-	public function getMetadata(string $type): array
+	public function getMetadata(string $type, string $version = BaseDefinition::DEFAULT_VERSION): array
 	{
 		// Ignore brackets (not supported by schema)
 		$type = str_replace(['(', ')'], '', $type);
@@ -44,24 +45,25 @@ class EntityAdapter implements IEntityAdapter
 			$types = array_map(fn (string $type): string => $this->normalizeType($type), $types);
 			$types = array_unique($types);
 
-			$metadata = [];
 			$nullKey = array_search('null', $types, true);
+			$isNullable = $nullKey !== false;
 
 			// Remove null from other types
 			if ($nullKey !== false) {
 				unset($types[$nullKey]);
-				$metadata['nullable'] = true;
 			}
 
 			// Types contain single, nullable value
 			if (count($types) === 1) {
-				return array_merge($metadata, $this->getMetadata(current($types)));
+				$metadata = $this->getMetadata(current($types), $version);
+
+				return $isNullable ? $this->applyNullable($metadata, $version) : $metadata;
 			}
 
 			$resolvedTypes = [];
 
 			foreach ($types as $subType) {
-				$resolvedTypes[] = $this->getMetadata($subType);
+				$resolvedTypes[] = $this->getMetadata($subType, $version);
 			}
 
 			if ($usesUnionType && $usesIntersectionType) {
@@ -72,9 +74,9 @@ class EntityAdapter implements IEntityAdapter
 				$schemaCombination = 'allOf';
 			}
 
-			$metadata[$schemaCombination] = $resolvedTypes;
+			$metadata = [$schemaCombination => $resolvedTypes];
 
-			return $metadata;
+			return $isNullable ? $this->applyNullable($metadata, $version) : $metadata;
 		}
 
 		// Get schema for array
@@ -83,7 +85,7 @@ class EntityAdapter implements IEntityAdapter
 
 			return [
 				'type' => 'array',
-				'items' => $this->getMetadata($subType),
+				'items' => $this->getMetadata($subType, $version),
 			];
 		}
 
@@ -91,7 +93,7 @@ class EntityAdapter implements IEntityAdapter
 		if (preg_match('~array<(\w+),\s?([^>]+)>~', $type, $m)) {
 			return [
 				'type' => 'object',
-				'additionalProperties' => $this->getMetadata($m[2]),
+				'additionalProperties' => $this->getMetadata($m[2], $version),
 			];
 		}
 
@@ -107,7 +109,7 @@ class EntityAdapter implements IEntityAdapter
 
 			return [
 				'type' => 'object',
-				'properties' => $this->getProperties($type),
+				'properties' => $this->getProperties($type, $version),
 			];
 		}
 
@@ -115,9 +117,7 @@ class EntityAdapter implements IEntityAdapter
 
 		// For php and phpstan is mixed absolutely anything, including null -> write in schema property accepts anything
 		if ($lower === 'mixed') {
-			return [
-				'nullable' => true,
-			];
+			return $this->applyNullable([], $version);
 		}
 
 		if ($lower === 'object' || interface_exists($type)) {
@@ -135,7 +135,7 @@ class EntityAdapter implements IEntityAdapter
 	/**
 	 * @return mixed[]
 	 */
-	protected function getProperties(string $type): array
+	protected function getProperties(string $type, string $version = BaseDefinition::DEFAULT_VERSION): array
 	{
 		if (!class_exists($type)) {
 			return [];
@@ -161,7 +161,7 @@ class EntityAdapter implements IEntityAdapter
 				}
 			}
 
-			$data[$property->getName()] = $this->getMetadata($propertyType);
+			$data[$property->getName()] = $this->getMetadata($propertyType, $version);
 		}
 
 		return $data;
@@ -291,6 +291,57 @@ class EntityAdapter implements IEntityAdapter
 		}
 
 		throw new RuntimeException(sprintf('Could not parse type "%s"', $property));
+	}
+
+	/**
+	 * Marks a schema as accepting null, in the shape the target version understands.
+	 * OpenAPI 3.1 dropped the "nullable" keyword in favour of JSON Schema 2020-12.
+	 *
+	 * @param mixed[] $schema
+	 * @return mixed[]
+	 */
+	private function applyNullable(array $schema, string $version): array
+	{
+		if (!$this->isVersion31($version)) {
+			// "nullable" stays the first key — generated documents are compared as-is
+			return array_merge(['nullable' => true], $schema);
+		}
+
+		// An empty array would serialize as [], which is not a valid Schema Object.
+		// Listing every type is the array-representable equivalent of accepting anything.
+		if ($schema === []) {
+			return [
+				'type' => ['null', 'boolean', 'object', 'array', 'number', 'string'],
+			];
+		}
+
+		if (isset($schema['type'])) {
+			$types = is_array($schema['type']) ? $schema['type'] : [$schema['type']];
+
+			if (!in_array('null', $types, true)) {
+				$types[] = 'null';
+			}
+
+			// array_merge keeps "type" in its original position
+			return array_merge($schema, ['type' => $types]);
+		}
+
+		foreach (['oneOf', 'anyOf'] as $combination) {
+			if (isset($schema[$combination])) {
+				$schema[$combination][] = ['type' => 'null'];
+
+				return $schema;
+			}
+		}
+
+		// Defensive: a schema without "type" and without a union of its own, which today
+		// means allOf. Adding null into allOf would make it unsatisfiable, so it is wrapped.
+		return ['anyOf' => [$schema, ['type' => 'null']]];
+	}
+
+	private function isVersion31(string $version): bool
+	{
+		return version_compare($version, '3.1', '>=');
 	}
 
 }

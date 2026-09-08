@@ -4,8 +4,11 @@ namespace Tests\Cases\OpenApi;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
+use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\OpenApi\SchemaBuilder;
 use Apitte\OpenApi\SchemaDefinition\ArrayDefinition;
+use Apitte\OpenApi\SchemaDefinition\BaseDefinition;
+use Apitte\OpenApi\SchemaDefinition\IVersionAwareDefinition;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -77,6 +80,89 @@ final class SchemaBuilderTest extends TestCase
 			],
 			$schema->toArray()
 		);
+	}
+
+	public function testVersionFromDefinitionReachesVersionAwareDefinition(): void
+	{
+		$builder = new SchemaBuilder();
+		$builder->addDefinition(new BaseDefinition());
+		$builder->addDefinition($versionAware = new VersionAwareDefinitionMock());
+		$builder->addDefinition(new ArrayDefinition(['openapi' => '3.1.1']));
+
+		$data = $builder->build()->toArray();
+
+		Assert::same('3.1.1', $data['openapi']);
+		Assert::same('3.1.1', $versionAware->receivedVersion);
+	}
+
+	public function testDefaultVersionWhenNoneDeclared(): void
+	{
+		$builder = new SchemaBuilder();
+		$builder->addDefinition(new BaseDefinition());
+		$builder->addDefinition($versionAware = new VersionAwareDefinitionMock());
+
+		$data = $builder->build()->toArray();
+
+		Assert::same(BaseDefinition::DEFAULT_VERSION, $data['openapi']);
+		Assert::same(BaseDefinition::DEFAULT_VERSION, $versionAware->receivedVersion);
+	}
+
+	public function testMergeOrderIsPreserved(): void
+	{
+		$builder = new SchemaBuilder();
+		$builder->addDefinition(new BaseDefinition());
+
+		// The version-aware definition declares info.title...
+		$builder->addDefinition(new VersionAwareDefinitionMock(['info' => ['title' => 'From core']]));
+
+		// ...and a definition registered later must override it
+		$builder->addDefinition(new ArrayDefinition(['info' => ['title' => 'From config', 'version' => '1.0.0']]));
+
+		$data = $builder->build()->toArray();
+
+		Assert::same('From config', $data['info']['title']);
+	}
+
+	public function testNonStringVersionThrows(): void
+	{
+		$builder = new SchemaBuilder();
+		$builder->addDefinition(new BaseDefinition());
+		$builder->addDefinition(new ArrayDefinition(['openapi' => 3.1]));
+
+		Assert::exception(
+			static fn () => $builder->build(),
+			InvalidStateException::class,
+			'OpenAPI version must be a string, float given. Quote the value in your configuration, e.g. openapi: \'3.1.1\'.'
+		);
+	}
+
+}
+
+final class VersionAwareDefinitionMock implements IVersionAwareDefinition
+{
+
+	public ?string $receivedVersion = null;
+
+	/**
+	 * @param mixed[] $data
+	 */
+	public function __construct(
+		private readonly array $data = [],
+	)
+	{
+	}
+
+	public function setVersion(string $version): void
+	{
+		$this->receivedVersion = $version;
+	}
+
+	/**
+	 * @return mixed[]
+	 */
+	public function load(): array
+	{
+		return $this->data;
 	}
 
 }

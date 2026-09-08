@@ -50,17 +50,7 @@ class BasicValidator implements IEntityValidator
 			$doc = (string) $propertyRf->getDocComment();
 
 			if (str_contains($doc, '@required')) {
-				$wasAccessible = $propertyRf->isPublic();
-
-				if (!$wasAccessible) {
-					$propertyRf->setAccessible(true);
-				}
-
 				$value = $propertyRf->getValue($entity);
-
-				if (!$wasAccessible) {
-					$propertyRf->setAccessible(false);
-				}
 
 				if ($value === null) {
 					$violations[$propertyName][] = 'This value should not be null.';

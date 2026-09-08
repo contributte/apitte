@@ -76,17 +76,7 @@ abstract class BasicEntity extends AbstractEntity
 
 				if (property_exists($inst, $propNameStr)) {
 					$ref = new \ReflectionProperty($inst, $propNameStr);
-					$wasAccessible = $ref->isPublic();
-
-					if (!$wasAccessible) {
-						$ref->setAccessible(true);
-					}
-
 					$ref->setValue($inst, $value);
-
-					if (!$wasAccessible) {
-						$ref->setAccessible(false);
-					}
 				} elseif (method_exists($inst, '__set')) {
 					$inst->__set($propName, $value);
 				}

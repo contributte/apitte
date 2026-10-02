@@ -8,9 +8,9 @@ use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\OpenApi\SchemaBuilder;
 use Apitte\OpenApi\SchemaDefinition\ArrayDefinition;
 use Apitte\OpenApi\SchemaDefinition\BaseDefinition;
-use Apitte\OpenApi\SchemaDefinition\IVersionAwareDefinition;
 use Tester\Assert;
 use Tester\TestCase;
+use Tests\Fixtures\OpenApi\VersionAwareDefinitionMock;
 
 final class SchemaBuilderTest extends TestCase
 {
@@ -134,35 +134,6 @@ final class SchemaBuilderTest extends TestCase
 			InvalidStateException::class,
 			'OpenAPI version must be a string, float given. Quote the value in your configuration, e.g. openapi: \'3.1.1\'.'
 		);
-	}
-
-}
-
-final class VersionAwareDefinitionMock implements IVersionAwareDefinition
-{
-
-	public ?string $receivedVersion = null;
-
-	/**
-	 * @param mixed[] $data
-	 */
-	public function __construct(
-		private readonly array $data = [],
-	)
-	{
-	}
-
-	public function setVersion(string $version): void
-	{
-		$this->receivedVersion = $version;
-	}
-
-	/**
-	 * @return mixed[]
-	 */
-	public function load(): array
-	{
-		return $this->data;
 	}
 
 }

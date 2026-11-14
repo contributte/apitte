@@ -5,16 +5,21 @@ namespace Apitte\OpenApi\SchemaDefinition\Entity;
 use Apitte\Core\Exception\Logical\InvalidArgumentException;
 use Apitte\Core\Exception\Logical\InvalidStateException;
 use Apitte\OpenApi\SchemaDefinition\BaseDefinition;
+use BackedEnum;
 use DateTimeInterface;
 use Nette\Utils\Reflection;
 use Nette\Utils\Strings;
 use Nette\Utils\Type;
 use ReflectionClass;
 use ReflectionClassConstant;
+use ReflectionEnum;
 use ReflectionFunctionAbstract;
+use ReflectionNamedType;
 use ReflectionProperty;
 use Reflector;
 use RuntimeException;
+use Symfony\Component\Validator\Constraint;
+use UnitEnum;
 
 class EntityAdapter implements IEntityAdapter
 {
@@ -97,6 +102,11 @@ class EntityAdapter implements IEntityAdapter
 			];
 		}
 
+		// Get schema for enum (backed enums are represented by their values, pure enums by their case names)
+		if (enum_exists($type)) {
+			return $this->getEnumMetadata($type);
+		}
+
 		// Get schema for class
 		if (class_exists($type)) {
 			// String is converted to DateTimeInterface internally in core
@@ -161,10 +171,51 @@ class EntityAdapter implements IEntityAdapter
 				}
 			}
 
-			$data[$property->getName()] = $this->getMetadata($propertyType, $version);
+			$data[$property->getName()] = $this->applyConstraints(
+				$this->getMetadata($propertyType, $version),
+				$property,
+			);
 		}
 
 		return $data;
+	}
+
+	/**
+	 * @param class-string<UnitEnum> $type
+	 * @return mixed[]
+	 */
+	protected function getEnumMetadata(string $type): array
+	{
+		$enum = new ReflectionEnum($type);
+		$backingType = $enum->getBackingType();
+
+		if ($backingType instanceof ReflectionNamedType && is_subclass_of($type, BackedEnum::class)) {
+			return [
+				'type' => $this->phpScalarTypeToOpenApiType($backingType->getName()),
+				'enum' => array_map(static fn (BackedEnum $case): int|string => $case->value, $type::cases()),
+			];
+		}
+
+		return [
+			'type' => 'string',
+			'enum' => array_map(static fn (UnitEnum $case): string => $case->name, $type::cases()),
+		];
+	}
+
+	/**
+	 * Applies Symfony validator constraints of the property to its schema, if symfony/validator is installed
+	 *
+	 * @param mixed[] $schema
+	 * @return mixed[]
+	 */
+	protected function applyConstraints(array $schema, ReflectionProperty $property): array
+	{
+		// symfony/validator is an optional dependency
+		if (!class_exists(Constraint::class)) {
+			return $schema;
+		}
+
+		return (new ConstraintSchemaMapper())->apply($schema, $property);
 	}
 
 	/**

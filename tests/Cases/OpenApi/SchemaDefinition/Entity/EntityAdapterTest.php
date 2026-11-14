@@ -10,12 +10,15 @@ use Tester\Assert;
 use Tester\TestCase;
 use Tests\Fixtures\ResponseEntity\ArrayShapeEntity;
 use Tests\Fixtures\ResponseEntity\CompoundResponseEntity;
+use Tests\Fixtures\ResponseEntity\ConstrainedEntity;
 use Tests\Fixtures\ResponseEntity\EmptyResponseEntity;
+use Tests\Fixtures\ResponseEntity\EnumEntity;
 use Tests\Fixtures\ResponseEntity\MixedEntity;
 use Tests\Fixtures\ResponseEntity\NativeIntersectionEntity;
 use Tests\Fixtures\ResponseEntity\NativeUnionEntity;
 use Tests\Fixtures\ResponseEntity\NullableCompoundEntity;
 use Tests\Fixtures\ResponseEntity\SelfReferencingEntity;
+use Tests\Fixtures\ResponseEntity\StringBackedEnum;
 use Tests\Fixtures\ResponseEntity\TypedResponseEntity;
 
 require_once __DIR__ . '/../../../../bootstrap.php';
@@ -445,6 +448,62 @@ final class EntityAdapterTest extends TestCase
 		// A Schema Object must not be an array — [] would be rejected by every validator
 		Assert::notSame('[]', json_encode($schema));
 		Assert::contains('"type"', (string) json_encode($schema));
+	}
+
+	public function testEnum(): void
+	{
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			['type' => 'string', 'enum' => ['foo', 'bar']],
+			$adapter->getMetadata(StringBackedEnum::class),
+		);
+
+		Assert::same(
+			[
+				'type' => 'object',
+				'properties' => [
+					'string' => ['type' => 'string', 'enum' => ['foo', 'bar']],
+					'int' => ['type' => 'integer', 'enum' => [1, 2]],
+					'pure' => ['type' => 'string', 'enum' => ['Alpha', 'Beta']],
+					'nullable' => ['nullable' => true, 'type' => 'string', 'enum' => ['foo', 'bar']],
+				],
+			],
+			$adapter->getMetadata(EnumEntity::class),
+		);
+	}
+
+	public function testConstraints(): void
+	{
+		$adapter = new EntityAdapter();
+
+		Assert::same(
+			[
+				'type' => 'object',
+				'properties' => [
+					'name' => ['type' => 'string', 'minLength' => 1, 'maxLength' => 255],
+					'password' => ['type' => 'string', 'minLength' => 8, 'maxLength' => 64],
+					'token' => ['type' => 'string', 'pattern' => '^[A-Za-z0-9_-]+$'],
+					'email' => ['nullable' => true, 'type' => 'string', 'format' => 'email'],
+					'url' => ['type' => 'string', 'format' => 'uri'],
+					'uuid' => ['type' => 'string', 'format' => 'uuid'],
+					'hostname' => ['type' => 'string', 'format' => 'hostname'],
+					'ipv6' => ['type' => 'string', 'format' => 'ipv6'],
+					'ip' => ['type' => 'string', 'anyOf' => [['format' => 'ipv4'], ['format' => 'ipv6']]],
+					'port' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 65535],
+					'percent' => ['type' => 'number', 'minimum' => 0, 'maximum' => 100],
+					'secure' => ['type' => 'string', 'enum' => ['ssl', 'tls']],
+					'names' => [
+						'type' => 'array',
+						'items' => ['type' => 'string', 'maxLength' => 64, 'format' => 'hostname'],
+						'minItems' => 1,
+						'maxItems' => 10,
+						'uniqueItems' => true,
+					],
+				],
+			],
+			$adapter->getMetadata(ConstrainedEntity::class),
+		);
 	}
 
 }

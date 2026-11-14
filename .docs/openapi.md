@@ -246,15 +246,40 @@ Entity is loaded by reflection, it loads all public properties using `EntityAdap
 
 | Constraint | Schema |
 |---|---|
-| `NotBlank` | `minLength: 1` |
-| `Length` | `minLength`, `maxLength` |
+| `NotBlank` | `minLength: 1` (`minItems: 1` for arrays) |
+| `Length` | `minLength`, `maxLength` (only when counting code points) |
 | `Count` | `minItems`, `maxItems` |
-| `Range`, `GreaterThanOrEqual`, `LessThanOrEqual` | `minimum`, `maximum` |
-| `Unique` | `uniqueItems` |
-| `Choice` | `enum` |
-| `Regex` | `pattern` (without delimiters) |
-| `Email`, `Url`, `Uuid`, `Hostname`, `Ip` | `format` |
+| `Range`, `GreaterThanOrEqual`, `LessThanOrEqual`, `PositiveOrZero`, `NegativeOrZero` | `minimum`, `maximum` |
+| `GreaterThan`, `LessThan`, `Positive`, `Negative` | `exclusiveMinimum`, `exclusiveMaximum` (booleans in OpenAPI 3.0, numbers in 3.1) |
+| `DivisibleBy` | `multipleOf` |
+| `EqualTo`, `IdenticalTo` | `enum` with the single value |
+| `NotEqualTo`, `NotIdenticalTo` | `not` with `enum` of the value |
+| `IsTrue`, `IsFalse`, `IsNull` | `enum: [true]`, `enum: [false]`, `enum: [null]` |
+| `Type` | `type` of otherwise untyped schemas (e.g. array items) |
+| `Unique` | `uniqueItems` (not with `fields` or `normalizer`) |
+| `Choice` | `enum` (`items.enum`, `minItems` and `maxItems` for multiple choices) |
+| `Regex` | `pattern` (without delimiters and modifiers) |
+| `Email`, `Url`, `Uuid`, `Hostname`, `Ip`, `Date` | `format` |
+| `Ulid`, `MacAddress`, `Week`, `Isin`, `Country`, `Currency` | `pattern` (the format only, checksums and code lists are not described) |
 | `All` | constraints of `items` |
+| `Collection` | `properties`, `required` and `additionalProperties` |
+| `AtLeastOneOf` | `anyOf` |
+| `Sequentially`, `Compound` | nested constraints |
+
+Comparisons with a `propertyPath` or with non-numeric values (e.g. dates) are not described.
+Constraints which cannot be expressed by a schema are skipped, so the schema never rejects a value accepted by the validator:
+`Callback`, `Expression`, `ExpressionSyntax`, `When`, `NotCompromisedPassword`, `PasswordStrength`, `NoSuspiciousCharacters`,
+`Charset`, `WordCount`, `Json`, `Yaml`, `Luhn`, `Iban`, `Bic`, `Isbn`, `Issn`, `CardScheme`, `CssColor`, `Cidr`, `Language`, `Locale`,
+`Timezone`, `DateTime` and `Time` (their formats differ from JSON Schema formats), `File`, `Image`, `Video`, `NotNull` and `Blank`.
+`Valid` and `Cascade` need no schema, nested entities are described by their types.
+
+Only constraints of the `Default` validation group are described. If you validate request entities with other groups
+(`SymfonyValidator::setGroups()`), describe the same groups in the schema:
+
+```yaml
+services:
+    api.openapi.entityAdapter: Apitte\OpenApi\SchemaDefinition\Entity\EntityAdapter(validationGroups: [Default, input])
+```
 
 You can redefine entity adapter by interface. `getMetadata()` receives the document's
 OpenAPI version as its second argument — a custom implementation is responsible for

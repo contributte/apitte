@@ -25,6 +25,15 @@ class EntityAdapter implements IEntityAdapter
 {
 
 	/**
+	 * @param list<string> $validationGroups Validation groups of constraints described in schemas (if symfony/validator is installed)
+	 */
+	public function __construct(
+		private array $validationGroups = ['Default'],
+	)
+	{
+	}
+
+	/**
 	 * @return mixed[]
 	 */
 	public function getMetadata(string $type, string $version = BaseDefinition::DEFAULT_VERSION): array
@@ -174,6 +183,7 @@ class EntityAdapter implements IEntityAdapter
 			$data[$property->getName()] = $this->applyConstraints(
 				$this->getMetadata($propertyType, $version),
 				$property,
+				$version,
 			);
 		}
 
@@ -208,14 +218,18 @@ class EntityAdapter implements IEntityAdapter
 	 * @param mixed[] $schema
 	 * @return mixed[]
 	 */
-	protected function applyConstraints(array $schema, ReflectionProperty $property): array
+	protected function applyConstraints(
+		array $schema,
+		ReflectionProperty $property,
+		string $version = BaseDefinition::DEFAULT_VERSION,
+	): array
 	{
 		// symfony/validator is an optional dependency
 		if (!class_exists(Constraint::class)) {
 			return $schema;
 		}
 
-		return (new ConstraintSchemaMapper())->apply($schema, $property);
+		return (new ConstraintSchemaMapper($version, $this->validationGroups))->apply($schema, $property);
 	}
 
 	/**

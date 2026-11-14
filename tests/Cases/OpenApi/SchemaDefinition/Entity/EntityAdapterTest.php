@@ -13,6 +13,7 @@ use Tests\Fixtures\ResponseEntity\CompoundResponseEntity;
 use Tests\Fixtures\ResponseEntity\ConstrainedEntity;
 use Tests\Fixtures\ResponseEntity\EmptyResponseEntity;
 use Tests\Fixtures\ResponseEntity\EnumEntity;
+use Tests\Fixtures\ResponseEntity\ExtendedConstrainedEntity;
 use Tests\Fixtures\ResponseEntity\MixedEntity;
 use Tests\Fixtures\ResponseEntity\NativeIntersectionEntity;
 use Tests\Fixtures\ResponseEntity\NativeUnionEntity;
@@ -504,6 +505,78 @@ final class EntityAdapterTest extends TestCase
 			],
 			$adapter->getMetadata(ConstrainedEntity::class),
 		);
+	}
+
+	public function testExtendedConstraints(): void
+	{
+		$adapter = new EntityAdapter();
+		$properties = $adapter->getMetadata(ExtendedConstrainedEntity::class)['properties'];
+
+		// Empty Schema Objects are serialized as JSON objects, they cannot be compared by identity
+		Assert::equal(
+			[
+				'type' => 'object',
+				'properties' => [
+					'host' => ['minLength' => 1, 'format' => 'hostname'],
+					'port' => ['minimum' => 1, 'maximum' => 65535],
+					'tag' => (object) [],
+				],
+				'required' => ['host'],
+				'additionalProperties' => false,
+			],
+			$properties['server'],
+		);
+		unset($properties['server']);
+
+		Assert::same(
+			[
+				'positive' => ['type' => 'integer', 'minimum' => 0, 'exclusiveMinimum' => true],
+				'negativeOrZero' => ['type' => 'integer', 'maximum' => 0],
+				'exclusive' => ['type' => 'number', 'minimum' => 1.5, 'exclusiveMinimum' => true, 'maximum' => 10, 'exclusiveMaximum' => true],
+				'divisible' => ['type' => 'integer', 'multipleOf' => 5],
+				'date' => ['type' => 'string'],
+				'version' => ['type' => 'string', 'enum' => ['v1']],
+				'username' => ['type' => 'string', 'not' => ['enum' => ['admin']]],
+				'agreed' => ['type' => 'boolean', 'enum' => [true]],
+				'birthday' => ['type' => 'string', 'format' => 'date'],
+				'relativeUrl' => ['type' => 'string', 'format' => 'uri-reference'],
+				'ulid' => ['type' => 'string', 'pattern' => '^[0-7][0-9A-HJKMNP-TV-Z]{25}$'],
+				'week' => ['type' => 'string', 'pattern' => '^\\d{4}-W\\d{2}$'],
+				'permissions' => [
+					'type' => 'array',
+					'items' => ['type' => 'string', 'enum' => ['read', 'write']],
+					'minItems' => 1,
+					'maxItems' => 2,
+				],
+				'role' => ['type' => 'string'],
+				'uniqueById' => ['type' => 'array', 'items' => ['nullable' => true]],
+				'notEmpty' => ['type' => 'array', 'minItems' => 1],
+				'bytes' => ['type' => 'string'],
+				'integers' => ['type' => 'array', 'items' => ['type' => 'integer', 'nullable' => true]],
+				'contact' => ['type' => 'string', 'anyOf' => [['format' => 'email'], ['format' => 'ipv4']]],
+				'indescribable' => ['type' => 'string'],
+				'sequential' => ['type' => 'string', 'minLength' => 1, 'maxLength' => 32],
+				'grouped' => ['type' => 'string'],
+				'callback' => ['type' => 'string'],
+			],
+			$properties,
+		);
+	}
+
+	public function testExclusiveLimitsOpenApi31(): void
+	{
+		$properties = (new EntityAdapter())->getMetadata(ExtendedConstrainedEntity::class, '3.1.0')['properties'];
+
+		Assert::same(['type' => 'integer', 'exclusiveMinimum' => 0], $properties['positive']);
+		Assert::same(['type' => 'number', 'exclusiveMinimum' => 1.5, 'exclusiveMaximum' => 10], $properties['exclusive']);
+	}
+
+	public function testValidationGroups(): void
+	{
+		$properties = (new EntityAdapter(['strict']))->getMetadata(ExtendedConstrainedEntity::class)['properties'];
+
+		Assert::same(['type' => 'string', 'maxLength' => 5], $properties['grouped']);
+		Assert::same(['type' => 'integer'], $properties['positive']);
 	}
 
 }

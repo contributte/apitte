@@ -2,6 +2,10 @@
 
 Validate and map data from request and map data to response
 
+- [RequestParameters](#requestparameters) - validate and convert path, query, header and cookie parameters
+- [RequestBody](#requestbody) - map request body (or query parameters) to an entity and validate it
+- [Response entities](#response-entities) - describe responses by entities
+
 ## Setup
 
 ```yaml
@@ -76,6 +80,8 @@ class UsersController extends BaseV1Controller
     - and `'false'` to `false`
 - `datetime`
     - Converts value to DateTimeImmutable.
+- `enum`
+    - Checks that value is one of the values listed in `enum` option.
 
 
 - You can define [custom data types](#custom-datatypes)
@@ -121,7 +127,10 @@ use Apitte\Core\Exception\Runtime\InvalidArgumentTypeException;
 class MyEmailTypeMapper implements ITypeMapper
 {
 
-	public function normalize($value): string
+	/**
+	 * @param array<string, mixed> $options
+	 */
+	public function normalize(mixed $value, array $options = []): string
 	{
 		if (is_string($value) && filter_var($value, FILTER_VALIDATE_EMAIL)) {
 			return $value;
@@ -149,14 +158,17 @@ use Apitte\Core\Mapping\Request\BasicEntity;
 final class UserFilter extends BasicEntity
 {
 
-    /**  @var int */
-    public $userId;
+    public int $userId;
 
-    /**  @var string */
-    public $email;
+    public ?string $email = null;
 
 }
 ```
+
+Request body is mapped for `POST`, `PUT` and `PATCH` requests (JSON body), query parameters are mapped for `GET`, `DELETE` and `HEAD` requests.
+Properties are filled by their names, values which cannot be assigned to typed properties are skipped, so use a [validator](#validators) to reject invalid requests.
+
+You can also implement `Apitte\Core\Mapping\Request\IRequestEntity` to map the request in your own way (e.g. strictly, with your own error format).
 
 And some endpoint with `#[RequestBody]` attribute. There's a method `ApiRequest::getEntity()`, it gets
 the entity from request attributes. So simple, right?
@@ -164,17 +176,19 @@ the entity from request attributes. So simple, right?
 ```php
 use Apitte\Core\Annotation\Controller\Method;
 use Apitte\Core\Annotation\Controller\Path;
-use Apitte\Core\Annotation\Controller\RequestParameter;
+use Apitte\Core\Annotation\Controller\RequestBody;
 
 #[Path("/filter")]
 #[Method("GET")]
 #[RequestBody(entity: App\Api\Entity\Request\UserFilter::class)]
-public function filter(ApiRequest $request)
+public function filter(ApiRequest $request): ApiResponse
 {
     /** @var UserFilter $entity */
     $entity = $request->getEntity();
 }
 ```
+
+The entity is also used to generate the request body schema in [OpenAPI](openapi.md#entity-attributes).
 
 ### Validators
 
@@ -184,7 +198,7 @@ By default no validator is used.
 
 #### BasicValidator
 
-Supports @required annotation - check if attribute is not empty
+Supports `@required` phpdoc tag - checks that the property of `BasicEntity` is not empty
 
 ```yaml
 api:
@@ -196,14 +210,14 @@ api:
 
 #### SymfonyValidator
 
-Requires a doctrine annotation reader, you may use [nettrine/annotations](https://github.com/contributte/doctrine-annotations)
+Install [contributte/validator](https://github.com/contributte/validator), it integrates [symfony/validator](https://symfony.com/doc/current/validation.html) into Nette DI.
+It is an optional dependency, constraints are read from PHP attributes.
 
-Also install [symfony/validator](https://symfony.com/doc/master/validation.html)
+```bash
+composer require contributte/validator
+```
 
 ```yaml
-extensions:
-  annotations: Nettrine\Annotations\DI\AnnotationsExtension
-
 api:
     plugins:
         Apitte\Core\DI\Plugin\CoreMappingPlugin:
@@ -215,25 +229,29 @@ Using SymfonyValidator your request entity could look like this:
 
 ```php
 use Apitte\Core\Mapping\Request\BasicEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 final class UserFilter extends BasicEntity
 {
 
-    /**
-     * @var int
-     * @Assert\NotNull()
-     * @Assert\Type(
-     *     type="integer",
-     *     message="The value {{ value }} is not a valid {{ type }}."
-     * )
-     */
-    public $userId;
+    #[Assert\NotNull]
+    #[Assert\Positive]
+    public int $userId;
+
+    #[Assert\Email]
+    #[Assert\Length(max: 255)]
+    public ?string $email = null;
 
 }
 ```
 
-You can override `ConstraintValidatorFactory` on `SymfonyValidator`. If you want to use [custom validation contstraints](https://symfony.com/doc/current/validation/custom_constraint.html) with support of Nette DI,
-you should also install [contributte/validator](https://github.com/contributte/validator).
+Violations are thrown as `Apitte\Core\Exception\Api\ValidationException` (HTTP 422) with violation messages grouped by property paths in the context.
+Implement `Apitte\Core\Mapping\Validator\IEntityValidator` if you need a different error format.
+
+Constraints are also described in generated [OpenAPI](openapi.md#entity-attributes) schemas (e.g. `maxLength`, `pattern`, `format`).
+
+You can override `ConstraintValidatorFactory` on `SymfonyValidator`. Use `ContainerConstraintValidatorFactory` from contributte/validator
+if your [custom validation constraints](https://symfony.com/doc/current/validation/custom_constraint.html) need services from Nette DI.
 If you want to use translated constraint messages, you can use [contributte/translation](https://github.com/contributte/translation).
 Take a look at example.
 
@@ -252,3 +270,25 @@ api:
             request:
                 validator: @symfonyValidator
 ```
+
+## Response entities
+
+Responses could be described by entities too. Use `entity` option of `#[Response]` attribute,
+the entity is used to generate the response schema in [OpenAPI](openapi.md#entity-attributes).
+Append `[]` to describe a list of entities.
+
+```php
+use Apitte\Core\Annotation\Controller\Method;
+use Apitte\Core\Annotation\Controller\Path;
+use Apitte\Core\Annotation\Controller\Response;
+
+#[Path("/users")]
+#[Method("GET")]
+#[Response(description: "List of users", code: "200", entity: App\Api\Entity\Response\User::class . '[]')]
+public function list(ApiRequest $request, ApiResponse $response): ApiResponse
+{
+    return $response->writeJsonBody(array_map(User::fromEntity(...), $this->users->findAll()));
+}
+```
+
+Returned `Apitte\Core\Mapping\Response\IResponseEntity` objects are converted by [negotiation](negotiation.md).

@@ -42,6 +42,9 @@
     "symfony/yaml": "^6.4.0 || ^7.0.0 || ^8.0.0",
     "tracy/tracy": "^2.10.5"
   },
+  "suggest": {
+    "contributte/validator": "To validate request entities (SymfonyValidator) and describe their constraints in OpenAPI schemas, integrates symfony/validator into Nette DI"
+  },
   "provide": {
     "psr/http-message-implementation": "1.0"
   },

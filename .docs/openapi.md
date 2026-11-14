@@ -239,6 +239,23 @@ final class UserDetailController extends BaseV1Controller
 
 Entity is loaded by reflection, it loads all public properties using `EntityAdapter`.
 
+- Property types are read from native types and `@var` phpdoc (including `Type[]` and `array<string, Type>`).
+- `DateTimeInterface` is described as `string` with `date-time` format.
+- Enums are described by their values (backed enums) or case names (pure enums).
+- If [contributte/validator](https://github.com/contributte/validator) (or plain [symfony/validator](https://symfony.com/doc/current/validation.html)) is installed, constraints of properties are described too:
+
+| Constraint | Schema |
+|---|---|
+| `NotBlank` | `minLength: 1` |
+| `Length` | `minLength`, `maxLength` |
+| `Count` | `minItems`, `maxItems` |
+| `Range`, `GreaterThanOrEqual`, `LessThanOrEqual` | `minimum`, `maximum` |
+| `Unique` | `uniqueItems` |
+| `Choice` | `enum` |
+| `Regex` | `pattern` (without delimiters) |
+| `Email`, `Url`, `Uuid`, `Hostname`, `Ip` | `format` |
+| `All` | constraints of `items` |
+
 You can redefine entity adapter by interface. `getMetadata()` receives the document's
 OpenAPI version as its second argument — a custom implementation is responsible for
 emitting nullability in the shape that version expects.
